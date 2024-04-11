@@ -111,27 +111,42 @@
         <!-- Main -->
         <main class="py-6 bg-surface-secondary ">
             <div class="container-fluid d-flex justify-content-center align-items-center">
-                <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2" style="width: 35rem; height: 30rem;">
-                    <div class="row row-cols-1 "> 
+                <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2" style="width: 70rem; height: 32rem;">
+                    <div class="row row-cols-1 ">
                         <div class="col text-center pb-5">
-                            <h2><strong>Tu perfil</strong></h2>
+                            <h2><strong>Edita tu perfil</strong></h2>
                             <hr>
                         </div>
+                        
                         <div class="row pb-5">
-                            
-                            <div class="col">
-                                <img src="img/profile-3.jpeg" alt="" width="200" class="rounded-circle">
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <img src="img/profile-3.jpeg" alt="" width="250" class="rounded-circle">
                             </div>
                             <div class="col">
-                                <span>Nombre: Robert Harry</span>
-                                <br>
-                                <span>DNI: 12345678</span>
-                                <br>
-                                <span>Código (colegio médico): 12345</span>
-                                <br>
-                                <span>Distrito de residencia: San Miguel</span>
-                                <br>
-                                <span>Correo: robert@gmail.com</span>
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="nombre">Nombre:</label>
+                                        <input type="text" class="form-control" placeholder="Coloca tu nombre">
+                                    </div>
+                                
+                                    <div class="col">
+                                        <label for="imagen">Apellido:</label>
+                                        <input type="text" class="form-control" placeholder="Coloca tu apellido">
+                                    </div>
+                                </div>
+                                
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="cantidad">Correo electrónico:</label>
+                                        <input type="email" class="form-control" placeholder="correo@correo.com">
+                                    </div>
+                                </div>
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="cantidad">Distrito de residencia:</label>
+                                        <input type="text" class="form-control" placeholder="Coloca tu distrito de residencia">
+                                    </div>
+                                </div>
                             </div> 
                         </div>
 
@@ -140,10 +155,10 @@
                         <div class="row pt-5">
                             
                             <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/cambiarContra.html" class="btn btn-primary btn-xs" role="button">Cambiar Contraseña</a>
+                                <a href="/editarPerfil.html" class="btn btn-primary btn-xs" role="button">Guardar Cambios</a>
                             </div>
                             <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/editar.html" class="btn btn-primary btn-xs" role="button">Editar Perfil</a>
+                                <a href="/editarPerfil.html" class="btn btn-danger btn-xs" role="button">Cancelar</a>
                             </div>
                             
                            

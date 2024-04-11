@@ -111,42 +111,28 @@
         <!-- Main -->
         <main class="py-6 bg-surface-secondary ">
             <div class="container-fluid d-flex justify-content-center align-items-center">
-                <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2" style="width: 35rem; height: 30rem;">
-                    <div class="row row-cols-1 "> 
+                <div class="d-flex justify-content-center align-items-center card shadow px-6 py-4" style="width: 35rem; height: 28rem;">
+                    <div class="row row-cols-1 ">
                         <div class="col text-center pb-5">
-                            <h2><strong>Tu perfil</strong></h2>
-                            <hr>
+                            <h2><strong>Cambio de contraseña</strong></h2>
                         </div>
-                        <div class="row pb-5">
-                            
-                            <div class="col">
-                                <img src="img/profile-3.jpeg" alt="" width="200" class="rounded-circle">
-                            </div>
-                            <div class="col">
-                                <span>Nombre: Robert Harry</span>
-                                <br>
-                                <span>DNI: 12345678</span>
-                                <br>
-                                <span>Código (colegio médico): 12345</span>
-                                <br>
-                                <span>Distrito de residencia: San Miguel</span>
-                                <br>
-                                <span>Correo: robert@gmail.com</span>
-                            </div> 
-                        </div>
+                        <div class="col">
+                            <form>
+                                <div class="mb-3">
+                                  <label for="exampleInputEmail1" class="form-label">Nueva contraseña</label>
+                                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Ingresa la nueva contraseña">
+                                </div>
+                                <div class="mb-3">
+                                  <label for="exampleInputPassword1" class="form-label">Confirma la contraseña</label>
+                                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirma contraseña">
+                                </div>
+                                <div class="pt-3 ">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
 
-                        <hr>
-
-                        <div class="row pt-5">
-                            
-                            <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/cambiarContra.html" class="btn btn-primary btn-xs" role="button">Cambiar Contraseña</a>
-                            </div>
-                            <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/editar.html" class="btn btn-primary btn-xs" role="button">Editar Perfil</a>
-                            </div>
-                            
-                           
+                                    <a href="/editarPerfil.html" class="btn btn-danger btn-xs" role="button">Volver</a>
+                                </div>
+                                
+                              </form>
                         </div>
                         
                     </div>
