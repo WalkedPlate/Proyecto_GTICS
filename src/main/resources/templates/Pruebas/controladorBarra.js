@@ -1,5 +1,5 @@
 const ctx = document.getElementById('myChart')
-const names = ['Carlos' , 'Pedro','Maria','Rosa','Juan']
+const names = ['San Miguel 1' , 'San Miguel 2','San Miguel 3','San Miguel 4','San Miguel 5']
 const ages = [24,10,54,51,15]
 
 const myChart = new Chart(ctx , {
@@ -7,7 +7,6 @@ const myChart = new Chart(ctx , {
     data: {
         labels: names,
         datasets: [{
-            label: 'Edad',
             data: ages,
             backgroundColor: [
                 'rgba(255,99,132,0.2)',
@@ -27,5 +26,18 @@ const myChart = new Chart(ctx , {
             ],
             borderWidth: 1.5
         }],
-    }
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false,
+            },
+            title: {
+                display: true,
+                text: 'Transacciones de medicamentos por sede'
+            }
+        }
+    } 
 })

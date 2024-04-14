@@ -21,3 +21,20 @@ textarea {
     height: 100px;
     color: red
 }
+
+#myChart {
+    max-width: 100%;
+}
+#myChart2 {
+    max-width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    display: block;
+    
+}
+#myChart3 {
+    max-width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: block;
+}
