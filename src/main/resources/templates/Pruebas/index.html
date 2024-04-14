@@ -1,326 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Renacer SuperAdmin</title>
-  <link rel="stylesheet" href="./style.css">
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Renacer SuperAdmin</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
 
 <body>
-<!-- Dashboard -->
-<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-    <!-- Vertical Navbar -->
-    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
-        <div class="container-fluid">
-            <!-- Toggler -->
-            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="index.html">
-                <h3 class="text-success"><img src="img/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3> 
-            </a>
-            <!-- User menu (mobile) -->
-            <div class="navbar-user d-lg-none">
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <!-- Toggle -->
-                    <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="avatar-parent-child">
-                            <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar- rounded-circle">
-                            <span class="avatar-child avatar-badge bg-success"></span>
-                        </div>
-                    </a>
-                    <!-- Menu 
+    <!-- Dashboard -->
+    <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+        <!-- Vertical Navbar -->
+        <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+            id="navbarVertical">
+            <div class="container-fluid">
+                <!-- Toggler -->
+                <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Brand -->
+                <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="index.html">
+                    <h3 class="text-success"><img src="img/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png"
+                            width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
+                </a>
+                <!-- User menu (mobile) -->
+                <div class="navbar-user d-lg-none">
+                    <!-- Dropdown -->
+                    <div class="dropdown">
+                        <!-- Toggle -->
+                        <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <div class="avatar-parent-child">
+                                <img alt="Image Placeholder"
+                                    src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                                    class="avatar avatar- rounded-circle">
+                                <span class="avatar-child avatar-badge bg-success"></span>
+                            </div>
+                        </a>
+                        <!-- Menu 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
                         <a href="#" class="dropdown-item">Perfil</a>
                         <a href="#" class="dropdown-item">Configuracion</a>
                         <a href="#" class="dropdown-item">Cerrar Sesión</a>
                     </div> -->
-                    
-                </div>
-            </div>
-            <!-- Collapse -->
-            <div class="collapse navbar-collapse" id="sidebarCollapse">
-                <!-- Navigation -->
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">
-                            <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ordenesReposicion.html">
-                            <i class="bi bi-bar-chart"></i> Ordenes de Reposicion
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="doctores.html">
-                            <i class="bi bi-people"></i> Doctores
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="farmacistas.html">
-                            <i class="bi bi-people"></i> Farmacista
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="medicinas.html">
-                            <i class="bi bi-people"></i> Medicina
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="perfil">
-                            <i class="bi bi-people"></i> Perfil
-                        </a>
-                    </li>                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
-                        </a>
-                    </li>  
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Main content -->
-    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Header -->
-        <header class="bg-surface-primary border-bottom pt-6">
-            <div class="container-fluid">
-                <div class="mb-npx">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                            <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">
-                                Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span></h1>
-                            <br>    
-                        </div>
+
                     </div>
-                    
                 </div>
-            </div>
-        </header>
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="card shadow border-0 mb-7">
-                    <div class="card-header">
-                        <h2 class="mb-0">Ordenes de Reposicion</h2>
-                        <div class="col pt-5">
-                            <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal" data-bs-target="#modaAgregar">
-                                <span class=" pe-2">
-                                    <i class="bi bi-plus"></i>
-                                </span>
-                                <span>Nueva Orden</span>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse" id="sidebarCollapse">
+                    <!-- Navigation -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">
+                                <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
                             </a>
-                        </div>
-                        
-                    </div>
-                    <!-- Modal agregar -->
-                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos de la nueva<br> <strong>Orden de Reposicion</strong>:</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body row">
-                                    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="nombre">Nombre del Producto:</label>
-                                            <input type="text" class="form-control" placeholder="Colocar Producto">
-                                        </div>
-                                    
-                                        <div class="col">
-                                            <label for="costo">Costo:</label>
-                                            <input type="number" class="form-control" placeholder="Ingresa el costo">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="FechaEntrega">Fecha de entrega:</label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        
-        
-                                        <!--<div class="col">
-                                            <label for="distrito">Fecha de entrega</label>
-                                            <input type="text" class="form-control" placeholder="Coloca su distrito">
-                                        </div>-->
-                                    </div>
-
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="sede">Sede Destino:</label>
-                                            <select id="sede" class="form-select">
-                                                <option selected>San Miguel 1</option>
-                                                <option>San Miguel 2</option>
-                                                <option>San Miguel 3</option>
-                                                <option>San Miguel 4</option>
-                                                <option>San Miguel 5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    
-
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Generar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h2 class="text-center">Orden de Reposicion generada exitosamente.</h2>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-            
-                
-                    <!-- Modal Actualizar -->
-                    <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Datos de la <br> Orden de Reposicion:</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body row">
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="Codigo">Nro de orden:</label>
-                                        <input type="text" class="form-control" placeholder="71273166">
-                                    </div>
-                                   
-                                    <div class="col">
-                                        <label for="nombre">Nombre del producto:</label>
-                                        <input type="text" class="form-control" placeholder="Paracetamol">
-                                    </div>
-                                </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="costo">Costo:</label>
-                                        <input type="number" class="form-control" placeholder="100">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="FechaEntrega">Fecha de Entrega:</label>
-                                        <input type="date" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="sede">Sede Destino:</label>
-                                        <select id="sede" class="form-select">
-                                            <option selected>San Miguel 1</option>
-                                            <option>San Miguel 2</option>
-                                            <option>San Miguel 3</option>
-                                            <option>San Miguel 4</option>
-                                            <option>San Miguel 5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                
-
-                                
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal banear -->
-                    <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h2 class="modal-title fs-5" id="exampleModalLabel">¿Esta seguro que desea eliminar <br> la orden N° 71273166?</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body row">
-                                                       
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#elimino">Ok</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h2 class="text-center">Administrador de sede actualizado exitosamente.</h2>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <!--Modal baneado exitaosamente-->
-                    <div class="modal fade" id="elimino" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h2 class="text-center">Se elimino la orden exitosamente.</h2>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card-footer border-0 py-5">
-                        <nav aria-label="Page navigation example">
-                          <ul class="pagination">
-                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
-                            <li class="page-item"><a class="page-link bg-primary text-white" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                          </ul>
-                        </nav>
-                    </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ordenesReposicion.html">
+                                <i class="bi bi-bar-chart"></i> Ordenes de Reposicion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="doctores.html">
+                                <i class="bi bi-people"></i> Doctores
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="farmacistas.html">
+                                <i class="bi bi-people"></i> Farmacista
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="medicinas.html">
+                                <i class="bi bi-people"></i> Medicina
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="perfil">
+                                <i class="bi bi-people"></i> Perfil
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </main>
+        </nav>
+        <!-- Main content -->
+        <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+            <!-- Header -->
+            <header class="bg-surface-primary border-bottom pt-6">
+                <div class="container-fluid">
+                    <div class="mb-npx">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                <!-- Title -->
+                                <h1 class="h2 mb-0 ls-tight">
+                                    Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span></h1>
+                                <br>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+            <!-- Main -->
+            <main class="py-6 bg-surface-secondary">
+                <div class="container-fluid">
+                    <div class="card shadow border-0 mb-7">
+                        <canvas id="myChart" height="300" width="300"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<script src="script.js"></script>
+    <!--Script para graficas-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="controlador.js"></script>
+    <!-------------------------------------------------------------->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <!--<script src="script.js"></script>-->
 </body>
+
 </html>
