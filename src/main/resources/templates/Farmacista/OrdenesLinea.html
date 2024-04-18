@@ -29,8 +29,7 @@
 
         /* Estilos para el botón activo */
         .dt-paging-button.page-item.disabled a {
-            opacity: 0.5;
-            /* Por ejemplo, reducir la opacidad */
+            opacity: 0.5; /* Por ejemplo, reducir la opacidad */
         }
     </style>
 </head>
@@ -87,8 +86,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="OrdenesLinea.html">
-                                <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Ordenes en
-                                línea
+                                <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Ordenes en línea
                             </a>
                         </li>
                         <li class="nav-item">
@@ -123,13 +121,9 @@
                     <div class="mb-npx">
                         <div class="row align-items-center">
                             <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="OrdenesLinea.html">Ordenes el línea </a>
-                                        </li>
-                                        <li class="breadcrumb-item active" aria-current="page"> Revision de pedido</li>
-                                    </ol>
-                                </nav>
+                                <!-- Title -->
+                                <h1 class="h2 mb-0 ls-tight">
+                                    Bienvenido, <span class="text-primary">Farmacista Javier Marroquin</span></h1>
                                 <br>
                             </div>
                         </div>
@@ -142,15 +136,13 @@
                 <div class="container-fluid">
                     <div class="card shadow border-0 mb-7">
                         <div class="card-header">
-                            <div class="row align-items-center">
-                                <div class="col-md-7 d-flex justify-content-center align-items-center">
-                                    <h2 class="mb-0">Orden N° 22001213</h2>
+                            <div class="row">
+                                <div class="col md-7">
+                                    <h2 class="mb-0">Ordenes de Venta:</h2>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <p class="mb-0">Paciente: Diego Henriquez</p>
-                                    <p class="mb-0">Dirección: Av 278 Urb St Rs</p>
-                                    <p class="mb-0">Fecha estimada: 20/04/24</p>
+                                <div class="col md-4">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -158,146 +150,179 @@
                             <table class="table table-hover table-nowrap" id="table">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Productos</th>
-                                        <th scope="col">Cantidad</th>
-                                        <th scope="col">Sub Total</th>
+                                        <th scope="col">Nro Orden</th>
+                                        <th scope="col">Nombre del Paciente</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Orden Generada en:</th>
+                                        <th scope="col">Revision de orden</th>
+                                        <th scope="col">Monto Total</th>
+                                        <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001213
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001214
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001215
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001216
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001217
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            22001218
                                         </td>
                                         <td>
-                                            Paracetamol 100mg Tableta
+                                            Diego Henriquez
                                         </td>
                                         <td>
-                                            3
+                                            71273166
+                                        </td>
+                                        <td>
+                                            ChatBot
+                                        </td>
+                                        <td>
+                                            Revision
+                                        </td>
+                                        <td>
+                                            120
                                         </td>
                                         <td class="text-end">
-                                            10
+                                            <a href="verOrden.html">
+                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer border-0 py-5 mx-auto">
-                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalAprobar">
-                                Aprobar
-                            </button>
-                            <a href="Chat.html">
-                                <button type="button" class="btn btn-sm btn-danger">
-                                    Contactar Paciente
-                                </button>
-                            </a>
-
-                        </div>
-                        <!--Modal Aprobar-->
-                        <div class="modal fade" id="modalAprobar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <p>¿Estás seguro de querer aprobar esta orden?</p>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary"  data-bs-toggle="modal"
-                                            data-bs-target="#modalAceptar">Aceptar</button>
-
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Modal confirmar -->
-                        <div class="modal fade" id="modalAceptar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <p>Orden aprobada correctamente</p>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <a href="OrdenesVenta.html">
-                                            <button type="button" class="btn btn-primary"
-                                                data-bs-dismiss="modal">Ok</button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <!--<nav aria-label="Page navigation example">
+                          <ul class="pagination">
+                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
+                            <li class="page-item"><a class="page-link bg-primary text-white" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                          </ul>
+                        </nav>-->
                         </div>
                     </div>
                 </div>
@@ -317,33 +342,7 @@
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
     <!---->
-    <script>
-        let dataTable;
-        let dataTableIsInitialized = false;
-
-        const dataTableOptions = {
-            columnDefs: [
-                { className: "centered", targets: [0, 1, 2, 3] },
-                { orderable: false, targets: [0] }
-            ],
-            pageLength: 3,
-            paging: true,
-            info: false,
-            language: {
-                lengthMenu: "Mostrar _MENU_ medicamentos por pagina",
-                search: "Buscar"
-            }
-        };
-        const initDataTable = async () => {
-            if (dataTableIsInitialized) {
-                dataTable.destroy();
-            }
-            dataTable = $("#table").DataTable(dataTableOptions);
-            dataTableIsInitialized = true;
-        };
-
-        initDataTable();
-    </script>
+    <script src="tablaOrdenes.js"></script>
 </body>
 
 </html>

@@ -29,7 +29,8 @@
 
         /* Estilos para el botón activo */
         .dt-paging-button.page-item.disabled a {
-            opacity: 0.5; /* Por ejemplo, reducir la opacidad */
+            opacity: 0.5;
+            /* Por ejemplo, reducir la opacidad */
         }
     </style>
 </head>
@@ -85,17 +86,17 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="listaOrdenes.html">
-                                <i class="bi bi-bar-chart "></i> Lista de Ordenes
+                            <a class="nav-link" href="OrdenesLinea.html">
+                                <i class="bi bi-bar-chart "></i> Ordenes en línea
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="listaPreordenes.html">
-                                <i class="bi bi-people"></i> Lista de Preordenes
+                            <a class="nav-link" href="OrdenesVenta.html">
+                                <i class="bi bi-people"></i> Ordenes de venta
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="farmacistas.html">
+                            <a class="nav-link" href="Chat.html">
                                 <i class="bi bi-people"></i> Chat
                             </a>
                         </li>
@@ -153,7 +154,7 @@
                                         <th scope="col">Imagen</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Cantidad disponible</th>
-                                        <th scope="col">Precio x unid</th>
+                                        <th scope="col">Precio x unid (S/.)</th>
                                         <th scope="col">Cantidad solicitada</th>
                                         <th scope="col">Precio Total</th>
                                         <th scope="col">Anadir</th>
@@ -167,13 +168,41 @@
                                             </a>
                                         </td>
                                         <td>
-                                            San Miguel 1
+                                            Medicamento 1
                                         </td>
                                         <td>
-                                            Solicitado
+                                            50
                                         </td>
                                         <td>
-                                            10/11/2024
+                                            1
+                                        </td>
+                                        <td>
+                                            <input type="number" placeholder="1">
+                                        </td>
+                                        <td>
+                                            100
+                                        </td>
+                                        <td class="text-end">
+                                            <input class="form-check-input" type="checkbox" value="" id="miCheckbox">
+                                            <label class="form-check-label" for="miCheckbox">
+                                                Selecciona esto
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a class="text-heading font-semibold" href="#">
+                                                <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            Medicamento 2
+                                        </td>
+                                        <td>
+                                            50
+                                        </td>
+                                        <td>
+                                            1
                                         </td>
                                         <td>
                                             100
@@ -195,41 +224,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            San Miguel 1
+                                            Medicamento 3
                                         </td>
                                         <td>
-                                            Empaquetado
+                                            50
                                         </td>
                                         <td>
-                                            10/11/2024
-                                        </td>
-                                        <td>
-                                            100
-                                        </td>
-                                        <td>
-                                            100
-                                        </td>
-                                        <td class="text-end">
-                                            <input class="form-check-input" type="checkbox" value="" id="miCheckbox">
-                                            <label class="form-check-label" for="miCheckbox">
-                                                Selecciona esto
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a class="text-heading font-semibold" href="#">
-                                                <img src="img/medicina1.jpg" alt="medicina1" style="height: 125px;">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            San Miguel 1
-                                        </td>
-                                        <td>
-                                            En ruta
-                                        </td>
-                                        <td>
-                                            10/11/2024
+                                            1
                                         </td>
                                         <td>
                                             200
@@ -251,13 +252,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            San Miguel 1
+                                            Medicamento 3
                                         </td>
                                         <td>
-                                            Empaquetado
+                                            50
                                         </td>
                                         <td>
-                                            10/11/2024
+                                            1
                                         </td>
                                         <td>
                                             60
@@ -279,13 +280,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            San Miguel 1
+                                            Medicamento 4
                                         </td>
                                         <td>
-                                            En ruta
+                                            50
                                         </td>
                                         <td>
-                                            10/11/2024
+                                            1
                                         </td>
                                         <td>
                                             30
@@ -307,13 +308,13 @@
                                             </a>
                                         </td>
                                         <td>
-                                            San Miguel 1
+                                            Medicamento 5
                                         </td>
                                         <td>
-                                            Empaquetado
+                                            50
                                         </td>
                                         <td>
-                                            10/11/2024
+                                            1
                                         </td>
                                         <td>
                                             40
@@ -330,100 +331,201 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="mt-2 mb-1 d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalGenerarOrden">
-                                    Generar Orden
+                            <div class="mt-2 mb-4 d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modalGenerarCompra">
+                                    Generar compra
                                 </button>
                             </div>
-                            <!-- Modal Generar Orden -->
-                    <div class="modal fade" id="modalGenerarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del paciente que comprará los medicamentos seleccionados</h3>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body row">
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" placeholder="nombre">
-                                    </div>
-                                   
-                                    <div class="col">
-                                        <label for="correo">Apellido:</label>
-                                        <input type="text" class="form-control" placeholder="apellido">
-                                    </div>
-                                </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="dni">Edad:</label>
-                                        <input type="number" class="form-control" placeholder="edad">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="distrito">¿Tiene seguro?</label>
-                                        <select id="seguro" class="form-select">
-                                            <option selected>Sí</option>
-                                            <option>No</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <!-- Modal Generar compra -->
+                            <div class="modal fade" id="modalGenerarCompra" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del
+                                                paciente que comprará los medicamentos seleccionados</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body row">
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="sede">Doctor:</label>
-                                        <select id="sede" class="form-select">
-                                            <option selected>doctor 1</option>
-                                            <option>doctor 2</option>
-                                            <option>doctor 3</option>
-                                            <option>doctor 4</option>
-                                            <option>doctor 5</option>
-                                        </select>
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input type="text" class="form-control" placeholder="nombre">
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="correo">Apellido:</label>
+                                                    <input type="text" class="form-control" placeholder="apellido">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="dni">Edad:</label>
+                                                    <input type="number" class="form-control" placeholder="edad">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="distrito">¿Tiene seguro?</label>
+                                                    <select id="seguro" class="form-select">
+                                                        <option selected>Sí</option>
+                                                        <option>No</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="sede">Doctor:</label>
+                                                    <select id="sede" class="form-select">
+                                                        <option selected>doctor 1</option>
+                                                        <option>doctor 2</option>
+                                                        <option>doctor 3</option>
+                                                        <option>doctor 4</option>
+                                                        <option>doctor 5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="fecha">Fecha:</label>
+                                                    <input type="date" id="fecha" name="fecha">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#modalGenerarBoleta">Generar Boleta</button>
+                                            <button type="button" class="btn btn-danger"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="fecha">Fecha:</label>
-                                        <input type="date" id="fecha" name="fecha">
+                            <!--Modal generar boleta exitosamente-->
+
+                            <div class="modal fade" id="modalGenerarBoleta" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" id="exampleModalLabel">Resumen de compra #123
+                                            </h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body row">
+
+                                            <div class="row pt-2">
+                                                <div class="col" style="display: flex; align-items: center;">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <p style="margin-left: 10px;">Juan Martinez</p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row pt-2">
+                                                <div class="col" style="display: flex; align-items: center;">
+                                                    <label for="doctor">Doctor:</label>
+                                                    <p style="margin-left: 10px;">Doctor 1</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <table>
+                                                        <tr>
+                                                            <th>Medicamento</th>
+                                                            <th style="padding-left: 30px;">Costo (S/.)</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>10 unidades del Medicamento 1</td>
+                                                            <td style="padding-left: 30px;">10</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>10 unidades del Medicamento 2</td>
+                                                            <td style="padding-left: 30px;">5</td>
+                                                        </tr>
+                                                        <!-- Línea divisora -->
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <hr>
+                                                            </td>
+                                                        </tr>
+                                                        <!-- Total -->
+                                                        <tr>
+                                                            <th style="padding-left: 30px; text-align: right;">Total</th>
+                                                            <th style="padding-left: 30px;">15</th>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="pago">Seleccionar medio de pago:</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="exampleRadios" id="exampleRadios1" value="option1"
+                                                            checked>
+                                                        <label for="exampleRadios1">
+                                                            Tarjeta
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="exampleRadios" id="exampleRadios2" value="option2">
+                                                        <label for="exampleRadios2">
+                                                            Efectivo
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#generarOrdenVenta">Generar Orden</button>
+                                            <button type="button" class="btn btn-danger"
+                                                data-bs-dismiss="modal">Cancelar</button>
+                                        </div>
                                     </div>
                                 </div>
-                                
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generar">Generar Orden</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <!--Modal generar orden de venta exitosamente-->
+                            <div class="modal fade" id="generarOrdenVenta" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="text-center">Se ha generado la orden 123</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary"
+                                                data-bs-dismiss="modal">Ok</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                    </div>
-
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="generar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h2 class="text-center">Se ha generado la orden 123</h2>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                        </div>
-                        <div class="card-footer border-0 py-5 mx-auto">
-                            <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal" data-bs-target="#modaAgregar">
+                        <!-- <div class="card-footer border-0 py-5 mx-auto">
+                            <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal"
+                                data-bs-target="#modaAgregar">
                                 <span class=" pe-2">
                                     <i class="bi bi-plus"></i>
                                 </span>
                                 <span>Generar Orden</span>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </main>
