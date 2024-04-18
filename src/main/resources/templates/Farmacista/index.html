@@ -330,6 +330,91 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="mt-2 mb-1 d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalGenerarOrden">
+                                    Generar Orden
+                                </button>
+                            </div>
+                            <!-- Modal Generar Orden -->
+                    <div class="modal fade" id="modalGenerarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del paciente que comprará los medicamentos seleccionados</h3>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body row">
+                                
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="nombre">Nombre:</label>
+                                        <input type="text" class="form-control" placeholder="nombre">
+                                    </div>
+                                   
+                                    <div class="col">
+                                        <label for="correo">Apellido:</label>
+                                        <input type="text" class="form-control" placeholder="apellido">
+                                    </div>
+                                </div>
+                                
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="dni">Edad:</label>
+                                        <input type="number" class="form-control" placeholder="edad">
+                                    </div>
+                                    
+    
+                                    <div class="col">
+                                        <label for="distrito">¿Tiene seguro?</label>
+                                        <select id="seguro" class="form-select">
+                                            <option selected>Sí</option>
+                                            <option>No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="sede">Doctor:</label>
+                                        <select id="sede" class="form-select">
+                                            <option selected>doctor 1</option>
+                                            <option>doctor 2</option>
+                                            <option>doctor 3</option>
+                                            <option>doctor 4</option>
+                                            <option>doctor 5</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label for="fecha">Fecha:</label>
+                                        <input type="date" id="fecha" name="fecha">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generar">Generar Orden</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!--Modal agregado exitaosamente-->
+                    <div class="modal fade" id="generar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <h2 class="text-center">Se ha generado la orden 123</h2>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
                         </div>
                         <div class="card-footer border-0 py-5 mx-auto">
                             <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal" data-bs-target="#modaAgregar">
