@@ -7,6 +7,31 @@
   <link rel="stylesheet" href="./style.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <!--DataTable-->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+  <style>
+      /* Estilos personalizados para los botones de paginación */
+      li.dt-paging-button.page-item {
+          padding: 2px;
+          margin: 0 2px;
+          border: 1px solid #ccc;
+          background-color: #f2f2f2;
+          color: #333;
+          border-radius: 3px;
+      }
+
+      /* Estilos para el botón activo */
+      .dt-paging-button.page-item.active a {
+          background-color: rgb(92 96 245) !important;
+          color: #fff !important;
+      }
+
+      /* Estilos para el botón activo */
+      .dt-paging-button.page-item.disabled a {
+          opacity: 0.5;
+          /* Por ejemplo, reducir la opacidad */
+      }
+  </style>
 </head>
 
 <body>
@@ -119,8 +144,8 @@
                         </div>      
                     </div>
                 
-                    <div class="table-responsive">
-                        <table class="table table-hover table-nowrap">
+                    <div class="table-responsive mx-auto">
+                        <table class="table table-hover table-nowrap" id="tableFarmacista">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Nombre</th>
@@ -446,15 +471,7 @@
 
 
                     <div class="card-footer border-0 py-5">
-                        <nav aria-label="Page navigation example">
-                          <ul class="pagination">
-                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
-                            <li class="page-item"><a class="page-link bg-primary text-white" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                          </ul>
-                        </nav>
+                        
                     </div>
                 </div>
             </div>
@@ -464,6 +481,12 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<script src="script.js"></script>
+<!--jQuery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!--DataTable-->
+<script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
+<!---->
+<script src="controladorTablaFarma.js"></script>
 </body>
 </html>
