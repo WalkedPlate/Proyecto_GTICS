@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clínica Renacer SuperAdmin</title>
-  <link rel="stylesheet" href="css/style_clinica.css">
+  <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
@@ -20,8 +20,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="index.html">
-                <h3 class="text-success"><img src="img/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3> 
+            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+                <h3 class="text-success"><img src="/img/Superadmin/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
             </a>
             <!-- User menu (mobile) -->
             <div class="navbar-user d-lg-none">
@@ -48,22 +48,22 @@
                 <!-- Navigation -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" th:href="@{'/superadmin'}">
                             <i class="bi bi-house"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="inventario.html">
+                        <a class="nav-link" th:href="@{'/superadmin/inventario'}">
                             <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Inventario
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="soliReposicion.html">
+                        <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
                             <i class="bi bi-people"></i> Solicitudes de reposición
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{'/login'}">
                             <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
                         </a>
                     </li>  
@@ -81,12 +81,12 @@
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
                             <h1 class="h2 mb-0 ls-tight">
-                                <img src="img/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
+                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
                         </div>
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
                             <div class="mx-n1">
-                                <a href="editarPerfil.html" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-pencil"></i>
                                     </span>
@@ -109,111 +109,249 @@
                 </div>
             </div>
         </header>
-        <div class="card-header">
-            <h3 class="mb-0"> <strong> <a class="text-heading font-semibold" href="inventario.html">
-                Inventariado
-            </a> > Estado de reposicion</strong> </h3>           
-        </div>
         <!-- Main -->
         <main class="py-6 bg-surface-secondary">
             <div class="container-fluid">
                 <div class="card shadow border-0 mb-7">
                     <div class="card-header">
-                        <h3 class="mb-0 text-primary"> <strong>Paracetamol 500mg</strong> </h3>           
+                        <h1 class="mb-0">Medicinas</h1>
+                            <div class="mx-n1 pt-5">
+                                <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 pt" data-bs-toggle="modal" data-bs-target="#modaAgregar">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-plus"></i>
+                                    </span>
+                                    <span>Agregar</span>
+                                </a>
+                                
+                                <a th:href="@{'/superadmin/inventario/restricciones'}" class="btn d-inline-flex btn-sm btn-danger mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-shield-x"></i>
+                                    </span>
+                                    <span>Restricción</span>
+                                </a>
+                            </div>             
                     </div>
-                      
+                    <!-- Modal agregar -->
+                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del nuevo <strong>producto</strong>:</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body row">
+                                    
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            <label for="nombre">Nombre:</label>
+                                            <input type="text" class="form-control" placeholder="Coloca su nombre">
+                                        </div>
+                                    
+                                        <div class="col">
+                                            <label for="imagen">Subir imagen:</label>
+                                            <input type="file" class="form-control" >
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            <label for="cantidad">Cantidad:</label>
+                                            <input type="number" class="form-control" placeholder="Coloca la cantidad de medicamentos">
+                                        </div>
+                                        
+        
+                                        <div class="col">
+                                            <label for="precio">Precio (s/.):</label>
+                                            <input type="number" class="form-control" placeholder="Coloca el precio del medicamento">
+                                        </div>
+                                    </div>
+
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            <label for="cantidad">Categoria:</label>
+                                            <input type="text" class="form-control" placeholder="Antiflamatorio/Vitamina/etc">
+                                        </div>
+                                        
+        
+                                        <div class="col">
+                                            <label for="precio">Fecha de vencimiento:</label>
+                                            <input type="date" class="form-control" placeholder="Ingresa la fecha del vencimiento">
+                                        </div>
+                                    </div>
+
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            <label for="cantidad">Descripción:</label>
+                                            <textarea name="" class="form-control" id="cantidad" cols="30" rows="10"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Modal agregado exitaosamente-->
+                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <h2 class="text-center">Medicina agregada exitosamente.</h2>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+            
                     <div class="table-responsive">
                         <table class="table table-hover table-nowrap" id="table">
                             <thead class="thead-light ">
                                 <tr>
-                                    <th scope="col" class="text-center">Código/Sede</th>
-                                    <th scope="col" class="text-center">San Miguel 1</th>
-                                    <th scope="col" class="text-center">San Miguel 2</th>
-                                    <th scope="col" class="text-center">San Miguel 3</th>
-                                    <th scope="col" class="text-center">San Miguel 4</th>
-                                    <th scope="col" class="text-center">San Miguel 5</th>
+                                    <th scope="col" class="text-center">Nombre</th>
+                                    <th scope="col" class="text-center">Cantidad Disponible</th>
+                                    <th scope="col" class="text-center">Precio x Unid.</th>
+                                    <th scope="col" class="text-center">Categoria</th>
+                                    <th scope="col" class="text-center">Fecha de Vencimiento</th>
+                                    <th scope="col" class="text-center">Estado</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-center">
-                                        09273166
+                                    <td>
+                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                        <a class="text-heading font-semibold" href="#">
+                                            Paracetamol 500mg
+                                        </a>
                                     </td>
                                     <td class="text-center">
-                                        Empaquetado
+                                        100
                                     </td>
                                     <td class="text-center">
-                                        Solicitado
+                                        s/. 10
                                     </td>
                                     <td class="text-center">
-                                        Entregado
+                                        Analgésicos
                                     </td>
                                     <td class="text-center">
-                                        En proceso
+                                        01/09/2024
                                     </td>
                                     <td class="text-center">
-                                        En ruta
+                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                            Ver estado de reposición
+                                        </a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        09273166
-                                    </td>
-                                    <td class="text-center">
-                                        Empaquetado
-                                    </td>
-                                    <td class="text-center">
-                                        Solicitado
-                                    </td>
-                                    <td class="text-center">
-                                        Entregado
-                                    </td>
-                                    <td class="text-center">
-                                        En proceso
-                                    </td>
-                                    <td class="text-center">
-                                        En ruta
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">
-                                        09273166
+                                    <td>
+                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                        <a class="text-heading font-semibold" href="#">
+                                            Paracetamol 500mg
+                                        </a>
                                     </td>
                                     <td class="text-center">
-                                        Empaquetado
+                                        100
                                     </td>
                                     <td class="text-center">
-                                        Solicitado
+                                        s/. 10
                                     </td>
                                     <td class="text-center">
-                                        Entregado
+                                        Analgésicos
                                     </td>
                                     <td class="text-center">
-                                        En proceso
+                                        01/09/2024
                                     </td>
                                     <td class="text-center">
-                                        En ruta
+                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                            Ver estado de reposición
+                                        </a>
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">
-                                        09273166
+                                    <td>
+                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                        <a class="text-heading font-semibold" href="#">
+                                            Paracetamol 500mg
+                                        </a>
                                     </td>
                                     <td class="text-center">
-                                        Empaquetado
+                                        100
                                     </td>
                                     <td class="text-center">
-                                        Solicitado
+                                        s/. 10
                                     </td>
                                     <td class="text-center">
-                                        Entregado
+                                        Analgésicos
                                     </td>
                                     <td class="text-center">
-                                        En proceso
+                                        01/09/2024
                                     </td>
                                     <td class="text-center">
-                                        En ruta
+                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                            Ver estado de reposición
+                                        </a>
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                        <a class="text-heading font-semibold" href="#">
+                                            Paracetamol 500mg
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        100
+                                    </td>
+                                    <td class="text-center">
+                                        s/. 10
+                                    </td>
+                                    <td class="text-center">
+                                        Analgésicos
+                                    </td>
+                                    <td class="text-center">
+                                        01/09/2024
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                            Ver estado de reposición
+                                        </a>
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -290,7 +428,7 @@
                             <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro que desea eliminar este producto?</h1>
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Elminar</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#elimar">Elminar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
@@ -312,7 +450,7 @@
                     </div>
 
                     <!--Modal eliminado exitaosamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-body">
@@ -344,6 +482,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<script src="js/script.js"></script>
+<script src="/js/Superadmin/script.js"></script>
 </body>
 </html>

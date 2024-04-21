@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clínica Renacer SuperAdmin</title>
-  <link rel="stylesheet" href="css/style_clinica.css">
+  <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
@@ -20,8 +20,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="index.html">
-                <h3 class="text-success"><img src="img/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3> 
+            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+                <h3 class="text-success"><img src="/img/Superadmin/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
             </a>
             <!-- User menu (mobile) -->
             <div class="navbar-user d-lg-none">
@@ -48,22 +48,22 @@
                 <!-- Navigation -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/index.html">
+                        <a class="nav-link" th:href="@{'/superadmin'}">
                             <i class="bi bi-house"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/inventario.html">
+                        <a class="nav-link" th:href="@{'/superadmin/inventario'}">
                             <i class="bi bi-bar-chart"></i> Inventario
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/soliReposicion.html">
+                        <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
                             <i class="bi bi-people" ></i> Solicitudes de reposición
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{'/login'}">
                             <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
                         </a>
                     </li>  
@@ -81,12 +81,12 @@
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
                             <h1 class="h2 mb-0 ls-tight">
-                                <img src="img/profile-3.jpeg" width="40"> Mi perfil, <span class="text-primary">SuperAdmin Robert Harry</span></h1>
+                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Mi perfil, <span class="text-primary">SuperAdmin Robert Harry</span></h1>
                         </div>
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
                             <div class="mx-n1">
-                                <a href="/editarPerfil.html" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-pencil"></i>
                                     </span>
@@ -111,42 +111,27 @@
         <!-- Main -->
         <main class="py-6 bg-surface-secondary ">
             <div class="container-fluid d-flex justify-content-center align-items-center">
-                <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2" style="width: 70rem; height: 32rem;">
-                    <div class="row row-cols-1 ">
+                <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2" style="width: 35rem; height: 30rem;">
+                    <div class="row row-cols-1 "> 
                         <div class="col text-center pb-5">
-                            <h2><strong>Edita tu perfil</strong></h2>
+                            <h2><strong>Tu perfil</strong></h2>
                             <hr>
                         </div>
-                        
                         <div class="row pb-5">
-                            <div class="col d-flex justify-content-center align-items-center">
-                                <img src="img/profile-3.jpeg" alt="" width="250" class="rounded-circle">
+                            
+                            <div class="col">
+                                <img src="/img/Superadmin/profile-3.jpeg" alt="" width="200" class="rounded-circle">
                             </div>
                             <div class="col">
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" placeholder="Coloca tu nombre">
-                                    </div>
-                                
-                                    <div class="col">
-                                        <label for="imagen">Apellido:</label>
-                                        <input type="text" class="form-control" placeholder="Coloca tu apellido">
-                                    </div>
-                                </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="cantidad">Correo electrónico:</label>
-                                        <input type="email" class="form-control" placeholder="correo@correo.com">
-                                    </div>
-                                </div>
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="cantidad">Distrito de residencia:</label>
-                                        <input type="text" class="form-control" placeholder="Coloca tu distrito de residencia">
-                                    </div>
-                                </div>
+                                <span>Nombre: Robert Harry</span>
+                                <br>
+                                <span>DNI: 12345678</span>
+                                <br>
+                                <span>Código (colegio médico): 12345</span>
+                                <br>
+                                <span>Distrito de residencia: San Miguel</span>
+                                <br>
+                                <span>Correo: robert@gmail.com</span>
                             </div> 
                         </div>
 
@@ -155,10 +140,10 @@
                         <div class="row pt-5">
                             
                             <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/editarPerfil.html" class="btn btn-primary btn-xs" role="button">Guardar Cambios</a>
+                                <a th:href="@{'/superadmin/cambiar-contra'}" class="btn btn-primary btn-xs" role="button">Cambiar Contraseña</a>
                             </div>
                             <div class="col d-flex justify-content-center align-items-center">
-                                <a href="/editarPerfil.html" class="btn btn-danger btn-xs" role="button">Cancelar</a>
+                                <a th:href="@{'/superadmin/editar-perfil'}" class="btn btn-primary btn-xs" role="button">Editar Perfil</a>
                             </div>
                             
                            
@@ -176,6 +161,6 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<script src="js/script.js"></script>
+<script src="/js/Superadmin/script.js"></script>
 </body>
 </html>

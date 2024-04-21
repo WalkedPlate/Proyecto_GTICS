@@ -21,7 +21,7 @@ public class LoginController {
         return "Login/registro";
     }
 
-    @GetMapping(value ={"/recuperar_cuenta"})
+    @GetMapping(value ={"/cambiar-contrasena"})
     public String recuperarCuenta(){
         return "Login/nuevaContra";
     }
