@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clínica Renacer SuperAdmin</title>
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="/css/AdministradorSede/style.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
@@ -20,8 +20,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
-                <h3 class="text-success"><img src="img/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3> 
+            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/administradorsede'}">
+                <h3 class="text-success"><img src="/img/AdministradorSede/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
             </a>
             <!-- User menu (mobile) -->
             <div class="navbar-user d-lg-none">
@@ -48,22 +48,22 @@
                 <!-- Navigation -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/index.html">
+                        <a class="nav-link" th:href="@{'/administradorsede'}">
                             <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/inventario.html">
+                        <a class="nav-link" th:href="@{'/administradorsede'}">
                             <i class="bi bi-bar-chart"></i> Inventario
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/soliReposicion.html">
+                        <a class="nav-link" th:href="@{'/administradorsede'}">
                             <i class="bi bi-people"></i> Solicitudes de reposición
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" th:href="@{'/login'}">
                             <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
                         </a>
                     </li>  
@@ -81,7 +81,7 @@
                         <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                             <!-- Title -->
                             <h1 class="h2 mb-0 ls-tight">
-                                <img src="img/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
+                                <img src="/img/AdministradorSede/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
                         </div>
                         <!-- Actions -->
                         <div class="col-sm-6 col-12 text-sm-end">
@@ -142,7 +142,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <img alt="..." src="img/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a class="text-heading font-semibold" href="#">
                                             Jason Martinez
                                         </a>
@@ -165,7 +165,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img alt="..." src="img/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a class="text-heading font-semibold" href="#">
                                             Jason Martinez
                                         </a>
@@ -188,7 +188,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <img alt="..." src="img/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a class="text-heading font-semibold" href="#">
                                             Jason Martinez
                                         </a>
@@ -230,6 +230,6 @@
     </div>
 </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  <script src="script.js"></script>
+  <script src="/js/AdministradorSede/script.js"></script>
 </body>
 </html>
