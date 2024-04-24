@@ -15,13 +15,13 @@ public class Usuarios {
     @Column(name = "id_usuarios" , nullable = false)
     private Integer idUsuarios;
 
-    //Llave foranea
-    @Column(name = "estado_idestado",nullable = false)
-    private Integer idEstado;
+    @ManyToOne
+    @JoinColumn(name = "estado_idestado",nullable = false)
+    private EstadoUsuario estadoUsuario;
 
-    //Llave foranea
-    @Column(name = "sedes_idsedes",nullable = false)
-    private Integer idSedes;
+    @ManyToOne
+    @JoinColumn(name = "sedes_idsedes")
+    private Sedes sedes;
 
     @Column(name = "nombre",nullable = false,length = 45)
     private String nombre;
@@ -48,9 +48,9 @@ public class Usuarios {
     @Column(name = "codigo_colegio",length = 100)
     private  String codigoColegio;
 
-    //Llave foranea
-    @Column(name = "tipo_usuario_idtipo_usuario")
-    private Integer idTipoUsuario;
+    @ManyToOne
+    @JoinColumn(name = "tipo_usuario_idtipo_usuario",nullable = false)
+    private TipoUsuario tipoUsuario;
 
     @Column(name = "token",length = 200)
     private String token;
@@ -61,7 +61,7 @@ public class Usuarios {
     @Column(name = "seguro",length = 100)
     private String seguro;
 
-    //Llave foranea
-    @Column(name = "preferencias_usuario_idpreferencias_usuario")
-    private Integer idPreferenciasUsuario;
+    @OneToOne
+    @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)
+    private PreferenciasUsuario preferenciasUsuario;
 }
