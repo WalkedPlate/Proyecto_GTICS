@@ -1,19 +1,20 @@
 package com.example.proyecto_gtics.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
 
-import java.io.Serializable;
+@Entity
+@Table(name = "productos_has_sedes")
+public class ProductosSedes {
+    @EmbeddedId
+    private ProductosSedesId id;
 
-@Setter
-@Getter
-@Embeddable
-public class ProductosSedes implements Serializable {
-    @Column(name = "productos_idproductos",nullable = false)
-    private Integer idProductos;
+    @MapsId("idProductos")
+    @ManyToOne
+    @JoinColumn(name = "productos_idproductos")
+    private Productos productosId;
 
-    @Column(name = "sedes_idsedes",nullable = false)
-    private Integer idSedes;
+    @MapsId("idSedes")
+    @ManyToOne
+    @JoinColumn(name = "sedes_id_sedes")
+    private Sedes sedesId;
 }
