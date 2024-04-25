@@ -166,9 +166,14 @@ label {
   border-bottom-color: #151111;
 }
 
-.input-field.active + label {
+.input-field.active + label,
+.input-field:-webkit-autofill + label {
   font-size: 0.75rem;
   top: -2px;
+}
+
+.input-field:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px white inset !important; /* Cambiar el color de fondo a blanco */
 }
 
 .sign-btn {

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clínica Renacer SuperAdmin</title>
+    <link rel="icon" href="/img/Login/icono.png" />
   <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -21,28 +22,11 @@
             </button>
             <!-- Brand -->
             <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
-                <h3 class="text-success"><img src="/img/Superadmin/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png" width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
+                <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                        src="/img/Superadmin/icono.png" width="40" class="pr-6">
+                    <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                </h3>
             </a>
-            <!-- User menu (mobile) -->
-            <div class="navbar-user d-lg-none">
-                <!-- Dropdown -->
-                <div class="dropdown">
-                    <!-- Toggle -->
-                    <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="avatar-parent-child">
-                            <img alt="Image Placeholder" src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80" class="avatar avatar- rounded-circle">
-                            <span class="avatar-child avatar-badge bg-success"></span>
-                        </div>
-                    </a>
-                    <!-- Menu 
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
-                        <a href="#" class="dropdown-item">Perfil</a>
-                        <a href="#" class="dropdown-item">Configuracion</a>
-                        <a href="#" class="dropdown-item">Cerrar Sesión</a>
-                    </div> -->
-                    
-                </div>
-            </div>
             <!-- Collapse -->
             <div class="collapse navbar-collapse" id="sidebarCollapse">
                 <!-- Navigation -->
@@ -53,13 +37,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/superadmin/inventario'}">
-                            <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Inventario
+                        <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin/inventario'}">
+                            <i class="bi bi-clipboard btn" role="button" data-bs-toggle="button"></i> Inventario
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
-                            <i class="bi bi-people"></i> Solicitudes de reposición
+                            <i class="bi bi-bag-plus"></i> Solicitudes de reposición
                         </a>
                     </li>
                     <li class="nav-item">

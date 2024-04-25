@@ -1,5 +1,5 @@
-
-const table = document.getElementById('table')
+// cambie table por example
+const table = document.getElementById('example')
 const exampleModal = document.getElementById('modal')
 
 table.addEventListener('click',(e)=>{

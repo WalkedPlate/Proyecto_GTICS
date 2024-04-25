@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Renacer SuperAdmin</title>
+    <link rel="icon" href="/img/Login/icono.png" />
+    <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+    <style>
+      .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #94a6b3;
+        border-color: #94a6b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Dashboard -->
+    <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+      <!-- Vertical Navbar -->
+      <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
+        <div class="container-fluid">
+          <!-- Toggler -->
+          <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- Brand -->
+          <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+            <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img src="/img/Superadmin/icono.png" width="40" class="pr-6">
+              <span class="text-dark"  style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer</h3>
+          </a>
+
+          <!-- Collapse -->
+          <div class="collapse navbar-collapse" id="sidebarCollapse">
+            <!-- Navigation -->
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin'}">
+                  <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/superadmin/inventario'}">
+                  <i class="bi bi-clipboard"></i> Inventario
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
+                  <i class="bi bi-bag-plus"></i> Solicitudes de reposición
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/login'}">
+                  <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- Main content -->
+      <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+        <!-- Header -->
+        <header class="bg-surface-primary border-bottom pt-6">
+          <div class="container-fluid">
+            <div class="mb-npx">
+              <div class="row align-items-center">
+                <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                  <!-- Title -->
+                  <h1 class="h2 mb-0 ls-tight">
+                    <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
+                </div>
+                <!-- Actions -->
+                <div class="col-sm-6 col-12 text-sm-end">
+                  <div class="mx-n1">
+                    <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-pencil"></i>
+                                    </span>
+                      <span>Editar perfil</span>
+                    </a>
+
+                    <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-gear-wide-connected"></i>
+                                    </span>
+                      <span>Administrar</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- Nav -->
+              <ul class="nav nav-tabs mt-4 overflow-x border-0">
+                <li class="nav-item ">
+                  <a th:href="@{'/superadmin'}" class="nav-link font-regular">Administrador de Sede</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{'/superadmin/farmacistas'}" class="nav-link active">Farmacistas</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{'/superadmin/doctores'}" class="nav-link font-regular">Doctores</a>
+                </li>
+                <li class="nav-item">
+                  <a th:href="@{'/superadmin/pacientes'}" class="nav-link font-regular">Pacientes</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary">
+          <div class="container-fluid">
+            <div class="card shadow border-0 mb-7">
+              <div class="card-header">
+                <div class="row align-items-center">
+                  <div class="col-sm-6 col-12 mb-4 mb-sm-0" style="display: flex">
+                    <h3 class="mb-0 ls-tight" style="padding-right: 8px"> Lista de Farmacistas </h3> <h3 class="text-success"> > Solicitudes</h3>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!--TABLA-->
+              <div class="container table-responsive mb-4">
+                <table id="example" class="table table-hover" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-center">Nombre</th>
+                      <th scope="col">DNI</th>
+                      <th scope="col">Distrito de residencia</th>
+                      <th scope="col">Código</th>
+                      <th scope="col">Correo</th>
+                      <th scope="col">Aceptar/Rechazar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">
+                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                        <a class="text-heading font-semibold" href="#">
+                          Jason Martinez
+                        </a>
+                      </td>
+                      <td>
+                        12345678
+                      </td>
+                      <td>
+                        Jesús María
+                      </td>
+                      <td>
+                        0000000
+                      </td>
+                      <td>
+                        correo@correo.com
+                      </td>
+                      <td >
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAceptar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                          </svg>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalRechazar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                        <a class="text-heading font-semibold" href="#">
+                          Jason Martinez
+                        </a>
+                      </td>
+                      <td>
+                        12345678
+                      </td>
+                      <td>
+                        Jesús María
+                      </td>
+                      <td>
+                        0000000
+                      </td>
+                      <td>
+                        correo@correo.com
+                      </td>
+                      <td >
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAceptar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                          </svg>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalRechazar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                        <a class="text-heading font-semibold" href="#">
+                          Jason Martinez
+                        </a>
+                      </td>
+                      <td>
+                        12345678
+                      </td>
+                      <td>
+                        Jesús María
+                      </td>
+                      <td>
+                        0000000
+                      </td>
+                      <td>
+                        correo@correo.com
+                      </td>
+                      <td >
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAceptar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                          </svg>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalRechazar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">
+                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                        <a class="text-heading font-semibold" href="#">
+                          Jason Martinez
+                        </a>
+                      </td>
+                      <td>
+                        12345678
+                      </td>
+                      <td>
+                        Jesús María
+                      </td>
+                      <td>
+                        0000000
+                      </td>
+                      <td>
+                        correo@correo.com
+                      </td>
+                      <td >
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAceptar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                          </svg>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalRechazar">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+
+              <!-- Modal Aceptar -->
+              <div class="modal fade" id="modalAceptar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                  <div class="modal-content">
+                    <div class="container text-center">
+                      <div class="row row-cols-1">
+                        <div class="col pt-5 icono">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                          </svg>
+                        </div>
+                        <div class="col">
+                          <h3 class="text-center pt-5 pb-5">Solicitud aceptada exitosamente</h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal rechazar -->
+              <div class="modal fade" id="modalRechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <h3 class="text-center pt-8">Escriba el motivo del rechazo:</h3>
+                    <div class="modal-body row">
+
+                      <div class="col-lg-12 pt-3">
+                        <label for="razon">Motivo:</label>
+                        <textarea class="form-control" id="razon" style="min-width: 100%; width: 100%"></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRechazoExitoso">Rechazar</button>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!--Modal rechazado exitosamente-->
+              <div class="modal fade" id="modalRechazoExitoso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="container text-center">
+                      <div class="row row-cols-1">
+                        <div class="col pt-5 icono1">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                          </svg>
+                        </div>
+                        <div class="col">
+                          <h3 class="text-center pt-5 pb-5">Solicitud rechazada exitosamente</h3>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+
+    <script src="/js/Superadmin/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/Superadmin/table.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script>
+      new DataTable('#example');
+    </script>
+  </body>
+</html>

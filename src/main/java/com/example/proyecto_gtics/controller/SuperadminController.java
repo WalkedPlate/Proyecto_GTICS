@@ -38,6 +38,11 @@ public class SuperadminController {
         return "Superadmin/farmacistas";
     }
 
+    @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
+    public String soliFarmacistas(){
+        return "Superadmin/soliFarmacistas";
+    }
+
     @GetMapping(value ={"/superadmin/doctores"})
     public String doctores(){
         return "Superadmin/doctores";
