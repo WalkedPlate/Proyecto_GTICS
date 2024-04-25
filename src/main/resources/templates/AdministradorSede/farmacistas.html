@@ -154,211 +154,110 @@
                                     <th scope="col">Distrito de residencia</th>
                                     <th scope="col">Código</th>
                                     <th scope="col">Correo</th>
+                                    <th scope="col">Estado de usuario</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr th:each="farmacista,obj: ${listaFarmacistas}">
                                     <td>
                                         <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
+                                        <a  th:text="${farmacista.nombre}" class="text-heading font-semibold" href="#">
                                         </a>
                                     </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
+                                    <td th:text="${adminSede.sedes.nombre}"></td>
+                                    <td th:text="${farmacista.dni}"></td>
+                                    <td th:text="${farmacista.distritoResidencia}"></td>
+                                    <td th:text="${farmacista.codigoColegio}"></td>
+                                    <td th:text="${farmacista.correo}"></td>
+                                    <td th:text="${farmacista.estadoUsuario.idEstadoUsuario}"></td>
                                     <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
                                             Editar
                                         </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover" data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover" data-bs-toggle="modal"  th:data-bs-target ="${'#modaEliminar'+ obj.index}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Editar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Editar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Editar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Modal Actualizar -->
-                    <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Editar los datos del <br> Farmacista:</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+                            <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
                             <div class="modal-body row">
-                                
+                                <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                 <div class="row pt-5">
                                     <div class="col">
-                                        <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" placeholder="Jason Martinez">
+                                        <label >Nombre:</label>
+                                        <input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}">
                                     </div>
-                                   
+
                                     <div class="col">
-                                        <label for="correo">Correo:</label>
-                                        <input type="email" class="form-control" placeholder="Jason Martinez">
-                                    </div>
-                                </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="dni">DNI:</label>
-                                        <input type="number" class="form-control" placeholder="12345678">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="distrito">Código (colegio médico)</label>
-                                        <input type="number" class="form-control" placeholder="0000000">
+                                        <label >Correo:</label>
+                                        <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
                                     </div>
                                 </div>
 
                                 <div class="row pt-5">
                                     <div class="col">
-                                        <label for="distrito">Distrito de residencia</label>
-                                        <input type="text" class="form-control" placeholder="Jesús María">
+                                        <label >DNI:</label>
+                                        <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
+                                    </div>
+
+
+                                    <div class="col">
+                                        <label >Código (colegio médico)</label>
+                                        <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
+                                    </div>
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label >Distrito de residencia</label>
+                                        <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
                                     </div>
                                     <div class="col">
-                                        <label for="sede">Sede:</label>
-                                        <select id="sede" class="form-select">
-                                            <option selected>San Miguel 1</option>
-                                            <option>San Miguel 2</option>
-                                            <option>San Miguel 3</option>
-                                            <option>San Miguel 4</option>
-                                            <option>San Miguel 5</option>
+                                        <label for="sedeAct">Sede:</label>
+                                        <select id="sedeAct" class="form-select" name="idSedes">
+                                            <option th:value="${adminSede.sedes.idSedes}"
+                                                    th:text="${adminSede.sedes.nombre}"
+                                                    th:selected="${true}"></option>
                                         </select>
+
                                     </div>
                                 </div>
-                                
-                                
 
-                                
+
                             </div>
+
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                             </div>
+                            </form>
                         </div>
                         </div>
                     </div>
 
                     <!-- Modal Eliminar -->
-                    <div class="modal fade" id="modaEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaEliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content text-center">
                         
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al farmacista seleccionado?</h1>
                                 
                                 <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminar">Eliminar</button>
+                                    <a type="button" class="btn btn-primary" th:href="@{'/administradorsede/borrarfarmacista?idFarmacista=' + ${farmacista.idUsuario}}">Eliminar</a>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
@@ -368,59 +267,57 @@
                     <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
+                                <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
                                 <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar <br> Farmacista:</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body row">
-                                    
                                     <div class="row pt-5">
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
-                                            <input type="text" class="form-control">
+                                            <input id="nombre" name="nombre" type="text" class="form-control">
                                         </div>
                                        
                                         <div class="col">
                                             <label for="correo">Correo:</label>
-                                            <input type="email" class="form-control">
+                                            <input id="correo" name="correo" type="email" class="form-control">
                                         </div>
                                     </div>
                                     
                                     <div class="row pt-5">
                                         <div class="col">
                                             <label for="dni">DNI:</label>
-                                            <input type="number" class="form-control">
+                                            <input id="dni" name="dni" type="number" class="form-control">
                                         </div>
                                         
         
                                         <div class="col">
-                                            <label for="distrito">Código (colegio médico)</label>
-                                            <input type="number" class="form-control">
+                                            <label for="codigoColegio">Código (colegio médico)</label>
+                                            <input id="codigoColegio" name="codigoColegio" type="number" class="form-control">
                                         </div>
                                     </div>
     
                                     <div class="row pt-5">
                                         <div class="col">
-                                            <label for="distrito">Distrito de residencia</label>
-                                            <input type="text" class="form-control">
+                                            <label for="distritoResidencia">Distrito de residencia</label>
+                                            <input id="distritoResidencia" name="distritoResidencia" type="text" class="form-control">
                                         </div>
                                         <div class="col">
-                                            <label for="sede">Sede:</label>
-                                            <select id="sede" class="form-select">
-                                                <option selected>--Ingrese la sede--</option>
-                                                <option>San Miguel 1</option>
-                                                <option>San Miguel 2</option>
-                                                <option>San Miguel 3</option>
-                                                <option>San Miguel 4</option>
-                                                <option>San Miguel 5</option>
+                                            <label for="sedeN">Sede:</label>
+                                            <select id="sedeN" class="form-select" name="idSedes">
+                                                <option th:value="${adminSede.sedes.idSedes}"
+                                                        th:text="${adminSede.sedes.nombre}"
+                                                        th:selected="${true}"></option>
                                             </select>
                                         </div>
                                     </div>                                    
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregado">Agregar</button>
+                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregado">Agregar</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ public class Usuarios {
     @Column(name = "contrasena",nullable = false,length = 64)
     private String contrasena;
 
-    @Column(name = "descripcion",nullable = false,length = 200)
+    @Column(name = "descripcion",nullable = true,length = 200)
     private String descripcion;
 
     //Verificar tipo de dato para fotos!

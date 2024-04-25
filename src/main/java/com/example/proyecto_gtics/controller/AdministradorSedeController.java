@@ -1,14 +1,13 @@
 package com.example.proyecto_gtics.controller;
 
 
-import com.example.proyecto_gtics.entity.Ordenes;
-import com.example.proyecto_gtics.entity.TipoOrden;
-import com.example.proyecto_gtics.entity.TipoUsuario;
-import com.example.proyecto_gtics.entity.Usuarios;
+import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,9 +61,11 @@ public class AdministradorSedeController {
 
     @GetMapping(value ={"/administradorsede/ordenes-reposicion"})
     public String ordenesReposicion(Model model){
-        Usuarios adminsede = usuariosRepository.findById(12).get();
-        TipoOrden orden = tipoOrdenRepository.findById(2).get();
-        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndUsuarios(orden,adminsede);
+        Usuarios adminSede = usuariosRepository.findById(12).get(); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
+        TipoOrden orden = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
+        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndUsuarios(orden,adminSede);
         model.addAttribute("listaOrdenesReposicion",listOrdenesReposicion);
         return "AdministradorSede/ordenesReposicion";
 
@@ -74,18 +75,53 @@ public class AdministradorSedeController {
     @GetMapping(value ={"/administradorsede/doctores"})
     public String doctores(Model model){
 
-        TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
-        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuario(doctor);
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+
+        TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get(); //Tipo de usuario: Doctor
+        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndSedes(doctor,adminSede.getSedes());
 
         model.addAttribute("listaDoctores",listaDoctores);
+        model.addAttribute("adminSede",adminSede);
 
         return "AdministradorSede/doctores";
     }
 
 
     @GetMapping(value ={"/administradorsede/farmacistas"})
-    public String farmacistas(){
+    public String farmacistas(Model model){
+
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+
+        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get(); //Tipo de usuario: Farmacista
+        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedes(farmacista,adminSede.getSedes());
+
+        model.addAttribute("listaFarmacistas",listaFarmacistas);
+        model.addAttribute("adminSede",adminSede);
+
+
         return "AdministradorSede/farmacistas";
+    }
+
+    @PostMapping(value = "/administradorsede/guardarfarmacista")
+    public String guardarFarmacista(Usuarios usuarios,@RequestParam("idSedes") int id){
+
+        Sedes sedes = sedesRepository.findById(id).get();
+        usuarios.setSedes(sedes);
+        usuarios.setContrasena("Temporal_password");
+        usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+        usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+        usuariosRepository.save(usuarios);
+        return "redirect:/administradorsede/farmacistas";
+    }
+
+    @GetMapping("/administradorsede/borrarfarmacista")
+    public String borrarFarmacista(@RequestParam("idFarmacista") Integer id){
+        Optional<Usuarios> optSede =usuariosRepository.findById(id);
+        if(optSede.isPresent()){
+            usuariosRepository.deleteById(id);
+        }
+        return "redirect:/administradorsede/farmacistas";
+
     }
 
 
