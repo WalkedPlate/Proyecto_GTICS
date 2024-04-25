@@ -33,10 +33,10 @@ public class Ordenes {
     private String direccion;
 
     @Column(name = "monto")
-    private float monto;
+    private Float monto;
 
     @Column(name = "recurrente")
-    private boolean recurrente;
+    private Boolean recurrente;
 
     @Column(name = "telefono")
     private String telefono;
@@ -55,5 +55,7 @@ public class Ordenes {
     @JoinColumn(name = "iddoctor")
     private Usuarios doctor;
 
+    @Column(name = "fecha_entrega")
+    private String fechaEntrega;
 
 }

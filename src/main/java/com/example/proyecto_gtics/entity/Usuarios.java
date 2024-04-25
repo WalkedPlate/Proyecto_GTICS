@@ -5,6 +5,10 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 @Getter
 @Setter
 @Entity
@@ -61,11 +65,12 @@ public class Usuarios {
     @Column(name = "seguro",length = 100)
     private String seguro;
 
-    @Column(name = "dni", nullable = true)
+    @Column(name = "dni")
     private String dni;
 
-    @OneToOne
-    @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)
-    private PreferenciasUsuario preferenciasUsuario;
+    //@OneToOne
+    //@JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)
+    @Column(name = "preferencias_usuario_idpreferencias_usuario")
+    private Integer preferenciasUsuario;
 
 }

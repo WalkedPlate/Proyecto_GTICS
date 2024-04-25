@@ -1,6 +1,8 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.entity.Ordenes;
+import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.entity.TipoUsuario;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
@@ -59,8 +61,13 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede/ordenes-reposicion"})
-    public String ordenesReposicion(){
+    public String ordenesReposicion(Model model){
+        Usuarios adminsede = usuariosRepository.findById(12).get();
+        TipoOrden orden = tipoOrdenRepository.findById(2).get();
+        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndUsuarios(orden,adminsede);
+        model.addAttribute("listaOrdenesReposicion",listOrdenesReposicion);
         return "AdministradorSede/ordenesReposicion";
+
     }
 
 
