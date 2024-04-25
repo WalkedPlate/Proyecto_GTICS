@@ -67,13 +67,41 @@ public class AdministradorSedeController {
         TipoOrden orden = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
         List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndUsuarios(orden,adminSede);
         model.addAttribute("listaOrdenesReposicion",listOrdenesReposicion);
+
+        //Pasando medicinas de la sede:
+        List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
+        model.addAttribute("listaMedicinas",listMedicinas);
+
         return "AdministradorSede/ordenesReposicion";
 
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
-    public String guardarOrdenReposicion(){
+    public String guardarOrdenReposicion(@RequestParam("idProducto") int id,@RequestParam("fechaEntrega") String fechaEntrega,DetallesOrden detallesOrden){
 
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+
+        Productos productos = productosRepository.findById(id).get();
+        Integer hola = 5;
+        Optional<Ordenes> ordenes = ordenesRepository.findById(hola);
+        if(ordenes.isPresent()){
+            detallesOrden.setOrdenes(ordenes.get());
+        }
+        else{
+            System.out.println("hola");
+        }
+        Ordenes orden1 = new Ordenes();
+        orden1.setIdordenes(6);
+        detallesOrden.setOrdenes(orden1);
+        detallesOrden.setProductos(productos);
+
+
+        /*detallesOrden.getOrdenes().setUsuarios(adminSede);
+        detallesOrden.getOrdenes().getTipoOrden().setIdTipoOrden(2);
+        detallesOrden.getOrdenes().setCodigo("0494870");
+        detallesOrden.getOrdenes().setFechaEntrega(fechaEntrega);*/
+
+        detallesOrdenRepository.save(detallesOrden);
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 

@@ -172,32 +172,29 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
+
+                                    <form method="post" th:action="@{/administradorsede/guardarorden-reposicion}">
                                     <div class="modal-body row">
 
                                         <div class="row pt-5">
                                             <div class="col">
-                                                <label for="nombre">Nombre del Producto:</label>
-                                                <input type="text" class="form-control" placeholder="Colocar Producto">
+                                                <label for="idProducto">Nombre del Producto:</label>
+                                                <select id="idProducto"  name="idProducto" class="form-select">
+                                                    <option th:each="medicinasede,obj: ${listaMedicinas}" th:value="${medicinasede.productos.idProductos}" th:text="${medicinasede.productos.nombre}">
+                                                    </option>
+                                                </select>
                                             </div>
-
                                             <div class="col">
-                                                <label for="costo">Costo:</label>
-                                                <input type="number" class="form-control"
-                                                    placeholder="Ingresa el costo">
+                                                <label for="cantidad">Cantidad</label>
+                                                <input id="cantidad" name="cantidad" type="number" class="form-control">
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
-                                                <label for="FechaEntrega">Fecha de entrega:</label>
-                                                <input type="date" class="form-control">
+                                                <label for="fechaEntrega">Fecha de entrega:</label>
+                                                <input id="fechaEntrega" name="fechaEntrega" type="date" class="form-control">
                                             </div>
-
-
-                                            <!--<div class="col">
-                                            <label for="distrito">Fecha de entrega</label>
-                                            <input type="text" class="form-control" placeholder="Coloca su distrito">
-                                        </div>-->
                                         </div>
 
                                         <div class="row pt-5">
@@ -212,18 +209,18 @@
                                                 </select>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
+
+
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#agregar">Generar</button>
                                         <button type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Cancelar</button>
                                     </div>
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
 
