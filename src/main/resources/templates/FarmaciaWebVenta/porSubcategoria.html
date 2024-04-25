@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -10,13 +10,15 @@
   <!--
     - favicon
   -->
-  <link rel="shortcut icon" href="./assets/images/logo/icono.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
 
   <!--
     - custom css link
   -->
-  <link rel="stylesheet" href="./assets/css/style-prefix.css">
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
+  <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
+  
 
   <!--
     - google font link
@@ -87,7 +89,7 @@
         <a href="index.html" style="text-decoration: none;">
             <div style="display: flex;
             align-items: center;">
-              <img src="./assets/images/logo/icono.png" style="width: 70px;
+              <img src="/img/FarmaciaWebVenta/logo/icono.png" style="width: 70px;
               margin-right: 0.3rem;" alt="renacer">
               <div>
                 <p style="margin-top: 8px; color: black;">Clínica</p>
@@ -123,6 +125,7 @@
               <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5.243c.122-.326.295-.668.526-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7.81c.353.23.656.496.91.783Q16 12.312 16 12V4a2 2 0 0 0-2-2z"/>
             </svg> Regístrarse</a>
           </button>
+
           <a href="carrito.html" >
             <button class="action-btn main-links">
               <ion-icon name="bag-handle-outline"></ion-icon>
@@ -157,6 +160,7 @@
                   <a href="#">Categoría 1</a>
                 </li>
 
+                <!--
                 <li class="panel-list-item">
                   <a href="#">Sub-categoria 1</a>
                 </li>
@@ -179,15 +183,17 @@
 
                 <li class="panel-list-item">
                 </li>
+                -->
 
               </ul>
+
 
               <ul class="dropdown-panel-list">
 
                 <li class="menu-title">
                   <a href="#">Categoría 2</a>
                 </li>
-
+              <!--
                 <li class="panel-list-item">
                   <a href="#">Sub-categoria 1</a>
                 </li>
@@ -210,7 +216,7 @@
 
                 <li class="panel-list-item">
                 </li>
-
+                -->
               </ul>
 
               <ul class="dropdown-panel-list">
@@ -218,7 +224,7 @@
                 <li class="menu-title">
                   <a href="#">Categoría 3</a>
                 </li>
-
+              <!--
                 <li class="panel-list-item">
                   <a href="#">Sub-categoria 1</a>
                 </li>
@@ -241,56 +247,10 @@
 
                 <li class="panel-list-item">
                 </li>
-              </ul>
-
-              <ul class="dropdown-panel-list">
-
-                <li class="menu-title">
-                  <a href="#">Categoría 4</a>
-                </li>
-
-                <li class="panel-list-item">
-                  <a href="#">Sub-categoria 1</a>
-                </li>
-
-                <li class="panel-list-item">
-                  <a href="#">Sub-categoria 2</a>
-                </li>
-
-                <li class="panel-list-item">
-                  <a href="#">Sub-categoria 3</a>
-                </li>
-
-                <li class="panel-list-item">
-                  <a href="#">Sub-categoria 4</a>
-                </li>
-
-                <li class="panel-list-item">
-                  <a href="#">Sub-categoria 5</a>
-                </li>
-
-                <li class="panel-list-item">
-                </li>
-
+                -->
               </ul>
 
             </div>
-          </li>
-
-          <li class="menu-category">
-            <a href="#" class="menu-title">CUIDADO INFANTIL</a>
-          </li>
-
-          <li class="menu-category">
-            <a href="#" class="menu-title">Cuidado de piel</a>
-          </li>
-
-          <li class="menu-category">
-            <a href="#" class="menu-title">Salud</a>
-          </li>
-
-          <li class="menu-category">
-            <a href="#" class="menu-title">Cupones</a>
           </li>
         </ul>
 
@@ -490,7 +450,6 @@
 
       </ul>
 
-
     </nav>
 
   </header>
@@ -516,7 +475,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/analgesico1.jpg" alt="analgésicos" width="30">
+              <img src="/img/FarmaciaWebVenta/analgesico1.jpg" alt="analgésicos" width="30">
             </div>
 
             <div class="category-content-box">
@@ -536,7 +495,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/vitaminas1.jpg" alt="Vitaminas" width="30">
+              <img src="/img/FarmaciaWebVenta/vitaminas1.jpg" alt="Vitaminas" width="30">
             </div>
 
             <div class="category-content-box">
@@ -556,7 +515,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/antiflamatorios.jpg" alt="Antiflamatorios" width="30">
+              <img src="/img/FarmaciaWebVenta/products/antiflamatorios.jpg" alt="Antiflamatorios" width="30">
             </div>
 
             <div class="category-content-box">
@@ -576,7 +535,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/Antihistaminicos1.jpg" alt="Antihistaminicos" width="30">
+              <img src="/img/FarmaciaWebVenta/products/Antihistaminicos1.jpg" alt="Antihistaminicos" width="30">
             </div>
 
             <div class="category-content-box">
@@ -596,7 +555,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/Dermatológico1.jpg" alt="Cuidado Dermatológico" width="30">
+              <img src="/img/FarmaciaWebVenta/products/Dermatológico1.jpg" alt="Cuidado Dermatológico" width="30">
             </div>
 
             <div class="category-content-box">
@@ -616,7 +575,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/antibacterianos1.jpg" alt="Antibacterianos" width="30">
+              <img src="/img/FarmaciaWebVenta/products/antibacterianos1.jpg" alt="Antibacterianos" width="30">
             </div>
 
             <div class="category-content-box">
@@ -636,7 +595,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/oftalmologico1.jpg" alt="Oftalmológicos" width="30">
+              <img src="/img/FarmaciaWebVenta/products/oftalmologico1.jpg" alt="Oftalmológicos" width="30">
             </div>
 
             <div class="category-content-box">
@@ -656,7 +615,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/infecciones1.jpg" alt="hat & caps" width="30">
+              <img src="/img/FarmaciaWebVenta/products/infecciones1.jpg" alt="hat & caps" width="30">
             </div>
 
             <div class="category-content-box">
@@ -676,7 +635,7 @@
           <div class="category-item">
 
             <div class="category-img-box">
-              <img src="./assets/images/products/nutricion1.jpg" alt="Nutrición" width="30">
+              <img src="/img/FarmaciaWebVenta/products/nutricion1.jpg" alt="Nutrición" width="30">
             </div>
 
             <div class="category-content-box">
@@ -738,23 +697,7 @@
                     <p class="menu-title">Antibacterianos </p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
-
                 </button>
-
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antibacterianos </p>
-                      <data value="300" class="stock" title="Available Stock">30</data>
-                    </a>
-                  </li>
-
-                </ul>
 
               </li>
 
@@ -766,51 +709,7 @@
                     <p class="menu-title">Cuidado Dermatológico</p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
-
                 </button>
-
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antibacteriano Dérmico</p>
-                      <data value="45" class="stock" title="Available Stock">45</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antibióticos</p>
-                      <data value="75" class="stock" title="Available Stock">75</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antihistamínicos</p>
-                      <data value="35" class="stock" title="Available Stock">35</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antiinflamatorios</p>
-                      <data value="26" class="stock" title="Available Stock">26</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antimicóticos</p>
-                      <data value="26" class="stock" title="Available Stock">26</data>
-                    </a>
-                  </li>
-
-                </ul>
 
               </li>
 
@@ -823,37 +722,7 @@
                     <p class="menu-title">Dispositivos Quirúrgicos</p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
-
                 </button>
-
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Agujas</p>
-                      <data value="46" class="stock" title="Available Stock">46</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Jeringas</p>
-                      <data value="73" class="stock" title="Available Stock">73</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Material Médico</p>
-                      <data value="61" class="stock" title="Available Stock">61</data>
-                    </a>
-                  </li>
-
-                </ul>
 
               </li>
 
@@ -865,22 +734,9 @@
                     <p class="menu-title">Infecciones y Otros</p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
 
                 </button>
 
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antivirales</p>
-                      <data value="12" class="stock" title="Available Stock">25</data>
-                    </a>
-                  </li>
-                </ul>
 
               </li>
 
@@ -892,23 +748,8 @@
                     <p class="menu-title">Nutrición</p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
-
                 </button>
 
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Nutrición</p>
-                      <data value="68" class="stock" title="Available Stock">68</data>
-                    </a>
-                  </li>
-
-                </ul>
 
               </li>
 
@@ -921,58 +762,9 @@
                     <p class="menu-title">Oftalmológicos</p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
-
                 </button>
 
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antibióticos Oftálmicos
-                      </p>
-                      <data value="50" class="stock" title="Available Stock">50</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antiglaucomatosos</p>
-                      <data value="48" class="stock" title="Available Stock">48</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antiinfeccioso</p>
-                      <data value="48" class="stock" title="Available Stock">48</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antisépticos</p>
-                      <data value="48" class="stock" title="Available Stock">48</data>
-                    </a>
-                  </li>
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Antiinflamatorios Oftálmicos
-                      </p>
-                      <data value="48" class="stock" title="Available Stock">48</data>
-                    </a>
-                  </li>
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Lagrimas artificiales</p>
-                      <data value="48" class="stock" title="Available Stock">48</data>
-                    </a>
-                  </li>
-
-                </ul>
+  
 
               </li>
 
@@ -984,44 +776,8 @@
                     <p class="menu-title">Vitaminas </p>
                   </div>
 
-                  <div>
-                    <ion-icon name="add-outline" class="add-icon"></ion-icon>
-                    <ion-icon name="remove-outline" class="remove-icon"></ion-icon>
-                  </div>
 
                 </button>
-
-                <ul class="sidebar-submenu-category-list" data-accordion>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Vitamina A</p>
-                      <data value="62" class="stock" title="Available Stock">62</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Vitamina B</p>
-                      <data value="35" class="stock" title="Available Stock">35</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Vitamina C</p>
-                      <data value="80" class="stock" title="Available Stock">80</data>
-                    </a>
-                  </li>
-
-                  <li class="sidebar-submenu-category">
-                    <a href="#" class="sidebar-submenu-title">
-                      <p class="product-name">Vitamina D</p>
-                      <data value="75" class="stock" title="Available Stock">75</data>
-                    </a>
-                  </li>
-
-                </ul>
 
               </li>
 
@@ -1040,7 +796,7 @@
                 <div class="showcase">
 
                   <a href="#" class="showcase-img-box">
-                    <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Andro Pross Cápsulas" width="75" height="75"
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Andro Pross Cápsulas" width="75" height="75"
                       class="showcase-img">
                   </a>
 
@@ -1070,7 +826,7 @@
                 <div class="showcase">
 
                   <a href="#" class="showcase-img-box">
-                    <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Pack 03 Andro Pross Cápsulas" class="showcase-img"
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Pack 03 Andro Pross Cápsulas" class="showcase-img"
                       width="75" height="75">
                   </a>
 
@@ -1099,7 +855,7 @@
                 <div class="showcase">
 
                   <a href="#" class="showcase-img-box">
-                    <img src="./assets/images/products/mejoresVendidos3.jpg" alt="Panadol 100mg/ml Solución oral gotas" class="showcase-img" width="75"
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos3.jpg" alt="Panadol 100mg/ml Solución oral gotas" class="showcase-img" width="75"
                       height="75">
                   </a>
 
@@ -1128,7 +884,7 @@
                 <div class="showcase">
 
                   <a href="#" class="showcase-img-box">
-                    <img src="./assets/images/products/mejoresVendidos4.jpg" alt="Hirudoid 0.300% Pomada - Tubo 14 G" class="showcase-img" width="75"
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos4.jpg" alt="Hirudoid 0.300% Pomada - Tubo 14 G" class="showcase-img" width="75"
                       height="75">
                   </a>
 
@@ -1185,7 +941,7 @@
                 <div class="showcase">
                   
                   <div class="showcase-banner">
-                    <img src="./assets/images/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
+                    <img src="/img/FarmaciaWebVenta/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
                   </div>
 
                   <div class="showcase-content">
@@ -1275,7 +1031,7 @@
                 <div class="showcase">
                   
                   <div class="showcase-banner">
-                    <img src="./assets/images/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
+                    <img src="/img/FarmaciaWebVenta/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
                   </div>
 
                   <div class="showcase-content">
@@ -1381,8 +1137,8 @@
                 <div class="showcase-banner">
 
                     <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                    <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                    <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
                   <p class="showcase-badge">15%</p>
 
@@ -1437,8 +1193,8 @@
               
                 <div class="showcase-banner">
                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                 <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                 <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <p class="showcase-badge angle black">sale</p>
               
@@ -1489,8 +1245,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <div class="showcase-actions">
                     <button class="btn-action">
@@ -1539,8 +1295,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <p class="showcase-badge angle pink">new</p>
               
@@ -1591,8 +1347,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <div class="showcase-actions">
                     <button class="btn-action">
@@ -1641,8 +1397,8 @@
               
                 <div class="showcase-banner">
                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                 <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                 <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
                   <p class="showcase-badge angle black">sale</p>
               
                   <div class="showcase-actions">
@@ -1692,8 +1448,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
                   <div class="showcase-actions">
                     <button class="btn-action">
                       <ion-icon name="heart-outline"></ion-icon>
@@ -1741,8 +1497,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <p class="showcase-badge angle black">sale</p>
               
@@ -1793,8 +1549,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
                   <div class="showcase-actions">
                     <button class="btn-action">
@@ -1843,8 +1599,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <p class="showcase-badge angle black">sale</p>
               
@@ -1895,8 +1651,8 @@
               
                 <div class="showcase-banner">
                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                 <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                 <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                 <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <div class="showcase-actions">
                     <button class="btn-action">
@@ -1945,8 +1701,8 @@
               
                 <div class="showcase-banner">
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="./assets/images/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="./assets/images/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
               
                   <p class="showcase-badge angle black">sale</p>
               
@@ -1996,6 +1752,27 @@
             </div>
 
           </div>
+
+          <div class="pagination-pages">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          
 
         </div>
 
@@ -2184,7 +1961,7 @@
   <!--
     - custom js link
   -->
-  <script src="./assets/js/script.js"></script>
+  <script src="/js/FarmaciaWebVenta/script.js"></script>
 
   <!--
     - ionicon link

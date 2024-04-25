@@ -1,33 +1,3 @@
-<script>
-  function actualizarSubtotal(filaId) {
-      var precio = parseFloat(document.querySelector('#' + filaId + ' .mg').innerText.replace('S/. ', ''));
-      var cantidad = parseInt(document.querySelector('#' + filaId + ' #cantidad' + filaId.substring(4)).value);
-      var subtotal = precio * cantidad;
-      document.querySelector('#' + filaId + ' #subtotal' + filaId.substring(4)).innerText = 'S/. ' + subtotal.toFixed(2);
-  
-
-  var cantidadTotal = 0;
-        var costoTotal = 0;
-
-        var filas = document.querySelectorAll('[id^="fila"]');
-        filas.forEach(function(fila) {
-            var cantidadFila = parseInt(document.querySelector('#' + fila.id + ' #cantidad' + fila.id.substring(4)).value);
-            cantidadTotal += cantidadFila;
-
-            var precioFila = parseFloat(document.querySelector('#' + fila.id + ' .mg').innerText.replace('S/. ', ''));
-            costoTotal += precioFila * cantidadFila;
-        });
-
-        // Actualizar elementos en el resumen de la orden
-        document.getElementById('cantidadTotal').innerText = 'Productos(' + cantidadTotal + ')';
-        document.getElementById('costoTotal').innerText = 'Total S/. ' + costoTotal.toFixed(2);
-    }
-</script>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -37,28 +7,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farmacias Clínica Renacer</title>
 
-  <!-- Favicon -->
+  <!--
+    - favicon
+  -->
   <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
 
-  <!-- Custom CSS -->
+  <!--
+    - custom css link
+  -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
   <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
-
-  <!-- Google Fonts -->
+  <!--
+    - google font link
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 </head>
 
-
-<body>
+<body class="">
 
 
   <div class="overlay" data-overlay></div>
@@ -141,17 +112,17 @@
         </div>
 
         <div class="header-user-actions">
+          
           <button class="action-btn main-links">
-            <a class="nav-link" style="font-size: 0.5em" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
-            </svg>Iniciar Sesión</a>
+            <a class="nav-link" style="font-size: 0.5em" href="#"><span class="material-symbols-outlined">
+              face
+              </span>Editar Perfil</a>
           </button>
 
           <button class="action-btn main-links">
-            <a class="nav-link" style="font-size: 0.5em" href="#"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-video3" viewBox="0 0 16 16">
-              <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0m-6 5.7c0 .8.8.8.8.8h6.4s.8 0 .8-.8-.8-3.2-4-3.2-4 2.4-4 3.2"/>
-              <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5.243c.122-.326.295-.668.526-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7.81c.353.23.656.496.91.783Q16 12.312 16 12V4a2 2 0 0 0-2-2z"/>
-            </svg> Regístrarse</a>
+            <a class="nav-link" style="font-size: 0.5em" href="#"> <span class="material-symbols-outlined">
+              logout
+              </span> Cerrar Sesión</a>
           </button>
 
           <a href="carrito.html" >
@@ -279,6 +250,10 @@
               </ul>
 
             </div>
+          </li>
+
+          <li class="menu-category">
+            <a href="chat.html" class="menu-title">Chatea con un Farmacista</a>
           </li>
         </ul>
 
@@ -484,234 +459,235 @@
 
 
 
+  <!--CHATBOT-->
+  <div class="" data-modal>
+    <button class="chatbot-toggler"  data-modal-close>
+      <span class="material-symbols-outlined">smart_toy</span>
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    
+    <div class="chatbot">
+      <header>
+        <h3>ChatBot</h3>
+        <span class="close-btn material-symbols-outlined">close</span>
+      </header>
+      <ul class="chatbox">
+        <li class="chat incoming">
+          <span class="material-symbols-outlined">smart_toy</span>
+          <p>Hola como estas? <br> En que te puedo ayudar?</p>
+        </li>
+      </ul>
+      <div class="chat-input">
+        <textarea placeholder="Coloca el mensaje..." required></textarea>
+        <span id="send-btn" class="material-symbols-outlined">send</span>
+      </div>
+    </div>
+  </div>
 
-  
+
   <!--
     - MAIN
   -->
 
   <main>
 
-    <br>
-    <!--
-      - PRODUCT
-    -->
-
-    <div class="product-container">
-
-      <div class="container">
-
-        <div class="product-box">
-          <!--
-            - Carrito de compras
-          -->
-
-          <div class="product-featured">
-
-            <div class="showcase-wrapper has-scrollbar">
-                <div class="showcase-container">
-                    <h3>Mi carrito</h3>
-                    <br>
-                    <hr>
-                    <div class="container">
-                      <div class="table-responsive">
-                          <form action="" class="form-cart">
-                            <table class="tabla">
-                              <thead>
-                                  <tr>
-                                      <th>Producto</th>
-                                      <th>Precio</th>
-                                      <th>Cantidad</th>
-                                      <th>Subtotal</th>
-                                      <th>Eliminar</th>
-                                  </tr>
-                              </thead>
-          
-                              <tbody>
-                                <tr id="fila1">
-                                  <td class="flexitem">
-                                      <div class="thumbnail">
-                                          <a href="producto.html">
-                                              <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                          </a>
-                                      </div>  
-                                      <div class="content">
-                                          <a href="producto.html">
-                                              Producto 
-                                          </a>
-                                      </div>
-                                  </td>
-                                  <td>S/. 1.00</td>
-                                  <td class="flex-input">
-                                    <div class="selector-cantidad">
-                                      <i class="fa-solid fa-minus restar-cantidad"></i>
-                                        <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                      <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                    </div>
-                                  </td>
-                                  <td id="subtotal1">S/. 2.00</td>
-                                  <td>
-                                      <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                                  </td>
-                              </tr>
-
-                              <tr id="fila1">
-                                <td class="flexitem">
-                                    <div class="thumbnail">
-                                        <a href="producto.html">
-                                            <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                        </a>
-                                    </div>  
-                                    <div class="content">
-                                        <a href="producto.html">
-                                            Producto 
-                                        </a>
-                                    </div>
-                                </td>
-                                <td>S/. 1.00</td>
-                                <td class="flex-input">
-                                  <div class="selector-cantidad">
-                                    <i class="fa-solid fa-minus restar-cantidad"></i>
-                                      <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                    <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                  </div>
-                                </td>
-                                <td id="subtotal1">S/. 2.00</td>
-                                <td>
-                                    <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr id="fila1">
-                              <td class="flexitem">
-                                  <div class="thumbnail">
-                                      <a href="producto.html">
-                                          <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                      </a>
-                                  </div>  
-                                  <div class="content">
-                                      <a href="producto.html">
-                                          Producto 
-                                      </a>
-                                  </div>
-                              </td>
-                              <td>S/. 1.00</td>
-                              <td class="flex-input">
-                                <div class="selector-cantidad">
-                                  <i class="fa-solid fa-minus restar-cantidad"></i>
-                                    <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                  <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                </div>
-                              </td>
-                              <td id="subtotal1">S/. 2.00</td>
-                              <td>
-                                  <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                              </td>
-                          </tr>
-                          <tr id="fila1">
-                            <td class="flexitem">
-                                <div class="thumbnail">
-                                    <a href="producto.html">
-                                        <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                    </a>
-                                </div>  
-                                <div class="content">
-                                    <a href="producto.html">
-                                        Producto 
-                                    </a>
-                                </div>
-                            </td>
-                            <td>S/. 1.00</td>
-                            <td class="flex-input">
-                              <div class="selector-cantidad">
-                                <i class="fa-solid fa-minus restar-cantidad"></i>
-                                  <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                <i class="fa-solid fa-plus sumar-cantidad"></i>
-                              </div>
-                            </td>
-                            <td id="subtotal1">S/. 2.00</td>
-                            <td>
-                                <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr id="fila1">
-                          <td class="flexitem">
-                              <div class="thumbnail">
-                                  <a href="producto.html">
-                                      <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                  </a>
-                              </div>  
-                              <div class="content">
-                                  <a href="producto.html">
-                                      Producto 
-                                  </a>
-                              </div>
-                          </td>
-                          <td>S/. 1.00</td>
-                          <td class="flex-input">
-                            <div class="selector-cantidad">
-                              <i class="fa-solid fa-minus restar-cantidad"></i>
-                                <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                              <i class="fa-solid fa-plus sumar-cantidad"></i>
-                            </div>
-                          </td>
-                          <td id="subtotal1">S/. 2.00</td>
-                          <td>
-                              <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                          </td>
-                      </tr>
-                              
-                              
-                              </tbody>
-                          </table>
-                          </form>
+    <section class="gradient-custom">
+      <div class="container py-5">
+    
+        <div class="row">
+    
+          <div class="col-md-6 col-lg-5 col-xl-5 mb-4 mb-md-0">
+    
+            <h5 class="font-weight-bold mb-3 text-center">Farmacistas</h5>
+    
+            <div class="card mask-custom">
+              <div class="card-body">
+    
+                <ul class="list-unstyled mb-0">
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a  class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">John Doe</p>
+                          <p class="small text-black">Hola como estas?</p>
+                        </div>
                       </div>
-                  </div>
-                  
-                </div>
-
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Ahora</p>
+                        <span class="badge bg-primary float-end">1</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Danny Smith</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Hace 5min</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Alex Steward</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Ayer</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Ashley Olsen</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Ayer</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Kate Moss</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Ayer</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Lara Croft</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Ayer</p>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="p-2">
+                    <a class="d-flex justify-content-between link-light">
+                      <div class="d-flex flex-row">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                          class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                        <div class="pt-1">
+                          <p class="fw-bold text-black mb-0">Brad Pitt</p>
+                          <p class="small text-black">Lorem ipsum dolor sit.</p>
+                        </div>
+                      </div>
+                      <div class="pt-1">
+                        <p class="small text-black mb-1">Hace 5min</p>
+                        <span class="text-white float-end"><i class="fas fa-check" aria-hidden="true"></i></span>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+    
+              </div>
             </div>
-
+    
           </div>
-
-        
-
-
-
+    
+          <div class="col-md-6 col-lg-7 col-xl-7">
+    
+            <ul class="list-unstyled text-white">
+              <li class="d-flex justify-content-between mb-4">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="card mask-custom">
+                  <div class="card-header d-flex justify-content-between p-3"
+                    style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                    <p class="fw-bold mb-0">Brad Pitt</p>
+                    <p class=" small mb-0"><i class="far fa-clock"></i> Hace 12 min</p>
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua.
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <li class="d-flex justify-content-between mb-4">
+                <div class="card mask-custom w-100">
+                  <div class="card-header d-flex justify-content-between p-3"
+                    style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                    <p class="fw-bold mb-0">Lara Croft</p>
+                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 10 min</p>
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0">
+                      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                      laudantium.
+                    </p>
+                  </div>
+                </div>
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+              </li>
+              <li class="d-flex justify-content-between mb-4">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="card mask-custom">
+                  <div class="card-header d-flex justify-content-between p-3"
+                    style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                    <p class="fw-bold mb-0">Brad Pitt</p>
+                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 9 min</p>
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua.
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-3">
+                <div data-mdb-input-init class="form-outline form-white">
+                  <textarea class="form-control" id="textAreaExample3" rows="4"></textarea>
+                  <label class="form-label" for="textAreaExample3">Mensaje</label>
+                </div>
+              </li>
+              <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-rounded float-end">Enviar</button>
+            </ul>
+    
+          </div>
     
         </div>
-
-        <div class="sidebar-category product-featured">
-          <div class="sidebar-top">
-            <h1 class="sidebar-title">Resumen de la orden</h1>
-            
-          </div>
-          <div>
-            <p id="cantidadTotal" class="sidebar-title">Productos(0)</p>
-            <p id="costoTotal" class="sidebar-title">Total S/. 0.00</p>
-            <a>
-              <button type="button" class="add-cart-btn">Pagar</button>
-            </a>
-          </div>
-        </div>
-
+    
       </div>
+    </section>
 
-    </div>
-
-    <!-- Modal elminar -->
-    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro que desea eliminar este producto?</h1>
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Elminar</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-            </div>
-        </div>
-      </div>
-    </div>
 
 
     
@@ -891,7 +867,7 @@
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
   <!--
     - custom js link
   -->
