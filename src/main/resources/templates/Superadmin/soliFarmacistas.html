@@ -85,12 +85,6 @@
                       <span>Editar perfil</span>
                     </a>
 
-                    <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-gear-wide-connected"></i>
-                                    </span>
-                      <span>Administrar</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -119,7 +113,10 @@
               <div class="card-header">
                 <div class="row align-items-center">
                   <div class="col-sm-6 col-12 mb-4 mb-sm-0" style="display: flex">
-                    <h3 class="mb-0 ls-tight" style="padding-right: 8px"> Lista de Farmacistas </h3> <h3 class="text-success"> > Solicitudes</h3>
+                    <h3 class="mb-0 ls-tight" style="padding-right: 8px">
+                      <a class="text-heading" th:href="@{'/superadmin/farmacistas'}">
+                        Lista de Farmacistas</a>
+                    </h3> <h3 class="text-success"> > Solicitudes</h3>
                   </div>
 
                 </div>

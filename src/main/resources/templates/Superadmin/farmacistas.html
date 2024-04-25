@@ -1,505 +1,544 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Renacer SuperAdmin</title>
-    <link rel="icon" href="/img/Login/icono.png" />
-  <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
-    <style>
-        .page-item.active .page-link {
-            z-index: 3;
-            color: #fff;
-            background-color: #94a6b3;
-            border-color: #94a6b3;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer SuperAdmin</title>
+        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <style>
+            .page-item.active .page-link {
+                z-index: 3;
+                color: #fff;
+                background-color: #94a6b3;
+                border-color: #94a6b3;
+            }
+        </style>
+    </head>
 
-<body>
-<!-- Dashboard -->
-<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-    <!-- Vertical Navbar -->
-    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
-        <div class="container-fluid">
-            <!-- Toggler -->
-            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
-                <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
-                        src="/img/Superadmin/icono.png" width="40" class="pr-6">
-                    <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
-                </h3>
-            </a>
+    <body>
+        <!-- Dashboard -->
+        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+            <!-- Vertical Navbar -->
+            <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+                 id="navbarVertical">
+                <div class="container-fluid">
+                    <!-- Toggler -->
+                    <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Brand -->
+                    <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                                src="/img/Superadmin/icono.png" width="40" class="pr-6">
+                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                        </h3>
+                    </a>
 
-            <!-- Collapse -->
-            <div class="collapse navbar-collapse" id="sidebarCollapse">
-                <!-- Navigation -->
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin'}">
-                            <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/superadmin/inventario'}">
-                            <i class="bi bi-clipboard"></i> Inventario
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
-                            <i class="bi bi-bag-plus"></i> Solicitudes de reposición
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/login'}">
-                            <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
-                        </a>
-                    </li>  
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Main content -->
-    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Header -->
-        <header class="bg-surface-primary border-bottom pt-6">
-            <div class="container-fluid">
-                <div class="mb-npx">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                            <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">
-                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
-                        </div>
-                        <!-- Actions -->
-                        <div class="col-sm-6 col-12 text-sm-end">
-                            <div class="mx-n1">
-                                <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                    <!-- Collapse -->
+                    <div class="collapse navbar-collapse" id="sidebarCollapse">
+                        <!-- Navigation -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin'}">
+                                    <i class="bi bi-house btn" role="button" data-bs-toggle="button"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/superadmin/inventario'}">
+                                    <i class="bi bi-clipboard"></i> Inventario
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
+                                    <i class="bi bi-bag-plus"></i> Solicitudes de reposición
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/login'}">
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Header -->
+                <header class="bg-surface-primary border-bottom pt-6">
+                    <div class="container-fluid">
+                        <div class="mb-npx">
+                            <div class="row align-items-center">
+                                <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                    <!-- Title -->
+                                    <h1 class="h2 mb-0 ls-tight">
+                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary">S.Admin.Robert Harry</span></h1>
+                                </div>
+                                <!-- Actions -->
+                                <div class="col-sm-6 col-12 text-sm-end">
+                                    <div class="mx-n1">
+                                        <a th:href="@{'/superadmin/perfil'}"
+                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-pencil"></i>
                                     </span>
-                                    <span>Editar perfil</span>
-                                </a>
-                                
-                                <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-gear-wide-connected"></i>
-                                    </span>
-                                    <span>Administrar</span>
-                                </a>
+                                            <span>Editar perfil</span>
+                                        </a>
+
+
+                                    </div>
+                                </div>
                             </div>
+                            <!-- Nav -->
+                            <ul class="nav nav-tabs mt-4 overflow-x border-0">
+                                <li class="nav-item ">
+                                    <a th:href="@{'/superadmin'}" class="nav-link font-regular">Administrador de
+                                        Sede</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/farmacistas'}" class="nav-link active">Farmacistas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/doctores'}" class="nav-link font-regular">Doctores</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/pacientes'}" class="nav-link font-regular">Pacientes</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <!-- Nav -->
-                    <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                        <li class="nav-item ">
-                            <a th:href="@{'/superadmin'}" class="nav-link font-regular">Administrador de Sede</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/farmacistas'}" class="nav-link active">Farmacistas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/doctores'}" class="nav-link font-regular">Doctores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/pacientes'}" class="nav-link font-regular">Pacientes</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="card shadow border-0 mb-7">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                                <h3 class="mb-0 ls-tight"> Lista de Farmacistas </h3>
-                            </div>
-                            <!-- Actions -->
-                            <div class="col-sm-6 col-12 text-sm-end">
-                                <div class="mx-n1">
-                                    <a th:href="@{'/superadmin/farmacistas/solicitudes'}" class="btn d-inline-flex btn-sm btn-success mx-1">
+                </header>
+                <!-- Main -->
+                <main class="py-6 bg-surface-secondary">
+                    <div class="container-fluid">
+                        <div class="card shadow border-0 mb-7">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                        <h3 class="mb-0 ls-tight"> Lista de Farmacistas </h3>
+                                    </div>
+                                    <!-- Actions -->
+                                    <div class="col-sm-6 col-12 text-sm-end">
+                                        <div class="mx-n1">
+                                            <a th:href="@{'/superadmin/farmacistas/solicitudes'}"
+                                               class="btn d-inline-flex btn-sm btn-success mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-plus"></i>
                                     </span>
-                                        <span>Solicitudes de registro</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!--TABLA-->
-                    <div class="container table-responsive mb-4">
-                        <table id="example" class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Sede</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Distrito de residencia</th>
-                                    <th scope="col">Código</th>
-                                    <th scope="col">Correo</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover" data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        San Miguel 1
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        Jesús María
-                                    </td>
-                                    <td>
-                                        0000000
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            Actualizar
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger text-danger-hover"  data-bs-toggle="modal" data-bs-target="#modaEliminar">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Modal Actualizar -->
-                    <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del <br> Farmacista:</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body row">
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" placeholder="Jason Martinez">
-                                    </div>
-                                   
-                                    <div class="col">
-                                        <label for="correo">Correo:</label>
-                                        <input type="email" class="form-control" placeholder="Jason Martinez">
-                                    </div>
-                                </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="dni">DNI:</label>
-                                        <input type="number" class="form-control" placeholder="12345678">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="distrito">Código (colegio médico)</label>
-                                        <input type="number" class="form-control" placeholder="0000000">
+                                                <span>Solicitudes de registro</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="distrito">Distrito de residencia</label>
-                                        <input type="text" class="form-control" placeholder="Jesús María">
-                                    </div>
-                                    <div class="col">
-                                        <label for="sede">Sede:</label>
-                                        <select id="sede" class="form-select">
-                                            <option selected>San Miguel 1</option>
-                                            <option>San Miguel 2</option>
-                                            <option>San Miguel 3</option>
-                                            <option>San Miguel 4</option>
-                                            <option>San Miguel 5</option>
-                                        </select>
+                            </div>
+
+                            <!--TABLA-->
+                            <div class="container table-responsive mb-4">
+                                <table id="example" class="table table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Sede</th>
+                                            <th scope="col">DNI</th>
+                                            <th scope="col">Distrito de residencia</th>
+                                            <th scope="col">Código</th>
+                                            <th scope="col">Correo</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                     <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a class="text-heading font-semibold" href="#">
+                                                    Jason Martinez
+                                                </a>
+                                            </td>
+                                            <td>
+                                                San Miguel 1
+                                            </td>
+                                            <td>
+                                                12345678
+                                            </td>
+                                            <td>
+                                                Jesús María
+                                            </td>
+                                            <td>
+                                                0000000
+                                            </td>
+                                            <td>
+                                                correo@correo.com
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Modal Actualizar -->
+                            <div class="modal fade" id="modaActualizar" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog  modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del Farmacista:</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body row">
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Jason Martinez">
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="correo">Correo:</label>
+                                                    <input type="email" class="form-control"
+                                                           placeholder="Jason Martinez">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="dni">DNI:</label>
+                                                    <input type="number" class="form-control" placeholder="12345678">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="distrito">Código (colegio médico)</label>
+                                                    <input type="number" class="form-control" placeholder="0000000">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="distrito">Distrito de residencia</label>
+                                                    <input type="text" class="form-control" placeholder="Jesús María">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="sede">Sede:</label>
+                                                    <select id="sede" class="form-select">
+                                                        <option selected>San Miguel 1</option>
+                                                        <option>San Miguel 2</option>
+                                                        <option>San Miguel 3</option>
+                                                        <option>San Miguel 4</option>
+                                                        <option>San Miguel 5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#actualizar">Actualizar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                
-
-                                
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
 
-                    <!-- Modal Actualizar -->
-                    <div class="modal fade" id="modaEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content text-center">
-                        
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al farmacista seleccionado?</h1>
-                                
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminar">Eliminar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <!-- Modal Eliminar -->
+                            <div class="modal fade" id="modaEliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content text-center">
+                                        <div class="modal-header">
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al
+                                            farmacista seleccionado?</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#eliminar">Eliminar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+                            <!--Modal agregado exitaosamente-->
+                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Farmacistas actualizado exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal eliminado exitosamente -->
+                            <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Farmacista eliminado exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
-
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h2 class="text-center">Farmacistas actualizado exitosamente.</h2>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal Eliminar -->
-                    <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-    
-                            <div class="modal-body">
-                                <h2 class="text-center">Farmacista eliminado exitosamente.</h2>
-                              </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                </div>
+                </main>
             </div>
-        </main>
-    </div>
-</div>
+        </div>
 
 
-    <script src="/js/Superadmin/script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/Superadmin/table.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
-</body>
+        <script src="/js/Superadmin/script.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/Superadmin/table.js"></script>
+        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+        <script>
+            new DataTable('#example');
+        </script>
+    </body>
 </html>
