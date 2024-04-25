@@ -12,8 +12,6 @@ public class TipoUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtipo_usuario" , nullable = false)
-    private Integer idTipoUsuario;
+    private String idTipoUsuario;
 
-    @Column(name = "nombre",nullable = false,length = 100)
-    private String nombre;
 }

@@ -12,8 +12,8 @@ import lombok.Setter;
 public class Usuarios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuarios" , nullable = false)
-    private Integer idUsuarios;
+    @Column(name = "id_usuario" , nullable = false)
+    private Integer idUsuario;
 
     @ManyToOne
     @JoinColumn(name = "estado_idestado",nullable = false)
@@ -61,7 +61,11 @@ public class Usuarios {
     @Column(name = "seguro",length = 100)
     private String seguro;
 
+    @Column(name = "dni", nullable = true)
+    private String dni;
+
     @OneToOne
     @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)
     private PreferenciasUsuario preferenciasUsuario;
+
 }

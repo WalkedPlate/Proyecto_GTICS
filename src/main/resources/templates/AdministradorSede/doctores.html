@@ -256,29 +256,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr th:each="doctor,obj: ${listaDoctores}">
+                                        <!--<td th:text="${obj.index+1}"></td>-->
                                         <td>
                                             <img alt="..." src="/img/AdministradorSede/profile-3.jpeg"
                                                 class="avatar avatar-sm rounded-circle me-2">
-                                            <a class="text-heading font-semibold" href="#">
-                                                Jason Martinez
+                                            <a th:text="${doctor.nombre}" class="text-heading font-semibold" href="#">
                                             </a>
                                         </td>
-                                        <td>
-                                            San Miguel 1
-                                        </td>
-                                        <td>
-                                            12345678
-                                        </td>
-                                        <td>
-                                            Jesús María
-                                        </td>
-                                        <td>
-                                            0000000
-                                        </td>
-                                        <td>
-                                            correo@correo.com
-                                        </td>
+                                        <td th:text="${doctor.sedes.nombre}"></td>
+                                        <td th:text="${doctor.dni}"></td>
+                                        <td th:text="${doctor.distritoResidencia}"></td>
+                                        <td th:text="${doctor.codigoColegio}"></td>
+                                        <td th:text="${doctor.correo}"></td>
 
                                     </tr>
                                     <tr>
