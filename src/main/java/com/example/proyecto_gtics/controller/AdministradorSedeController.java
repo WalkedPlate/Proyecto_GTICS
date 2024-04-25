@@ -71,6 +71,12 @@ public class AdministradorSedeController {
 
     }
 
+    @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
+    public String guardarOrdenReposicion(){
+
+        return "redirect:/administradorsede/ordenes-reposicion";
+    }
+
 
     @GetMapping(value ={"/administradorsede/doctores"})
     public String doctores(Model model){
@@ -126,7 +132,12 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede/medicinas"})
-    public String medicinas(){
+    public String medicinas(Model model){
+
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+        List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
+        model.addAttribute("listaMedicinas",listMedicinas);
+
         return "AdministradorSede/medicinas";
     }
 

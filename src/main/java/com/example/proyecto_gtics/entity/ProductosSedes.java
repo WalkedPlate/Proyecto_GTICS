@@ -1,7 +1,11 @@
 package com.example.proyecto_gtics.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "productos_has_sedes")
 public class ProductosSedes {
@@ -11,10 +15,10 @@ public class ProductosSedes {
     @MapsId("idProductos")
     @ManyToOne
     @JoinColumn(name = "productos_idproductos")
-    private Productos productosId;
+    private Productos productos;
 
     @MapsId("idSedes")
     @ManyToOne
-    @JoinColumn(name = "sedes_id_sedes")
-    private Sedes sedesId;
+    @JoinColumn(name = "sedes_idsedes")
+    private Sedes sedes;
 }

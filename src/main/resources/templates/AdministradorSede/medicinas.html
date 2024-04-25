@@ -227,92 +227,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr th:each="medicinasede,obj: ${listaMedicinas}">
                                     <td>
                                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
+                                        <a th:text="${medicinasede.productos.nombre}"  class="text-heading font-semibold" href="#"></a>
                                     </td>
                                     <td class="text-center">
                                         100
                                     </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    
-                                
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    
-                                    
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    
-                                    
+                                    <td th:text="${medicinasede.productos.precio}" class="text-center"></td>
+                                    <td th:text="${medicinasede.productos.categorias.nombre}" class="text-center"></td>
+                                    <td th:text="${medicinasede.productos.fechaVencimiento}" class="text-center"></td>
                                 </tr>
                             </tbody>
                         </table>
