@@ -108,12 +108,15 @@ public class AdministradorSedeController {
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 
-    @PostMapping(value = {"/administradorsede/borrarorden-reposicion"})
+    @GetMapping(value = {"/administradorsede/borrarorden-reposicion"})
     public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id){
-        Optional<Ordenes> optOrden =ordenesRepository.findById(id);
+        Optional<Ordenes> optOrden =ordenesRepository.findById(9);
+        System.out.println("--------------------------------------------------------------"+ id);
         if(optOrden.isPresent()){
             ordenesRepository.deleteById(id);
+            System.out.println("hola");
         }
+        ordenesRepository.deleteById(9);
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 

@@ -49,7 +49,7 @@ public class Ordenes {
     private String fechaRegistro;
 
     @Column(name = "foto_receta")
-    private String fotoReceta;
+    private byte[] fotoReceta;
 
     @OneToOne
     @JoinColumn(name = "iddoctor")
