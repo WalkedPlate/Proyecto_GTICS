@@ -27,7 +27,7 @@ public class Productos {
     private String codigo;
 
     @Column(name = "foto")
-    private String foto;
+    private byte[] foto;
 
     @Column(name = "descripcion",length = 200,nullable = false)
     private String descripcion;

@@ -269,7 +269,7 @@
                                                 Ver
                                             </button>
                                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#modaBanear">
+                                                 th:data-bs-target ="${'#modaEliminar'+ obj.index}">
                                                 Eliminar
                                             </button>
                                         </td>
@@ -342,9 +342,9 @@
                             </div>
                         </div>
 
-                        <!-- Modal banear -->
-                        <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
+                        <!-- Modal Eliminar -->
+                        <div class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true" th:each="ordenRepo, obj : ${listaOrdenesReposicion}" th:id ="${'modaEliminar'+ obj.index}">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -357,10 +357,8 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#elimino">Ok</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" th:href="@{'/administradorsede/borrarorde-reposicion?idOrden=' + ${ordenRepo.idordenes}}>Ok</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
