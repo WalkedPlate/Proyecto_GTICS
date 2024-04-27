@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -139,7 +140,7 @@ public class AdministradorSedeController {
     public String farmacistas(Model model){
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
-        EstadoUsuario estado = estadoUsuarioRepository.findById("Baneado").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("activo").get();
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get(); //Tipo de usuario: Farmacista
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(farmacista,adminSede.getSedes(),estado);
 
@@ -151,24 +152,30 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value = "/administradorsede/guardarfarmacista")
-    public String guardarFarmacista(Usuarios usuarios,@RequestParam("idSedes") int id){
+    public String guardarFarmacista(Usuarios usuarios, @RequestParam("idSedes") int id, RedirectAttributes attr){
 
         Sedes sedes = sedesRepository.findById(id).get();
         if (sedes == null) {
-            return "redirect:/administradorsede/farmacistas?error=sede_invalida";
+            attr.addFlashAttribute("msg","error=sede_invalida");
+            return "redirect:/administradorsede/farmacistas";
         }
 
         // Validación del nombre
         if (usuarios.getNombre() == null || usuarios.getNombre().isEmpty() || usuarios.getNombre().matches("^\\d.*$")) {
-            return "redirect:/administradorsede/farmacistas?error=nombre_invalido";
+            attr.addFlashAttribute("msg","error=nombre_invalido");
+            return "redirect:/administradorsede/farmacistas";
         } else if (!isValidEmail(usuarios.getCorreo())) {
-            return "redirect:/administradorsede/farmacistas?error=correo_invalido";
+            attr.addFlashAttribute("msg","error=correo_invalido");
+            return "redirect:/administradorsede/farmacistas";
         } else if (!validarDNI(usuarios.getDni())) {
-            return "redirect:/administradorsede/farmacistas?error=DNI_invalido";
+            attr.addFlashAttribute("msg","error=DNI_invalido");
+            return "redirect:/administradorsede/farmacistas";
         } else if (!validarDNI(usuarios.getCodigoColegio())) {
-            return "redirect:/administradorsede/farmacistas?error=codigo_invalido";
-        } else if (!validarCampo(usuarios.getDireccion())) {
-            return "redirect:/administradorsede/farmacistas?error=direccion_invalido";
+            attr.addFlashAttribute("msg","error=codigo_invalido");
+            return "redirect:/administradorsede/farmacistas";
+        } else if (!validarCampo(usuarios.getDistritoResidencia())) {
+            attr.addFlashAttribute("msg","error=direccion_invalido");
+            return "redirect:/administradorsede/farmacistas";
         }
 
         usuarios.setSedes(sedes);
@@ -176,6 +183,7 @@ public class AdministradorSedeController {
         usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
         usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
         usuariosRepository.save(usuarios);
+        attr.addFlashAttribute("msg","Farmacista creado exitosamente");
         return "redirect:/administradorsede/farmacistas";
     }
 
@@ -224,7 +232,7 @@ private boolean isValidEmail(String email) {
 
     public boolean validarDNI(String dni) {
         // Verifica si la cadena contiene solo dígitos y tiene un máximo de 7 caracteres
-        return dni != null && dni.matches("\\d{1,7}");
+        return dni != null && dni.matches("\\d{1,8}");
     }
 
     public boolean validarCampo(String campo) {
