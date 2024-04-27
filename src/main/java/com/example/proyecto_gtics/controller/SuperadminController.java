@@ -1,9 +1,15 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.entity.EstadoUsuario;
+import com.example.proyecto_gtics.entity.TipoUsuario;
+import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class SuperadminController {
@@ -71,7 +77,11 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/farmacistas"})
-    public String farmacistas(){
+    public String farmacistas(Model model){
+        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
+        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista, estado);
+        model.addAttribute("listaFarmacistas", listaFarmacistas);
         return "Superadmin/farmacistas";
     }
 

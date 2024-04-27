@@ -113,9 +113,9 @@ public class AdministradorSedeController {
     public String doctores(Model model){
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
-
+        EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById("Activo").get();
         TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get(); //Tipo de usuario: Doctor
-        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndSedes(doctor,adminSede.getSedes());
+        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,adminSede.getSedes(),estadoUsuario);
 
         model.addAttribute("listaDoctores",listaDoctores);
         model.addAttribute("adminSede",adminSede);
@@ -128,9 +128,9 @@ public class AdministradorSedeController {
     public String farmacistas(Model model){
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
-
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Baneado").get();
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get(); //Tipo de usuario: Farmacista
-        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedes(farmacista,adminSede.getSedes());
+        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(farmacista,adminSede.getSedes(),estado);
 
         model.addAttribute("listaFarmacistas",listaFarmacistas);
         model.addAttribute("adminSede",adminSede);
