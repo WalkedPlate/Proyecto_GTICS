@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.repository;
 
+import com.example.proyecto_gtics.entity.EstadoUsuario;
 import com.example.proyecto_gtics.entity.Sedes;
 import com.example.proyecto_gtics.entity.TipoUsuario;
 import com.example.proyecto_gtics.entity.Usuarios;
@@ -12,7 +13,10 @@ import java.util.List;
 public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
 
     //Doctores
-    List<Usuarios> findByTipoUsuarioAndSedes(TipoUsuario tipoUsuario, Sedes sedes);
+    List<Usuarios> findByTipoUsuarioAndSedesAndEstadoUsuario(TipoUsuario tipoUsuario, Sedes sedes, EstadoUsuario estadoUsuario);
+
+    //Farmacistas
+    List<Usuarios> findByTipoUsuarioAndEstadoUsuario(TipoUsuario tipoUsuario, EstadoUsuario estadoUsuario);
 
 
 }
