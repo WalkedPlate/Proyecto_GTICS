@@ -128,91 +128,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr th:each="paciente,obj: ${listaPacientes}">
                                     <td>
                                         <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
+                                        <a th:text="${paciente.nombre}" class="text-heading font-semibold" href="#"></a>
                                     </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td>
-                                        Si
-                                    </td>
-                                    <td>
-                                        -dirección-
-                                    </td>
-                                    <td>
-                                        Miraflores
-                                    </td>
+                                    <td th:text="${paciente.dni}" ></td>
+                                    <td th:text="${paciente.correo}" ></td>
+                                    <td th:text="${paciente.seguro}"></td>
+                                    <td th:text="${paciente.direccion}"></td>
+                                    <td th:text="${paciente.distritoResidencia}"></td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-square btn-secondary">
                                             <i class="bi bi-gear-wide-connected"></i>
                                         </a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td>
-                                        No
-                                    </td>
-                                    <td>
-                                        -dirección-
-                                    </td>
-                                    <td>
-                                        San Isidro
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                            <i class="bi bi-gear-wide-connected"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Jason Martinez
-                                        </a>
-                                    </td>
-                                    <td>
-                                        12345678
-                                    </td>
-                                    <td>
-                                        correo@correo.com
-                                    </td>
-                                    <td>
-                                        Si
-                                    </td>
-                                    <td>
-                                        -dirección-
-                                    </td>
-                                    <td>
-                                        Miraflores
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                            <i class="bi bi-gear-wide-connected"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                
                             </tbody>
                         </table>
                     </div>

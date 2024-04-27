@@ -91,12 +91,22 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/doctores"})
-    public String doctores(){
+    public String doctores(Model model){
+
+        TipoUsuario doctores = tipoUsuarioRepository.findById("Doctor").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
+        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(doctores,estado);
+        model.addAttribute("listaDoctores",listaDoctores);
         return "Superadmin/doctores";
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})
-    public String pacientes(){
+    public String pacientes(Model model){
+
+        TipoUsuario paciente = tipoUsuarioRepository.findById("Paciente").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
+        List<Usuarios> listaPaciente = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(paciente,estado);
+        model.addAttribute("listaPacientes",listaPaciente);
         return "Superadmin/pacientes";
     }
 
