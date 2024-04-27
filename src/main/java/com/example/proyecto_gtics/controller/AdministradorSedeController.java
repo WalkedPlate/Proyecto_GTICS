@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class AdministradorSedeController {
@@ -140,6 +143,23 @@ public class AdministradorSedeController {
     public String guardarFarmacista(Usuarios usuarios,@RequestParam("idSedes") int id){
 
         Sedes sedes = sedesRepository.findById(id).get();
+        if (sedes == null) {
+            return "redirect:/administradorsede/farmacistas?error=sede_invalida";
+        }
+
+        // Validación del nombre
+        if (usuarios.getNombre() == null || usuarios.getNombre().isEmpty() || usuarios.getNombre().matches("^\\d.*$")) {
+            return "redirect:/administradorsede/farmacistas?error=nombre_invalido";
+        } else if (!isValidEmail(usuarios.getCorreo())) {
+            return "redirect:/administradorsede/farmacistas?error=correo_invalido";
+        } else if (!validarDNI(usuarios.getDni())) {
+            return "redirect:/administradorsede/farmacistas?error=DNI_invalido";
+        } else if (!validarDNI(usuarios.getCodigoColegio())) {
+            return "redirect:/administradorsede/farmacistas?error=codigo_invalido";
+        } else if (!validarCampo(usuarios.getDireccion())) {
+            return "redirect:/administradorsede/farmacistas?error=direccion_invalido";
+        }
+
         usuarios.setSedes(sedes);
         usuarios.setContrasena("Temporal_password");
         usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
@@ -176,6 +196,30 @@ public class AdministradorSedeController {
     }
 
 
+
+
+
+
+
+
+/* VALIDACION DE CORREO
+ */
+private boolean isValidEmail(String email) {
+    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    Matcher matcher = pattern.matcher(email);
+    return matcher.matches();
+}
+
+    public boolean validarDNI(String dni) {
+        // Verifica si la cadena contiene solo dígitos y tiene un máximo de 7 caracteres
+        return dni != null && dni.matches("\\d{1,7}");
+    }
+
+    public boolean validarCampo(String campo) {
+        // Verifica si la cadena no es nula, no está vacía y su longitud es menor o igual a 255 caracteres
+        return campo != null && !campo.trim().isEmpty() && campo.length() <= 255;
+    }
 
 
 }
