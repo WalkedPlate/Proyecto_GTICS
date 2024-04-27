@@ -51,7 +51,7 @@ public class LoginController {
     public String login(){
         return "Login/inicioSesion";
     }
-
+    
 
     @GetMapping(value ={"/registro"})
     public String registro(){
