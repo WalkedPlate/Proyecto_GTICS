@@ -4,33 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clínica Renacer SuperAdmin</title>
+    <title>Clínica Renacer Admin Sede</title>
+    <link rel="icon" href="/img/Login/icono.png"/>
     <link rel="stylesheet" href="/css/AdministradorSede/style.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <!--DataTable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
     <style>
-        /* Estilos personalizados para los botones de paginación */
-        li.dt-paging-button.page-item {
-            padding: 2px;
-            margin: 0 2px;
-            border: 1px solid #ccc;
-            background-color: #f2f2f2;
-            color: #333;
-            border-radius: 3px;
-        }
-
-        /* Estilos para el botón activo */
-        .dt-paging-button.page-item.active a {
-            background-color: rgb(92 96 245) !important;
-            color: #fff !important;
-        }
-
-        /* Estilos para el botón activo */
-        .dt-paging-button.page-item.disabled a {
-            opacity: 0.5;
-            /* Por ejemplo, reducir la opacidad */
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #94a6b3;
+            border-color: #94a6b3;
         }
     </style>
 </head>
@@ -50,32 +35,10 @@
                 </button>
                 <!-- Brand -->
                 <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/administradorsede'}">
-                    <h3 class="text-success"><img src="/img/AdministradorSede/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png"
-                            width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
+                    <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img src="/img/Login/icono.png"
+                            width="40" class="pr-6"><span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer</h3>
                 </a>
-                <!-- User menu (mobile) -->
-                <div class="navbar-user d-lg-none">
-                    <!-- Dropdown -->
-                    <div class="dropdown">
-                        <!-- Toggle -->
-                        <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <div class="avatar-parent-child">
-                                <img alt="Image Placeholder"
-                                    src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                    class="avatar avatar- rounded-circle">
-                                <span class="avatar-child avatar-badge bg-success"></span>
-                            </div>
-                        </a>
-                        <!-- Menu 
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
-                        <a href="#" class="dropdown-item">Perfil</a>
-                        <a href="#" class="dropdown-item">Configuracion</a>
-                        <a href="#" class="dropdown-item">Cerrar Sesión</a>
-                    </div> -->
 
-                    </div>
-                </div>
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="sidebarCollapse">
                     <!-- Navigation -->
@@ -86,8 +49,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/administradorsede/ordenes-reposicion'}">
-                                <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Ordenes de
+                            <a class="nav-link" style="background: #F5F9FC" th:href="@{'/administradorsede/ordenes-reposicion'}">
+                                <i class="bi bi-bag-plus btn" role="button" data-bs-toggle="button"></i> Ordenes de
                                 Reposicion
                             </a>
                         </li>
@@ -126,12 +89,23 @@
             <header class="bg-surface-primary border-bottom pt-6">
                 <div class="container-fluid">
                     <div class="mb-npx">
-                        <div class="row align-items-center">
-                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                 <!-- Title -->
-                                <h1 class="h2 mb-0 ls-tight">
-                                    Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span></h1>
-                                <br>
+                                <h2 class="mb-0 ls-tight">
+                                    Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span></h2>
+                            </div>
+                            <!-- Actions -->
+                            <div class="col-sm-4 col-12 text-end">
+                                <div class="mx-n1">
+                                    <a th:href="@{'/administradorsede/perfil'}"
+                                       class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-pencil"></i>
+                                    </span>
+                                        <span>Editar perfil</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -143,16 +117,14 @@
                 <div class="container-fluid">
                     <div class="card shadow border-0 mb-7">
                         <div class="card-header">
-                            <div class="row">
-                                <div class="col md-5">
-                                    <h2 class="mb-0">Ordenes de Reposicion</h2>
+                            <div class="row align-items-center">
+                                <div  class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                    <h3 class="mb-0 ls-tight">Ordenes de Reposición</h3>
                                 </div>
-                                <div class="col md-5">
 
-                                </div>
-                                <div class="col md-2">
-                                    <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal"
-                                        data-bs-target="#modaAgregar">
+                                <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                                    <a th:href="@{'/administradorsede/nuevaOrden'}" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center">
+
                                         <span class=" pe-2">
                                             <i class="bi bi-plus"></i>
                                         </span>
@@ -240,139 +212,77 @@
                             </div>
                         </div>
 
-                        <div class="table-responsive mx-auto">
-                            <table class="table table-hover table-nowrap" id="table">
-                                <thead class="thead-light">
+                        <!--TABLA-->
+                        <div class="container table-responsive mb-4">
+                            <table id="example" class="table table-hover" style="width:100%">
+                                <thead>
                                     <tr>
-                                        <th scope="col">Nro de orden</th>
-                                        <th scope="col">Sede Destino</th>
-                                        <th scope="col">Estado</th>
-                                        <th scope="col">Fecha de Entrega</th>
-                                        <th scope="col">Costo</th>
-                                        <th></th>
+                                        <th scope="col" class="text-center">Nro de orden</th>
+                                        <th scope="col" class="text-center">Sede Destino</th>
+                                        <th scope="col" class="text-center">Estado</th>
+                                        <th scope="col" class="text-center">Fecha de Entrega</th>
+                                        <th scope="col" class="text-center">Costo(S/.)</th>
+                                        <th scope="col" class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="ordenRepo,obj: ${listaOrdenesReposicion}">
-                                        <td>
+                                        <td class="text-center">
                                             <a th:text="${ordenRepo.codigo}" class="text-heading font-semibold" href="#">
 
                                             </a>
                                         </td>
-                                        <td th:text="${adminSede.sedes.nombre}"></td>
-                                        <td th:text="${ordenRepo.estadoOrden.nombre}"></td>
-                                        <td th:text="${ordenRepo.fechaEntrega}"></td>
-                                        <td th:text="${ordenRepo.monto}"></td>
-                                        <td class="text-end">
-                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modaActualizar">
-                                                Ver
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                        <td class="text-center" th:text="${adminSede.sedes.nombre}"></td>
+                                        <td class="text-center" th:text="${ordenRepo.estadoOrden.nombre}"></td>
+                                        <td class="text-center" th:text="${ordenRepo.fechaEntrega}"></td>
+                                        <td class="text-center" th:text="${ordenRepo.monto}"></td>
+                                        <td class="text-center">
+                                            <a th:href="@{'/administradorsede/verOrden'}">
+                                                <button type="button" class="btn btn-sm btn-square btn-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </a>
+
+                                            <button type="button" class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal"
                                                  th:data-bs-target ="${'#modaEliminar'+ obj.index}">
-                                                Eliminar
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <!-- Modal Actualizar -->
-                        <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Datos de la <br> Orden de
-                                            Reposicion:</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body row">
 
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="Codigo">Nro de orden:</label>
-                                                <input type="text" class="form-control" placeholder="71273166">
-                                            </div>
-
-                                            <div class="col">
-                                                <label for="nombre">Nombre del producto:</label>
-                                                <input type="text" class="form-control" placeholder="Paracetamol">
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="costo">Costo:</label>
-                                                <input type="number" class="form-control" placeholder="100">
-                                            </div>
-
-
-                                            <div class="col">
-                                                <label for="FechaEntrega">Fecha de Entrega:</label>
-                                                <input type="date" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="sede">Sede Destino:</label>
-                                                <select id="sede" class="form-select">
-                                                    <option selected>San Miguel 1</option>
-                                                    <option>San Miguel 2</option>
-                                                    <option>San Miguel 3</option>
-                                                    <option>San Miguel 4</option>
-                                                    <option>San Miguel 5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#actualizar">Actualizar</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Modal Eliminar -->
                         <div class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true" th:each="ordenRepo, obj : ${listaOrdenesReposicion}" th:id ="${'modaEliminar'+ obj.index}">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-center">
                                     <div class="modal-header">
-                                        <h2 class="modal-title fs-5" id="exampleModalLabel">¿Esta seguro que desea
-                                            eliminar <br> la orden N° 71273166?</h2>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro que desea
+                                            eliminar la orden N° 71273166?</h3>
                                     </div>
-                                    <div class="modal-body row">
 
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a type="button" class="btn btn-primary" th:href="@{'/administradorsede/borrarorden-reposicion?idOrden=' + ${ordenRepo.idordenes}}">Ok</a>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <a type="button" class="btn btn-primary" th:href="@{'/administradorsede/borrarorden-reposicion?idOrden=' + ${ordenRepo.idordenes}}">Eliminar</a>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!--Modal agregado exitaosamente-->
-                        <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+
+                        <!--Modal eliminado exitaosamente-->
+                        <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        <h2 class="text-center"> Orden de reposicion actualizada exitosamente.</h2>
+                                        <h3 class="text-center">Se eliminó la orden exitosamente.</h3>
                                     </div>
                                     <div class="modal-footer d-flex justify-content-center">
+
                                         <button type="button" class="btn btn-primary"
                                             data-bs-dismiss="modal">Ok</button>
                                     </div>
@@ -380,33 +290,6 @@
                             </div>
                         </div>
 
-                        <!--Modal baneado exitaosamente-->
-                        <div class="modal fade" id="elimino" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <h2 class="text-center">Se elimino la orden exitosamente.</h2>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary"
-                                            data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer border-0 py-5 mx-auto">
-                            <!--<nav aria-label="Page navigation example">
-                          <ul class="pagination">
-                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
-                            <li class="page-item"><a class="page-link bg-primary text-white" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                          </ul>
-                        </nav>-->
-                        </div>
                     </div>
                 </div>
             </main>
@@ -414,18 +297,15 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
     <script src="/js/AdministradorSede/script.js"></script>
 
-    <!--jQuery-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!--DataTable-->
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
-    <!---->
-    <script src="/js/AdministradorSede/controladorTabla.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/Superadmin/table.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
 </body>
 
 </html>

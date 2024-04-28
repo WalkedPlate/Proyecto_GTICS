@@ -38,3 +38,28 @@ textarea {
     margin-right: 10%;
     display: block;
 }
+
+.card-container {
+    overflow-x: auto; /* Activar la barra de desplazamiento horizontal cuando sea necesario */
+    white-space: nowrap; /* Evitar que el contenido se envuelva */
+}
+
+.swal2-html-container {
+    text-align: center;
+}
+
+.swal2-popup {
+    background-color: white !important; /* Cambia el color de fondo del modal */
+}
+
+.swal-custom-popup {
+    background-color: #ffffff !important; /* Cambia el color de fondo del modal */
+}
+
+.swal-custom-title {
+    color: #ff0000 !important; /* Cambia el color del título del modal */
+}
+
+.swal-custom-content {
+    color: #000000 !important; /* Cambia el color del contenido del modal */
+}

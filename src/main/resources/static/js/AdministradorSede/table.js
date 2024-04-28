@@ -10033,7 +10033,7 @@
          * Note that the `pageLength` property will be automatically set to the
          * first value given in this array, unless `pageLength` is also provided.
          */
-        "aLengthMenu": [ 5, 10, 25, 50, 100 ],
+        "aLengthMenu": [5, 10, 25, 50, 100 ],
 
 
         /**
@@ -10368,7 +10368,7 @@
          * feature enabled (`lengthChange`) then the end user will be able to override
          * this to a custom setting using a pop-up menu.
          */
-        "iDisplayLength": 5,
+        "iDisplayLength": 200,
 
 
         /**

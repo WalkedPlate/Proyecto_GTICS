@@ -80,6 +80,12 @@ public class AdministradorSedeController {
 
     }
 
+    @GetMapping(value={"/administradorsede/nuevaOrden"})
+    public String nuevaOrden(){return "AdministradorSede/nuevaOrdenReposicion";}
+
+    @GetMapping(value={"/administradorsede/verOrden"})
+    public String verOrden(){return "AdministradorSede/verOrdenReposicion";}
+
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
     public String guardarOrdenReposicion(@RequestParam("idProducto") int id,@RequestParam("fechaEntrega") String fechaEntrega,DetallesOrden detallesOrden){
 
