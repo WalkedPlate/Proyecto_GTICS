@@ -1,8 +1,13 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.entity.Categorias;
+import com.example.proyecto_gtics.entity.Productos;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class FarmaciaWebVentaController {
@@ -44,18 +49,34 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer"})
-    public String paginaPrincipal(){
+    public String paginaPrincipal(Model model){
+
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
         return "FarmaciaWebVenta/index";
+    }
+
+    @GetMapping(value ={"/nada"})
+    public String cabecera(Model model){
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+        return "FarmaciaWebVenta/fragments_clinicaweb/cabecera";
     }
 
     @GetMapping(value ={"/clinicarenacer/paciente"})
     public String paginaPrincipalConLogin(){
+
         return "FarmaciaWebVenta/user";
     }
 
     @GetMapping(value ={"/clinicarenacer/categoria"})
-    public String ordenarPorCategoria(){
+    public String ordenarPorCategoria(Model model){
+        List<Productos> listaProductos = productosRepository.findAll();
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaProductos",listaProductos);
+        model.addAttribute("listaCategorias", listaCategorias);
         return "FarmaciaWebVenta/PorCategoria";
+
     }
 
     @GetMapping(value ={"/clinicarenacer/categoria/subcategoria"})

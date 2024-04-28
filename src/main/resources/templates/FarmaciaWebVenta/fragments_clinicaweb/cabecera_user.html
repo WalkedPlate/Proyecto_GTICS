@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:fragment="cabecera_user">
+
+
+    <div class="header-main">
+
+        <div class="container">
+
+
+            <a th:href="@{'/clinicarenacer/paciente'}" style="text-decoration: none;">
+                <div style="display: flex;
+            align-items: center;">
+                    <img src="/img/FarmaciaWebVenta/logo/icono.png" style="width: 50px;
+              margin-right: 0.3rem;" alt="renacer">
+                    <div>
+                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold">
+                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                        </h3>
+                    </div>
+                </div>
+            </a>
+
+
+            <div class="header-search-container">
+
+                <input type="search" name="search" class="search-field" placeholder="¿Qué productos de salud estas buscando?">
+
+                <button class="search-btn">
+                    <ion-icon name="search-outline"></ion-icon>
+                </button>
+
+            </div>
+
+            <div class="header-user-actions">
+
+                <button class="action-btn main-links">
+                    <a class="nav-link" style="font-size: 0.5em" href="#"><span class="material-symbols-outlined">
+              face
+              </span>Editar Perfil</a>
+                </button>
+
+                <button class="action-btn main-links">
+                    <a class="nav-link" style="font-size: 0.5em" th:href="@{'/clinicarenacer'}"> <span class="material-symbols-outlined">
+              logout
+              </span> Cerrar Sesión</a>
+                </button>
+
+                <a th:href="@{'/clinicarenacer/paciente/carrito'}"  >
+                    <button class="action-btn main-links">
+                        <ion-icon name="bag-handle-outline"></ion-icon>
+                        <span class="count">2</span>
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <nav class="desktop-navigation-menu">
+
+        <div class="container">
+
+            <ul class="desktop-menu-category-list">
+
+                <li class="menu-category">
+                    <a th:href="@{'/clinicarenacer'}" class="menu-title">Página Principal</a>
+                </li>
+
+                <li class="menu-category">
+                    <a class="menu-title">Categorias</a>
+
+                    <div class="dropdown-panel">
+
+                        <ul class="dropdown-panel-list">
+
+                            <li class="menu-title">
+                                <a th:href="@{'/clinicarenacer/categoria'}">Categoría 1</a>
+                            </li>
+                        </ul>
+
+
+                        <ul class="dropdown-panel-list">
+
+                            <li class="menu-title">
+                                <a th:href="@{'/clinicarenacer/categoria'}">Categoría 2</a>
+                            </li>
+                        </ul>
+
+                        <ul class="dropdown-panel-list">
+
+                            <li class="menu-title">
+                                <a th:href="@{'/clinicarenacer/categoria'}">Categoría 3</a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </li>
+
+                <li class="menu-category">
+                    <a th:href="@{'/clinicarenacer/paciente/chatfarmacista'}" class="menu-title">Chatea con un Farmacista</a>
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <div class="mobile-bottom-navigation">
+
+        <button class="action-btn" data-mobile-menu-open-btn>
+            <ion-icon name="menu-outline"></ion-icon>
+        </button>
+
+        <button class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+
+            <span class="count">0</span>
+        </button>
+
+        <a th:href="@{'/clinicarenacer'}">
+            <button class="action-btn">
+                <ion-icon name="home-outline"></ion-icon>
+            </button>
+        </a>
+
+    </div>
+
+    <nav class="mobile-navigation-menu  has-scrollbar" data-mobile-menu>
+
+        <div class="menu-top">
+            <h2 class="menu-title">Categorías</h2>
+
+            <button class="menu-close-btn" data-mobile-menu-close-btn>
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+        </div>
+
+        <ul class="mobile-menu-category-list">
+
+            <li class="menu-category">
+                <a th:href="@{'/clinicarenacer'}" class="menu-title">Página Principal</a>
+            </li>
+
+            <li class="menu-category">
+                <a th:href="@{'/clinicarenacer/categoria'}">
+                    <button class="accordion-menu" data-accordion-btn>
+                        <p class="menu-title">Categoria 1</p>
+                    </button>
+                </a>
+            </li>
+
+            <li class="menu-category">
+
+                <a th:href="@{'/clinicarenacer/categoria'}">
+                    <button class="accordion-menu" data-accordion-btn>
+                        <p class="menu-title">Categoria 2</p>
+                    </button>
+                </a>
+
+            </li>
+
+            <li class="menu-category">
+
+                <a th:href="@{'/clinicarenacer/categoria'}">
+                    <button class="accordion-menu" data-accordion-btn>
+                        <p class="menu-title">Categoria 3</p>
+                    </button>
+                </a>
+
+            </li>
+
+            <li class="menu-category">
+
+                <a th:href="@{'/clinicarenacer/categoria'}">
+                    <button class="accordion-menu" data-accordion-btn>
+                        <p class="menu-title">Categoria 4</p>
+                    </button>
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+</body>
+</html>
