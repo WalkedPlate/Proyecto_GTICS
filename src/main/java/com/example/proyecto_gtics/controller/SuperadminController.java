@@ -52,7 +52,11 @@ public class SuperadminController {
 
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
-    public String dashboard(){
+    public String dashboard(Model model){
+        TipoUsuario adminSede = tipoUsuarioRepository.findById("AdministradorDeSede").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
+        List<Usuarios> listaAdminSede = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(adminSede, estado);
+        model.addAttribute("listaAdminSede", listaAdminSede);
         return "Superadmin/index";
     }
 

@@ -235,26 +235,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr th:each="adminSede : ${listaAdminSede}">
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a class="text-heading font-semibold" href="#">
-                                                    Jason Martinez
-                                                </a>
+                                                <a th:text="${adminSede.nombre}" class="text-heading font-semibold" href="#"></a>
                                             </td>
-                                            <td>
-                                                San Miguel 1
-                                            </td>
-                                            <td>
-                                                12345678
-                                            </td>
-                                            <td>
-                                                Jesús María
-                                            </td>
-                                            <td>
-                                                correo@correo.com
-                                            </td>
+                                            <td th:text="${adminSede.sedes.nombre}"></td>
+                                            <td th:text="${adminSede.dni}"></td>
+                                            <td th:text="${adminSede.distritoResidencia}"></td>
+                                            <td th:text="${adminSede.correo}"></td>
                                             <td>
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
@@ -272,119 +262,6 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
-                                                     class="avatar avatar-sm rounded-circle me-2">
-                                                <a class="text-heading font-semibold" href="#">
-                                                    Jason Martinez
-                                                </a>
-                                            </td>
-                                            <td>
-                                                San Miguel 1
-                                            </td>
-                                            <td>
-                                                12345678
-                                            </td>
-                                            <td>
-                                                Jesús María
-                                            </td>
-                                            <td>
-                                                correo@correo.com
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                                    <i class="bi bi-person-fill-slash"></i>
-                                                </button>
-                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                                    <i class="bi bi-gear-wide-connected"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
-                                                     class="avatar avatar-sm rounded-circle me-2">
-                                                <a class="text-heading font-semibold" href="#">
-                                                    Jason Martinez
-                                                </a>
-                                            </td>
-                                            <td>
-                                                San Miguel 1
-                                            </td>
-                                            <td>
-                                                12345678
-                                            </td>
-                                            <td>
-                                                Jesús María
-                                            </td>
-                                            <td>
-                                                correo@correo.com
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                                    <i class="bi bi-person-fill-slash"></i>
-                                                </button>
-                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                                    <i class="bi bi-gear-wide-connected"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
-                                                     class="avatar avatar-sm rounded-circle me-2">
-                                                <a class="text-heading font-semibold" href="#">
-                                                    Jason Martinez
-                                                </a>
-                                            </td>
-                                            <td>
-                                                San Miguel 1
-                                            </td>
-                                            <td>
-                                                12345678
-                                            </td>
-                                            <td>
-                                                Jesús María
-                                            </td>
-                                            <td>
-                                                correo@correo.com
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-
-                                                <button type="button"
-                                                        class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                                    <i class="bi bi-person-fill-slash"></i>
-                                                </button>
-                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                                    <i class="bi bi-gear-wide-connected"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-
-
                                     </tbody>
                                 </table>
                             </div>
