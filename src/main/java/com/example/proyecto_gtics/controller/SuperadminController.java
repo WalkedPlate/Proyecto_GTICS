@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SuperadminController {
@@ -64,12 +65,23 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
-    public String guardarAdminSede(Usuarios adminSede,@RequestParam("idSedes") int id){
-        Sedes sedes = sedesRepository.findById(id).get();
-        adminSede.setSedes(sedes);
-        adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
-        adminSede.setContrasena("Temporal_password");
-        adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+    public String guardarAdminSede(Usuarios adminSede,@RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede){
+        Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
+        if(adminsede.isPresent()){
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
+            adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
+            Sedes sedes = sedesRepository.findById(id).get();
+            adminSede.setSedes(sedes);
+            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+        }
+        else {
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+            adminSede.setContrasena("Temporal_password");
+            Sedes sedes = sedesRepository.findById(id).get();
+            adminSede.setSedes(sedes);
+            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+        }
+
         usuariosRepository.save(adminSede);
         return "redirect:/superadmin/administradores-sede";
     }

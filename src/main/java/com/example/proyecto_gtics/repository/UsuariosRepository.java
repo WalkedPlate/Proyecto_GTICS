@@ -18,4 +18,7 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
     //Farmacistas
     List<Usuarios> findByTipoUsuarioAndEstadoUsuario(TipoUsuario tipoUsuario, EstadoUsuario estadoUsuario);
 
+    Usuarios findByIdUsuario(int idUsuario);
+
+
 }

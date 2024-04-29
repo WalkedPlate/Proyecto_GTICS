@@ -190,7 +190,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="adminSede : ${listaAdminSede}">
+                                        <tr th:each="adminSede,obj : ${listaAdminSede}">
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg"
                                                      class="avatar avatar-sm rounded-circle me-2">
@@ -203,7 +203,7 @@
                                             <td>
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
 
@@ -224,7 +224,7 @@
 
 
                             <!-- Modal Actualizar -->
-                            <div class="modal fade" id="modaActualizar" tabindex="-1"
+                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -234,44 +234,49 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
+                                        <form method="post" th:action="@{/superadmin/guardarAdminSede}">
                                         <div class="modal-body row">
-
+                                            <input type="hidden" name="idUsuario" th:value="${adminSede.idUsuario}">
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Jason Martinez">
+                                                    <label>Nombre:</label>
+                                                    <input name="nombre" type="text" class="form-control"
+                                                            th:value="${adminSede.nombre}">
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="correo">Correo:</label>
-                                                    <input type="email" class="form-control"
-                                                           placeholder="Jason Martinez">
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="dni">DNI:</label>
-                                                    <input type="number" class="form-control" placeholder="12345678">
-                                                </div>
-
-
-                                                <div class="col">
-                                                    <label for="distrito">Distrito de residencia</label>
-                                                    <input type="text" class="form-control" placeholder="Jesús María">
+                                                    <label>Correo:</label>
+                                                    <input name="correo" type="email" class="form-control"
+                                                           th:value="${adminSede.correo}">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select">
-                                                        <option selected>San Miguel 1</option>
-                                                        <option>San Miguel 2</option>
-                                                        <option>San Miguel 3</option>
-                                                        <option>San Miguel 4</option>
-                                                        <option>San Miguel 5</option>
+                                                    <label>DNI:</label>
+                                                    <input name="dni" type="number" class="form-control" th:value="${adminSede.dni}">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label>Distrito de residencia</label>
+                                                    <input name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label>Sede:</label>
+                                                    <select class="form-select" name="idSedes">
+                                                        <option th:value="${adminSede.sedes.idSedes}"
+                                                                th:text="${adminSede.sedes.nombre}"
+                                                                th:selected="${true}"
+                                                                ></option>
+                                                        <option th:each="sede : ${listaSedes}"
+                                                                th:if="${adminSede.sedes.nombre != sede.nombre}"
+                                                                th:value="${sede.idSedes}"
+                                                                th:text="${sede.nombre}"
+                                                        ></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -279,13 +284,14 @@
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#actualizar">Actualizar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
