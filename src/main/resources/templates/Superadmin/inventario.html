@@ -254,124 +254,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr th:each="medicamento : ${listaMedicamentos}">
                                     <td>
                                         <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
+                                        <a th:text="${medicamento.nombre}" class="text-heading font-semibold" href="#"></a>
                                     </td>
                                     <td class="text-center">
                                         100
                                     </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
-                                            Ver estado de reposición
-                                        </a>
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
-                                            Ver estado de reposición
-                                        </a>
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
-                                    <td class="text-center">
-                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
-                                            Ver estado de reposición
-                                        </a>
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a class="text-heading font-semibold" href="#">
-                                            Paracetamol 500mg
-                                        </a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td class="text-center">
-                                        s/. 10
-                                    </td>
-                                    <td class="text-center">
-                                        Analgésicos
-                                    </td>
-                                    <td class="text-center">
-                                        01/09/2024
-                                    </td>
+                                    <td th:text="${medicamento.precio}" class="text-center"></td>
+                                    <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
+                                    <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>
                                     <td class="text-center">
                                         <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
                                             Ver estado de reposición

@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 
 import com.example.proyecto_gtics.entity.EstadoUsuario;
+import com.example.proyecto_gtics.entity.Productos;
 import com.example.proyecto_gtics.entity.TipoUsuario;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
@@ -61,7 +62,10 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/inventario"})
-    public String inventario(){
+    public String inventario(Model model){
+
+        List<Productos> listaMedicamentos = productosRepository.findAll();
+        model.addAttribute("listaMedicamentos",listaMedicamentos);
         return "Superadmin/inventario";
     }
 
