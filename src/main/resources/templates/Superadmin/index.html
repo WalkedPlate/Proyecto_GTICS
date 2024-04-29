@@ -97,6 +97,7 @@
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
+                                        <form method="post" th:action="@{/superadmin/guardarAdminSede}">
                                         <div class="modal-header">
                                             <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
                                                 nuevo <strong style="color:#5C60F5">Administrador de sede</strong></h3>
@@ -108,13 +109,13 @@
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control"
+                                                    <input id="nombre" name="nombre" type="text" class="form-control"
                                                            placeholder="Coloca su nombre">
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="correo">Correo:</label>
-                                                    <input type="email" class="form-control"
+                                                    <input id="correo" name="correo" type="email" class="form-control"
                                                            placeholder="Coloca su correo">
                                                 </div>
                                             </div>
@@ -122,27 +123,24 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="dni">DNI:</label>
-                                                    <input type="number" class="form-control"
+                                                    <input id="dni" name="dni" type="number" class="form-control"
                                                            placeholder="Coloca el N° de DNI">
                                                 </div>
 
 
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input type="text" class="form-control"
+                                                    <input id="distrito" name="distritoResidencia" type="text" class="form-control"
                                                            placeholder="Coloca su distrito">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select">
-                                                        <option selected>San Miguel 1</option>
-                                                        <option>San Miguel 2</option>
-                                                        <option>San Miguel 3</option>
-                                                        <option>San Miguel 4</option>
-                                                        <option>San Miguel 5</option>
+                                                    <label for="sedeAdmin">Sede:</label>
+                                                    <select id="sedeAdmin" name="idSedes" class="form-select">
+                                                        <option selected disabled>--Ingresa una sede--</option>
+                                                        <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -150,13 +148,14 @@
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#agregar">Agregar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

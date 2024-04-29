@@ -1,14 +1,13 @@
 package com.example.proyecto_gtics.controller;
 
 
-import com.example.proyecto_gtics.entity.EstadoUsuario;
-import com.example.proyecto_gtics.entity.Productos;
-import com.example.proyecto_gtics.entity.TipoUsuario;
-import com.example.proyecto_gtics.entity.Usuarios;
+import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -58,7 +57,21 @@ public class SuperadminController {
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaAdminSede = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(adminSede, estado);
         model.addAttribute("listaAdminSede", listaAdminSede);
+
+        List<Sedes> listaSedes = sedesRepository.findAll();
+        model.addAttribute("listaSedes",listaSedes);
         return "Superadmin/index";
+    }
+
+    @PostMapping(value = {"/superadmin/guardarAdminSede"})
+    public String guardarAdminSede(Usuarios adminSede,@RequestParam("idSedes") int id){
+        Sedes sedes = sedesRepository.findById(id).get();
+        adminSede.setSedes(sedes);
+        adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+        adminSede.setContrasena("Temporal_password");
+        adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+        usuariosRepository.save(adminSede);
+        return "redirect:/superadmin/administradores-sede";
     }
 
     @GetMapping(value ={"/superadmin/inventario"})
