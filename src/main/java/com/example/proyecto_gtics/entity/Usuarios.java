@@ -74,4 +74,10 @@ public class Usuarios {
     @Column(name = "preferencias_usuario_idpreferencias_usuario")
     private Integer preferenciasUsuario;
 
+    @Column(name = "dias_ban")
+    private Integer diasBan;
+
+    @Column(name = "fecha_ban")
+    private Date fechaBan;
+
 }

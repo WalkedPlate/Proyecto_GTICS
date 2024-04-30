@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const cantidadMedicamentos = itemList.length;
 
             // Si ya hay 10 medicamentos en la lista, mostrar un mensaje de advertencia y salir
-            if (cantidadMedicamentos >= 10) {
+            if (cantidadMedicamentos >= 11) {
                 Swal.fire({
                     icon: 'error',
                     title: '¡Error!',

@@ -16,10 +16,10 @@ public class EstadoUsuario {
     @Column(name = "idestado_usuario" , nullable = false)
     private String idEstadoUsuario;
 
-    @Column(name = "dias_ban")
+    /*@Column(name = "dias_ban")
     private Integer diasBan;
 
     @Column(name = "fecha_ban")
-    private Date fechaBan;
+    private Date fechaBan;*/
 
 }
