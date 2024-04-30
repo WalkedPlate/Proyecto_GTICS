@@ -86,6 +86,19 @@ public class SuperadminController {
         return "redirect:/superadmin/administradores-sede";
     }
 
+    @PostMapping("/superadmin/borrarAdminSede")
+    public String borrarAdminSede(@RequestParam("idSuperAdmin") Integer id){
+        Optional<Usuarios> optSede =usuariosRepository.findById(id);
+        Usuarios adminSede = usuariosRepository.findByIdUsuario(id);
+        if(optSede.isPresent()){
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
+            usuariosRepository.save(adminSede);
+            //usuariosRepository.deleteById(id);
+        }
+        return "redirect:/superadmin/administradores-sede";
+
+    }
+
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model){
 

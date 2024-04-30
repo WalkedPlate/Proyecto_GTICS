@@ -209,7 +209,7 @@
 
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaBanear'+ obj.index}">
                                                     <i class="bi bi-person-fill-slash"></i>
                                                 </button>
                                                 <a href="#" class="btn btn-sm btn-square btn-secondary">
@@ -297,7 +297,7 @@
                             </div>
 
                             <!-- Modal banear -->
-                            <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}" th:id ="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -307,31 +307,26 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
+                                        <form method="post" th:action="@{/superadmin/borrarAdminSede}">
                                         <div class="modal-body row">
 
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Jason Martinez">
+                                                    <label>Nombre:</label>
+                                                    <input name="nombre" type="text" class="form-control"
+                                                           th:value="${adminSede.nombre}" disabled>
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select">
-                                                        <option selected>San Miguel 1</option>
-                                                        <option>San Miguel 2</option>
-                                                        <option>San Miguel 3</option>
-                                                        <option>San Miguel 4</option>
-                                                        <option>San Miguel 5</option>
-                                                    </select>
+                                                    <label >Sede:</label>
+                                                    <input name="idSedes" type="text" class="form-control" th:value="${adminSede.sedes.idSedes}" th:text="${adminSede.sedes.nombre}" disabled>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="diasBaneo">Días baneados:</label>
-                                                    <select id="diasBaneo" class="form-select">
+                                                    <select id="diasBaneo" name="estadoIdestado" class="form-select">
                                                         <option selected>0</option>
                                                         <option>1</option>
                                                         <option>2</option>
@@ -351,13 +346,14 @@
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#banear">Banear
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

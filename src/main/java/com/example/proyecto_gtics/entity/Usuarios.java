@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -60,7 +61,7 @@ public class Usuarios {
     private String token;
 
     @Column(name = "fecha_registro")
-    private String fechaRegistro;
+    private Date fechaRegistro; //Cambio de String -> Date / Si causa algun problema regresarlo a String!!
 
     @Column(name = "seguro",length = 100)
     private String seguro;

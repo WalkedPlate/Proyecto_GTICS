@@ -21,4 +21,6 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
     Usuarios findByIdUsuario(int idUsuario);
 
 
+
+
 }
