@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `chat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chat` (
-  `idchat` int NOT NULL,
+  `idchat` int NOT NULL AUTO_INCREMENT,
   `usuarios_id_usuario` int NOT NULL,
   `idusuario_2` int DEFAULT NULL,
   `tipo_chat_idtipo_chat` int NOT NULL,
@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `detalles_orden`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalles_orden` (
-  `iddetalles_orden` int NOT NULL,
+  `iddetalles_orden` int NOT NULL AUTO_INCREMENT,
   `ordenes_idordenes` int NOT NULL,
   `productos_idproductos` int NOT NULL,
   `cantidad` int NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE `detalles_orden` (
   KEY `fk_detalles_orden_productos1_idx` (`productos_idproductos`),
   CONSTRAINT `fk_detalles_orden_ordenes1` FOREIGN KEY (`ordenes_idordenes`) REFERENCES `ordenes` (`idordenes`),
   CONSTRAINT `fk_detalles_orden_productos1` FOREIGN KEY (`productos_idproductos`) REFERENCES `productos` (`idproductos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `detalles_orden` (
 
 LOCK TABLES `detalles_orden` WRITE;
 /*!40000 ALTER TABLE `detalles_orden` DISABLE KEYS */;
-INSERT INTO `detalles_orden` VALUES (1,1,1,3,10),(2,2,2,4,40),(3,3,7,10,143),(4,4,8,23,143),(5,5,9,34,143),(6,6,1,60,143),(7,7,7,40,143),(8,8,6,10,143),(9,9,3,25,143),(10,3,6,34,143),(11,3,4,10,143),(12,3,6,120,143),(13,3,8,10,143),(14,3,10,20,143),(15,3,22,1,143),(16,3,21,100,143);
+INSERT INTO `detalles_orden` VALUES (1,1,1,3,10),(2,2,2,4,40),(3,3,7,10,143),(4,4,8,23,143),(5,5,9,34,143),(6,6,1,60,143),(7,7,7,40,143),(8,8,6,10,143),(9,9,3,25,143),(10,3,6,34,143),(11,3,4,10,143),(12,3,6,120,143),(13,3,8,10,143),(14,3,10,20,143),(15,3,22,1,143),(16,3,21,100,143),(17,6,5,13,0);
 /*!40000 ALTER TABLE `detalles_orden` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,10 +111,10 @@ DROP TABLE IF EXISTS `estado_orden`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_orden` (
-  `idestado_orden` int NOT NULL,
+  `idestado_orden` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
   PRIMARY KEY (`idestado_orden`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +146,7 @@ CREATE TABLE `estado_usuario` (
 
 LOCK TABLES `estado_usuario` WRITE;
 /*!40000 ALTER TABLE `estado_usuario` DISABLE KEYS */;
-INSERT INTO `estado_usuario` VALUES ('Activo'),('Baneado'),('Eliminado');
+INSERT INTO `estado_usuario` VALUES ('Activo'),('Baneado'),('Eliminado'),('En revisión');
 /*!40000 ALTER TABLE `estado_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +158,7 @@ DROP TABLE IF EXISTS `mensajes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mensajes` (
-  `idmensajes` int NOT NULL,
+  `idmensajes` int NOT NULL AUTO_INCREMENT,
   `contenido` varchar(200) NOT NULL,
   `chat_idchat` int NOT NULL,
   `fecha` datetime DEFAULT NULL,
@@ -186,7 +186,7 @@ DROP TABLE IF EXISTS `ordenes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ordenes` (
-  `idordenes` int NOT NULL,
+  `idordenes` int NOT NULL AUTO_INCREMENT,
   `usuarios_id_usuario` int NOT NULL,
   `estado_orden_idestado_orden` int DEFAULT NULL,
   `tipo_orden_idtipo_orden` int NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE `ordenes` (
   CONSTRAINT `fk_ordenes_tipo_orden1` FOREIGN KEY (`tipo_orden_idtipo_orden`) REFERENCES `tipo_orden` (`idtipo_orden`),
   CONSTRAINT `fk_ordenes_usuarios1` FOREIGN KEY (`usuarios_id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `fk_ordenes_usuarios2` FOREIGN KEY (`iddoctor`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,10 +233,10 @@ DROP TABLE IF EXISTS `preferencias_usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `preferencias_usuario` (
-  `idpreferencias_usuario` int NOT NULL,
+  `idpreferencias_usuario` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idpreferencias_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,6 +245,7 @@ CREATE TABLE `preferencias_usuario` (
 
 LOCK TABLES `preferencias_usuario` WRITE;
 /*!40000 ALTER TABLE `preferencias_usuario` DISABLE KEYS */;
+INSERT INTO `preferencias_usuario` VALUES (1,'asdsajhd');
 /*!40000 ALTER TABLE `preferencias_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +257,7 @@ DROP TABLE IF EXISTS `productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `productos` (
-  `idproductos` int NOT NULL,
+  `idproductos` int NOT NULL AUTO_INCREMENT,
   `categorias_idcategorias` int NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `codigo` varchar(100) NOT NULL,
@@ -270,7 +271,7 @@ CREATE TABLE `productos` (
   KEY `fk_productos_preferencias_usuario1_idx` (`preferencias_usuario_idpreferencias_usuario`),
   CONSTRAINT `fk_productos_categorias1` FOREIGN KEY (`categorias_idcategorias`) REFERENCES `categorias` (`idcategorias`),
   CONSTRAINT `fk_productos_preferencias_usuario1` FOREIGN KEY (`preferencias_usuario_idpreferencias_usuario`) REFERENCES `preferencias_usuario` (`idpreferencias_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,6 +294,7 @@ DROP TABLE IF EXISTS `productos_has_sedes`;
 CREATE TABLE `productos_has_sedes` (
   `productos_idproductos` int NOT NULL,
   `sedes_idsedes` int NOT NULL,
+  `cantidad` int NOT NULL,
   PRIMARY KEY (`productos_idproductos`,`sedes_idsedes`),
   KEY `fk_productos_has_sedes_sedes1_idx` (`sedes_idsedes`),
   CONSTRAINT `fk_productos_has_sedes_productos1` FOREIGN KEY (`productos_idproductos`) REFERENCES `productos` (`idproductos`),
@@ -306,6 +308,7 @@ CREATE TABLE `productos_has_sedes` (
 
 LOCK TABLES `productos_has_sedes` WRITE;
 /*!40000 ALTER TABLE `productos_has_sedes` DISABLE KEYS */;
+INSERT INTO `productos_has_sedes` VALUES (1,1,200),(1,2,120),(2,2,100),(3,2,200),(4,2,300),(5,2,400),(6,2,250),(7,2,170),(8,2,180),(9,2,170),(10,2,160),(11,2,140);
 /*!40000 ALTER TABLE `productos_has_sedes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,13 +320,13 @@ DROP TABLE IF EXISTS `sedes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sedes` (
-  `idsedes` int NOT NULL,
+  `idsedes` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `direccion` varchar(45) NOT NULL,
   `foto` longblob,
   `distrito` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idsedes`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -344,7 +347,7 @@ DROP TABLE IF EXISTS `tipo_chat`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_chat` (
-  `idtipo_chat` int NOT NULL,
+  `idtipo_chat` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`idtipo_chat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -367,10 +370,10 @@ DROP TABLE IF EXISTS `tipo_cobro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_cobro` (
-  `idtipo_cobro` int NOT NULL,
+  `idtipo_cobro` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   PRIMARY KEY (`idtipo_cobro`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -391,10 +394,10 @@ DROP TABLE IF EXISTS `tipo_orden`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_orden` (
-  `idtipo_orden` int NOT NULL,
+  `idtipo_orden` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
   PRIMARY KEY (`idtipo_orden`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -438,7 +441,7 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
-  `id_usuario` int NOT NULL,
+  `id_usuario` int NOT NULL AUTO_INCREMENT,
   `estado_idestado` varchar(80) NOT NULL,
   `sedes_idsedes` int DEFAULT NULL,
   `nombre` varchar(45) NOT NULL,
@@ -455,6 +458,8 @@ CREATE TABLE `usuarios` (
   `seguro` varchar(100) DEFAULT NULL,
   `preferencias_usuario_idpreferencias_usuario` int DEFAULT NULL,
   `dni` varchar(45) DEFAULT NULL,
+  `dias_ban` int DEFAULT NULL,
+  `fecha_ban` date DEFAULT NULL,
   PRIMARY KEY (`id_usuario`),
   KEY `fk_usuarios_estado1_idx` (`estado_idestado`),
   KEY `fk_usuarios_sedes1_idx` (`sedes_idsedes`),
@@ -463,7 +468,7 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `fk_usuarios_estado1` FOREIGN KEY (`estado_idestado`) REFERENCES `estado_usuario` (`idestado_usuario`),
   CONSTRAINT `fk_usuarios_sedes1` FOREIGN KEY (`sedes_idsedes`) REFERENCES `sedes` (`idsedes`),
   CONSTRAINT `fk_usuarios_tipo_usuario1` FOREIGN KEY (`tipo_usuario_idtipo_usuario`) REFERENCES `tipo_usuario` (`idtipo_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1032 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +477,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'activo',NULL,'Mario','mario@renacer.pe','123',NULL,NULL,'Av. Champiñón 123',NULL,NULL,'SuperAdmin',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(2,'activo',NULL,'Luigi','luigi@renacer.pe','123',NULL,NULL,'Av. Fantasma 456',NULL,NULL,'SuperAdmin',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(11,'activo',1,'Sonic','sonic@renacer.pe','123',NULL,NULL,'Av. Esmeralda 123','Miraflores',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273167'),(12,'activo',2,'Tails','tails@renacer.pe','123',NULL,NULL,'Av. Robotnik 456','San Isidro',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273165'),(13,'activo',3,'Pikachu','pikachu@renacer.pe','123',NULL,NULL,'Av. Pokémon 789','Surco',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273160'),(14,'activo',4,'Link','link@renacer.pe','123',NULL,NULL,'Av. Hyrule 101','Lince',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71283588'),(101,'activo',1,'Cortana','cortana@renacer.pe','123',NULL,NULL,'Av. Inteligencia Artificial 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(102,'activo',2,'Kratos','kratos@renacer.pe','123',NULL,NULL,'Av. Dios de la Guerra 789',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(103,'activo',3,'NathanDrake','nathandrake@renacer.pe','123',NULL,NULL,'Av. Tesoro 101',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(104,'activo',4,'SolidSnake','solidsnake@renacer.pe','123',NULL,NULL,'Av. Shadow Moses 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(105,'activo',5,'LaraCroft','laracroft@renacer.pe','123',NULL,NULL,'Av. Tomb Raider 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(106,'activo',6,'SamusAran','samusaran@renacer.pe','123',NULL,NULL,'Av. Metroid 789',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(107,'activo',7,'GordonFreeman','gordonfreeman@renacer.pe','123',NULL,NULL,'Av. Black Mesa 101',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(108,'activo',8,'Ellie','ellie@renacer.pe','123',NULL,NULL,'Av. Last of Us 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(109,'activo',9,'EzioAuditore','ezioauditore@renacer.pe','123',NULL,NULL,'Av. Asesino 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(110,'activo',10,'MasterChief','masterchief@renacer.pe','123',NULL,NULL,'Av. Halo 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1001,'activo',4,'VaultDweller','vaultdweller@renacer.pe','123',NULL,NULL,'Av. Fallout 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1002,'activo',3,'GeraltdeRivia','geralt@renacer.pe','123',NULL,NULL,'Av. Brujo 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1003,'activo',4,'SquallLeonhart','squall@renacer.pe','123',NULL,NULL,'Av. Final Fantasy 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1004,'activo',1,'ChunLi','chunli@renacer.pe','123',NULL,NULL,'Av. Street Fighter 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1005,'activo',3,'DonkeyKong','donkeykong@renacer.pe','123',NULL,NULL,'Av. Gorila 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1006,'activo',9,'Megaman','megaman@renacer.pe','123',NULL,NULL,'Av. Robot 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1007,'activo',8,'CrashBandicoot','crash@renacer.pe','123',NULL,NULL,'Av. Bandicoot 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1008,'activo',10,'Spyro','spyro@renacer.pe','123',NULL,NULL,'Av. Dragón 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1009,'activo',7,'Goku','goku@renacer.pe','123',NULL,NULL,'Av. Saiyan 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1010,'activo',6,'Dovahkiin','dovahkiin@renacer.pe','123',NULL,NULL,'Av. Skyrim 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1011,'activo',5,'MarioBros','mariobros@renacer.pe','123',NULL,NULL,'Av. Champiñón 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1012,'activo',9,'Yoshi','yoshi@renacer.pe','123',NULL,NULL,'Av. Isla de Huevo 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1013,'activo',1,'PrincesaPeach','peach@renacer.pe','123',NULL,NULL,'Av. Reino Champiñón 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1014,'activo',6,'Bowser','bowser@renacer.pe','123',NULL,NULL,'Av. Castillo 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1015,'activo',5,'Zelda','zelda@renacer.pe','123',NULL,NULL,'Av. Reino Hyrule 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1016,'activo',6,'Ganondorf','ganondorf@renacer.pe','123',NULL,NULL,'Av. Reino de las Sombras 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1017,'activo',4,'SamusAran','samusaran@renacer.pe','123',NULL,NULL,'Av. Zebes 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1018,'activo',4,'DonkeyKong','donkeykong@renacer.pe','123',NULL,NULL,'Av. Jungla 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1019,'activo',5,'FoxMcCloud','foxmccloud@renacer.pe','123',NULL,NULL,'Av. Espacio 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL),(1020,'activo',5,'Pikachu','pikachu@renacer.pe','123',NULL,NULL,'Av. Pueblo Paleta 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,'');
+INSERT INTO `usuarios` VALUES (1,'activo',NULL,'Mario','mario@renacer.pe','123',NULL,NULL,'Av. Champiñón 123',NULL,NULL,'SuperAdmin',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(2,'activo',NULL,'Luigi','luigi@renacer.pe','123',NULL,NULL,'Av. Fantasma 456',NULL,NULL,'SuperAdmin',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(11,'activo',1,'Sonic','sonic@renacer.pe','123',NULL,NULL,'Av. Esmeralda 123','Miraflores',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273167',NULL,NULL),(12,'activo',2,'Tails','tails@renacer.pe','123',NULL,NULL,'Av. Robotnik 456','San Isidro',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273165',NULL,NULL),(13,'activo',3,'Pikachu','pikachu@renacer.pe','123',NULL,NULL,'Av. Pokémon 789','Surco',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71273160',NULL,NULL),(14,'activo',4,'Link','link@renacer.pe','123',NULL,NULL,'Av. Hyrule 101','Lince',NULL,'AdministradorDeSede',NULL,'2024-04-22 00:00:00',NULL,NULL,'71283588',NULL,NULL),(101,'activo',1,'Cortana','cortana@renacer.pe','123',NULL,NULL,'Av. Inteligencia Artificial 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(102,'En revisión',2,'Kratos','kratos@renacer.pe','Temporal_password',NULL,NULL,NULL,'poooo','123213','Farmacista',NULL,NULL,NULL,NULL,'1321412',NULL,NULL),(103,'activo',3,'NathanDrake','nathandrake@renacer.pe','123',NULL,NULL,'Av. Tesoro 101',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(104,'activo',4,'SolidSnake','solidsnake@renacer.pe','123',NULL,NULL,'Av. Shadow Moses 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(105,'activo',5,'LaraCroft','laracroft@renacer.pe','123',NULL,NULL,'Av. Tomb Raider 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(106,'activo',6,'SamusAran','samusaran@renacer.pe','123',NULL,NULL,'Av. Metroid 789',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(107,'activo',7,'GordonFreeman','gordonfreeman@renacer.pe','123',NULL,NULL,'Av. Black Mesa 101',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(108,'activo',8,'Ellie','ellie@renacer.pe','123',NULL,NULL,'Av. Last of Us 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(109,'activo',9,'EzioAuditore','ezioauditore@renacer.pe','123',NULL,NULL,'Av. Asesino 456',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(110,'activo',10,'MasterChief','masterchief@renacer.pe','123',NULL,NULL,'Av. Halo 123',NULL,NULL,'Farmacista',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1001,'activo',4,'VaultDweller','vaultdweller@renacer.pe','123',NULL,NULL,'Av. Fallout 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1002,'activo',3,'GeraltdeRivia','geralt@renacer.pe','123',NULL,NULL,'Av. Brujo 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1003,'activo',4,'SquallLeonhart','squall@renacer.pe','123',NULL,NULL,'Av. Final Fantasy 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1004,'activo',1,'ChunLi','chunli@renacer.pe','123',NULL,NULL,'Av. Street Fighter 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1005,'activo',3,'DonkeyKong','donkeykong@renacer.pe','123',NULL,NULL,'Av. Gorila 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1006,'activo',9,'Megaman','megaman@renacer.pe','123',NULL,NULL,'Av. Robot 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1007,'activo',8,'CrashBandicoot','crash@renacer.pe','123',NULL,NULL,'Av. Bandicoot 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1008,'activo',10,'Spyro','spyro@renacer.pe','123',NULL,NULL,'Av. Dragón 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1009,'activo',7,'Goku','goku@renacer.pe','123',NULL,NULL,'Av. Saiyan 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1010,'activo',6,'Dovahkiin','dovahkiin@renacer.pe','123',NULL,NULL,'Av. Skyrim 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1011,'activo',5,'MarioBros','mariobros@renacer.pe','123',NULL,NULL,'Av. Champiñón 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1012,'activo',9,'Yoshi','yoshi@renacer.pe','123',NULL,NULL,'Av. Isla de Huevo 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1013,'activo',1,'PrincesaPeach','peach@renacer.pe','123',NULL,NULL,'Av. Reino Champiñón 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1014,'activo',6,'Bowser','bowser@renacer.pe','123',NULL,NULL,'Av. Castillo 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1015,'activo',5,'Zelda','zelda@renacer.pe','123',NULL,NULL,'Av. Reino Hyrule 123',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1016,'activo',6,'Ganondorf','ganondorf@renacer.pe','123',NULL,NULL,'Av. Reino de las Sombras 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1017,'activo',4,'SamusAran','samusaran@renacer.pe','123',NULL,NULL,'Av. Zebes 789',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1018,'activo',4,'DonkeyKong','donkeykong@renacer.pe','123',NULL,NULL,'Av. Jungla 101',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1019,'activo',2,'FoxMcCloud','foxmccloud@renacer.pe','123',NULL,NULL,'Av. Espacio 123',NULL,NULL,'Doctor',NULL,'2024-04-22 00:00:00',NULL,NULL,NULL,NULL,NULL),(1020,'activo',5,'Pikachu','pikachu@renacer.pe','123',NULL,NULL,'Av. Pueblo Paleta 456',NULL,NULL,'Paciente',NULL,'2024-04-22 00:00:00',NULL,NULL,'',NULL,NULL),(1022,'En revisión',2,'Donald','donald@renacer.pe','Temporal_password',NULL,NULL,NULL,'San Isidro','568781','Farmacista',NULL,NULL,NULL,NULL,'12347777777',NULL,NULL),(1026,'En revisión',2,'Hola Henriquez','diegomarcelo@renacer.pe','Temporal_password',NULL,NULL,NULL,'san miguel','3456789','Farmacista',NULL,NULL,NULL,NULL,'3445677',NULL,NULL),(1027,'activo',2,'Diego Henriquez','diegomarcelo@renacer.pe','Temporal_password',NULL,NULL,NULL,'san miguel','71273167','Farmacista',NULL,NULL,NULL,NULL,'71273166',NULL,NULL),(1031,'activo',9,'Javier Marroquin','javierM@renacer.pe','Temporal_password',NULL,NULL,NULL,'San Miguel',NULL,'AdministradorDeSede',NULL,NULL,NULL,NULL,'71717171',NULL,NULL);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -485,4 +490,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-25  0:00:35
+-- Dump completed on 2024-05-01 18:10:07
