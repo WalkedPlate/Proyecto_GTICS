@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Obtener detalles del elemento seleccionado
             const row = button.closest('tr');
             const medicineName = row.querySelector('.medicine-name').innerText.trim();
+            const medicineId = row.querySelector('.medicine-id').innerText.trim();
 
             // Verificar si el elemento ya está en la lista de Orden de Reposición
             const existingItem = document.querySelector(`.list-group-item[data-name="${medicineName}"]`);
@@ -47,13 +48,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const newItem = document.createElement('li');
             newItem.classList.add('list-group-item');
             newItem.dataset.name = medicineName;
+            newItem.dataset.productId = medicineId;
             newItem.innerHTML = `
                 <div class="row">
-                    <input type="hidden" class="idProducto" value="${1}">
+                    <div class="col-1 d-flex justify-content align-items-center">
+                        <p>${medicineId}</p>
+                    </div>
                     <div class="col-2 text-center">
                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
                     </div>
-                    <div class="col-5 d-flex justify-content align-items-center">
+                    <div class="col-4 d-flex justify-content align-items-center">
                         <p>${medicineName}</p>
                     </div>
                     <div class="col-3">

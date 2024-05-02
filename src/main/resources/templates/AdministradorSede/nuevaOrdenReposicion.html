@@ -70,14 +70,14 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/administradorsede/medicinas'}">
-                                    <i class="bi bi-people"></i> Medicinas
+                                    <i class="bi bi-capsule"></i> Medicinas
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a class="nav-link" th:href="@{'/administradorsede/perfil'}">
                                     <i class="bi bi-people"></i> Perfil
                                 </a>
-                            </li>
+                            </li>-->
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/login'}">
                                     <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
@@ -148,7 +148,7 @@
                                         <table id="example" class="table table-hover" style="width:100%">
                                             <thead>
                                                 <tr>
-
+                                                    <th scope="col" class="text-center">Id</th>
                                                     <th scope="col" class="text-center">Medicina</th>
                                                     <th scope="col" class="text-center">Categoría</th>
                                                     <th scope="col" class="text-center">Agregar</th>
@@ -157,6 +157,7 @@
                                             <tbody>
                                                 <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
                                                     <!--<input type="hidden" class="medicine-id" th:value="${producto.idProductos}">-->
+                                                    <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>
                                                     <td class="text-center medicine-name">
                                                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
                                                              class="avatar avatar-sm rounded-circle me-2">

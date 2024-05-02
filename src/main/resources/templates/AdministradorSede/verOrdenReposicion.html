@@ -127,7 +127,16 @@
                                         <h3 class="mb-0 ls-tight" style="padding-right: 8px">
                                             <a class="text-heading" th:href="@{'/administradorsede/ordenes-reposicion'}">
                                                 Ordenes de reposición</a>
-                                        </h3> <h3 class="text-success" th:text="'Orden N° ' +  ${ordenReposicion.codigo}"></h3>
+                                        </h3> <h3 class="text-success" th:text="'N° ' +  ${ordenReposicion.codigo}"></h3>
+                                    </div>
+                                    <div class="col-sm-4 col-12 d-flex align-items-center justify-content-end">
+                                        <a th:href="@{'/administradorsede/editarOrden'}" class="btn d-inline-flex btn-sm btn-warning mx-1 align-items-center">
+
+                                        <span class=" pe-2">
+                                            <i class="bi bi-pencil"></i>
+                                        </span>
+                                            <span>Editar Orden</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -143,39 +152,38 @@
                                         <div class="card" style="width: 100%; min-width: 385px">
 
                                             <div class="card-header text-center" style="background: #373a93">
-                                                <h4 class="mb-0 ls-tight" style="color: white">Orden de reposición</h4>
+                                                <h4 class="mb-0 ls-tight" style="color: white">Medicamentos solicitados</h4>
 
                                             </div>
 
-                                                <ul th:each="detalle, obj :${listaDetallesOrden}" class="list-group list-group-flush">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Imagen</th>
+                                                        <th>Nombre Producto</th>
+                                                        <th>Cantidad</th>
+                                                        <!--<th>Acciones</th>-->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="detalle, obj :${listaDetallesOrden}">
+                                                        <td th:text="${detalle.productos.idProductos}"></td>
+                                                        <td>
+                                                            <img alt="..." th:src="@{/img/AdministradorSede/medicina1.jpg}" class="avatar avatar-sm rounded-circle">
+                                                        </td>
+                                                        <td th:text="${detalle.productos.nombre}"></td>
+                                                        <td th:text="${detalle.cantidad}"></td>
+                                                        <!--<td>
+                                                            <button type="button" class="btn btn-sm btn-square btn-danger">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>-->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
 
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-2 text-center">
-                                                                <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                                     class="avatar avatar-sm rounded-circl">
-                                                            </div>
-                                                            <div class="col-5  d-flex justify-content align-items-center ">
-                                                                <p th:text="${detalle.productos.nombre}"></p>
-                                                            </div>
-                                                            <div class="col-3 d-flex justify-content align-items-center ">
-                                                                <label th:text="${detalle.cantidad}"></label>
-                                                            </div>
-                                                            <div class="col-2 text-center">
-                                                                <button type="button"
-                                                                        class="btn btn-sm btn-square btn-danger">
-                                                                    <i class="bi bi-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                                <div class="card-footer text-center">
-                                                    <button type="submit" class="btn btn-warning">
-                                                        Editar Orden
-                                                    </button>
 
-                                                </div>
 
                                         </div>
 
