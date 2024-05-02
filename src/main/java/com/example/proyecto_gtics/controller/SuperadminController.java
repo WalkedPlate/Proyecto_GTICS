@@ -132,8 +132,29 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
-    public String soliFarmacistas(){
+    public String soliFarmacistas(Model model){
+
+        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
+        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
+        model.addAttribute("listaFarmacistas",listaFarmacistas);
         return "Superadmin/soliFarmacistas";
+    }
+
+    @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
+    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){
+
+        Usuarios farmacista = usuariosRepository.findByIdUsuario(idFarmacista);
+        if(valor == 1){
+            farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            usuariosRepository.save(farmacista);
+        } else if (valor == 2) {
+            farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Denegado").get());
+            usuariosRepository.save(farmacista);
+        }else {
+            return "redirect:/superadmin/farmacistas/solicitudes";
+        }
+        return "redirect:/superadmin/farmacistas/solicitudes";
     }
 
     @GetMapping(value ={"/superadmin/doctores"})
