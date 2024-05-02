@@ -127,7 +127,7 @@
                                         <h3 class="mb-0 ls-tight" style="padding-right: 8px">
                                             <a class="text-heading" th:href="@{'/administradorsede/ordenes-reposicion'}">
                                                 Ordenes de reposición</a>
-                                        </h3> <h3 class="text-success"> > Orden N°123</h3>
+                                        </h3> <h3 class="text-success" th:text="'Orden N° ' +  ${ordenReposicion.codigo}"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@
 
                                             </div>
 
-                                                <ul class="list-group list-group-flush">
+                                                <ul th:each="detalle, obj :${listaDetallesOrden}" class="list-group list-group-flush">
 
                                                     <li class="list-group-item">
                                                         <div class="row">
@@ -156,10 +156,10 @@
                                                                      class="avatar avatar-sm rounded-circl">
                                                             </div>
                                                             <div class="col-5  d-flex justify-content align-items-center ">
-                                                                <p>Paracetamol</p>
+                                                                <p th:text="${detalle.productos.nombre}"></p>
                                                             </div>
                                                             <div class="col-3 d-flex justify-content align-items-center ">
-                                                                <label>100</label>
+                                                                <label th:text="${detalle.cantidad}"></label>
                                                             </div>
                                                             <div class="col-2 text-center">
                                                                 <button type="button"
@@ -168,9 +168,7 @@
                                                                 </button>
                                                             </div>
                                                         </div>
-
                                                     </li>
-
                                                 </ul>
                                                 <div class="card-footer text-center">
                                                     <button type="submit" class="btn btn-warning">

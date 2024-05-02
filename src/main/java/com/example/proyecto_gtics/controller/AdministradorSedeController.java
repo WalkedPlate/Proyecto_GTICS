@@ -3,6 +3,7 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,10 +82,31 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value={"/administradorsede/nuevaOrden"})
-    public String nuevaOrden(){return "AdministradorSede/nuevaOrdenReposicion";}
+    public String nuevaOrden(Model model){
+
+        List<Productos> listaProductos = productosRepository.findAll();
+
+        model.addAttribute("listaProductos",listaProductos);
+
+        return "AdministradorSede/nuevaOrdenReposicion";
+    }
 
     @GetMapping(value={"/administradorsede/verOrden"})
-    public String verOrden(){return "AdministradorSede/verOrdenReposicion";}
+    public String verOrden(Model model, @RequestParam ("idOrdenRepo") Integer idOrdenRepo){
+
+        Ordenes ordenReposicion = ordenesRepository.findById(idOrdenRepo).get();
+        //Validamos que la orden sea de reposicion
+        if(!validarTipoOrden(2,ordenReposicion)){
+            return "redirect:/administradorsede/ordenes-reposicion";
+        }
+
+        List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(ordenReposicion);
+
+        model.addAttribute("ordenReposicion",ordenReposicion);
+        model.addAttribute("listaDetallesOrden",listaDetallesOrden);
+
+        return "AdministradorSede/verOrdenReposicion";
+    }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
     public String guardarOrdenReposicion(@RequestParam("idProducto") int id,@RequestParam("fechaEntrega") String fechaEntrega,DetallesOrden detallesOrden){
@@ -117,13 +139,11 @@ public class AdministradorSedeController {
 
     @GetMapping(value = {"/administradorsede/borrarorden-reposicion"})
     public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id){
-        Optional<Ordenes> optOrden =ordenesRepository.findById(9);
-        System.out.println("--------------------------------------------------------------"+ id);
+        Optional<Ordenes> optOrden =ordenesRepository.findById(id);
         if(optOrden.isPresent()){
-            ordenesRepository.deleteById(id);
-            System.out.println("hola");
+            ordenesRepository.cambiarEstadoOrden(4,id); //Se cambia el estado de la orden a 4 (Eliminado)
         }
-        ordenesRepository.deleteById(9);
+
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 
@@ -244,6 +264,12 @@ private boolean isValidEmail(String email) {
     public boolean validarCampo(String campo) {
         // Verifica si la cadena no es nula, no está vacía y su longitud es menor o igual a 255 caracteres
         return campo != null && !campo.trim().isEmpty() && campo.length() <= 255;
+    }
+
+    public boolean validarTipoOrden(Integer tipo_orden_idtipo_orden, Ordenes orden) {
+        // Valida si una orden es de un tipo dado
+        boolean valido = orden.getTipoOrden().getIdTipoOrden() == tipo_orden_idtipo_orden;
+        return valido;
     }
 
 

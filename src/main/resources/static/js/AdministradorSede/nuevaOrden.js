@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             newItem.dataset.name = medicineName;
             newItem.innerHTML = `
                 <div class="row">
+                    <input type="hidden" class="idProducto" value="${1}">
                     <div class="col-2 text-center">
                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
                     </div>

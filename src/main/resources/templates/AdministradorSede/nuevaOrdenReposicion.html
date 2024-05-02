@@ -148,155 +148,28 @@
                                         <table id="example" class="table table-hover" style="width:100%">
                                             <thead>
                                                 <tr>
+
                                                     <th scope="col" class="text-center">Medicina</th>
                                                     <th scope="col" class="text-center">Categoría</th>
                                                     <th scope="col" class="text-center">Agregar</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class="medicine-row">
+                                                <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
+                                                    <!--<input type="hidden" class="medicine-id" th:value="${producto.idProductos}">-->
                                                     <td class="text-center medicine-name">
                                                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
                                                              class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol
+                                                        <p th:text="${producto.nombre}"></p>
                                                     </td>
-                                                    <td class="text-center">Analgésico</td>
+                                                    <td class="text-center" th:text="${producto.categorias.nombre}"></td>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
                                                             <i class="bi bi-plus-circle"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 2
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 3
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 4
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 5
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 6
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 7
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 8
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 9
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 10
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr class="medicine-row">
-                                                    <td class="text-center medicine-name">
-                                                        <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
-                                                             class="avatar avatar-sm rounded-circle me-2">
-                                                        Paracetamol 11
-                                                    </td>
-                                                    <td class="text-center">Analgésico</td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-square btn-primary btn-plus">
-                                                            <i class="bi bi-plus-circle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+
 
                                             </tbody>
                                         </table>

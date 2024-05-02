@@ -237,7 +237,7 @@
                                         <td class="text-center" th:text="${ordenRepo.fechaEntrega}"></td>
                                         <td class="text-center" th:text="${ordenRepo.monto}"></td>
                                         <td class="text-center">
-                                            <a th:href="@{'/administradorsede/verOrden'}">
+                                            <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">
                                                 <button type="button" class="btn btn-sm btn-square btn-primary">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
