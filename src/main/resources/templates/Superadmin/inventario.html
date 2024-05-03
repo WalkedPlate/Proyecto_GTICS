@@ -1,408 +1,563 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Renacer SuperAdmin</title>
-    <link rel="icon" href="/img/Login/icono.png" />
-  <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
-    <style>
-        .page-item.active .page-link {
-            z-index: 3;
-            color: #fff;
-            background-color: #94a6b3;
-            border-color: #94a6b3;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer SuperAdmin</title>
+        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <style>
+            .page-item.active .page-link {
+                z-index: 3;
+                color: #fff;
+                background-color: #94a6b3;
+                border-color: #94a6b3;
+            }
 
-<body>
-<!-- Dashboard -->
-<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-    <!-- Vertical Navbar -->
-    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg" id="navbarVertical">
-        <div class="container-fluid">
-            <!-- Toggler -->
-            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Brand -->
-            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
-                <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
-                        src="/img/Superadmin/icono.png" width="40" class="pr-6">
-                    <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
-                </h3>
-            </a>
+            .form-check-label {
+                color: #525F7F;
+                font-weight: normal;
+            }
+        </style>
+    </head>
 
-            <!-- Collapse -->
-            <div class="collapse navbar-collapse" id="sidebarCollapse">
-                <!-- Navigation -->
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/superadmin'}">
-                            <i class="bi bi-house"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin/inventario'}">
-                            <i class="bi bi-clipboard btn" role="button" data-bs-toggle="button"></i> Inventario
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
-                            <i class="bi bi-bag-plus"></i> Solicitudes de reposición
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{'/login'}">
-                            <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
-                        </a>
-                    </li>  
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Main content -->
-    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Header -->
-        <header class="bg-surface-primary border-bottom pt-6">
-            <div class="container-fluid">
-                <div class="mb-npx">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                            <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">
-                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary">S.Admin.Robert Harry</span></h1>
-                        </div>
-                        <!-- Actions -->
-                        <div class="col-sm-6 col-12 text-sm-end">
-                            <div class="mx-n1">
-                                <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+    <body>
+        <!-- Dashboard -->
+        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+            <!-- Vertical Navbar -->
+            <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+                 id="navbarVertical">
+                <div class="container-fluid">
+                    <!-- Toggler -->
+                    <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Brand -->
+                    <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                                src="/img/Superadmin/icono.png" width="40" class="pr-6">
+                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                        </h3>
+                    </a>
+
+                    <!-- Collapse -->
+                    <div class="collapse navbar-collapse" id="sidebarCollapse">
+                        <!-- Navigation -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/superadmin'}">
+                                    <i class="bi bi-house"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin/inventario'}">
+                                    <i class="bi bi-clipboard btn" role="button" data-bs-toggle="button"></i> Inventario
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/superadmin/solicitudes-reposicion'}">
+                                    <i class="bi bi-bag-plus"></i> Solicitudes de reposición
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/login'}">
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Header -->
+                <header class="bg-surface-primary border-bottom pt-6">
+                    <div class="container-fluid">
+                        <div class="mb-npx">
+                            <div class="row align-items-center">
+                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                    <!-- Title -->
+                                    <h1 class="h2 mb-0 ls-tight">
+                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary">S.Admin.Robert Harry</span></h1>
+                                </div>
+                                <!-- Actions -->
+                                <div class="col-sm-4 col-12 text-sm-end">
+                                    <div class="mx-n1">
+                                        <a th:href="@{'/superadmin/perfil'}"
+                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-pencil"></i>
                                     </span>
-                                    <span>Editar perfil</span>
-                                </a>
+                                            <span>Editar perfil</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
+                            <!-- Nav -->
+                            <ul class="nav nav-tabs mt-4 overflow-x border-0">
+
+                            </ul>
                         </div>
                     </div>
-                    <!-- Nav -->
-                    <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                    
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="card shadow border-0 mb-7">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                                <h3 class="mb-0 ls-tight"> Lista de medicinas </h3>
-                            </div>
-                            <!-- Actions -->
-                            <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                </header>
+                <!-- Main -->
+                <main class="py-6 bg-surface-secondary">
+                    <div class="container-fluid">
+                        <div class="card shadow border-0 mb-7">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                        <h3 class="mb-0 ls-tight"> Lista de medicinas </h3>
+                                    </div>
+                                    <!-- Actions -->
+                                    <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
 
-                                <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
-                                   data-bs-toggle="modal" data-bs-target="#modaAgregar">
+                                        <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
+                                           data-bs-toggle="modal" data-bs-target="#modaAgregar">
                                         <span class="pe-2">
                                             <i class="bi bi-plus"></i>
                                         </span>
-                                    <span>Agregar</span>
-                                </a>
-                                <a th:href="@{'/superadmin/inventario/restricciones'}" class="btn d-inline-flex btn-sm btn-danger mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-shield-x"></i>
-                                    </span>
-                                    <span>Restricción</span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- Modal agregar -->
-                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
-                                        nuevo <strong style="color:#5C60F5">producto</strong></h3>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                            <span>Agregar</span>
+                                        </a>
+                                        <!--<a th:href="@{'/superadmin/inventario/restricciones'}" class="btn d-inline-flex btn-sm btn-danger mx-1">
+                                            <span class=" pe-2">
+                                                <i class="bi bi-shield-x"></i>
+                                            </span>
+                                            <span>Restricción</span>
+                                        </a>-->
+                                    </div>
                                 </div>
 
-                                <div class="modal-body row">
-                                    
-                                    <div class="row pt-3">
-                                        <div class="col">
-                                            <label for="nombre">Nombre:</label>
-                                            <input type="text" class="form-control" placeholder="Coloca su nombre">
+                            </div>
+                            <!-- Modal agregar -->
+                            <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
+                                                nuevo</h3>
+                                            <h3 style="color:#5C60F5; padding-left:5px "> medicamento</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                         </div>
-                                    
-                                        <div class="col">
-                                            <label for="imagen">Subir imagen:</label>
-                                            <input type="file" class="form-control" >
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="cantidad">Cantidad:</label>
-                                            <input type="number" class="form-control" placeholder="Coloca la cantidad de medicamentos">
-                                        </div>
-                                        
-        
-                                        <div class="col">
-                                            <label for="precio">Precio (s/.):</label>
-                                            <input type="number" class="form-control" placeholder="Coloca el precio del medicamento">
-                                        </div>
-                                    </div>
 
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="cantidad">Categoria:</label>
-                                            <input type="text" class="form-control" placeholder="Antiflamatorio/Vitamina/etc">
-                                        </div>
-                                        
-        
-                                        <div class="col">
-                                            <label for="precio">Fecha de vencimiento:</label>
-                                            <input type="date" class="form-control" placeholder="Ingresa la fecha del vencimiento">
-                                        </div>
-                                    </div>
+                                        <div class="modal-body row">
 
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="cantidad">Descripción:</label>
-                                            <textarea name="" class="form-control" id="cantidad" cols="30" rows="10"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="cantidad">Seleccione las sedes que pueden visualizar el producto:</label>
-                                            <div class="row">
+                                            <div class="row pt-3">
                                                 <div class="col">
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                                        <label class="form-check-label" for="inlineCheckbox1">San Miguel 1</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                                        <label class="form-check-label" for="inlineCheckbox2">San Miguel 2</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2">
-                                                        <label class="form-check-label" for="inlineCheckbox2">San Miguel 3</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2">
-                                                        <label class="form-check-label" for="inlineCheckbox2">San Miguel 4</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option2">
-                                                        <label class="form-check-label" for="inlineCheckbox2">San Miguel 5</label>
-                                                    </div>
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Coloca su nombre">
                                                 </div>
 
+                                                <div class="col">
+                                                    <label for="imagen">Subir imagen:</label>
+                                                    <input type="file" class="form-control">
+                                                </div>
                                             </div>
 
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Cantidad:</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="Coloca la cantidad de medicamentos">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="precio">Precio (s/.):</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="Coloca el precio del medicamento">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Categoria:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Antiflamatorio/Vitamina/etc">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="precio">Fecha de vencimiento:</label>
+                                                    <input type="date" class="form-control"
+                                                           placeholder="Ingresa la fecha del vencimiento">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Descripción:</label>
+                                                    <textarea name="" class="form-control" id="cantidad" cols="30"
+                                                              rows="10"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Seleccione las sedes que pueden visualizar el
+                                                        producto:</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <!-- Lista de sedes con checkboxes agrupadas -->
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkTodos" onclick="marcarTodos()">
+                                                                <label class="form-check-label" for="checkTodos">Marcar
+                                                                    todos</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede1" name="sedes" value="2">
+                                                                <label class="form-check-label" for="checkSede1">Sede
+                                                                    1</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede2" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede2">Sede
+                                                                    2</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede3" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede3">Sede
+                                                                    3</label>
+                                                            </div>
+                                                            <!-- Agregar más sedes según sea necesario -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede4" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede4">Sede
+                                                                    4</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede5" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede5">Sede
+                                                                    5</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede6" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede6">Sede
+                                                                    6</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede7" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede7">Sede
+                                                                    7</label>
+                                                            </div>
+                                                            <!-- Agregar más sedes según sea necesario -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede8" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede8">Sede
+                                                                    8</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede9" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede9">Sede
+                                                                    9</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede10" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede10">Sede
+                                                                    10</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede11" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede11">Sede
+                                                                    11</label>
+                                                            </div>
+                                                            <!-- Agregar más sedes según sea necesario -->
+                                                        </div>
+                                                        <div class="col-sm-3">
+
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede12" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede12">Sede
+                                                                    12</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede13" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede13">Sede
+                                                                    13</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede14" name="sedes" value="13">
+                                                                <label class="form-check-label" for="checkSede14">Sede
+                                                                    14</label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="checkSede15" name="sedes" value="14">
+                                                                <label class="form-check-label" for="checkSede15">Sede
+                                                                    15</label>
+                                                            </div>
+                                                            <!-- Agregar más sedes según sea necesario -->
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#agregar">Agregar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
                                         </div>
                                     </div>
-
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h3 class="text-center">Medicina agregada exitosamente.</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <!--TABLA-->
-                    <div class="container table-responsive mb-4">
-                        <table id="example" class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center">Medicina</th>
-                                    <th scope="col" class="text-center">Cantidad Disponible</th>
-                                    <th scope="col" class="text-center">Precio x Unid.</th>
-                                    <th scope="col" class="text-center">Categoria</th>
-                                    <th scope="col" class="text-center">Fecha de Vencimiento</th>
-                                    <th scope="col" class="text-center">Estado</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="medicamento : ${listaMedicamentos}">
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a th:text="${medicamento.nombre}" class="text-heading font-semibold" href="#"></a>
-                                    </td>
-                                    <td class="text-center">
-                                        100
-                                    </td>
-                                    <td th:text="${medicamento.precio}" class="text-center"></td>
-                                    <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
-                                    <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>
-                                    <td class="text-center">
-                                        <a class="text-heading font-semibold" th:href="@{'/superadmin/inventario/estado-reposicion'}">
-                                            Ver estado de reposición
-                                        </a>
-                                    </td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Modal editar -->
-                    <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title fs-5" id="exampleModalLabel">Edición de datos del <strong style="color:#5C60F5">producto</strong></h3>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body row">
-                                
-                                <div class="row pt-3">
-                                    <div class="col">
-                                        <label for="nombre">Medicina:</label>
-                                        <input type="text" class="form-control" placeholder="Coloca su nombre">
-                                    </div>
-                                
-                                    <div class="col">
-                                        <label for="imagen">Subir imagen:</label>
-                                        <input type="file" class="form-control" >
+                            <!--Modal agregado exitaosamente-->
+                            <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Medicina agregada exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="cantidad">Cantidad:</label>
-                                        <input type="number" class="form-control" placeholder="Coloca la cantidad de medicamentos">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="precio">Precio (s/.):</label>
-                                        <input type="number" class="form-control" placeholder="Coloca el precio del medicamento">
+                            </div>
+
+                            <!--TABLA-->
+                            <div class="container table-responsive mb-4">
+                                <table id="example" class="table table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">Medicina</th>
+                                            <th scope="col" class="text-center">Cantidad Disponible</th>
+                                            <th scope="col" class="text-center">Precio x Unid.</th>
+                                            <th scope="col" class="text-center">Categoria</th>
+                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>
+                                            <th scope="col" class="text-center">Estado</th>
+                                            <th scope="col" class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="medicamento : ${listaMedicamentos}">
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/medicina1.jpg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a th:text="${medicamento.nombre}" class="text-heading font-semibold"
+                                                   href="#"></a>
+                                            </td>
+                                            <td class="text-center">
+                                                100
+                                            </td>
+                                            <td th:text="${medicamento.precio}" class="text-center"></td>
+                                            <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
+                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>
+                                            <td class="text-center">
+                                                <a class="text-heading font-semibold"
+                                                   th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                                    Ver estado de reposición
+                                                </a>
+                                            </td>
+                                            <td class="text-end">
+                                                <button type="button" class="btn btn-sm btn-primary btn-square"
+                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger btn-square"
+                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Modal editar -->
+                            <div class="modal fade" id="modaActualizar" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Edición de datos
+                                                del </h3>
+                                            <h3 style="color:#5C60F5; padding-left:5px ">medicamento</h3>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body row">
+
+                                            <div class="row pt-3">
+                                                <div class="col">
+                                                    <label for="nombre">Medicina:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Coloca su nombre">
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="imagen">Subir imagen:</label>
+                                                    <input type="file" class="form-control">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Cantidad:</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="Coloca la cantidad de medicamentos">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="precio">Precio (s/.):</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="Coloca el precio del medicamento">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Categoria:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Antiflamatorio/Vitamina/etc">
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label for="precio">Fecha de vencimiento:</label>
+                                                    <input type="date" class="form-control"
+                                                           placeholder="Ingresa la fecha del vencimiento">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="cantidad">Descripción:</label>
+                                                    <textarea name="" class="form-control" id="cantidad" cols="30"
+                                                              rows="10"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#actualizar">Actualizar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="cantidad">Categoria:</label>
-                                        <input type="text" class="form-control" placeholder="Antiflamatorio/Vitamina/etc">
-                                    </div>
-                                    
-    
-                                    <div class="col">
-                                        <label for="precio">Fecha de vencimiento:</label>
-                                        <input type="date" class="form-control" placeholder="Ingresa la fecha del vencimiento">
+                            <!-- Modal elminar -->
+                            <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro
+                                                que desea eliminar este producto?</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#elimar">Eliminar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                Cancelar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label for="cantidad">Descripción:</label>
-                                        <textarea name="" class="form-control" id="cantidad" cols="30" rows="10"></textarea>
+                            <!--Modal agregado exitasoamente-->
+                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Producto actualizado exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>  
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+
+                            <!--Modal eliminado exitaosamente-->
+                            <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Producto eliminado exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+
                         </div>
                     </div>
-
-                    <!-- Modal elminar -->
-                    <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h3 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro que desea eliminar este producto?</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#elimar">Eliminar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-
-                    <!--Modal agregado exitasoamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h3 class="text-center">Producto actualizado exitosamente.</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-
-                    <!--Modal eliminado exitaosamente-->
-                    <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <h3 class="text-center">Producto eliminado exitosamente.</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    
-
-                </div>
+                </main>
             </div>
-        </main>
-    </div>
-</div>
+        </div>
 
 
-<script src="/js/Superadmin/script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/Superadmin/table.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
-</body>
+        <script src="/js/Superadmin/script.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/Superadmin/table.js"></script>
+        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+        <script>
+            new DataTable('#example');
+        </script>
+        <script>
+            // Función para marcar o desmarcar todos los checkboxes
+            function marcarTodos() {
+                var checkboxes = document.getElementsByName('sedes');
+                var checkTodos = document.getElementById('checkTodos');
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = checkTodos.checked;
+                }
+            }
+        </script>
+
+    </body>
 </html>

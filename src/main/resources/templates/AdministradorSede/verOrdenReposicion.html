@@ -125,12 +125,15 @@
                                 <div class="row align-items-center" style="display: flex">
                                     <div class="col-sm-8 col-12 mb-4 mb-sm-0" style="display: flex">
                                         <h3 class="mb-0 ls-tight" style="padding-right: 8px">
-                                            <a class="text-heading" th:href="@{'/administradorsede/ordenes-reposicion'}">
+                                            <a class="text-heading"
+                                               th:href="@{'/administradorsede/ordenes-reposicion'}">
                                                 Ordenes de reposición</a>
-                                        </h3> <h3 class="text-success" th:text="'N° ' +  ${ordenReposicion.codigo}"></h3>
+                                        </h3>
+                                        <h3 class="text-success" th:text="'N° ' +  ${ordenReposicion.codigo}"></h3>
                                     </div>
                                     <div class="col-sm-4 col-12 d-flex align-items-center justify-content-end">
-                                        <a th:href="@{'/administradorsede/editarOrden'}" class="btn d-inline-flex btn-sm btn-warning mx-1 align-items-center">
+                                        <a th:href="@{'/administradorsede/editarOrden'}"
+                                           class="btn d-inline-flex btn-sm btn-warning mx-1 align-items-center">
 
                                         <span class=" pe-2">
                                             <i class="bi bi-pencil"></i>
@@ -145,45 +148,59 @@
 
                         <div class="row">
 
-                            <div class="col-xl-5 col-sm-8">
+                            <div class="col-xl-6 col-sm-8 col-xs-12">
 
                                 <div class="card shadow border-0 mb-7">
                                     <div class="card-container">
                                         <div class="card" style="width: 100%; min-width: 385px">
 
                                             <div class="card-header text-center" style="background: #373a93">
-                                                <h4 class="mb-0 ls-tight" style="color: white">Medicamentos solicitados</h4>
+                                                <h4 class="mb-0 ls-tight" style="color: white">Medicamentos
+                                                    solicitados</h4>
 
                                             </div>
-
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Imagen</th>
-                                                        <th>Nombre Producto</th>
-                                                        <th>Cantidad</th>
-                                                        <!--<th>Acciones</th>-->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr th:each="detalle, obj :${listaDetallesOrden}">
-                                                        <td th:text="${detalle.productos.idProductos}"></td>
-                                                        <td>
-                                                            <img alt="..." th:src="@{/img/AdministradorSede/medicina1.jpg}" class="avatar avatar-sm rounded-circle">
-                                                        </td>
-                                                        <td th:text="${detalle.productos.nombre}"></td>
-                                                        <td th:text="${detalle.cantidad}"></td>
-                                                        <!--<td>
-                                                            <button type="button" class="btn btn-sm btn-square btn-danger">
-                                                                <i class="bi bi-trash"></i>
-                                                            </button>
-                                                        </td>-->
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Imagen</th>
+                                                            <th>Nombre Producto</th>
+                                                            <th>Cantidad</th>
+                                                            <!--<th>Acciones</th>-->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr th:each="detalle, obj :${listaDetallesOrden}">
+                                                            <td th:text="${detalle.productos.idProductos}"></td>
+                                                            <td>
+                                                                <img alt="..."
+                                                                     th:src="@{/img/AdministradorSede/medicina1.jpg}"
+                                                                     class="avatar avatar-sm rounded-circle">
+                                                            </td>
+                                                            <td th:text="${detalle.productos.nombre}"></td>
+                                                            <td th:text="${detalle.cantidad}"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
 
 
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 col-sm-4 col-xs-12">
+                                <div class="card shadow border-0 mb-7">
+                                    <div class="card-container">
+                                        <div class="card" style="width: 100%;">
+
+                                            <div class="card-header text-center" style="background: #607d8b">
+                                                <h4 class="mb-0 ls-tight" style="color: white">Estado de envío</h4>
+
+                                            </div>
 
                                         </div>
 
@@ -208,7 +225,7 @@
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/AdministradorSede/table.js"></script>}
+        <script src="/js/AdministradorSede/table.js"></script>
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
         <script>
             new DataTable('#example');
