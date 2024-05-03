@@ -22,4 +22,7 @@ public class Sedes {
 
     @Column(name = "foto")
     private String foto;
+
+    @Column(name = "asignado")
+    private int asignado;
 }
