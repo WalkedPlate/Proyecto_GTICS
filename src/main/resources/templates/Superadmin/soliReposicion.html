@@ -101,7 +101,15 @@
             <div class="container-fluid">
                 <div class="card shadow border-0 mb-7">
                     <div class="card-header">
-                        <h3 class="mb-0">Solicitudes de reposición por aprobar:</h3>
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 col-12 mb-4 mb-sm-0" style="display: flex">
+                                <h3 class="mb-0 ls-tight" style="padding-right: 8px">
+                                    <a class="text-heading" th:href="@{'/superadmin/orden-reposicion'}">
+                                        Lista de órdenes de reposición</a>
+                                </h3> <h3 class="text-success"> > Solicitudes</h3>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!--TABLA-->
@@ -109,55 +117,86 @@
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">Código</th>
                                     <th scope="col">Administrador de sede</th>
-                                    <th scope="col">Sede</th>
-                                    <th scope="col">Medicina</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Acciones</th>
+                                    <th scope="col" class="text-center">N° Orden</th>
+                                    <th scope="col" class="text-center">Sede</th>
+                                    <th scope="col" class="text-center">Fecha de registro</th>
+                                    <th scope="col" class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        09273166
-                                    </td>
+
                                     <td>
                                         <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a class="text-heading font-semibold" href="#">
                                             Jason Martinez
                                         </a>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
+                                        09273166
+                                    </td>
+                                    <td class="text-center">
                                         San Miguel 1
                                     </td>
-                                    <td>
-                                        Paracetamol
+                                    <td class="text-center">
+                                        03/05/24
                                     </td>
-                                    <td>
-                                        100
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-primary btn-square" data-bs-toggle="modal" data-bs-target="#modaActualizar">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                              </svg>
-                                        </button>
-                                        <button type="button" class="btn btn-sm btn-danger btn-square" data-bs-toggle="modal" data-bs-target="#modaBanear">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                              </svg>
-                                        </button>
+                                    <td class="text-center">
+                                        <a>
+                                            <button type="button" class="btn btn-sm btn-square btn-primary" data-bs-toggle="modal" data-bs-target="#verOrden">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </a>
                                     </td>
                                 </tr>
 
                             </tbody>
                         </table>
                     </div>
+                    <!-- Modal ver orden -->
+                    <div class="modal fade" id="verOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">Imagen</th>
+                                                    <th class="text-center">Nombre Producto</th>
+                                                    <th class="text-center">Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">123</td>
+                                                    <td class="text-center">
+                                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                                    </td>
+                                                    <td class="text-center">Paracetamol</td>
+                                                    <td class="text-center">100</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aceptarOrden">Aceptar</button>
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazarOrden">Rechazar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Modal Aceptar -->
-                    <div class="modal fade" id="modaActualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="aceptarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="container text-center">
@@ -169,7 +208,7 @@
                                           </svg>
                                       </div>
                                       <div class="col">
-                                        <h3 class="text-center pt-5 pb-5">Solicitud aceptada exitosamente</h3>
+                                        <h3 class="text-center pt-5 pb-5">Solicitud de reposición aceptada exitosamente</h3>
                                       </div>
                                     </div>
                                 </div>
@@ -182,29 +221,24 @@
                     </div>
 
                     <!-- Modal rechazar -->
-                    <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="rechazarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
-                            <h3 class="text-center pt-8">Escriba el motivo del rechazo:</h3>
-                            <div class="modal-body row">
-
-                                <div class="col-lg-12 pt-3">
-                                    <label for="razon">Motivo:</label>
-                                    <textarea class="form-control" id="razon" style="min-width: 100%; width: 100%"></textarea>
-                                </div>
+                            <div class="modal-header">
+                                <h3 class="text-center">¿Estás seguro de que quieres rechazar esta orden?</h3>
                             </div>
+
+
                             <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Rechazar</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rechazar">Rechazar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
                         </div>
                     </div>
 
-
-
                     <!--Modal rechazado exitosamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="rechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="container text-center">
@@ -216,7 +250,7 @@
                                       </svg>
                                   </div>
                                   <div class="col">
-                                    <h3 class="text-center pt-5 pb-5">Solicitud rechazada exitosamente</h3>
+                                    <h3 class="text-center pt-5 pb-5">Solicitud de reposición rechazada exitosamente</h3>
                                   </div>
                                 </div>
                             </div>

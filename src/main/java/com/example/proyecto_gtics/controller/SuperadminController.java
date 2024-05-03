@@ -117,6 +117,10 @@ public class SuperadminController {
         return "Superadmin/restricciones";
     }
 
+    @GetMapping(value ={"/superadmin/orden-reposicion"})
+    public String ordenReposicion(){
+        return "Superadmin/ordenReposicion";
+    }
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
     public String solicitudesReposicion(){
         return "Superadmin/soliReposicion";

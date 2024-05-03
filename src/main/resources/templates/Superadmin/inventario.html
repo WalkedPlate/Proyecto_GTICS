@@ -358,36 +358,40 @@
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th scope="col" class="text-center">Imagen</th>
                                             <th scope="col" class="text-center">Medicina</th>
                                             <th scope="col" class="text-center">Cantidad Disponible</th>
                                             <th scope="col" class="text-center">Precio x Unid.</th>
                                             <th scope="col" class="text-center">Categoria</th>
-                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>
-                                            <th scope="col" class="text-center">Estado</th>
+<!--                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>-->
+<!--                                            <th scope="col" class="text-center">Estado</th>-->
                                             <th scope="col" class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="medicamento : ${listaMedicamentos}">
-                                            <td>
+                                            <td class="text-center">
                                                 <img alt="..." src="/img/Superadmin/medicina1.jpg"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${medicamento.nombre}" class="text-heading font-semibold"
-                                                   href="#"></a>
+
+                                            </td>
+                                            <td>
+                                                <p th:text="${medicamento.nombre}" class="text-heading font-semibold text-uppercase text-center"
+                                                   href="#"></p>
                                             </td>
                                             <td class="text-center">
                                                 100
                                             </td>
                                             <td th:text="${medicamento.precio}" class="text-center"></td>
                                             <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
-                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>
-                                            <td class="text-center">
+<!--                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>-->
+<!--                                            <td class="text-center">
                                                 <a class="text-heading font-semibold"
                                                    th:href="@{'/superadmin/inventario/estado-reposicion'}">
                                                     Ver estado de reposición
                                                 </a>
-                                            </td>
-                                            <td class="text-end">
+                                            </td>-->
+                                            <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-primary btn-square"
                                                         data-bs-toggle="modal" data-bs-target="#modaActualizar">
                                                     <i class="bi bi-pencil"></i>
