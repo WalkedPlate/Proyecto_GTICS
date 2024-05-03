@@ -208,9 +208,12 @@
                                                 </button>
 
                                                 <button type="button"
-                                                        class="btn btn-sm btn-square btn-danger"
+                                                        class="btn btn-sm btn-square btn-warning"
                                                         data-bs-toggle="modal" th:data-bs-target ="${'#modaBanear'+ obj.index}">
                                                     <i class="bi bi-person-fill-slash"></i>
+                                                </button>
+                                                <button type="button"  class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal" data-bs-target="#eliminar">
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                                 <a href="#" class="btn btn-sm btn-square btn-secondary">
                                                     <i class="bi bi-gear-wide-connected"></i>
@@ -391,6 +394,41 @@
                                 </div>
                             </div>
 
+                            <!--Modal eliminar-->
+                            <div class="modal fade"  id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al administrador de sede seleccionado?</h3>
+                                        </div>
+
+
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#eliminado">Eliminar
+                                            </button>
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Modal eliminado exitaosamente-->
+                            <div class="modal fade" id="eliminado" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h3 class="text-center">Se eliminó al administrador de sede exitosamente.</h3>
+                                        </div>
+                                        <div class="modal-footer mt-3 d-flex justify-content-center">
+
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
