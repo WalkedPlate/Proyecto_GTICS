@@ -125,16 +125,182 @@
                                 <div class="row align-items-center" style="display: flex">
                                     <div class="col-sm-8 col-12 mb-4 mb-sm-0" style="display: flex">
                                         <h3 class="mb-0 ls-tight" style="padding-right: 8px">
-                                            <a class="text-heading" th:href="@{'/administradorsede/ordenes-reposicion'}">
+                                            <a class="text-heading"
+                                               th:href="@{'/administradorsede/ordenes-reposicion'}">
                                                 Ordenes de reposición</a>
-                                        </h3> <h3 class="text-success"> > Nueva orden</h3>
+                                        </h3>
+                                        <h3 class="text-success"> > Nueva orden</h3>
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="card-body table-responsive ">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">ID</th>
+                                            <th scope="col" class="text-center">Imagen</th>
+                                            <th scope="col" class="text-center">Medicina</th>
+                                            <th scope="col" class="text-center">Cantidad</th>
+                                            <th scope="col" class="text-center">Monto Parcial (S/.)</th>
+                                            <th scope="col" class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">123</td>
+                                            <td class="text-center">
+                                                <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                            </td>
+
+                                            <td class="text-center">Paracetamol</td>
+
+                                            <td class="text-center">100</td>
+                                            <td class="text-center"> 50</td>
+                                            <td class="text-center">
+                                                <button type="submit" class="btn btn-sm btn-primary btn-square"
+                                                         data-bs-toggle="modal"
+                                                        data-bs-target="#modalEditar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+
+                                                <button type="submit" class="btn btn-sm btn-danger btn-square">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#inventario">
+                                    Ver inventario
+                                </button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#generarOrden">
+                                    Generar orden
+                                </button>
+                            </div>
+                        </div>
+                        <!--Modal generar orden exitaosamente-->
+                        <div class="modal fade" id="generarOrden" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="container text-center">
+                                        <div class="row row-cols-1">
+                                            <div class="col pt-5 icono">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                    <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                                                </svg>
+                                            </div>
+                                            <div class="col">
+                                                <h3 class="text-center pt-5 pb-5">La orden de reposición se ha generado exitosamente</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="button" class="btn btn-primary "
+                                                data-bs-dismiss="modal">Ok</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Modal agregar medicinas -->
+                        <div class="modal fade" id="inventario" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="text-center">Seleccione una medicina que desee solicitar</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="container table-responsive mb-4">
+                                            <table id="example" class="table table-hover" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="text-center">Id</th>
+                                                        <th scope="col" class="text-center">Medicina</th>
+                                                        <th scope="col" class="text-center">Categoría</th>
+                                                        <th scope="col" class="text-center">Agregar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
+                                                        <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>
+                                                        <td class="text-center medicine-name">
+                                                            <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
+                                                                 class="avatar avatar-sm rounded-circle me-2">
+                                                            <p th:text="${producto.nombre}"></p>
+                                                        </td>
+                                                        <td class="text-center" th:text="${producto.categorias.nombre}"></td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-sm btn-square btn-primary" data-bs-toggle="modal"
+                                                                    data-bs-target="#seleccionarCant">
+                                                                <i class="bi bi-plus-circle"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="row">
+                        <!-- Modal seleccionar cantidad de medicina -->
+                        <div class="modal fade" id="seleccionarCant" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel2" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Introduzca la cantidad que desee solicitar</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="basic-addon1">Paracetamol</span>
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Solicitar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-target="#agregar" data-bs-toggle="modal">Cancelar</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal editar cantidad de medicina -->
+                        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Edite la cantidad solicitada</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text" id="basic-addon1">Paracetamol</span>
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cambiar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<div class="row">
                             <div class="col-xl-7 col-sm-12">
                                 <div class="card shadow border-0 mb-7">
                                     <div class="card-header">
@@ -156,7 +322,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
-                                                    <!--<input type="hidden" class="medicine-id" th:value="${producto.idProductos}">-->
+                                                    &lt;!&ndash;<input type="hidden" class="medicine-id" th:value="${producto.idProductos}">&ndash;&gt;
                                                     <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>
                                                     <td class="text-center medicine-name">
                                                         <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
@@ -194,7 +360,7 @@
 
                                                <li class="list-group-item">
                                                     <p>Ingrese cantidad deseada para cada medicamento:</p>
-                                                    <!--<div class="row">
+                                                    &lt;!&ndash;<div class="row">
                                                         <div class="col-2 text-center">
                                                             <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
                                                                  class="avatar avatar-sm rounded-circl">
@@ -212,7 +378,7 @@
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </div>
-                                                    </div>-->
+                                                    </div>&ndash;&gt;
 
                                                </li>
 
@@ -232,7 +398,7 @@
                             </div>
 
 
-                        </div>
+                        </div>-->
 
 
                     </div>
@@ -248,7 +414,7 @@
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/AdministradorSede/table.js"></script>
+        <script src="/js/Superadmin/table.js"></script>
         <script src="/js/AdministradorSede/nuevaOrden.js"></script>
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
         <script>
