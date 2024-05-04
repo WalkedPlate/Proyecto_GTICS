@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +62,10 @@ public class AdministradorSedeController {
         this.usuariosRepository = usuariosRepository;
     }
 
+
+    //Formatear strings a dates
+    DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
+    DateTimeFormatter formatDateToSring = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     @GetMapping(value ={"/administradorsede"})
@@ -109,31 +119,41 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
-    public String guardarOrdenReposicion(@RequestParam("idProducto") int id,@RequestParam("fechaEntrega") String fechaEntrega,DetallesOrden detallesOrden){
+    public String guardarOrdenReposicion(@RequestParam("idProductos") List<Integer> listIdProductos,@RequestParam("cantidad") List<Integer> listaCantidades){
+
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
 
-        Productos productos = productosRepository.findById(id).get();
-        Integer hola = 5;
-        Optional<Ordenes> ordenes = ordenesRepository.findById(hola);
-        if(ordenes.isPresent()){
-            detallesOrden.setOrdenes(ordenes.get());
+        Ordenes ordenReposicion = new Ordenes();
+        ordenReposicion.setEstadoOrden(estadoOrdenRepository.findById(1).get()); //Estado se configura en pendiente
+        ordenReposicion.setTipoOrden(tipoOrdenRepository.findById(2).get()); // Tipo de orden 2 (de reposición)
+        ordenReposicion.setUsuarios(adminSede);
+        ordenReposicion.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
+
+        ordenReposicion.setCodigo(UUID.randomUUID().toString());
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        ordenReposicion.setFechaRegistro(fechaActual.format(formatDateToSring));
+        LocalDate fechaEntrega = fechaActual.plusDays(20);
+        ordenReposicion.setFechaEntrega(fechaEntrega.format(formatDateToSring));
+
+        ordenesRepository.save(ordenReposicion); // creamos la orden de reposición
+        Ordenes ordenReposicionRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc(); // Recuperamos la orden que acabamos de crear
+
+        int i = 0;
+        for (Integer idProducto : listIdProductos){
+
+            DetallesOrden detallesOrden = new DetallesOrden();
+            detallesOrden.setCantidad(listaCantidades.get(i));
+            detallesOrden.setOrdenes(ordenReposicionRecuperada);
+            Productos producto = productosRepository.findById(idProducto).get();
+            detallesOrden.setProductos(producto);
+            detallesOrden.setMontoParcial(producto.getPrecio() * listaCantidades.get(i)); // Calculamos el monto parcial de cada "detalle_orden"
+            detallesOrdenRepository.save(detallesOrden);
+            i++;
         }
-        else{
-            System.out.println("hola");
-        }
-        Ordenes orden1 = new Ordenes();
-        orden1.setIdordenes(6);
-        detallesOrden.setOrdenes(orden1);
-        detallesOrden.setProductos(productos);
+        ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
+        ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
 
-
-        /*detallesOrden.getOrdenes().setUsuarios(adminSede);
-        detallesOrden.getOrdenes().getTipoOrden().setIdTipoOrden(2);
-        detallesOrden.getOrdenes().setCodigo("0494870");
-        detallesOrden.getOrdenes().setFechaEntrega(fechaEntrega);*/
-
-        detallesOrdenRepository.save(detallesOrden);
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 
@@ -271,6 +291,10 @@ private boolean isValidEmail(String email) {
         boolean valido = orden.getTipoOrden().getIdTipoOrden() == tipo_orden_idtipo_orden;
         return valido;
     }
+
+
+
+
 
 
 }

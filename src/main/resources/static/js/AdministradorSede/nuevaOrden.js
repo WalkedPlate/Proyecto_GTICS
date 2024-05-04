@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
             newItem.dataset.productId = medicineId;
             newItem.innerHTML = `
                 <div class="row">
+                
+                    <input type="hidden" value="${medicineId}" name="idProductos">
                     <div class="col-1 d-flex justify-content align-items-center">
                         <p>${medicineId}</p>
                     </div>
@@ -61,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p>${medicineName}</p>
                     </div>
                     <div class="col-3">
-                        <input class="form-control form-control-sm required" type="number" placeholder="Cant.">
+                        <input class="form-control form-control-sm required" type="number" placeholder="Cant." name="cantidad">
                     </div>
                     <div class="col-2 text-center">
                         <button type="button" class="btn btn-sm btn-square btn-danger btn-remove">
