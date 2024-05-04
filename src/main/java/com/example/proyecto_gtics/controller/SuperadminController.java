@@ -169,7 +169,22 @@ public class SuperadminController {
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(doctores,estado);
         model.addAttribute("listaDoctores",listaDoctores);
+
+        List<Sedes> listaSedes = sedesRepository.findAll();
+        model.addAttribute("listaSedes",listaSedes);
         return "Superadmin/doctores";
+    }
+
+    @PostMapping(value = {"/superadmin/guardarDoctor"})
+    public String guardarDoctor(Usuarios doctor,@RequestParam("idSede") int idSede){
+        doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+        doctor.setContrasena("Temporal_password");
+        doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
+
+        Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
+        doctor.setSedes(sede);//Asignamos la sede
+        usuariosRepository.save(doctor);
+        return "redirect:/superadmin/doctores";
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})
