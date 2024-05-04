@@ -86,8 +86,8 @@ public class SuperadminController {
         return "redirect:/superadmin/administradores-sede";
     }
 
-    @PostMapping("/superadmin/borrarAdminSede")
-    public String borrarAdminSede(@RequestParam("idSuperAdmin") Integer id){
+    @PostMapping("/superadmin/eliminarAdminSede")
+    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id){
         Optional<Usuarios> optSede =usuariosRepository.findById(id);
         Usuarios adminSede = usuariosRepository.findByIdUsuario(id);
         if(optSede.isPresent()){
@@ -144,6 +144,7 @@ public class SuperadminController {
         model.addAttribute("listaFarmacistas",listaFarmacistas);
         return "Superadmin/soliFarmacistas";
     }
+
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
     public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){
