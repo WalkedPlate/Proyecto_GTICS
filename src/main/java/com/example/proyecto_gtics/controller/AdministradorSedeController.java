@@ -117,6 +117,10 @@ public class AdministradorSedeController {
 
         return "AdministradorSede/verOrdenReposicion";
     }
+    @GetMapping(value={"/administradorsede/editarOrden"})
+    public String editarOrden(){
+        return "AdministradorSede/editarOrden";
+    }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
     public String guardarOrdenReposicion(@RequestParam("idProductos") List<Integer> listIdProductos,@RequestParam("cantidad") List<Integer> listaCantidades){
