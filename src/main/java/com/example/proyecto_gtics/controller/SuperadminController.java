@@ -132,6 +132,9 @@ public class SuperadminController {
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista, estado);
         model.addAttribute("listaFarmacistas", listaFarmacistas);
+
+        List<Sedes> listaSedes = sedesRepository.findAll();
+        model.addAttribute("listaSedes",listaSedes);
         return "Superadmin/farmacistas";
     }
 
@@ -143,6 +146,20 @@ public class SuperadminController {
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
         model.addAttribute("listaFarmacistas",listaFarmacistas);
         return "Superadmin/soliFarmacistas";
+    }
+
+    @PostMapping(value = {"/superadmin/guardarfarmacista"})
+    public String guardarFarmacistas(Usuarios farmacista,@RequestParam("idSedes") int idSede){
+        Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
+        if(farma.isPresent()){
+            farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            farmacista.setContrasena(usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()).getContrasena());
+            farmacista.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+            Sedes sedes = sedesRepository.findById(idSede).get();
+            farmacista.setSedes(sedes);
+            usuariosRepository.save(farmacista);
+        }
+        return "redirect:/superadmin/farmacistas";
     }
 
 

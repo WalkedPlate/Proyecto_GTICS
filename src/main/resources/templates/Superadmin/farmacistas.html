@@ -111,7 +111,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="farmacista : ${listaFarmacistas}">
+                                        <tr th:each="farmacista,obj : ${listaFarmacistas}">
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg"
                                                      class="avatar avatar-sm rounded-circle me-2">
@@ -130,7 +130,7 @@
                                             <td class="text-end">
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
 
@@ -150,7 +150,7 @@
                             </div>
 
                             <!-- Modal Actualizar -->
-                            <div class="modal fade" id="modaActualizar" tabindex="-1"
+                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog  modal-lg">
                                     <div class="modal-content">
@@ -159,48 +159,53 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
+                                        <form method="post" th:action="@{/superadmin/guardarfarmacista}">
                                         <div class="modal-body row">
-
+                                            <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Jason Martinez">
+                                                    <input id="nombre" type="text" class="form-control"
+                                                           name="nombre" th:value="${farmacista.nombre}">
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="correo">Correo:</label>
-                                                    <input type="email" class="form-control"
-                                                           placeholder="Jason Martinez">
+                                                    <input id="correo" type="email" class="form-control"
+                                                           name="correo" th:value="${farmacista.correo}">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="dni">DNI:</label>
-                                                    <input type="number" class="form-control" placeholder="12345678">
+                                                    <input id="dni" type="number" class="form-control" name="dni" th:value="${farmacista.dni}">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="distrito">Código (colegio médico)</label>
-                                                    <input type="number" class="form-control" placeholder="0000000">
+                                                    <label for="codigo">Código (colegio médico)</label>
+                                                    <input id="codigo" type="number" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input type="text" class="form-control" placeholder="Jesús María">
+                                                    <input id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}">
                                                 </div>
                                                 <div class="col">
                                                     <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select">
-                                                        <option selected>San Miguel 1</option>
-                                                        <option>San Miguel 2</option>
-                                                        <option>San Miguel 3</option>
-                                                        <option>San Miguel 4</option>
-                                                        <option>San Miguel 5</option>
+                                                    <select id="sede" class="form-select" name="idSedes">
+                                                        <option th:value="${farmacista.sedes.idSedes}"
+                                                                th:text="${farmacista.sedes.nombre}"
+                                                                th:selected="${true}"
+                                                        ></option>
+                                                        <option th:each="sede : ${listaSedes}"
+                                                                th:if="${farmacista.sedes.nombre != sede.nombre}"
+                                                                th:value="${sede.idSedes}"
+                                                                th:text="${sede.nombre}"
+                                                        ></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -208,13 +213,14 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#actualizar">Actualizar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
