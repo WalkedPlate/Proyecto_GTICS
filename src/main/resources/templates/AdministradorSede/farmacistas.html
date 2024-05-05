@@ -196,6 +196,7 @@
                             <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
                             <div class="modal-body row">
                                 <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
+                                <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
                                 <div class="row pt-3">
                                     <div class="col">
                                         <label >Nombre:</label>

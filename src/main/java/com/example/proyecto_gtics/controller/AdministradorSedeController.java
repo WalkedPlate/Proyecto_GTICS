@@ -228,12 +228,22 @@ public class AdministradorSedeController {
             return "redirect:/administradorsede/farmacistas";
         }
 
-        usuarios.setSedes(sedes);
-        usuarios.setContrasena("Temporal_password");
-        usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
-        usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
-        usuariosRepository.save(usuarios);
-        attr.addFlashAttribute("msg","Farmacista creado exitosamente");
+        if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
+            usuarios.setSedes(sedes);
+            usuarios.setContrasena("Temporal_password");
+            usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+            usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+            usuariosRepository.save(usuarios);
+            attr.addFlashAttribute("msg","Farmacista creado exitosamente");
+        }
+        else {   // Caso Actualizar farmacista
+            usuarios.setSedes(sedes);
+            usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
+            usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+            usuariosRepository.save(usuarios);
+            attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
+        }
+
         return "redirect:/administradorsede/farmacistas";
     }
 
