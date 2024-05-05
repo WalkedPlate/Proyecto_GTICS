@@ -162,6 +162,17 @@ public class SuperadminController {
         return "redirect:/superadmin/farmacistas";
     }
 
+    @PostMapping(value = {"/superadmin/eliminarfarmacistas"})
+    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id){
+        Optional<Usuarios> optSede =usuariosRepository.findById(id);
+        Usuarios farmacista = usuariosRepository.findByIdUsuario(id);
+        if(optSede.isPresent()){
+            farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
+            usuariosRepository.save(farmacista);
+        }
+        return "redirect:/superadmin/farmacistas";
+    }
+
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
     public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){

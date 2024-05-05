@@ -136,7 +136,7 @@
 
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#modaEliminar">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaEliminar'+ obj.index}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                                 <a href="#" class="btn btn-sm btn-square btn-secondary">
@@ -226,7 +226,7 @@
                             </div>
 
                             <!-- Modal Eliminar -->
-                            <div class="modal fade" id="modaEliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaEliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content text-center">
@@ -234,14 +234,17 @@
                                         <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al
                                             farmacista seleccionado?</h3>
                                         </div>
+                                        <form method="post" th:action="@{/superadmin/eliminarfarmacistas}">
+                                        <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#eliminar">Eliminar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
