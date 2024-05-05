@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,7 +97,20 @@ public class SuperadminController {
             //usuariosRepository.deleteById(id);
         }
         return "redirect:/superadmin/administradores-sede";
+    }
 
+    @PostMapping(value = {"/superadmin/banearAdminSede"})
+    public String banearAdminSede(@RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede){
+        Date fechaActual = new Date();
+        Usuarios adminSede = usuariosRepository.findByIdUsuario(idAdminSede);
+        Optional<Usuarios> optSede =usuariosRepository.findById(idAdminSede);
+        if(optSede.isPresent()){
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
+            adminSede.setDiasBan(diasBan);
+            adminSede.setFechaBan(fechaActual);
+            usuariosRepository.save(adminSede);
+        }
+        return "redirect:/superadmin/administradores-sede";
     }
 
     @GetMapping(value ={"/superadmin/inventario"})
@@ -172,7 +186,6 @@ public class SuperadminController {
         }
         return "redirect:/superadmin/farmacistas";
     }
-
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
     public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){

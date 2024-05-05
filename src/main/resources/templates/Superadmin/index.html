@@ -311,7 +311,8 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" th:action="@{/superadmin/borrarAdminSede}">
+                                        <form method="post" th:action="@{/superadmin/banearAdminSede}">
+                                        <input type="hidden" th:value="${adminSede.idUsuario}" name="idAdminSede">
                                         <div class="modal-body row">
 
                                             <div class="row pt-3">
