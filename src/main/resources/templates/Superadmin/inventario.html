@@ -66,7 +66,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/login'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                                 </a>
                             </li>
                         </ul>
@@ -82,9 +82,9 @@
                             <div class="row align-items-center">
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
-                                    <h1 class="h2 mb-0 ls-tight">
+                                    <h2 class="mb-0 ls-tight">
                                         <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary">S.Admin.Robert Harry</span></h1>
+                                            class="text-primary">S.Admin.Robert Harry</span></h2>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-sm-end">
@@ -92,9 +92,9 @@
                                         <a th:href="@{'/superadmin/perfil'}"
                                            class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-person-gear"></i>
                                     </span>
-                                            <span>Editar perfil</span>
+                                            <span>Mi perfil</span>
                                         </a>
                                     </div>
                                 </div>
@@ -361,7 +361,7 @@
                                             <th scope="col" class="text-center">Imagen</th>
                                             <th scope="col" class="text-center">Medicina</th>
                                             <th scope="col" class="text-center">Cantidad Disponible</th>
-                                            <th scope="col" class="text-center">Precio x Unid.</th>
+                                            <th scope="col" class="text-center">Precio x Unid. (S/.)</th>
                                             <th scope="col" class="text-center">Categoria</th>
 <!--                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>-->
 <!--                                            <th scope="col" class="text-center">Estado</th>-->
@@ -376,8 +376,7 @@
 
                                             </td>
                                             <td>
-                                                <p th:text="${medicamento.nombre}" class="text-heading font-semibold text-uppercase text-center"
-                                                   href="#"></p>
+                                                <p th:text="${medicamento.nombre}" class="text-heading font-semibold text-uppercase text-center"></p>
                                             </td>
                                             <td class="text-center">
                                                 100

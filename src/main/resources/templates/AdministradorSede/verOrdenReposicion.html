@@ -10,12 +10,27 @@
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
         <style>
             .page-item.active .page-link {
                 z-index: 3;
                 color: #fff;
                 background-color: #94a6b3;
                 border-color: #94a6b3;
+            }
+            /* Estilos para el icono del doctor */
+            .material-symbols-outlined {
+                font-size: 20px;
+                margin-left: -2px;
+                font-variation-settings:
+                        'FILL' 0,
+                        'wght' 200,
+                        'GRAD' 0,
+                        'opsz' 24
+            }
+            .navbar-vertical.navbar-light .navbar-nav .nav-link i, .navbar-vertical.navbar-light .navbar-nav .nav-link svg{
+                display: flex;
             }
         </style>
     </head>
@@ -54,33 +69,28 @@
                             <li class="nav-item">
                                 <a class="nav-link" style="background: #F5F9FC"
                                    th:href="@{'/administradorsede/ordenes-reposicion'}">
-                                    <i class="bi bi-bag-plus btn" role="button" data-bs-toggle="button"></i> Ordenes de
-                                    Reposicion
+                                    <i class="bi bi-bag-plus btn" role="button" data-bs-toggle="button"></i> Órdenes de reposición
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/administradorsede/doctores'}">
-                                    <i class="bi bi-people"></i> Doctores
+                                    <i><span class="material-symbols-outlined">stethoscope</span></i> Doctores
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/administradorsede/farmacistas'}">
-                                    <i class="bi bi-people"></i> Farmacistas
+                                    <i class="bi bi-people"></i>Farmacistas
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/administradorsede/medicinas'}">
-                                    <i class="bi bi-people"></i> Medicinas
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{'/administradorsede/perfil'}">
-                                    <i class="bi bi-people"></i> Perfil
+                                    <i class="bi bi-capsule"></i> Medicinas
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{'/login'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                                 </a>
                             </li>
                         </ul>
@@ -97,7 +107,8 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
-                                        Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span>
+                                        <img src="/img/AdministradorSede/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary">Admin de Sede Javier Marroquin</span>
                                     </h2>
                                 </div>
                                 <!-- Actions -->
@@ -106,9 +117,9 @@
                                         <a th:href="@{'/administradorsede/perfil'}"
                                            class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-person-gear"></i>
                                     </span>
-                                            <span>Editar perfil</span>
+                                            <span>Mi perfil</span>
                                         </a>
                                     </div>
                                 </div>
@@ -127,7 +138,7 @@
                                         <h3 class="mb-0 ls-tight" style="padding-right: 8px">
                                             <a class="text-heading"
                                                th:href="@{'/administradorsede/ordenes-reposicion'}">
-                                                Ordenes de reposición</a>
+                                                Órdenes de reposición</a>
                                         </h3>
                                         <h3 class="text-success" th:text="'N° ' +  ${ordenReposicion.codigo}"></h3>
                                     </div>

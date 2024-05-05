@@ -264,7 +264,15 @@ public class AdministradorSedeController {
         return "AdministradorSede/perfil";
     }
 
+    @GetMapping(value ={"/administradorsede/editar-perfil"})
+    public String editarPerfil(){
+        return "AdministradorSede/editarPerfil";
+    }
 
+    @GetMapping(value ={"/administradorsede/cambiar-contra"})
+    public String cambiarContra(){
+        return "AdministradorSede/cambiarContra";
+    }
 
 
 

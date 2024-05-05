@@ -10,12 +10,28 @@
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <style>
+        /* Estilos personalizados para los botones de paginación */
         .page-item.active .page-link {
             z-index: 3;
             color: #fff;
             background-color: #94a6b3;
             border-color: #94a6b3;
+        }
+        /* Estilos para el icono del doctor */
+        .material-symbols-outlined {
+            font-size: 20px;
+            margin-left: -2px;
+            font-variation-settings:
+                    'FILL' 0,
+                    'wght' 200,
+                    'GRAD' 0,
+                    'opsz' 24
+        }
+        .navbar-vertical.navbar-light .navbar-nav .nav-link i, .navbar-vertical.navbar-light .navbar-nav .nav-link svg{
+            display: flex;
         }
     </style>
 </head>
@@ -50,13 +66,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="background: #F5F9FC" th:href="@{'/administradorsede/ordenes-reposicion'}">
-                                <i class="bi bi-bag-plus btn" role="button" data-bs-toggle="button"></i> Ordenes de
-                                Reposicion
+                                <i class="bi bi-bag-plus btn" role="button" data-bs-toggle="button"></i> Órdenes de reposición
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{'/administradorsede/doctores'}">
-                                <i class="bi bi-people"></i> Doctores
+                                <i><span class="material-symbols-outlined">stethoscope</span></i> Doctores
                             </a>
                         </li>
                         <li class="nav-item">
@@ -76,7 +91,7 @@
                         </li>-->
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{'/login'}">
-                                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                             </a>
                         </li>
                     </ul>
@@ -93,7 +108,9 @@
                             <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                 <!-- Title -->
                                 <h2 class="mb-0 ls-tight">
-                                    Bienvenido, <span class="text-primary">Admin. de Sede Javier Marroquin</span></h2>
+                                    <img src="/img/AdministradorSede/profile-3.jpeg" width="40"> Bienvenido, <span
+                                        class="text-primary">Admin de Sede Javier Marroquin</span>
+                                </h2>
                             </div>
                             <!-- Actions -->
                             <div class="col-sm-4 col-12 text-end">
@@ -101,9 +118,9 @@
                                     <a th:href="@{'/administradorsede/perfil'}"
                                        class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-person-gear"></i>
                                     </span>
-                                        <span>Editar perfil</span>
+                                        <span>Mi perfil</span>
                                     </a>
                                 </div>
                             </div>
@@ -119,7 +136,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div  class="col-sm-8 col-12 mb-4 mb-sm-0">
-                                    <h3 class="mb-0 ls-tight">Ordenes de Reposición</h3>
+                                    <h3 class="mb-0 ls-tight">Órdenes de reposición</h3>
                                 </div>
 
                                 <div class="col-sm-4 col-12 d-flex align-items-center justify-content-end">
@@ -238,7 +255,8 @@
                                         <td class="text-center" th:text="${ordenRepo.monto}"></td>
                                         <td class="text-center">
                                             <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">
-                                                <button type="button" class="btn btn-sm btn-square btn-primary">
+<!--                                                <button type="button" class="btn btn-sm btn-square btn-primary"  data-bs-toggle="modal" data-bs-target="#verOrden">-->
+                                                <button type="button" class="btn btn-sm btn-square btn-primary" >
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </a>
@@ -253,6 +271,47 @@
                             </table>
                         </div>
 
+                        <!-- Modal ver orden -->
+                        <div class="modal fade" id="verOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">ID</th>
+                                                        <th class="text-center">Imagen</th>
+                                                        <th class="text-center">Nombre Producto</th>
+                                                        <th class="text-center">Cantidad</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">123</td>
+                                                        <td class="text-center">
+                                                            <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                                        </td>
+                                                        <td class="text-center">Paracetamol</td>
+                                                        <td class="text-center">100</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <a type="button" th:href="@{'/administradorsede/editarOrden'}" class="btn  btn-warning"> Editar</a>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Modal Eliminar -->
                         <div class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel"
