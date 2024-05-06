@@ -136,7 +136,7 @@
 
                             </div>
                             <!-- Modal agregar -->
-                            <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" id ="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -148,62 +148,66 @@
                                                     aria-label="Close"></button>
                                         </div>
 
+                                        <form method="post" th:action="@{/superadmin/guardarProducto}">
+                                            <input type="hidden" name="IDProducto" value="0">
                                         <div class="modal-body row">
 
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control"
+                                                    <label>Nombre:</label>
+                                                    <input name="nombre" type="text" class="form-control"
                                                            placeholder="Coloca su nombre">
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="imagen">Subir imagen:</label>
+                                                    <label>Subir imagen:</label>
                                                     <input type="file" class="form-control">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Cantidad:</label>
+                                                    <label>Cantidad:</label>
                                                     <input type="number" class="form-control"
                                                            placeholder="Coloca la cantidad de medicamentos">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="precio">Precio (s/.):</label>
-                                                    <input type="number" class="form-control"
+                                                    <label>Precio (s/.):</label>
+                                                    <input name="precio" type="number" class="form-control"
                                                            placeholder="Coloca el precio del medicamento">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Categoria:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Antiflamatorio/Vitamina/etc">
+                                                    <label>Categoria:</label>
+                                                    <select name="idCategoria" class="form-select">
+                                                        <option selected disabled>--Ingresa una categoria--</option>
+                                                        <option th:each="categoria : ${listaCategorias}" th:text="${categoria.nombre}" th:value="${categoria.idCategorias}"></option>
+                                                    </select>
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="precio">Fecha de vencimiento:</label>
-                                                    <input type="date" class="form-control"
+                                                    <label>Fecha de vencimiento:</label>
+                                                    <input name="fechaVencimiento" type="date" class="form-control"
                                                            placeholder="Ingresa la fecha del vencimiento">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Descripción:</label>
-                                                    <textarea name="" class="form-control" id="cantidad" cols="30"
+                                                    <label>Descripción:</label>
+                                                    <textarea name="descripcion" class="form-control" cols="30"
                                                               rows="10"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Seleccione las sedes que pueden visualizar el
+                                                    <label>Seleccione las sedes que pueden visualizar el
                                                         producto:</label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
@@ -214,25 +218,11 @@
                                                                 <label class="form-check-label" for="checkTodos">Marcar
                                                                     todos</label>
                                                             </div>
-                                                            <div class="form-check">
+                                                            <div class="form-check" th:each="sede : ${listaSedes}">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede1" name="sedes" value="2">
-                                                                <label class="form-check-label" for="checkSede1">Sede
-                                                                    1</label>
+                                                                       name="idSedes" th:value="${sede.idSedes}">
+                                                                <label class="form-check-label" th:text="${sede.nombre}"></label>
                                                             </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede2" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede2">Sede
-                                                                    2</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede3" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede3">Sede
-                                                                    3</label>
-                                                            </div>
-                                                            <!-- Agregar más sedes según sea necesario -->
                                                         </div>
                                                         <div class="col-sm-3">
 
@@ -262,62 +252,7 @@
                                                             </div>
                                                             <!-- Agregar más sedes según sea necesario -->
                                                         </div>
-                                                        <div class="col-sm-3">
 
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede8" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede8">Sede
-                                                                    8</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede9" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede9">Sede
-                                                                    9</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede10" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede10">Sede
-                                                                    10</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede11" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede11">Sede
-                                                                    11</label>
-                                                            </div>
-                                                            <!-- Agregar más sedes según sea necesario -->
-                                                        </div>
-                                                        <div class="col-sm-3">
-
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede12" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede12">Sede
-                                                                    12</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede13" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede13">Sede
-                                                                    13</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede14" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede14">Sede
-                                                                    14</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede15" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede15">Sede
-                                                                    15</label>
-                                                            </div>
-                                                            <!-- Agregar más sedes según sea necesario -->
-                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -326,13 +261,14 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#agregar">Agregar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -369,7 +305,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="medicamento : ${listaMedicamentos}">
+                                        <tr th:each="medicamento,obj : ${listaMedicamentos}">
                                             <td class="text-center">
                                                 <img alt="..." src="/img/Superadmin/medicina1.jpg"
                                                      class="avatar avatar-sm rounded-circle me-2">
@@ -392,11 +328,11 @@
                                             </td>-->
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-primary btn-square"
-                                                        data-bs-toggle="modal" data-bs-target="#modaActualizar">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger btn-square"
-                                                        data-bs-toggle="modal" data-bs-target="#modaBanear">
+                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaBanear'+ obj.index}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </td>
@@ -405,7 +341,7 @@
                                 </table>
                             </div>
                             <!-- Modal editar -->
-                            <div class="modal fade" id="modaActualizar" tabindex="-1"
+                            <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -416,17 +352,21 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body row">
 
+                                        <form method="post" th:action="@{/superadmin/guardarProducto}">
+                                            <input type="hidden" name="IDProducto" th:value="${medicamento.idProductos}" >
+                                            <input type="hidden" name="idProductos" th:value="${medicamento.idProductos}">
+                                            <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
+                                        <div class="modal-body row">
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label for="nombre">Medicina:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Coloca su nombre">
+                                                    <label>Medicina:</label>
+                                                    <input name="nombre" type="text" class="form-control"
+                                                           th:value="${medicamento.nombre}">
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="imagen">Subir imagen:</label>
+                                                    <label>Subir imagen:</label>
                                                     <input type="file" class="form-control">
                                                 </div>
                                             </div>
@@ -435,69 +375,82 @@
                                                 <div class="col">
                                                     <label for="cantidad">Cantidad:</label>
                                                     <input type="number" class="form-control"
-                                                           placeholder="Coloca la cantidad de medicamentos">
+                                                           value="100">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="precio">Precio (s/.):</label>
-                                                    <input type="number" class="form-control"
-                                                           placeholder="Coloca el precio del medicamento">
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="cantidad">Categoria:</label>
-                                                    <input type="text" class="form-control"
-                                                           placeholder="Antiflamatorio/Vitamina/etc">
-                                                </div>
-
-
-                                                <div class="col">
-                                                    <label for="precio">Fecha de vencimiento:</label>
-                                                    <input type="date" class="form-control"
-                                                           placeholder="Ingresa la fecha del vencimiento">
+                                                    <label>Precio (s/.):</label>
+                                                    <input name="precio" type="number" class="form-control"
+                                                           th:value="${medicamento.precio}">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Descripción:</label>
-                                                    <textarea name="" class="form-control" id="cantidad" cols="30"
-                                                              rows="10"></textarea>
+                                                    <label>Categoria:</label>
+                                                    <select class="form-select" name="idCategoria">
+                                                        <option th:value="${medicamento.categorias.idCategorias}"
+                                                                th:text="${medicamento.categorias.nombre}"
+                                                                th:selected="${true}"
+                                                        ></option>
+                                                        <option th:each="categoria : ${listaCategorias}"
+                                                                th:if="${medicamento.categorias.nombre != categoria.nombre}"
+                                                                th:value="${categoria.idCategorias}"
+                                                                th:text="${categoria.nombre}"
+                                                        ></option>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col">
+                                                    <label>Fecha de vencimiento:</label>
+                                                    <input name="fechaVencimiento" type="date" class="form-control"
+                                                           th:value="${medicamento.fechaVencimiento}">
+                                                </div>
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label>Descripción:</label>
+                                                    <textarea name="descripcion" class="form-control" cols="30"
+                                                              rows="10" th:text="${medicamento.descripcion}"></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#actualizar">Actualizar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Modal elminar -->
-                            <div class="modal fade" id="modaBanear" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}" th:id ="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
+                                        <form method="post" th:action="@{/superadmin/eliminarProducto}">
+                                            <input type="hidden" name="idProducto" th:value="${medicamento.idProductos}">
                                         <div class="modal-header">
                                             <h3 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro
                                                 que desea eliminar este producto?</h3>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
                                                     data-bs-target="#elimar">Eliminar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
                                             </button>
                                         </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

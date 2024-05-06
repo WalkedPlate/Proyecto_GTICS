@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Controller
 public class SuperadminController {
@@ -116,9 +117,52 @@ public class SuperadminController {
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model){
 
-        List<Productos> listaMedicamentos = productosRepository.findAll();
+        List<Productos> listaMedicamentos = productosRepository.findByEstadoProducto("Activo");
+        //List<Productos> listaMedicamentos = productosRepository.findAll();
         model.addAttribute("listaMedicamentos",listaMedicamentos);
+
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias",listaCategorias);
+
+        List<Sedes> listaSedes = sedesRepository.findAll();
+        model.addAttribute("listaSedes",listaSedes);
         return "Superadmin/inventario";
+    }
+
+    @PostMapping(value = {"/superadmin/guardarProducto"})
+    public String guardarProducto(Productos productos,@RequestParam("idCategoria") int idCategoria,@RequestParam("IDProducto") int idProducto){
+        Optional<Productos> optProducto =productosRepository.findById(idProducto);
+        if(optProducto.isPresent()){
+            Categorias categoria = categoriasRepository.findById(idCategoria).get();
+            productos.setCategorias(categoria);
+            productos.setEstadoProducto("Activo");
+            productosRepository.save(productos);
+        }else{
+            //-----------Procesamiento de creacion de codigo de producto--------
+            Random random = new Random();
+            String letras = productos.getNombre().substring(0,3).toUpperCase();
+            int numero = random.nextInt(900)+100;
+            String codigo = letras + numero;
+            //------------------------------------------------------------------
+
+            productos.setCodigo(codigo);
+            Categorias categoria = categoriasRepository.findById(idCategoria).get();
+            productos.setCategorias(categoria);
+            productos.setEstadoProducto("Activo");
+            productosRepository.save(productos);
+        }
+        return "redirect:/superadmin/inventario";
+    }
+
+    @PostMapping(value = {"/superadmin/eliminarProducto"})
+    public String eliminarProducto(@RequestParam("idProducto") int idProducto){
+        Optional<Productos> optProduc =productosRepository.findById(idProducto);
+        Productos producto = productosRepository.findById(idProducto).get();
+        if(optProduc.isPresent()){
+            producto.setEstadoProducto("Eliminado");
+            productosRepository.save(producto);
+        }
+        return "redirect:/superadmin/inventario";
     }
 
     @GetMapping(value ={"/superadmin/inventario/estado-reposicion"})

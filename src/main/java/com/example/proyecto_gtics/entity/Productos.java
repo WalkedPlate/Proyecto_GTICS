@@ -39,6 +39,9 @@ public class Productos {
     private float precio;
 
     @ManyToOne
-    @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)
+    @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario")
     private PreferenciasUsuario preferenciasUsuario;
+
+    @Column(name = "estado_producto",nullable = false)
+    private String estadoProducto;
 }
