@@ -16,4 +16,9 @@ public interface DetallesOrdenRepository extends JpaRepository<DetallesOrden,Int
     @Query(value = "SELECT sum(monto_parcial) FROM proyecto_gtics.detalles_orden where ordenes_idordenes = ?1", nativeQuery = true)
     Float calcularMontoTotal(Integer idOrden);
 
+    /*@Query(value = "select detalles_orden.cantidad, ordenes.tipo_orden_idtipo_orden as id_tipo_orden, ordenes_idordenes as id_orden ,productos.nombre,productos.foto,productos.codigo \n" +
+            "from detalles_orden \n" +
+            "inner join ordenes on detalles_orden.ordenes_idordenes = ordenes.idordenes and ordenes.tipo_orden_idtipo_orden=?1 \n" +
+            "inner join productos on detalles_orden.productos_idproductos=productos.idproductos;",nativeQuery = true)
+    List<DetallesOrdenPorOrdenDto> obtenerDetallesOrdenesPorTipoOrden(int idTipoOrden);*/
 }

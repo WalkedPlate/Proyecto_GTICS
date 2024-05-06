@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class SuperadminController {
@@ -176,9 +173,23 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/orden-reposicion"})
-    public String ordenReposicion(){
+    public String ordenReposicion(Model model){
+        Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrden(tipoOrden);
+        model.addAttribute("listaOrdenes",listaOrdenes);
+
+        List<List<DetallesOrden>> listaDetallesOrden = new ArrayList<>();
+
+        for(Ordenes ordenes : listaOrdenes ){
+            List<DetallesOrden> lista = detallesOrdenRepository.findByOrdenes(ordenes);
+            listaDetallesOrden.add(lista);
+        }
+        model.addAttribute("listaDetallesDoble",listaDetallesOrden);
+
         return "Superadmin/ordenReposicion";
     }
+
+
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
     public String solicitudesReposicion(){
         return "Superadmin/soliReposicion";
