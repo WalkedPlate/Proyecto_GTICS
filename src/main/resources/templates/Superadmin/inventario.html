@@ -151,15 +151,8 @@
                                         <form method="post" th:action="@{/superadmin/guardarProducto}">
                                             <input type="hidden" name="IDProducto" value="0">
                                         <div class="modal-body row">
-
                                             <div class="row pt-3">
-                                                <div class="col">
-                                                    <label>Nombre:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                           placeholder="Coloca su nombre">
-                                                </div>
-
-                                                <div class="col">
+                                                   <div class="col">
                                                     <label>Subir imagen:</label>
                                                     <input type="file" class="form-control">
                                                 </div>
@@ -167,16 +160,16 @@
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label>Cantidad:</label>
-                                                    <input type="number" class="form-control"
-                                                           placeholder="Coloca la cantidad de medicamentos">
+                                                    <label>Nombre:</label>
+                                                    <input name="nombre" type="text" class="form-control"
+                                                           placeholder="Ingrese el nombre del medicamento">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label>Precio (s/.):</label>
+                                                    <label>Precio (S/.):</label>
                                                     <input name="precio" type="number" class="form-control"
-                                                           placeholder="Coloca el precio del medicamento">
+                                                           placeholder="Ingrese el precio del medicamento">
                                                 </div>
                                             </div>
 
@@ -184,7 +177,7 @@
                                                 <div class="col">
                                                     <label>Categoria:</label>
                                                     <select name="idCategoria" class="form-select">
-                                                        <option selected disabled>--Ingresa una categoria--</option>
+                                                        <option selected disabled>--Ingrese una categoria--</option>
                                                         <option th:each="categoria : ${listaCategorias}" th:text="${categoria.nombre}" th:value="${categoria.idCategorias}"></option>
                                                     </select>
                                                 </div>
@@ -210,47 +203,35 @@
                                                     <label>Seleccione las sedes que pueden visualizar el
                                                         producto:</label>
                                                     <div class="row">
-                                                        <div class="col-sm-3">
+                                                        <div class="col">
                                                             <!-- Lista de sedes con checkboxes agrupadas -->
-                                                            <div class="form-check">
+                                                            <!--<div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                        id="checkTodos" onclick="marcarTodos()">
                                                                 <label class="form-check-label" for="checkTodos">Marcar
                                                                     todos</label>
+                                                            </div>-->
+                                                            <!-- Agrupar las sedes en 4 columnas -->
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                               id="checkTodos" onclick="marcarTodos()">
+                                                                        <label class="form-check-label" for="checkTodos">Marcar
+                                                                            todos</label>
+                                                                    </div>
+                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index < 5}">
+                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
+                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index >= 5 and iterStat.index < 10}">
+                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
+                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="form-check" th:each="sede : ${listaSedes}">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       name="idSedes" th:value="${sede.idSedes}">
-                                                                <label class="form-check-label" th:text="${sede.nombre}"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede4" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede4">Sede
-                                                                    4</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede5" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede5">Sede
-                                                                    5</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede6" name="sedes" value="13">
-                                                                <label class="form-check-label" for="checkSede6">Sede
-                                                                    6</label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkSede7" name="sedes" value="14">
-                                                                <label class="form-check-label" for="checkSede7">Sede
-                                                                    7</label>
-                                                            </div>
-                                                            <!-- Agregar más sedes según sea necesario -->
                                                         </div>
 
                                                     </div>
@@ -359,11 +340,7 @@
                                             <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
                                         <div class="modal-body row">
                                             <div class="row pt-3">
-                                                <div class="col">
-                                                    <label>Medicina:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                           th:value="${medicamento.nombre}">
-                                                </div>
+
 
                                                 <div class="col">
                                                     <label>Subir imagen:</label>
@@ -373,14 +350,14 @@
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="cantidad">Cantidad:</label>
-                                                    <input type="number" class="form-control"
-                                                           value="100">
+                                                    <label>Medicina:</label>
+                                                    <input name="nombre" type="text" class="form-control"
+                                                           th:value="${medicamento.nombre}">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label>Precio (s/.):</label>
+                                                    <label>Precio (S/.):</label>
                                                     <input name="precio" type="number" class="form-control"
                                                            th:value="${medicamento.precio}">
                                                 </div>
@@ -504,11 +481,9 @@
             new DataTable('#example');
         </script>
         <script>
-            // Función para marcar o desmarcar todos los checkboxes
             function marcarTodos() {
-                var checkboxes = document.getElementsByName('sedes');
+                var checkboxes = document.getElementsByName('idSedes');
                 var checkTodos = document.getElementById('checkTodos');
-
                 for (var i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = checkTodos.checked;
                 }
