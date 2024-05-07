@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -210,8 +211,9 @@ public class AdministradorSedeController {
             return "redirect:/administradorsede/farmacistas";
         }
 
+
         // Validación del nombre
-        if (usuarios.getNombre() == null || usuarios.getNombre().isEmpty() || usuarios.getNombre().matches("^\\d.*$")) {
+        if (usuarios.getNombre() == null || usuarios.getNombre().isEmpty() || usuarios.getNombre().matches("^\\d{1,44}.*$")) {
             attr.addFlashAttribute("msg","error=nombre_invalido");
             return "redirect:/administradorsede/farmacistas";
         } else if (!isValidEmail(usuarios.getCorreo())) {
@@ -228,6 +230,8 @@ public class AdministradorSedeController {
             return "redirect:/administradorsede/farmacistas";
         }
 
+
+    try {
         if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
             usuarios.setSedes(sedes);
             usuarios.setContrasena("Temporal_password");
@@ -243,6 +247,15 @@ public class AdministradorSedeController {
             usuariosRepository.save(usuarios);
             attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
         }
+    }catch (DataIntegrityViolationException e) {
+        // Capturar excepciones de integridad de datos específicas
+        System.out.println("Error de integridad de datos: " + e.getMessage());
+    } catch (Exception e) {
+        // Capturar cualquier otro tipo de excepción
+        System.out.println("Error inesperado: " + e.getMessage());
+    }
+
+
 
         return "redirect:/administradorsede/farmacistas";
     }
@@ -292,15 +305,16 @@ public class AdministradorSedeController {
 /* VALIDACION DE CORREO
  */
 private boolean isValidEmail(String email) {
-    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]{1,255}$";
     Pattern pattern = Pattern.compile(emailRegex);
     Matcher matcher = pattern.matcher(email);
     return matcher.matches();
 }
 
+
     public boolean validarDNI(String dni) {
-        // Verifica si la cadena contiene solo dígitos y tiene un máximo de 7 caracteres
-        return dni != null && dni.matches("\\d{1,8}");
+        // Verifica si la cadena contiene solo dígitos y tiene un máximo de 8 caracteres
+        return dni != null && dni.matches("\\d{8}");
     }
 
     public boolean validarCampo(String campo) {
