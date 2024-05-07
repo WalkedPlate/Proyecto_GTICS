@@ -191,7 +191,11 @@ public class SuperadminController {
 
 
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
-    public String solicitudesReposicion(){
+    public String solicitudesReposicion(Model model){
+        Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
+        Optional<EstadoOrden> estadoOrden = estadoOrdenRepository.findById(1);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndEstadoOrden(tipoOrden,estadoOrden);
+        model.addAttribute("listaOrdenes",listaOrdenes);
         return "Superadmin/soliReposicion";
     }
 

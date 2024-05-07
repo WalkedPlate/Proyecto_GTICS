@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.repository;
 
+import com.example.proyecto_gtics.entity.EstadoOrden;
 import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.entity.Usuarios;
@@ -19,4 +20,6 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     void cambiarEstadoOrden(Integer estadoOrden, Integer idOrden);
 
     List<Ordenes> findByTipoOrden(Optional<TipoOrden> tipoOrden); //Buscar por tipo de orden
+
+    List<Ordenes> findByTipoOrdenAndEstadoOrden(Optional<TipoOrden> tipoOrden , Optional<EstadoOrden> estadoOrden);
 }
