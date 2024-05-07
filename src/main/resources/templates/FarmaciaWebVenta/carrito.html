@@ -98,14 +98,12 @@
 
   </div>
 
-
   <!--
-     - HEADER
-   -->
+    - HEADER
+  -->
 
-  <header th:replace="FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera">
+  <header th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera}">
   </header>
-
 
   <!--
     - MAIN
@@ -127,192 +125,91 @@
             - Carrito de compras
           -->
 
-          <div class="product-featured">
+            <div class="product-featured">
 
-            <div class="showcase-wrapper has-scrollbar">
-                <div class="showcase-container">
-                    <h3>Mi carrito</h3>
-                    <br>
-                    <hr>
-                    <div class="container">
-                      <div class="table-responsive">
-                          <form action="" class="form-cart">
-                            <table class="tabla">
-                              <thead>
-                                  <tr>
-                                      <th>Producto</th>
-                                      <th>Precio</th>
-                                      <th>Cantidad</th>
-                                      <th>Subtotal</th>
-                                      <th>Eliminar</th>
-                                  </tr>
-                              </thead>
-          
-                              <tbody>
-                                <tr id="fila1">
-                                  <td class="flexitem">
-                                      <div class="thumbnail">
-                                          <a href="producto.html">
-                                              <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                          </a>
-                                      </div>  
-                                      <div class="content">
-                                          <a href="producto.html">
-                                              Producto 
-                                          </a>
-                                      </div>
-                                  </td>
-                                  <td>S/. 1.00</td>
-                                  <td class="flex-input">
-                                    <div class="selector-cantidad">
-                                      <i class="fa-solid fa-minus restar-cantidad"></i>
-                                        <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                      <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                    </div>
-                                  </td>
-                                  <td id="subtotal1">S/. 2.00</td>
-                                  <td>
-                                      <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                                  </td>
-                              </tr>
+                <div class="showcase-wrapper has-scrollbar">
+                    <div class="showcase-container">
+                        <h3>Mi carrito</h3>
+                        <hr>
+                        <div class="container">
+                            <div class="table-responsive">
+                                <form action="" class="form-cart">
+                                    <div class="item">
+                                        <table class="table table-bordered" id="cart-table">
+                                            <thead class="table-dark">
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
 
-                              <tr id="fila1">
-                                <td class="flexitem">
-                                    <div class="thumbnail">
-                                        <a href="producto.html">
-                                            <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                        </a>
-                                    </div>  
-                                    <div class="content">
-                                        <a href="producto.html">
-                                            Producto 
-                                        </a>
+                                            <tbody>
+                                            <tr id="fila1">
+                                                <td>
+                                                    <div class="content ">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col d-flex justify-content-center">
+                                                                    <img src="/img/FarmaciaWebVenta/products/analgesico1.jpg" alt="analgésicos" width="50">
+                                                                </div>
+                                                                <div class="col"><a href="#">Producto 1</a></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="mg ">
+                                                    <div class="d-flex justify-content-center">
+                                                        <p class="d-flex align-items-center">S/. 1.00</p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input id="cantidad1" type="number" class="form-control" value="1" min="1" onchange="actualizarSubtotal('fila1')">
+                                                    </div>
+                                                </td>
+                                                <td id="subtotal1">S/. 2.00</td>
+                                                <td class="text-end">
+                                                    <button type="button" class="btn btn-danger">Eliminar</button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </td>
-                                <td>S/. 1.00</td>
-                                <td class="flex-input">
-                                  <div class="selector-cantidad">
-                                    <i class="fa-solid fa-minus restar-cantidad"></i>
-                                      <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                    <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                  </div>
-                                </td>
-                                <td id="subtotal1">S/. 2.00</td>
-                                <td>
-                                    <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                                </td>
-                            </tr>
-                            <tr id="fila1">
-                              <td class="flexitem">
-                                  <div class="thumbnail">
-                                      <a href="producto.html">
-                                          <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                      </a>
-                                  </div>  
-                                  <div class="content">
-                                      <a href="producto.html">
-                                          Producto 
-                                      </a>
-                                  </div>
-                              </td>
-                              <td>S/. 1.00</td>
-                              <td class="flex-input">
-                                <div class="selector-cantidad">
-                                  <i class="fa-solid fa-minus restar-cantidad"></i>
-                                    <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                  <i class="fa-solid fa-plus sumar-cantidad"></i>
-                                </div>
-                              </td>
-                              <td id="subtotal1">S/. 2.00</td>
-                              <td>
-                                  <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                              </td>
-                          </tr>
-                          <tr id="fila1">
-                            <td class="flexitem">
-                                <div class="thumbnail">
-                                    <a href="producto.html">
-                                        <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                    </a>
-                                </div>  
-                                <div class="content">
-                                    <a href="producto.html">
-                                        Producto 
-                                    </a>
-                                </div>
-                            </td>
-                            <td>S/. 1.00</td>
-                            <td class="flex-input">
-                              <div class="selector-cantidad">
-                                <i class="fa-solid fa-minus restar-cantidad"></i>
-                                  <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                                <i class="fa-solid fa-plus sumar-cantidad"></i>
-                              </div>
-                            </td>
-                            <td id="subtotal1">S/. 2.00</td>
-                            <td>
-                                <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                            </td>
-                        </tr>
-                        <tr id="fila1">
-                          <td class="flexitem">
-                              <div class="thumbnail">
-                                  <a href="producto.html">
-                                      <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="producto" class="img-fluid">
-                                  </a>
-                              </div>  
-                              <div class="content">
-                                  <a href="producto.html">
-                                      Producto 
-                                  </a>
-                              </div>
-                          </td>
-                          <td>S/. 1.00</td>
-                          <td class="flex-input">
-                            <div class="selector-cantidad">
-                              <i class="fa-solid fa-minus restar-cantidad"></i>
-                                <input type="text" value="1" class="carrito-item-cantidad" disabled>
-                              <i class="fa-solid fa-plus sumar-cantidad"></i>
+                                </form>
                             </div>
-                          </td>
-                          <td id="subtotal1">S/. 2.00</td>
-                          <td>
-                              <button type="button" class="delete-item-btn" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-                          </td>
-                      </tr>
-                              
-                              
-                              </tbody>
-                          </table>
-                          </form>
-                      </div>
-                  </div>
-                  
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
 
-          </div>
-
-        
 
 
 
-    
+
+
         </div>
 
         <div class="sidebar-category product-featured">
-          <div class="sidebar-top">
-            <h1 class="sidebar-title">Resumen de la orden</h1>
-            
-          </div>
-          <div>
-            <p id="cantidadTotal" class="sidebar-title">Productos(0)</p>
-            <p id="costoTotal" class="sidebar-title">Total S/. 0.00</p>
-            <a>
-              <button type="button" class="add-cart-btn">Pagar</button>
-            </a>
-          </div>
+            <div class="sidebar-top">
+                <h1 class="sidebar-title">Resumen de la orden</h1>
+
+                <button class="sidebar-close-btn" data-mobile-menu-close-btn>
+                    <ion-icon name="close-outline"></ion-icon>
+                </button>
+            </div>
+            <div>
+                <h6 id="cantidadTotal" class="sidebar-title">Productos(0)</h6>
+                <h6 id="costoTotal" class="sidebar-title">Total S/. 0.00</h6>
+                <a>
+                    <button type="button" class="btn btn-primary">Pagar</button>
+                </a>
+            </div>
         </div>
 
       </div>
@@ -335,7 +232,7 @@
     </div>
 
 
-    
+
   </main>
 
 
