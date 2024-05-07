@@ -71,21 +71,15 @@
 
   </div>
 
-
-
-
-
   <!--
     - HEADER
   -->
 
-  <header th:replace="FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera">
+  <header th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera}">
   </header>
 
-
-
   <!--CHATBOT-->
-  <div th:replace="FarmaciaWebVenta/fragments_clinicaweb/chatbot.html :: chabot">
+  <div th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/chatbot.html :: chabot}">
   </div>
 
 
@@ -154,10 +148,10 @@
               <div class="category-content-flex">
                 <h3 th:text="${cat.nombre}" class="category-item-title"></h3>
 
-                <p class="category-item-amount">(53)</p>
+                <p th:text="${listaCantCategorias.get(obj.index)}" class="category-item-amount"></p>
               </div>
 
-              <a href="#" class="category-btn">Mostrar todos</a>
+              <a th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${cat.idCategorias}}" class="category-btn">Mostrar todos</a>
 
             </div>
 
@@ -203,7 +197,7 @@
 
               <li class="sidebar-menu-category">
 
-                <a th:href="@{'/clinicarenacer/categoria'}">
+                <a th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${cat.idCategorias}}">
                   <button class="sidebar-accordion-menu" data-accordion-btn>
 
                     <div class="menu-title-flex">
@@ -332,101 +326,6 @@
 
                 </div>
 
-                <!--<div class="showcase-container">
-                
-                  <div class="showcase">
-                
-                    <a href="#" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-                  
-                    <div class="showcase-content">
-                  
-                      <a href="#">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-                  
-                      <a href="#" class="showcase-category">Oftalmológicos</a>
-                  
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
-                      </div>
-                  
-                    </div>
-                
-                  </div>
-                
-                  <div class="showcase">
-                
-                    <a href="#" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-                  
-                    <div class="showcase-content">
-                  
-                      <a href="#">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-                  
-                      <a href="#" class="showcase-category">Oftalmológicos</a>
-                  
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
-                      </div>
-                  
-                    </div>
-                
-                  </div>
-                
-                  <div class="showcase">
-                
-                    <a href="#" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-                  
-                    <div class="showcase-content">
-                  
-                      <a href="#">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-                  
-                      <a href="#" class="showcase-category">Oftalmológicos</a>
-                  
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
-                      </div>
-                  
-                    </div>
-                
-                  </div>
-                
-                  <div class="showcase">
-                
-                    <a href="#" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-                  
-                    <div class="showcase-content">
-                  
-                      <a href="#">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-                  
-                      <a href="#" class="showcase-category">Oftalmológicos</a>
-                  
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
-                      </div>
-                  
-                    </div>
-                
-                  </div>
-                
-                </div>-->
 
               </div>
 
@@ -564,27 +463,20 @@
 
           <div class="product-featured">
 
-            <h2 class="title">Oferta del día</h2>
+            <h2 class="title">Producto del día</h2>
 
             <div class="showcase-wrapper has-scrollbar">
 
               <div class="showcase-container">
 
                 <div class="showcase">
-                  
+
                   <div class="showcase-banner">
                     <img src="/img/FarmaciaWebVenta/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
                   </div>
 
                   <div class="showcase-content">
-                    
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                    </div>
+
 
                     <a th:href="@{'/clinicarenacer/producto'}">
                       <h3 class="showcase-title">Gel Limpiador Espumoso CeraVe Foaming Cleanser</h3>
@@ -617,40 +509,6 @@
                       <div class="showcase-status-bar"></div>
                     </div>
 
-                    <div class="countdown-box">
-
-                      <p class="countdown-desc">
-                        ¡APRESÚRATE! LA OFERTA TERMINA EN:
-                      </p>
-
-                      <div class="countdown">
-
-                        <div class="countdown-content">
-
-                          <p class="display-number">360</p>
-
-                          <p class="display-text">Días</p>
-
-                        </div>
-
-                        <div class="countdown-content">
-                          <p class="display-number">24</p>
-                          <p class="display-text">Horas</p>
-                        </div>
-
-                        <div class="countdown-content">
-                          <p class="display-number">59</p>
-                          <p class="display-text">Min</p>
-                        </div>
-
-                        <div class="countdown-content">
-                          <p class="display-number">00</p>
-                          <p class="display-text">Seg</p>
-                        </div>
-
-                      </div>
-
-                    </div>
 
                   </div>
 
@@ -671,64 +529,11 @@
 
           <div class="product-main">
 
-            <h2 class="title">Nuevos Productos</h2>
+            <h2 class="title">Tus Productos</h2>
 
             <div class="product-grid">
 
-              <div class="showcase">
-
-                <div class="showcase-banner">
-
-                    <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
-
-                  <p class="showcase-badge">15%</p>
-
-                  <div class="showcase-actions">
-
-                    <button class="btn-action">
-                      <ion-icon name="heart-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="bag-add-outline"></ion-icon>
-                    </button>
-
-                  </div>
-
-                </div>
-
-                <div class="showcase-content">
-
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-category">Andro Pross Cápsulas</a>
-
-                  <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 class="showcase-title">Mezcla de polvo a base de maca roja y más cosas...</h3>
-                  </a>
-
-                  <div class="showcase-rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                  </div>
-
-                  <div class="price-box">
-                    <p class="price">S/ 52.40</p>
-                    <del>S/ 69.90</del>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="showcase">
+              <div th:each="producto, obj: ${listaProductos}" class="showcase">
 
                 <div class="showcase-banner">
 
@@ -736,18 +541,7 @@
                   <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
                   <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
-                  <p class="showcase-badge">15%</p>
-
                   <div class="showcase-actions">
-
-                    <button class="btn-action">
-                      <ion-icon name="heart-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </button>
-
                     <button class="btn-action">
                       <ion-icon name="bag-add-outline"></ion-icon>
                     </button>
@@ -756,131 +550,16 @@
 
                 </div>
 
-                <div class="showcase-content">
+                <div  class="showcase-content">
 
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-category">Andro Pross Cápsulas</a>
-
-                  <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 class="showcase-title">Mezcla de polvo a base de maca roja y más cosas...</h3>
-                  </a>
-
-                  <div class="showcase-rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                  </div>
-
-                  <div class="price-box">
-                    <p class="price">S/ 52.40</p>
-                    <del>S/ 69.90</del>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="showcase">
-
-                <div class="showcase-banner">
-
-                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
-
-                  <p class="showcase-badge">15%</p>
-
-                  <div class="showcase-actions">
-
-                    <button class="btn-action">
-                      <ion-icon name="heart-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="bag-add-outline"></ion-icon>
-                    </button>
-
-                  </div>
-
-                </div>
-
-                <div class="showcase-content">
-
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-category">Andro Pross Cápsulas</a>
+                  <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
 
                   <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 class="showcase-title">Mezcla de polvo a base de maca roja y más cosas...</h3>
+                    <h3 th:text="${producto.descripcion}" class="showcase-title"></h3>
                   </a>
 
-                  <div class="showcase-rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                  </div>
-
                   <div class="price-box">
-                    <p class="price">S/ 52.40</p>
-                    <del>S/ 69.90</del>
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div class="showcase">
-
-                <div class="showcase-banner">
-
-                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
-
-                  <p class="showcase-badge">15%</p>
-
-                  <div class="showcase-actions">
-
-                    <button class="btn-action">
-                      <ion-icon name="heart-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="eye-outline"></ion-icon>
-                    </button>
-
-                    <button class="btn-action">
-                      <ion-icon name="bag-add-outline"></ion-icon>
-                    </button>
-
-                  </div>
-
-                </div>
-
-                <div class="showcase-content">
-
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-category">Andro Pross Cápsulas</a>
-
-                  <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 class="showcase-title">Mezcla de polvo a base de maca roja y más cosas...</h3>
-                  </a>
-
-                  <div class="showcase-rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                    <ion-icon name="star-outline"></ion-icon>
-                  </div>
-
-                  <div class="price-box">
-                    <p class="price">S/ 52.40</p>
-                    <del>S/ 69.90</del>
+                    <p th:text="'S/. ' +${producto.precio}" class="price"></p>
                   </div>
 
                 </div>
@@ -1063,9 +742,6 @@
   -->
 
   <footer>
-
-
-
     <div class="footer-nav">
 
       <div class="container">

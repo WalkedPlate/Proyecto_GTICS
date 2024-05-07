@@ -111,7 +111,7 @@
             <ul  th:each="cat, obj: ${listaCategorias}" class="dropdown-panel-list">
 
               <li class="menu-title">
-                <a th:text="${cat.nombre}" th:href="@{'/clinicarenacer/categoria'}" ></a>
+                <a th:text="${cat.nombre}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${cat.idCategorias}}" ></a>
               </li>
             </ul>
 
