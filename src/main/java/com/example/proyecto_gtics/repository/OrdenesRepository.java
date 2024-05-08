@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.Sedes;
 import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.entity.Usuarios;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,6 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
 
     List<Ordenes> findByTipoOrdenAndEstadoOrden(Optional<TipoOrden> tipoOrden , Optional<EstadoOrden> estadoOrden);
 
-    
+    @Query(value = "SELECT * FROM proyecto_gtics.ordenes where estado_orden_idestado_orden between ?1 and ?2 and tipo_orden_idtipo_orden = ?3",nativeQuery = true)
+    List<Ordenes> encuentraOrdenesPorEstadoOrden(Integer ranMin, Integer ranMax,Integer idTipoOrden);
 }
