@@ -21,4 +21,8 @@ public interface DetallesOrdenRepository extends JpaRepository<DetallesOrden,Int
             "inner join ordenes on detalles_orden.ordenes_idordenes = ordenes.idordenes and ordenes.tipo_orden_idtipo_orden=?1 \n" +
             "inner join productos on detalles_orden.productos_idproductos=productos.idproductos;",nativeQuery = true)
     List<DetallesOrdenPorOrdenDto> obtenerDetallesOrdenesPorTipoOrden(int idTipoOrden);*/
+
+
+    @Query(value = "SELECT count(iddetalles_orden) FROM proyecto_gtics.detalles_orden where ordenes_idordenes = ?1", nativeQuery = true)
+    Integer calcularCantidadDeDetallesPorOrden(Integer idOrden);
 }
