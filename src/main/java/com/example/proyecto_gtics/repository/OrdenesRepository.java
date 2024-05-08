@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.repository;
 
 import com.example.proyecto_gtics.entity.EstadoOrden;
 import com.example.proyecto_gtics.entity.Ordenes;
+import com.example.proyecto_gtics.entity.Sedes;
 import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.entity.Usuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,9 +15,11 @@ import java.util.Optional;
 @Repository
 public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> findByTipoOrdenAndUsuarios(TipoOrden tipoOrden, Usuarios usuarios);
+    List<Ordenes> findByTipoOrdenAndSedes(TipoOrden tipoOrden, Sedes sedes);
+
     Ordenes findFirstByOrderByIdordenesDesc(); // recuperar la última entrada de la tabla
 
-    @Query(value = "update ordenes set estado_orden_idestado_orden = ?1 where idrdenes = ?2", nativeQuery = true)
+    @Query(value = "update ordenes set estado_orden_idestado_orden = ?1 where idordenes = ?2", nativeQuery = true)
     void cambiarEstadoOrden(Integer estadoOrden, Integer idOrden);
 
     List<Ordenes> findByTipoOrden(Optional<TipoOrden> tipoOrden); //Buscar por tipo de orden
