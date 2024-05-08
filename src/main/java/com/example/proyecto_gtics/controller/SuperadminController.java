@@ -176,6 +176,7 @@ public class SuperadminController {
     public String ordenReposicion(Model model){
         Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
         List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrden(tipoOrden);
+        //List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndEstadoOrdenBetween(tipoOrden,4,10);
         model.addAttribute("listaOrdenes",listaOrdenes);
 
         List<List<DetallesOrden>> listaDetallesOrden = new ArrayList<>();
