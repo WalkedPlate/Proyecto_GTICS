@@ -131,24 +131,31 @@ public class AdministradorSedeController {
     @GetMapping(value={"/administradorsede/verOrden"})
     public String verOrden(Model model, @RequestParam ("idOrdenRepo") Integer idOrdenRepo){
 
-        Ordenes ordenReposicion = ordenesRepository.findById(idOrdenRepo).get();
-        //Validamos que la orden sea de reposicion
-        if(!validarTipoOrden(2,ordenReposicion)){
-            return "redirect:/administradorsede/ordenes-reposicion";
+        Optional<Ordenes> optOrden = ordenesRepository.findById(idOrdenRepo);
+
+        if(optOrden.isPresent()){
+            Ordenes ordenReposicion = optOrden.get();
+            //Validamos que la orden sea de reposicion y que se pertenezaca a la sede 2
+            if(!validarTipoOrden(2,ordenReposicion) || ordenReposicion.getSedes().getIdSedes() != 2){
+                return "redirect:/administradorsede/ordenes-reposicion";
+            }
+            List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(ordenReposicion);
+            model.addAttribute("ordenReposicion",ordenReposicion);
+            model.addAttribute("listaDetallesOrden",listaDetallesOrden);
+            return "AdministradorSede/verOrdenReposicion";
         }
 
-        List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(ordenReposicion);
-
-        model.addAttribute("ordenReposicion",ordenReposicion);
-        model.addAttribute("listaDetallesOrden",listaDetallesOrden);
-
-        return "AdministradorSede/verOrdenReposicion";
+        return "redirect:/administradorsede/ordenes-reposicion";
     }
     @GetMapping(value={"/administradorsede/editarOrden"})
     public String editarOrden( Model model, @RequestParam("idOrdenRepo") Integer id){
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(id);
         if(optOrden.isPresent()){
+
+            if(!validarTipoOrden(2,optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2){
+                return "redirect:/administradorsede/ordenes-reposicion";
+            }
 
             List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
             List<Productos> listaProductos = productosRepository.findAll();
@@ -167,7 +174,7 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value ={ "/administradorsede/guardarDetalleOrden"})
-    public String guardarDetalleOrden(@Valid DetallesOrden detalle, BindingResult bindingResult, RedirectAttributes attr, @RequestParam("ordenes") Integer idOrden){
+    public String guardarDetalleOrden(@Valid DetallesOrden detalle, BindingResult bindingResult, RedirectAttributes attr, @RequestParam("ordenes") Integer idOrden, @RequestParam(name="nuevaOrden",required = false) Integer nuevaOrden){
 
         /*
         if (bindingResult.hasErrors()) {
@@ -182,14 +189,40 @@ public class AdministradorSedeController {
             detallesOrdenToSave.setCantidad(detalle.getCantidad());
             detallesOrdenToSave.setMontoParcial(detallesOrdenToSave.getProductos().getPrecio() * detalle.getCantidad());
 
-            detallesOrdenRepository.save(detallesOrdenToSave);
+            if(validarDuplicadoDeProductoEnUnaOrden(detallesOrdenToSave,detallesOrdenToSave.getOrdenes())){
+                attr.addFlashAttribute("err","No puede seleecionar un producto que ya añadió.");
+                return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+            }
+            else {
 
-            Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
-            ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
-            ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
+                Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(detallesOrdenToSave.getOrdenes().getIdordenes());
+                if(cantidadDetallesOrden >=1 && cantidadDetallesOrden <=10){
+                    detallesOrdenRepository.save(detallesOrdenToSave);
 
-            attr.addFlashAttribute("msg","Orden actualizada exitosamente");
-            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+                    Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
+                    ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
+                    ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
+
+                    attr.addFlashAttribute("msg","Orden actualizada exitosamente");
+                    return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+                } else if (nuevaOrden != null && cantidadDetallesOrden <=10) {
+                    detallesOrdenRepository.save(detallesOrdenToSave);
+
+                    Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
+                    ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
+                    ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
+
+                    attr.addFlashAttribute("msg","Orden actualizada exitosamente");
+                    return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+
+                } else {
+                    attr.addFlashAttribute("err","Solo puede haber de 1 a 10 medicamentos por orden de reposición.");
+                    return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+                }
+
+            }
+
+
         }
         else{//Modificar la cantidad de un producto ya existente
 
@@ -211,11 +244,20 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value = {"/administradorsede/borrarDetalleOrden"})
-    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id){
-        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
-        optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
+    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id, RedirectAttributes attr){
 
-        return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
+        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
+        Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(optionalDetallesOrden.get().getOrdenes().getIdordenes());
+        if(cantidadDetallesOrden <= 1 ){
+            attr.addFlashAttribute("err","Solo puede haber de 1 a 10 medicamentos por orden de reposición.");
+            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
+        }
+        else {
+            optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
+            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
+        }
+
+
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
@@ -389,6 +431,18 @@ private boolean isValidEmail(String email) {
     public boolean validarTipoOrden(Integer tipo_orden_idtipo_orden, Ordenes orden) {
         // Valida si una orden es de un tipo dado
         boolean valido = orden.getTipoOrden().getIdTipoOrden() == tipo_orden_idtipo_orden;
+        return valido;
+    }
+
+    public boolean validarDuplicadoDeProductoEnUnaOrden(DetallesOrden detallesOrdenPorComprobar, Ordenes orden) {
+
+        boolean valido = false;
+        List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenes(orden);
+        for(DetallesOrden detalle : listaDetalles){
+         if (detalle.getProductos().getIdProductos() == detallesOrdenPorComprobar.getProductos().getIdProductos()){
+             valido = true;
+         }
+        }
         return valido;
     }
 
