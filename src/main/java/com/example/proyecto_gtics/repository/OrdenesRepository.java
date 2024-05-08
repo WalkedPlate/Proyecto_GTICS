@@ -22,4 +22,6 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> findByTipoOrden(Optional<TipoOrden> tipoOrden); //Buscar por tipo de orden
 
     List<Ordenes> findByTipoOrdenAndEstadoOrden(Optional<TipoOrden> tipoOrden , Optional<EstadoOrden> estadoOrden);
+
+    
 }

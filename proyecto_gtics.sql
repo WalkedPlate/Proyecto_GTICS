@@ -90,7 +90,7 @@ CREATE TABLE `detalles_orden` (
   KEY `fk_detalles_orden_productos1_idx` (`productos_idproductos`),
   CONSTRAINT `fk_detalles_orden_ordenes1` FOREIGN KEY (`ordenes_idordenes`) REFERENCES `ordenes` (`idordenes`),
   CONSTRAINT `fk_detalles_orden_productos1` FOREIGN KEY (`productos_idproductos`) REFERENCES `productos` (`idproductos`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `detalles_orden` (
 
 LOCK TABLES `detalles_orden` WRITE;
 /*!40000 ALTER TABLE `detalles_orden` DISABLE KEYS */;
-INSERT INTO `detalles_orden` VALUES (1,1,1,3,10),(2,2,2,4,40),(3,3,7,10,143),(4,4,8,23,143),(5,5,9,34,143),(6,6,1,60,143),(7,7,7,40,143),(8,8,6,10,143),(9,9,3,25,143),(10,3,6,34,143),(11,3,4,10,143),(12,3,6,120,143),(13,3,8,10,143),(14,3,10,20,143),(15,3,22,1,143),(16,3,21,100,143),(17,6,5,13,0);
+INSERT INTO `detalles_orden` VALUES (1,1,1,3,10),(2,2,2,4,40),(3,3,7,10,143),(4,4,8,23,143),(5,5,9,34,143),(6,6,1,60,143),(7,7,7,40,143),(8,8,6,10,143),(9,9,3,25,143),(10,3,6,34,143),(11,3,4,10,143),(12,3,6,120,143),(13,3,8,10,143),(14,3,10,20,143),(15,3,22,1,143),(16,3,21,100,143),(17,6,5,13,0),(18,2,1,200,300);
 /*!40000 ALTER TABLE `detalles_orden` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +123,7 @@ CREATE TABLE `estado_orden` (
 
 LOCK TABLES `estado_orden` WRITE;
 /*!40000 ALTER TABLE `estado_orden` DISABLE KEYS */;
-INSERT INTO `estado_orden` VALUES (1,'Pendiente'),(2,'Aceptado'),(3,'Rechazado'),(4,'Eliminado'),(5,'En ruta'),(6,'Empaquetado'),(7,'En proceso'),(8,'Recibido'),(9,'Solicitado'),(10,'Entregado');
+INSERT INTO `estado_orden` VALUES (1,'Pendiente'),(2,'Eliminado'),(3,'Rechazado'),(4,'Aceptado'),(5,'En ruta'),(6,'Empaquetado'),(7,'En proceso'),(8,'Recibido'),(9,'Solicitado'),(10,'Entregado');
 /*!40000 ALTER TABLE `estado_orden` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,6 +200,7 @@ CREATE TABLE `ordenes` (
   `foto_receta` longblob,
   `iddoctor` int DEFAULT NULL,
   `fecha_entrega` date DEFAULT NULL,
+  `sedes_idsedes` int DEFAULT NULL,
   PRIMARY KEY (`idordenes`),
   UNIQUE KEY `codigo_UNIQUE` (`codigo`),
   KEY `fk_ordenes_usuarios1_idx` (`usuarios_id_usuario`),
@@ -207,7 +208,9 @@ CREATE TABLE `ordenes` (
   KEY `fk_ordenes_tipo_orden1_idx` (`tipo_orden_idtipo_orden`),
   KEY `fk_ordenes_tipo_cobro1_idx` (`tipo_cobro_idtipo_cobro`),
   KEY `fk_ordenes_usuarios2_idx` (`iddoctor`),
+  KEY `fk_ordenes_sedes1_idx` (`sedes_idsedes`),
   CONSTRAINT `fk_ordenes_estado_orden1` FOREIGN KEY (`estado_orden_idestado_orden`) REFERENCES `estado_orden` (`idestado_orden`),
+  CONSTRAINT `fk_ordenes_sedes1` FOREIGN KEY (`sedes_idsedes`) REFERENCES `sedes` (`idsedes`),
   CONSTRAINT `fk_ordenes_tipo_cobro1` FOREIGN KEY (`tipo_cobro_idtipo_cobro`) REFERENCES `tipo_cobro` (`idtipo_cobro`),
   CONSTRAINT `fk_ordenes_tipo_orden1` FOREIGN KEY (`tipo_orden_idtipo_orden`) REFERENCES `tipo_orden` (`idtipo_orden`),
   CONSTRAINT `fk_ordenes_usuarios1` FOREIGN KEY (`usuarios_id_usuario`) REFERENCES `usuarios` (`id_usuario`),
@@ -221,7 +224,7 @@ CREATE TABLE `ordenes` (
 
 LOCK TABLES `ordenes` WRITE;
 /*!40000 ALTER TABLE `ordenes` DISABLE KEYS */;
-INSERT INTO `ordenes` VALUES (1,11,1,1,'101',NULL,12,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24'),(2,12,1,1,'102',NULL,14,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24'),(3,13,2,2,'103',NULL,14,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24'),(4,11,1,2,'104',NULL,11,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24'),(5,11,1,2,'105',NULL,190,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24'),(6,12,1,2,'106',NULL,11.2,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24'),(7,12,1,2,'107',NULL,15,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24'),(8,13,1,2,'108',NULL,15,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24'),(9,12,1,2,'109',NULL,16,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24');
+INSERT INTO `ordenes` VALUES (1,11,1,1,'101',NULL,12,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(2,12,1,1,'102',NULL,14,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(3,13,4,2,'103',NULL,14,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',3),(4,11,1,2,'104',NULL,11,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',1),(5,11,8,2,'105',NULL,190,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(6,12,1,2,'106',NULL,11.2,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(7,12,5,2,'107',NULL,15,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',2),(8,13,7,2,'108',NULL,15,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',3),(9,12,1,2,'109',NULL,16,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2);
 /*!40000 ALTER TABLE `ordenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -492,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-05 21:54:47
+-- Dump completed on 2024-05-07 22:32:04
