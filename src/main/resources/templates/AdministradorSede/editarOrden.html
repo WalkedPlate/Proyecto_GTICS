@@ -145,7 +145,7 @@
                                                th:href="@{'/administradorsede/ordenes-reposicion'}">
                                                 Ordenes de reposición</a>
                                         </h3>
-                                        <h3 class="text-success"> > Editar orden</h3>
+                                        <h3 class="text-success" th:text="${esNuevaOrden==1?' > Nueva Orden' : ' > Editar Orden'}"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -274,6 +274,8 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}">
+                                        <input type="hidden" name="esNuevaOrden" th:value="${esNuevaOrden}">
+
                                         <input type="hidden" name="productos" th:value="${producto.idProductos}">
                                         <input type="hidden" name="ordenes" th:value="${ordenReposicion.idordenes}">
                                     <div class="modal-header">
@@ -301,6 +303,8 @@
                             <div class="modal-dialog">
                                 <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}"  th:object="${detalle}">
                                 <div class="modal-content">
+                                    <input type="hidden" name="esNuevaOrden" th:value="${esNuevaOrden}">
+
                                     <input type="hidden" name="ordenes" th:value="${ordenReposicion.idordenes}">
                                     <input type="hidden" th:value="${detalle.idDetallesOrden}" name="idDetallesOrden">
                                     <div class="modal-header">
