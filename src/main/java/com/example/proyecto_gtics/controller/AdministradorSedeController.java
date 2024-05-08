@@ -3,15 +3,19 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import javax.naming.Binding;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -80,8 +84,8 @@ public class AdministradorSedeController {
         Usuarios adminSede = usuariosRepository.findById(12).get(); //Admin de sede logueado
         model.addAttribute("adminSede",adminSede);
 
-        TipoOrden orden = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
-        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndUsuarios(orden,adminSede);
+        TipoOrden tipoOrdenRepo = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
+        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndSedes(tipoOrdenRepo, adminSede.getSedes());
         model.addAttribute("listaOrdenesReposicion",listOrdenesReposicion);
 
         //Pasando medicinas de la sede:
@@ -93,10 +97,32 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value={"/administradorsede/nuevaOrden"})
-    public String nuevaOrden(Model model){
+    public String nuevaOrden(Model model, @ModelAttribute("detallesOrden") DetallesOrden detallesOrden){
 
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+
+        //Generamos la orden
+        /*Ordenes ordenReposicion = new Ordenes();
+        ordenReposicion.setEstadoOrden(estadoOrdenRepository.findById(1).get()); //Estado se configura en pendiente
+        ordenReposicion.setTipoOrden(tipoOrdenRepository.findById(2).get()); // Tipo de orden 2 (de reposición)
+        ordenReposicion.setUsuarios(adminSede);
+        ordenReposicion.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
+
+        ordenReposicion.setCodigo(UUID.randomUUID().toString());
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        ordenReposicion.setFechaRegistro(fechaActual.format(formatDateToSring));
+        LocalDate fechaEntrega = fechaActual.plusDays(20);
+        ordenReposicion.setFechaEntrega(fechaEntrega.format(formatDateToSring));
+
+        ordenesRepository.save(ordenReposicion);
+        Ordenes ordenPregenerada = ordenesRepository.findFirstByOrderByIdordenesDesc(); // Recuperamos la orden que acabamos de crear
+
+
+
+
+        model.addAttribute("ordenPregenerada", ordenPregenerada);*/
+        //model.addAttribute("detallesOrdenPregenerada", detallesOrdenRepository.findByOrdenes(ordenPregenerada));
         List<Productos> listaProductos = productosRepository.findAll();
-
         model.addAttribute("listaProductos",listaProductos);
 
         return "AdministradorSede/nuevaOrdenReposicion";
@@ -119,48 +145,86 @@ public class AdministradorSedeController {
         return "AdministradorSede/verOrdenReposicion";
     }
     @GetMapping(value={"/administradorsede/editarOrden"})
-    public String editarOrden(){
-        return "AdministradorSede/editarOrden";
+    public String editarOrden( Model model, @RequestParam("idOrdenRepo") Integer id){
+
+        Optional<Ordenes> optOrden = ordenesRepository.findById(id);
+        if(optOrden.isPresent()){
+
+            List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
+            List<Productos> listaProductos = productosRepository.findAll();
+
+            model.addAttribute("ordenReposicion",optOrden.get());
+            model.addAttribute("listaDetallesOrden",listaDetallesOrden);
+            model.addAttribute("listaProductos",listaProductos);
+            //model.addAttribute("detalle", new DetallesOrden());
+            return "AdministradorSede/editarOrden";
+
+        }
+        else {
+            return "redirect:/administradorsede/ordenes-reposicion";
+        }
+
+    }
+
+    @PostMapping(value ={ "/administradorsede/guardarDetalleOrden"})
+    public String guardarDetalleOrden(@Valid DetallesOrden detalle, BindingResult bindingResult, RedirectAttributes attr, @RequestParam("ordenes") Integer idOrden){
+
+        /*
+        if (bindingResult.hasErrors()) {
+            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + idOrden;
+        }*/
+
+
+        if(detalle.getIdDetallesOrden()==null){//Agregar un nuevo producto y cantidad
+            DetallesOrden detallesOrdenToSave = new DetallesOrden();
+            detallesOrdenToSave.setOrdenes(detalle.getOrdenes());
+            detallesOrdenToSave.setProductos(detalle.getProductos());
+            detallesOrdenToSave.setCantidad(detalle.getCantidad());
+            detallesOrdenToSave.setMontoParcial(detallesOrdenToSave.getProductos().getPrecio() * detalle.getCantidad());
+
+            detallesOrdenRepository.save(detallesOrdenToSave);
+
+            Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
+            ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
+            ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
+
+            attr.addFlashAttribute("msg","Orden actualizada exitosamente");
+            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+        }
+        else{//Modificar la cantidad de un producto ya existente
+
+            DetallesOrden detallesOrdenToSave = detallesOrdenRepository.findById(detalle.getIdDetallesOrden()).get();
+            detallesOrdenToSave.setCantidad(detalle.getCantidad());
+            detallesOrdenToSave.setMontoParcial(detallesOrdenToSave.getProductos().getPrecio() * detalle.getCantidad()); //Calculamos el nuevo monto parcial
+
+            detallesOrdenRepository.save(detallesOrdenToSave);
+
+            Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
+            ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
+            ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
+
+            attr.addFlashAttribute("msg","Orden actualizada exitosamente");
+            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + detallesOrdenToSave.getOrdenes().getIdordenes();
+        }
+
+    }
+
+
+    @GetMapping(value = {"/administradorsede/borrarDetalleOrden"})
+    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id){
+        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
+        optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
+
+        return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
-    public String guardarOrdenReposicion(@RequestParam("idProductos") List<Integer> listIdProductos,@RequestParam("cantidad") List<Integer> listaCantidades){
+    public String guardarOrdenReposicion(@ModelAttribute("ordenReposicion") Ordenes ordenReposicion){
 
-
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
-
-        Ordenes ordenReposicion = new Ordenes();
-        ordenReposicion.setEstadoOrden(estadoOrdenRepository.findById(1).get()); //Estado se configura en pendiente
-        ordenReposicion.setTipoOrden(tipoOrdenRepository.findById(2).get()); // Tipo de orden 2 (de reposición)
-        ordenReposicion.setUsuarios(adminSede);
-        ordenReposicion.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-
-        ordenReposicion.setCodigo(UUID.randomUUID().toString());
-        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
-        ordenReposicion.setFechaRegistro(fechaActual.format(formatDateToSring));
-        LocalDate fechaEntrega = fechaActual.plusDays(20);
-        ordenReposicion.setFechaEntrega(fechaEntrega.format(formatDateToSring));
-
-        ordenesRepository.save(ordenReposicion); // creamos la orden de reposición
-        Ordenes ordenReposicionRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc(); // Recuperamos la orden que acabamos de crear
-
-        int i = 0;
-        for (Integer idProducto : listIdProductos){
-
-            DetallesOrden detallesOrden = new DetallesOrden();
-            detallesOrden.setCantidad(listaCantidades.get(i));
-            detallesOrden.setOrdenes(ordenReposicionRecuperada);
-            Productos producto = productosRepository.findById(idProducto).get();
-            detallesOrden.setProductos(producto);
-            detallesOrden.setMontoParcial(producto.getPrecio() * listaCantidades.get(i)); // Calculamos el monto parcial de cada "detalle_orden"
-            detallesOrdenRepository.save(detallesOrden);
-            i++;
-        }
-        ordenReposicionRecuperada.setMonto(detallesOrdenRepository.calcularMontoTotal(ordenReposicionRecuperada.getIdordenes())); //Calculamos el monto total de la orden
-        ordenesRepository.save(ordenReposicionRecuperada); // Por último guardamos la orden con el monto total actualizado
 
         return "redirect:/administradorsede/ordenes-reposicion";
     }
+
 
     @GetMapping(value = {"/administradorsede/borrarorden-reposicion"})
     public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id){

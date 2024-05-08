@@ -149,7 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                             <div class="card-body table-responsive ">
                                 <table class="table table-hover">
                                     <thead>
@@ -163,27 +163,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="text-center">123</td>
+                                        <tr th:each="detalle, obj :  ${listaDetallesOrden}">
+                                            <td class="text-center" th:text="${detalle.productos.idProductos}"></td>
                                             <td class="text-center">
                                                 <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                             </td>
 
-                                            <td class="text-center">Paracetamol</td>
-
-                                            <td class="text-center">100</td>
-                                            <td class="text-center"> 50</td>
+                                            <td class="text-center" th:text="${detalle.productos.nombre}"></td>
+                                            <td class="text-center" th:text="${detalle.cantidad}"></td>
+                                            <td class="text-center" th:text="${detalle.montoParcial}"></td>
                                             <td class="text-center">
                                                 <button type="submit" class="btn btn-sm btn-primary btn-square"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#modalEditar">
+                                                        th:data-bs-target="${'#modalEditar' + obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
-
-                                                <button type="submit" class="btn btn-sm btn-danger btn-square">
+                                                <a type="submit" class="btn btn-sm btn-danger btn-square" th:href="@{'/administradorsede/borrarDetalleOrden?idDetalleOrden=' + ${detalle.idDetallesOrden}}">
                                                     <i class="bi bi-trash"></i>
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -257,7 +255,7 @@
                                                         <td class="text-center" th:text="${producto.categorias.nombre}"></td>
                                                         <td class="text-center">
                                                             <button type="button" class="btn btn-sm btn-square btn-primary" data-bs-toggle="modal"
-                                                                    data-bs-target="#seleccionarCant">
+                                                                    th:data-bs-target="${'#seleccionarCant' + obj.index}">
                                                                 <i class="bi bi-plus-circle"></i>
                                                             </button>
                                                         </td>
@@ -271,48 +269,57 @@
                         </div>
 
                         <!-- Modal seleccionar cantidad de medicina -->
-                        <div class="modal fade" id="seleccionarCant" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel2" aria-hidden="true">
+                        <div class="modal fade" th:each="producto, obj : ${listaProductos}" th:id="${'seleccionarCant' + obj.index}" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel2" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
+                                    <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}">
+                                        <input type="hidden" name="productos" th:value="${producto.idProductos}">
+                                        <input type="hidden" name="ordenes" th:value="${ordenReposicion.idordenes}">
                                     <div class="modal-header">
                                         <h3 class="modal-title fs-5" id="exampleModalLabel">Introduzca la cantidad que desee solicitar</h3>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
-                                            <span class="input-group-text" id="basic-addon1">Paracetamol</span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1">
+                                            <span class="input-group-text" id="basic-addon1" th:text="${producto.nombre}"></span>
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  name="cantidad">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Solicitar</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Solicitar</button>
                                         <button type="button" class="btn btn-danger" data-bs-target="#agregar" data-bs-toggle="modal">Cancelar</button>
 
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Modal editar cantidad de medicina -->
-                        <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" th:each="detalle, obj : ${listaDetallesOrden}" th:id="${'modalEditar'+ obj.index}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
+                                <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}"  th:object="${detalle}">
                                 <div class="modal-content">
+                                    <input type="hidden" name="ordenes" th:value="${ordenReposicion.idordenes}">
+                                    <input type="hidden" th:value="${detalle.idDetallesOrden}" name="idDetallesOrden">
                                     <div class="modal-header">
                                         <h3 class="modal-title fs-5" id="exampleModalLabel">Edite la cantidad solicitada</h3>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
-                                            <span class="input-group-text" id="basic-addon1">Paracetamol</span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1">
+                                            <span class="input-group-text" id="basic-addon1" th:text="${detalle.productos.nombre}"></span>
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  th:name="*{'cantidad'}"   th:value="${detalle.cantidad}">
+                                            <!-- <div class="invalid-feedback" th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"></div>-->
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cambiar</button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Cambiar</button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
 
                                     </div>
                                 </div>
+                                </form>
                             </div>
                         </div>
 

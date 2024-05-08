@@ -58,4 +58,8 @@ public class Ordenes {
     @Column(name = "fecha_entrega")
     private String fechaEntrega;
 
+    @ManyToOne
+    @JoinColumn(name = "sedes_idsedes")
+    private Sedes sedes;
+
 }

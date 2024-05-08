@@ -1,6 +1,8 @@
 package com.example.proyecto_gtics.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,8 @@ public class DetallesOrden {
     @JoinColumn(name = "productos_idproductos",nullable = false)
     private Productos productos;
 
+    @Positive
+    @Digits(integer = 10, fraction = 0)
     @Column(name = "cantidad",nullable = false)
     private Integer cantidad;
 
