@@ -183,6 +183,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Nombre</th>
+                                            <th scope="col">Estado</th>
                                             <th scope="col">Sede</th>
                                             <th scope="col">DNI</th>
                                             <th scope="col">Distrito de residencia</th>
@@ -197,6 +198,7 @@
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${adminSede.nombre}" class="text-heading font-semibold" href="#"></a>
                                             </td>
+                                            <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}"></td>
                                             <td th:text="${adminSede.sedes.nombre}"></td>
                                             <td th:text="${adminSede.dni}"></td>
                                             <td th:text="${adminSede.distritoResidencia}"></td>
