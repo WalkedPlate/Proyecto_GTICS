@@ -195,7 +195,17 @@ public class SuperadminController {
         Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
         Optional<EstadoOrden> estadoOrden = estadoOrdenRepository.findById(1);
         List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndEstadoOrden(tipoOrden,estadoOrden);
+
+        //Añadiendo detalles de ordenes de reposicion en estado pendiente
+        List<List<DetallesOrden>> listaDetallesOrden = new ArrayList<>();
+
+        for(Ordenes ordenes : listaOrdenes ){
+            List<DetallesOrden> lista = detallesOrdenRepository.findByOrdenes(ordenes);
+            listaDetallesOrden.add(lista);
+        }
         model.addAttribute("listaOrdenes",listaOrdenes);
+        model.addAttribute("listaDetallesDoble",listaDetallesOrden);
+        //Modificar el html soliReposicion para que se muestren los medicamentos por cada orden de reposicion
         return "Superadmin/soliReposicion";
     }
 

@@ -224,7 +224,7 @@ CREATE TABLE `ordenes` (
 
 LOCK TABLES `ordenes` WRITE;
 /*!40000 ALTER TABLE `ordenes` DISABLE KEYS */;
-INSERT INTO `ordenes` VALUES (1,11,1,1,'101',NULL,12,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(2,12,1,1,'102',NULL,14,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(3,13,4,2,'103',NULL,14,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',3),(4,11,1,2,'104',NULL,11,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',1),(5,11,8,2,'105',NULL,190,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(6,12,1,2,'106',NULL,11.2,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(7,12,5,2,'107',NULL,15,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',2),(8,13,7,2,'108',NULL,15,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',3),(9,12,1,2,'109',NULL,16,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2);
+INSERT INTO `ordenes` VALUES (1,11,4,1,'101',NULL,12,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(2,12,1,1,'102',NULL,14,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(3,13,4,2,'103',NULL,14,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',3),(4,11,1,2,'104',NULL,11,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',1),(5,11,8,2,'105',NULL,190,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',1),(6,12,1,2,'106',NULL,11.2,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2),(7,12,5,2,'107',NULL,15,NULL,NULL,3,'2024-04-24',NULL,NULL,'2024-04-24',2),(8,13,7,2,'108',NULL,15,NULL,NULL,1,'2024-04-24',NULL,NULL,'2024-04-24',3),(9,12,1,2,'109',NULL,16,NULL,NULL,2,'2024-04-24',NULL,NULL,'2024-04-24',2);
 /*!40000 ALTER TABLE `ordenes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +275,7 @@ CREATE TABLE `productos` (
   KEY `fk_productos_preferencias_usuario1_idx` (`preferencias_usuario_idpreferencias_usuario`),
   CONSTRAINT `fk_productos_categorias1` FOREIGN KEY (`categorias_idcategorias`) REFERENCES `categorias` (`idcategorias`),
   CONSTRAINT `fk_productos_preferencias_usuario1` FOREIGN KEY (`preferencias_usuario_idpreferencias_usuario`) REFERENCES `preferencias_usuario` (`idpreferencias_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -284,7 +284,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,1,'paracetamol','PAR1',NULL,'para el dolor','2030-04-22',1,1,'Activo'),(2,1,'ibuprofeno','IBU2',NULL,'para la inflamación','2030-04-22',7.2,1,'Activo'),(3,1,'aspirina','ASP3',NULL,'para el dolor','2030-04-22',3.8,1,'Activo'),(4,1,'amoxicilina','AMO4',NULL,'para infecciones','2030-04-22',12.4,1,'Activo'),(5,1,'loratadina','LOR5',NULL,'antihistamínico','2030-04-22',6.75,1,'Activo'),(6,1,'omeprazol','OME6',NULL,'para la acidez estomacal','2030-04-22',8.9,1,'Activo'),(7,1,'simvastatina','SIM7',NULL,'para el colesterol','2030-04-22',15.3,1,'Activo'),(8,1,'metformina','MET8',NULL,'para la diabetes','2030-04-22',9.1,1,'Activo'),(9,1,'atenolol','ATE9',NULL,'para la presión arterial','2030-04-22',5.6,1,'Activo'),(10,1,'diazepam','DIA10',NULL,'para la ansiedad','2030-04-22',11.75,1,'Activo'),(11,1,'sertralina','SER11',NULL,'antidepresivo','2030-04-22',13.2,1,'Activo'),(12,1,'furosemida','FUR12',NULL,'diurético','2030-04-22',7.9,1,'Activo'),(13,1,'digoxina','DIG13',NULL,'para problemas cardíacos','2030-04-22',14.6,1,'Activo'),(14,1,'alprazolam','ALP14',NULL,'ansiolítico','2030-04-22',10.85,1,'Activo'),(15,1,'clopidogrel','CLO15',NULL,'anticoagulante','2030-04-22',17.4,1,'Activo'),(16,1,'trazodona','TRA16',NULL,'antidepresivo','2030-04-22',12.75,1,'Activo'),(17,1,'metronidazol','MET17',NULL,'antibiótico','2030-04-22',6.3,1,'Activo'),(18,1,'citalopram','CIT18',NULL,'antidepresivo','2030-04-22',11.2,1,'Activo'),(19,1,'levotiroxina','LEV19',NULL,'hormona tiroidea','2030-04-22',8.15,1,'Activo'),(20,1,'prednisona','PRE20',NULL,'corticosteroide','2030-04-22',9.8,1,'Activo'),(21,1,'metoclopramida','MET21',NULL,'para las náuseas','2030-04-22',7.3,1,'Activo'),(22,1,'quetiapina','QUE22',NULL,'antipsicótico','2030-04-22',14.7,1,'Activo'),(23,1,'fenitoina','FEN23',NULL,'antiepiléptico','2030-04-22',10.5,1,'Activo'),(24,1,'rosuvastatina','ROS24',NULL,'para el colesterol','2030-04-22',16.9,1,'Activo'),(25,1,'cefalexina','CEF25',NULL,'antibiótico','2030-04-22',6.75,1,'Activo'),(26,1,'risperidona','RIS26',NULL,'antipsicótico','2030-04-22',13.4,1,'Activo'),(27,1,'venlafaxina','VEN27',NULL,'antidepresivo','2030-04-22',11.9,1,'Activo'),(28,1,'metilprednisolona','MET28',NULL,'corticosteroide','2030-04-22',8.6,1,'Activo'),(29,1,'ranitidina','RAN29',NULL,'antihistamínico','2030-04-22',6.5,1,'Activo'),(30,1,'fluoxetina','FLU30',NULL,'antidepresivo','2030-04-22',10.2,1,'Activo'),(31,2,'Cetirizina','CET631',NULL,'Antihistaminico alivia la alergia','2025-11-03',2,NULL,'Eliminado');
+INSERT INTO `productos` VALUES (1,1,'paracetamol','PAR1',NULL,'para el dolor','2030-04-22',1,1,'Activo'),(2,1,'ibuprofeno','IBU2',NULL,'para la inflamación','2030-04-22',7.2,1,'Activo'),(3,1,'aspirina','ASP3',NULL,'para el dolor','2030-04-22',3.8,1,'Activo'),(4,1,'amoxicilina','AMO4',NULL,'para infecciones','2030-04-22',12.4,1,'Activo'),(5,1,'loratadina','LOR5',NULL,'antihistamínico','2030-04-22',6.75,1,'Activo'),(6,1,'omeprazol','OME6',NULL,'para la acidez estomacal','2030-04-22',8.9,1,'Activo'),(7,1,'simvastatina','SIM7',NULL,'para el colesterol','2030-04-22',15.3,1,'Activo'),(8,1,'metformina','MET8',NULL,'para la diabetes','2030-04-22',9.1,1,'Activo'),(9,1,'atenolol','ATE9',NULL,'para la presión arterial','2030-04-22',5.6,1,'Activo'),(10,1,'diazepam','DIA10',NULL,'para la ansiedad','2030-04-22',11.75,1,'Activo'),(11,1,'sertralina','SER11',NULL,'antidepresivo','2030-04-22',13.2,1,'Activo'),(12,1,'furosemida','FUR12',NULL,'diurético','2030-04-22',7.9,1,'Activo'),(13,1,'digoxina','DIG13',NULL,'para problemas cardíacos','2030-04-22',14.6,1,'Activo'),(14,1,'alprazolam','ALP14',NULL,'ansiolítico','2030-04-22',10.85,1,'Activo'),(15,1,'clopidogrel','CLO15',NULL,'anticoagulante','2030-04-22',17.4,1,'Activo'),(16,1,'trazodona','TRA16',NULL,'antidepresivo','2030-04-22',12.75,1,'Activo'),(17,1,'metronidazol','MET17',NULL,'antibiótico','2030-04-22',6.3,1,'Activo'),(18,1,'citalopram','CIT18',NULL,'antidepresivo','2030-04-22',11.2,1,'Activo'),(19,1,'levotiroxina','LEV19',NULL,'hormona tiroidea','2030-04-22',8.15,1,'Activo'),(20,1,'prednisona','PRE20',NULL,'corticosteroide','2030-04-22',9.8,1,'Activo'),(21,1,'metoclopramida','MET21',NULL,'para las náuseas','2030-04-22',7.3,1,'Activo'),(22,1,'quetiapina','QUE22',NULL,'antipsicótico','2030-04-22',14.7,1,'Activo'),(23,1,'fenitoina','FEN23',NULL,'antiepiléptico','2030-04-22',10.5,1,'Activo'),(24,1,'rosuvastatina','ROS24',NULL,'para el colesterol','2030-04-22',16.9,1,'Activo'),(25,1,'cefalexina','CEF25',NULL,'antibiótico','2030-04-22',6.75,1,'Activo'),(26,1,'risperidona','RIS26',NULL,'antipsicótico','2030-04-22',13.4,1,'Activo'),(27,1,'venlafaxina','VEN27',NULL,'antidepresivo','2030-04-22',11.9,1,'Activo'),(28,1,'metilprednisolona','MET28',NULL,'corticosteroide','2030-04-22',8.6,1,'Activo'),(29,1,'ranitidina','RAN29',NULL,'antihistamínico','2030-04-22',6.5,1,'Activo'),(30,1,'fluoxetina','FLU30',NULL,'antidepresivo','2030-04-22',10.2,1,'Activo'),(31,2,'Cetirizina','CET631',NULL,'Antihistaminico alivia la alergia','2025-11-03',2,NULL,'Eliminado'),(33,1,'Diazepam','DIA513',NULL,'Pastilla para dormir ,te quita el sueño 1,2,3 a dormir','2025-07-08',5,NULL,'Activo');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,7 +402,7 @@ CREATE TABLE `tipo_orden` (
   `idtipo_orden` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
   PRIMARY KEY (`idtipo_orden`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +411,7 @@ CREATE TABLE `tipo_orden` (
 
 LOCK TABLES `tipo_orden` WRITE;
 /*!40000 ALTER TABLE `tipo_orden` DISABLE KEYS */;
-INSERT INTO `tipo_orden` VALUES (1,'Orden Presencial'),(2,'Orden de Reposicion'),(3,'Orden por Web'),(4,'Orden por chatbot'),(5,'Preorden');
+INSERT INTO `tipo_orden` VALUES (1,'Orden Presencial'),(2,'Orden de Reposicion'),(3,'Orden por Web'),(4,'Orden por chatbot'),(5,'Preorden'),(6,'Carrito');
 /*!40000 ALTER TABLE `tipo_orden` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-07 22:32:04
+-- Dump completed on 2024-05-08 22:06:09
