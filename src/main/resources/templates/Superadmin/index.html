@@ -16,6 +16,12 @@
                 background-color: #94a6b3;
                 border-color: #94a6b3;
             }
+            table.dataTable tbody tr.bg-red {
+                background-color: #ffebf0 !important;
+                border-color: #ffd6e0 !important;
+                color: #e62e5c !important;
+            }
+
         </style>
     </head>
 
@@ -182,28 +188,28 @@
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Nombre</th>
-                                            <th scope="col">Estado</th>
-                                            <th scope="col">Sede</th>
-                                            <th scope="col">DNI</th>
-                                            <th scope="col">Distrito de residencia</th>
-                                            <th scope="col">Correo</th>
-                                            <th>Acciones</th>
+                                            <th scope="col" class="text-center">Nombre</th>
+                                            <th scope="col" class="text-center">Estado</th>
+                                            <th scope="col" class="text-center">Sede</th>
+                                            <th scope="col" class="text-center">DNI</th>
+                                            <th scope="col" class="text-center">Dtto. de residencia</th>
+                                            <th scope="col" class="text-center">Correo</th>
+                                            <th scope="col" class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="adminSede,obj : ${listaAdminSede}">
+                                        <tr th:each="adminSede,obj : ${listaAdminSede}" th:class="${adminSede.estadoUsuario.idEstadoUsuario == 'Baneado'} ? 'bg-red' : ''">
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${adminSede.nombre}" class="text-heading font-semibold" href="#"></a>
+                                                <a th:text="${adminSede.nombre}" class="text-heading font-semibold"></a>
                                             </td>
-                                            <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}"></td>
-                                            <td th:text="${adminSede.sedes.nombre}"></td>
-                                            <td th:text="${adminSede.dni}"></td>
-                                            <td th:text="${adminSede.distritoResidencia}"></td>
-                                            <td th:text="${adminSede.correo}"></td>
-                                            <td>
+                                            <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}" class="text-center"></td>
+                                            <td th:text="${adminSede.sedes.nombre}" class="text-center"></td>
+                                            <td th:text="${adminSede.dni}" class="text-center"></td>
+                                            <td th:text="${adminSede.distritoResidencia}" class="text-center"></td>
+                                            <td th:text="${adminSede.correo}" class="text-center"></td>
+                                            <td class="text-center">
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
                                                         data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
