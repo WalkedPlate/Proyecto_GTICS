@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoOrdenRepository extends JpaRepository<EstadoOrden,Integer> {
+
+    EstadoOrden findByIdEstadoOrden(int idEstadoOrden);
 }

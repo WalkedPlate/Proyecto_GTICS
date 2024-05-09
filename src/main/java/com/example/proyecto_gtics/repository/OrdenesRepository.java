@@ -29,4 +29,6 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
 
     @Query(value = "SELECT * FROM proyecto_gtics.ordenes where estado_orden_idestado_orden between ?1 and ?2 and tipo_orden_idtipo_orden = ?3",nativeQuery = true)
     List<Ordenes> encuentraOrdenesPorEstadoOrden(Integer ranMin, Integer ranMax,Integer idTipoOrden);
+
+    Ordenes findByIdordenes(int idOrden);
 }

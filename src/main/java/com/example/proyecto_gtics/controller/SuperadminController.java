@@ -211,6 +211,14 @@ public class SuperadminController {
         return "Superadmin/soliReposicion";
     }
 
+    @PostMapping(value = {"/superadmin/cambiarEstadoOrden"})
+    public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden){
+        Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
+        orden.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(accion));
+        ordenesRepository.save(orden);
+        return "redirect:/superadmin/solicitudes-reposicion";
+    }
+
     @GetMapping(value ={"/superadmin/farmacistas"})
     public String farmacistas(Model model){
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();

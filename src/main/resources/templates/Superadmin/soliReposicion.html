@@ -146,7 +146,7 @@
                     <div class="modal fade" th:each="listaDetalles, obj : ${listaDetallesDoble}" th:id ="${'verOrden'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
+
                                 <div class="modal-header">
                                     <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -179,10 +179,18 @@
                                 </div>
 
                                 <div class="modal-footer d-flex justify-content-center">
+                                    <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
+                                        <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">
+                                        <input type="hidden" value="4" name="accion">
                                     <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aceptarOrden">Aceptar</button>
+                                    </form>
+                                    <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
+                                        <input type="hidden" value="3" name="accion">
+                                        <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">
                                     <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazarOrden">Rechazar</button>
+                                    </form>
                                 </div>
-                                </form>
+
                             </div>
                         </div>
                     </div>
