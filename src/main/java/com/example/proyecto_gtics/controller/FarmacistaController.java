@@ -5,7 +5,10 @@ import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,8 +77,12 @@ public class FarmacistaController {
         return "Farmacista/OrdenesVenta";
     }
 
-    @GetMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
-    public String verOrden(){
+    @PostMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
+    public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden){
+        Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
+        List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
+        model.addAttribute("listaDetallesOrden",listaDetallesOrden);
+        model.addAttribute("orden",orden);
         return "Farmacista/verOrdenLinea";
     }
 

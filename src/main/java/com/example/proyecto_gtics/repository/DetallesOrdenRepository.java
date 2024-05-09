@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.repository;
 
 import com.example.proyecto_gtics.entity.DetallesOrden;
 import com.example.proyecto_gtics.entity.Ordenes;
+import com.example.proyecto_gtics.entity.Productos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
