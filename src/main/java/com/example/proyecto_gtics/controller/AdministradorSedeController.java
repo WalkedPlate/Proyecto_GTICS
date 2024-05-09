@@ -335,12 +335,12 @@ public class AdministradorSedeController {
 
         if(bindingResult.hasErrors()){
            String error = bindingResult.getFieldError().getDefaultMessage().toString();
-            attr.addFlashAttribute("msg",error);
+            attr.addFlashAttribute("err",error);
             return "redirect:/administradorsede/farmacistas";
         }else {
             Sedes sedes = sedesRepository.findById(id).get();
             if (sedes == null) {
-                attr.addFlashAttribute("msg","error=sede_invalida");
+                attr.addFlashAttribute("err","error=sede_invalida");
                 return "redirect:/administradorsede/farmacistas";
             }
             if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
