@@ -54,8 +54,12 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista"})
     public String paginaPrincipal(Model model){
         Sedes sede = sedesRepository.findByIdSedes(2);
+        TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
+        EstadoUsuario activo = estadoUsuarioRepository.findById("Activo").get();
+
         List<ProductosSedes> listaProductos = productosSedeRepository.findBySedes(sede);
         model.addAttribute("listaProductos",listaProductos);
+        model.addAttribute("listaDoctores",usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,sede,activo));
         return "Farmacista/index";
     }
 

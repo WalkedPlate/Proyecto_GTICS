@@ -538,7 +538,7 @@
                 <div class="showcase-banner">
 
                   <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
                   <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
                   <div class="showcase-actions">

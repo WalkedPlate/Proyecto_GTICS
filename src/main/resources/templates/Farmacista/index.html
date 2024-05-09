@@ -148,7 +148,7 @@
                                     <tr th:each="producto,obj : ${listaProductos}">
                                         <td>
                                             <a class="text-heading font-semibold" href="#">
-                                                <img src="/img/Farmacista/medicina1.jpg" alt="medicina1" style="height: 80px;">
+                                                <img th:src="@{|/imageProduct/${producto.productos.idProductos}|}" alt="medicina1" style="height: 80px;">
                                             </a>
                                         </td>
                                         <td th:text="${producto.productos.nombre}"></td>
@@ -198,45 +198,41 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control" placeholder="Nombre del paciente">
+                                                    <input type="text" class="form-control" placeholder="Nombre del paciente" name="nombre" id="nombre">
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="correo">DNI:</label>
-                                                    <input type="text" class="form-control" placeholder="DNI del paciente">
+                                                    <label for="dni">DNI:</label>
+                                                    <input type="text" class="form-control" placeholder="DNI del paciente" name="dni" id="dni">
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="dni">Edad:</label>
-                                                    <input type="number" class="form-control" placeholder="Edad del paciente">
+                                                    <label for="edad">Edad:</label>
+                                                    <input type="number" class="form-control" placeholder="Edad del paciente" name="edad" id="edad">
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="distrito">¿Tiene seguro?</label>
-                                                    <select id="seguro" class="form-select">
-                                                        <option selected>Sí</option>
-                                                        <option>No</option>
+                                                    <label for="seguro">¿Tiene seguro?</label>
+                                                    <select id="seguro" class="form-select" name="seguro">
+                                                        <option selected th:value="'si'">Sí</option>
+                                                        <option th:value="'no'">No</option>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="sede">Doctor:</label>
-                                                    <select id="sede" class="form-select">
-                                                        <option selected>doctor 1</option>
-                                                        <option>doctor 2</option>
-                                                        <option>doctor 3</option>
-                                                        <option>doctor 4</option>
-                                                        <option>doctor 5</option>
+                                                    <label for="doctor">Doctor:</label>
+                                                    <select id="doctor" class="form-select" name="doctor">
+                                                        <option th:each="doctor, obj : ${listaDoctores}" th:text="${doctor.nombre}" th:selected="${obj.index} == 0" th:value="${doctor.idUsuario}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="col">
                                                     <label>Fecha de entrega:</label>
-                                                    <input name="fechaVencimiento" type="date" class="form-control"
+                                                    <input name="fechaEntregaStr" type="date" class="form-control"
                                                            placeholder="Ingresa la fecha de entrega">
                                                 </div>
                                             </div>
@@ -335,8 +331,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#generarOrdenVenta">Generar Orden</button>
+                                            <button type="submit" class="btn btn-primary" >Generar Orden</button>
                                             <button type="button" class="btn btn-danger"
                                                 data-bs-dismiss="modal">Cancelar</button>
                                         </div>

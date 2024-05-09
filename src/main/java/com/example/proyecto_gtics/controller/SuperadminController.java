@@ -369,68 +369,7 @@ public class SuperadminController {
 
 
 
-    @GetMapping("/imageProduct/{id}")
-    public ResponseEntity<byte[]> mostrarImagenProducto(@PathVariable("id") Integer id) {
-        Optional<Productos> opt = productosRepository.findById(id);
-        if (opt.isPresent()) {
-            Productos p = opt.get();
 
-            byte[] imagenComoBytes = p.getFoto();
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType(p.getFotocontenttype()));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
-
-    @GetMapping("/imageUser/{id}")
-    public ResponseEntity<byte[]> mostrarImagenUsuario(@PathVariable("id") Integer id) {
-        Optional<Usuarios> opt = usuariosRepository.findById(id);
-        if (opt.isPresent()) {
-            Usuarios u = opt.get();
-
-            byte[] imagenComoBytes = u.getFoto();
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType(u.getFotocontenttype()));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
-
-    @GetMapping("/imageReceta/{id}")
-    public ResponseEntity<byte[]> mostrarImagenRecetaMedica(@PathVariable("id") Integer id) {
-        Optional<Ordenes> opt = ordenesRepository.findById(id);
-        if (opt.isPresent()) {
-            Ordenes o = opt.get();
-
-            byte[] imagenComoBytes = o.getFotoReceta();
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType(o.getFotocontenttype()));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
 
 
 }
