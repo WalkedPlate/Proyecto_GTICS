@@ -1,8 +1,6 @@
 package com.example.proyecto_gtics.controller;
 
-import com.example.proyecto_gtics.entity.EstadoOrden;
-import com.example.proyecto_gtics.entity.Ordenes;
-import com.example.proyecto_gtics.entity.TipoOrden;
+import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +49,10 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista"})
-    public String paginaPrincipal(){
+    public String paginaPrincipal(Model model){
+        Sedes sede = sedesRepository.findByIdSedes(2);
+        List<ProductosSedes> listaProductos = productosSedeRepository.findBySedes(sede);
+        model.addAttribute("listaProductos",listaProductos);
         return "Farmacista/index";
     }
 

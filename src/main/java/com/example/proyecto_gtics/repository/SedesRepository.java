@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SedesRepository extends JpaRepository<Sedes,Integer> {
+    Sedes findByIdSedes(Integer idSede);
 }
