@@ -85,8 +85,8 @@ public class AdministradorSedeController {
         model.addAttribute("adminSede",adminSede);
 
         TipoOrden tipoOrdenRepo = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
-        EstadoOrden estadoOrdenRepo = estadoOrdenRepository.findById(2).get(); //Estado de orden: Orden eliminada
-        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndSedesAndEstadoOrdenNot(tipoOrdenRepo, adminSede.getSedes(), estadoOrdenRepo);
+        EstadoOrden estadoEliminado = estadoOrdenRepository.findById(2).get(); //Estado de orden: Orden eliminada
+        List<Ordenes> listOrdenesReposicion = ordenesRepository.findByTipoOrdenAndSedesAndEstadoOrdenNot(tipoOrdenRepo, adminSede.getSedes(), estadoEliminado);
         model.addAttribute("listaOrdenesReposicion",listOrdenesReposicion);
 
         //Pasando medicinas de la sede:
@@ -120,13 +120,31 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value={"/administradorsede/nuevaOrden"})
-    public String nuevaOrden(Model model, @RequestParam(name="idOrdenRepo", required = false) Integer id){
+    public String nuevaOrden(Model model, @RequestParam(name="idOrdenRepo", required = false) Integer id, @RequestParam(name="primeraVez", required = false) Integer primeraVez){
 
-        Optional<Ordenes> optOrden = ordenesRepository.findById(6);
+        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+
+        if(primeraVez != null){
+            if(primeraVez == 1){
+                //Creamos una orden tipo carrito
+                crearOrdenCarrito(adminSede);
+                Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
+                id = ordenRecuperada.getIdordenes();
+            }
+        }
+
+        if(id == null){
+            return "redirect:/administradorsede/ordenes-reposicion";
+        }
+
+        Optional<Ordenes> optOrden = ordenesRepository.findById(id);
+
         if(optOrden.isPresent()){
 
-            if(!validarTipoOrden(2,optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2){
-                return "redirect:/administradorsede/ordenes-reposicion";
+            if(!validarTipoOrden(6,optOrden.get())){
+                if(!validarTipoOrden(2,optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2){
+                    return "redirect:/administradorsede/ordenes-reposicion";
+                }
             }
 
             List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
@@ -137,6 +155,8 @@ public class AdministradorSedeController {
             model.addAttribute("listaProductos",listaProductos);
             model.addAttribute("esNuevaOrden", 1);
             //model.addAttribute("detalle", new DetallesOrden());
+
+
             return "AdministradorSede/editarOrden";
 
         }
@@ -184,23 +204,6 @@ public class AdministradorSedeController {
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
 
-        if(esNuevaOrden==1){
-            Ordenes ordenReposicion = new Ordenes();
-            ordenReposicion.setEstadoOrden(estadoOrdenRepository.findById(2).get()); //Estado se configura en eliminado (lo ideal sería tener un estado como staged)
-            ordenReposicion.setTipoOrden(tipoOrdenRepository.findById(2).get()); // Tipo de orden 2 (de reposición)
-            ordenReposicion.setUsuarios(adminSede);
-            ordenReposicion.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-
-            ordenReposicion.setCodigo(UUID.randomUUID().toString());
-            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
-            ordenReposicion.setFechaRegistro(fechaActual.format(formatDateToSring));
-            LocalDate fechaEntrega = fechaActual.plusDays(20);
-            ordenReposicion.setFechaEntrega(fechaEntrega.format(formatDateToSring));
-
-            ordenesRepository.save(ordenReposicion); // creamos la orden de reposición
-            Ordenes ordenReposicionRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc(); // Recuperamos la orden que acabamos de crear
-        }
-
 
         if(detalle.getIdDetallesOrden()==null){//Agregar un nuevo producto y cantidad
             DetallesOrden detallesOrdenToSave = new DetallesOrden();
@@ -216,7 +219,7 @@ public class AdministradorSedeController {
             else {
 
                 Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(detallesOrdenToSave.getOrdenes().getIdordenes());
-                if(cantidadDetallesOrden >=1 && cantidadDetallesOrden <=10){
+                if(esNuevaOrden == 0 && cantidadDetallesOrden >=1 && cantidadDetallesOrden <=10){
                     detallesOrdenRepository.save(detallesOrdenToSave);
 
                     Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
@@ -225,7 +228,7 @@ public class AdministradorSedeController {
 
                     attr.addFlashAttribute("msg","Orden actualizada exitosamente");
                     return (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=") + detallesOrdenToSave.getOrdenes().getIdordenes();
-                } else if (nuevaOrden != null && cantidadDetallesOrden <=10) {
+                } else if (esNuevaOrden == 1 && cantidadDetallesOrden <=10) {
                     detallesOrdenRepository.save(detallesOrdenToSave);
 
                     Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
@@ -281,9 +284,15 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
-    public String guardarOrdenReposicion(@ModelAttribute("ordenReposicion") Ordenes ordenReposicion){
+    public String guardarOrdenReposicion(@RequestParam("idOrdenCarrito") Integer idOrdenCarrito, RedirectAttributes attr){
 
+        Ordenes ordenCarrito = ordenesRepository.findById(idOrdenCarrito).get();
+        ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(2).get());
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        ordenCarrito.setFechaRegistro(fechaActual.format(formatDateToSring));
+        ordenCarrito.setEstadoOrden(estadoOrdenRepository.findById(1).get()); // Seteamos el estado de orden como Pendiente
 
+        ordenesRepository.save(ordenCarrito);
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 
@@ -464,6 +473,24 @@ private boolean isValidEmail(String email) {
          }
         }
         return valido;
+    }
+
+
+    public void crearOrdenCarrito(Usuarios usuario){
+        Ordenes ordenCarrito = new Ordenes();
+        ordenCarrito.setEstadoOrden(estadoOrdenRepository.findById(4).get()); //Estado se configura en aceptado (no importa mucho en una orden carrito)
+        ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(6).get()); // Tipo de orden 6 (carrito)
+        ordenCarrito.setUsuarios(usuario);
+        ordenCarrito.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
+        ordenCarrito.setSedes(sedesRepository.findById(2).get());
+
+        ordenCarrito.setCodigo(UUID.randomUUID().toString());
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        ordenCarrito.setFechaRegistro(fechaActual.format(formatDateToSring));
+        LocalDate fechaEntrega = fechaActual.plusDays(20);
+        ordenCarrito.setFechaEntrega(fechaEntrega.format(formatDateToSring));
+
+        ordenesRepository.save(ordenCarrito); // creamos la orden de reposición
     }
 
 
