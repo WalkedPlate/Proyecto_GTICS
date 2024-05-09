@@ -57,15 +57,19 @@
       </a>
 
 
-      <div class="header-search-container">
 
-        <input type="search" name="search" class="search-field" placeholder="¿Qué productos de salud estas buscando?">
 
-        <button class="search-btn">
-          <ion-icon name="search-outline"></ion-icon>
-        </button>
+      <form class="form-inline" th:action="@{/clinicarenacer}">
+        <div class="header-search-container">
 
-      </div>
+          <input type="search" name="search" class="search-field" placeholder="¿Qué productos de salud estas buscando?">
+
+          <button class="search-btn">
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+
+        </div>
+      </form>
 
       <div class="header-user-actions">
         <button class="action-btn main-links">
@@ -84,7 +88,7 @@
         <a th:href="@{'/clinicarenacer/paciente/carrito'}" >
           <button class="action-btn main-links">
             <ion-icon name="bag-handle-outline"></ion-icon>
-            <span class="count">2</span>
+            <span class="count">1</span>
           </button>
         </a>
 
@@ -130,11 +134,12 @@
       <ion-icon name="menu-outline"></ion-icon>
     </button>
 
-    <button class="action-btn">
-      <ion-icon name="bag-handle-outline"></ion-icon>
-
-      <span class="count">0</span>
-    </button>
+    <a th:href="@{'/clinicarenacer/paciente/carrito'}" >
+      <button class="action-btn">
+        <ion-icon name="bag-handle-outline"></ion-icon>
+        <span class="count">1</span>
+      </button>
+    </a>
 
     <a th:href="@{'/clinicarenacer'}">
       <button class="action-btn">
@@ -157,7 +162,7 @@
     <ul  class="mobile-menu-category-list">
 
       <li th:each="cat, obj: ${listaCategorias}" class="menu-category">
-        <a th:href="@{'/clinicarenacer/categoria'}">
+        <a th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${cat.idCategorias}}">
           <button class="accordion-menu" data-accordion-btn>
             <p  th:text="${cat.nombre}" class="menu-title"></p>
           </button>

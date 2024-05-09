@@ -198,15 +198,12 @@
         <div class="sidebar-category product-featured">
             <div class="sidebar-top">
                 <h1 class="sidebar-title">Resumen de la orden</h1>
-
-                <button class="sidebar-close-btn" data-mobile-menu-close-btn>
-                    <ion-icon name="close-outline"></ion-icon>
-                </button>
+                <hr>
             </div>
             <div>
-                <h6 id="cantidadTotal" class="sidebar-title">Productos(0)</h6>
-                <h6 id="costoTotal" class="sidebar-title">Total S/. 0.00</h6>
-                <a>
+                <h6 id="cantidadTotal" >Productos(0)</h6>
+                <h6 id="costoTotal" >Total a pagar: S/. 0.00</h6>
+                <a th:href="@{'/clinicarenacer/paciente/pagar'}" class="d-grid gap-2 col-6 mx-auto">
                     <button type="button" class="btn btn-primary">Pagar</button>
                 </a>
             </div>
