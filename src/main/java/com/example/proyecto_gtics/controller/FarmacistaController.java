@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.entity.EstadoOrden;
 import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.repository.*;
@@ -56,16 +57,19 @@ public class FarmacistaController {
 
     @GetMapping(value ={"/farmacista/ordenes-linea"})
     public String ordenesLinea(Model model){
-        //Añadir que liste estados pendientes y no todos los estados
+
         Optional<TipoOrden> tipoOrden1 = tipoOrdenRepository.findById(3);
         Optional<TipoOrden> tipoOrden2 = tipoOrdenRepository.findById(4);
-        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenOrTipoOrden(tipoOrden1,tipoOrden2);
+        Optional<EstadoOrden> estadoOrden = estadoOrdenRepository.findById(1);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByEstadoOrdenAndTipoOrdenOrTipoOrden(estadoOrden,tipoOrden1,tipoOrden2);
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesLinea";
     }
 
     @GetMapping(value ={"/farmacista/ordenes-venta"})
-    public String ordenesVenta(){
+    public String ordenesVenta(Model model){
+        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
+        model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
 
