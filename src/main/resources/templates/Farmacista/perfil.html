@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer Farmacista</title>
+        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="stylesheet" href="/css/Farmacista/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    </head>
+
+    <body>
+        <!-- Dashboard -->
+        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+            <!-- Vertical Navbar -->
+            <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+                 id="navbarVertical">
+                <div class="container-fluid">
+                    <!-- Toggler -->
+                    <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Brand -->
+                    <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/farmacista'}">
+                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                                src="/img/Login/icono.png" width="40" class="pr-6">
+                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                        </h3>
+                    </a>
+                    <!-- Collapse -->
+                    <div class="collapse navbar-collapse" id="sidebarCollapse">
+                        <!-- Navigation -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista'}">
+                                    <i class="bi bi-house"></i> Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista/ordenes-linea'}">
+                                    <i class="bi bi-bar-chart "></i> Órdenes en línea
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista/ordenes-venta'}">
+                                    <i class="bi bi-bag-check"></i> Órdenes de venta
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista/chat'}">
+                                    <i class="bi bi-chat-left"></i> Chat
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/login'}">
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Header -->
+                <header class="bg-surface-primary border-bottom pt-6">
+                    <div class="container-fluid">
+                        <div class="mb-npx">
+                            <div class="row align-items-center mb-5">
+                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                    <!-- Title -->
+                                    <h2 class="mb-0 ls-tight">
+                                        <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary">Farmacista Javier Marroquin</span></h2>
+                                </div>
+                                <!-- Actions -->
+                                <div class="col-sm-4 col-12 text-sm-end">
+                                    <div class="mx-n1">
+                                        <a th:href="@{'/farmacista/perfil'}"
+                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-person-gear"></i>
+                                    </span>
+                                            <span>Mi perfil</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </header>
+                <!-- Main -->
+                <main class="py-6 bg-surface-secondary ">
+                    <div class="container-fluid d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
+                             style="width: 35rem">
+                            <div class="row row-cols-1 ">
+                                <div class="col text-center pt-1 pb-5">
+                                    <h2><strong>Tu perfil</strong></h2>
+                                    <hr>
+                                </div>
+                                <div class="row d-flex pb-5">
+
+                                    <div class="col text-center d-flex justify-content-center align-items-center">
+                                        <img src="/img/farmacista/profile-3.jpeg" alt="" width="180"
+                                             class="rounded-circle">
+                                    </div>
+                                    <div class="col mt-4" style="margin:0px 5px">
+                                        <span>Nombre: Robert Harry</span>
+                                        <br>
+                                        <span>DNI: 12345678</span>
+                                        <br>
+                                        <span>Código (colegio médico): 12345</span>
+                                        <br>
+                                        <span>Distrito de residencia: San Miguel</span>
+                                        <br>
+                                        <span>Correo: robert@gmail.com</span>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="col d-flex justify-content-center align-items-center pt-2 pb-3">
+                                    <a th:href="@{'/farmacista/cambiar-contra'}" class="btn btn-primary btn-xs"
+                                       role="button" style="margin-right: 10px">Cambiar Contraseña</a>
+                                    <a th:href="@{'/farmacista/editar-perfil'}" class="btn btn-primary btn-xs"
+                                       role="button">Editar Perfil</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>
+        <script src="/js/Farmacista/script.js"></script>
+    </body>
+</html>

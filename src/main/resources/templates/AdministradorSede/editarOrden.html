@@ -188,20 +188,20 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer text-center">
-                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            <div class="card-footer text-center d-flex justify-content-center">
+                                <button type="button" class="btn btn-secondary mx-2" data-bs-toggle="modal"
                                         data-bs-target="#inventario">
                                     Ver inventario
                                 </button>
 
-                                <a type="button" class="btn btn-success"
-                                         th:if="${esNuevaOrden == 0}" th:href="@{'/administradorsede/editarOrden?idOrdenRepo=' + ${ordenReposicion.idordenes}}">
-                                   Regresar
+                                <a type="button" class="btn btn-success mx-2"
+                                         th:if="${esNuevaOrden == 0}" th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenReposicion.idordenes}}">
+                                   Guardar
                                 </a>
                                 <div th:if="${esNuevaOrden == 1}">
                                     <form  method="post" th:action="@{/administradorsede/guardarorden-reposicion}">
                                         <input type="hidden" th:name="'idOrdenCarrito'" th:value="${ordenReposicion.idordenes}">
-                                        <button type="submit" class="btn btn-success">
+                                        <button type="submit" class="btn btn-success mx-2">
                                             Guardar Orden
                                         </button>
                                     </form>

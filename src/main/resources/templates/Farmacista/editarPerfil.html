@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Renacer Farmacista</title>
+    <link rel="icon" href="/img/Login/icono.png"/>
+    <link rel="stylesheet" href="/css/Farmacista/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Dashboard -->
+    <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+      <!-- Vertical Navbar -->
+      <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+           id="navbarVertical">
+        <div class="container-fluid">
+          <!-- Toggler -->
+          <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <!-- Brand -->
+          <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/farmacista'}">
+            <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                    src="/img/Login/icono.png" width="40" class="pr-6">
+              <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+            </h3>
+          </a>
+          <!-- Collapse -->
+          <div class="collapse navbar-collapse" id="sidebarCollapse">
+            <!-- Navigation -->
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/farmacista'}">
+                  <i class="bi bi-house"></i> Inicio
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/farmacista/ordenes-linea'}">
+                  <i class="bi bi-bar-chart "></i> Órdenes en línea
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/farmacista/ordenes-venta'}">
+                  <i class="bi bi-bag-check"></i> Órdenes de venta
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/farmacista/chat'}">
+                  <i class="bi bi-chat-left"></i> Chat
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{'/login'}">
+                  <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- Main content -->
+      <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+        <!-- Header -->
+        <header class="bg-surface-primary border-bottom pt-6">
+          <div class="container-fluid">
+            <div class="mb-npx">
+              <div class="row align-items-center mb-5">
+                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                  <!-- Title -->
+                  <h2 class="mb-0 ls-tight">
+                    <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
+                          class="text-primary">Farmacista Javier Marroquin</span></h2>
+                </div>
+                <!-- Actions -->
+                <div class="col-sm-4 col-12 text-sm-end">
+                  <div class="mx-n1">
+                    <a th:href="@{'/farmacista/perfil'}"
+                       class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-person-gear"></i>
+                                    </span>
+                      <span>Mi perfil</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </header>
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary ">
+          <div class="container-fluid d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
+                 style="width: 70rem">
+              <div class="row row-cols-1 ">
+                <div class="col text-center pt-1 pb-1">
+                  <h2><strong>Edita tu perfil</strong></h2>
+                  <hr>
+                </div>
+
+                <div class="col d-flex pb-6">
+                  <div class="col-4 d-flex justify-content-center align-items-center">
+                    <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250"
+                         class="rounded-circle">
+                  </div>
+                  <div class="col" style="margin:0px 30px">
+                    <div class="row pt-5">
+                      <div class="col">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control" placeholder="Coloca tu nombre">
+                      </div>
+
+                      <div class="col">
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" class="form-control"
+                               placeholder="Coloca tu apellido">
+                      </div>
+                    </div>
+
+                    <div class="row pt-5">
+                      <div class="col">
+                        <label for="correo">Correo electrónico:</label>
+                        <input type="email" class="form-control"
+                               placeholder="correo@correo.com">
+                      </div>
+                    </div>
+                    <div class="row pt-5">
+                      <div class="col">
+                        <label for="distrito">Distrito de residencia:</label>
+                        <input type="text" class="form-control"
+                               placeholder="Coloca tu distrito de residencia">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class=" pt-2 pb-3 d-flex justify-content-center">
+
+                  <a  class="btn btn-primary btn-xs" role="button"
+                      style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#modalGuardar">Guardar Cambios</a>
+
+                  <a th:href="@{'/farmacista/perfil'}" class="btn btn-danger btn-xs" role="button">Cancelar</a>
+
+                </div>
+
+                <!-- Modal guardardo exitoso -->
+                <div class="modal fade" id="modalGuardar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <div class="container text-center">
+                          <div class="row row-cols-1">
+                            <div class="col pt-5 icono">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                              </svg>
+                            </div>
+                            <div class="col">
+                              <h3 class="text-center pt-5">Se han guardado los cambios exitosamente</h3>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer d-flex justify-content-center">
+                        <a th:href="@{'/farmacista/perfil'}" >
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                        </a>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+        </main>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+    <script src="/js/Farmacista/script.js"></script>
+  </body>
+</html>

@@ -5,31 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clínica Renacer Farmacista</title>
+    <link rel="icon" href="/img/Login/icono.png"/>
     <link rel="stylesheet" href="/css/Farmacista/style.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <!--DataTable-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
     <style>
-        /* Estilos personalizados para los botones de paginación */
-        li.dt-paging-button.page-item {
-            padding: 2px;
-            margin: 0 2px;
-            border: 1px solid #ccc;
-            background-color: #f2f2f2;
-            color: #333;
-            border-radius: 3px;
-        }
-
-        /* Estilos para el botón activo */
-        .dt-paging-button.page-item.active a {
-            background-color: rgb(92 96 245) !important;
-            color: #fff !important;
-        }
-
-        /* Estilos para el botón activo */
-        .dt-paging-button.page-item.disabled a {
-            opacity: 0.5; /* Por ejemplo, reducir la opacidad */
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #94a6b3;
+            border-color: #94a6b3;
         }
     </style>
 </head>
@@ -49,64 +36,38 @@
                 </button>
                 <!-- Brand -->
                 <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/farmacista'}">
-                    <h3 class="text-success"><img src="/img/Farmacista/Imagen de WhatsApp 2024-04-09 a las 00.28.48_3d5ed18c.png"
-                            width="40" class="pr-6"><span class="text-info">Clínica</span>Renacer</h3>
+                    <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                            src="/img/Login/icono.png" width="40" class="pr-6">
+                        <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                    </h3>
                 </a>
-                <!-- User menu (mobile) -->
-                <div class="navbar-user d-lg-none">
-                    <!-- Dropdown -->
-                    <div class="dropdown">
-                        <!-- Toggle -->
-                        <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <div class="avatar-parent-child">
-                                <img alt="Image Placeholder"
-                                    src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                    class="avatar avatar- rounded-circle">
-                                <span class="avatar-child avatar-badge bg-success"></span>
-                            </div>
-                        </a>
-                        <!-- Menu 
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
-                        <a href="#" class="dropdown-item">Perfil</a>
-                        <a href="#" class="dropdown-item">Configuracion</a>
-                        <a href="#" class="dropdown-item">Cerrar Sesión</a>
-                    </div> -->
-
-                    </div>
-                </div>
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="sidebarCollapse">
                     <!-- Navigation -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/farmacista'}">
-                                <i class="bi bi-house"></i> Pagina Principal
+                            <a class="nav-link"  th:href="@{'/farmacista'}">
+                                <i class="bi bi-house" ></i> Inicio
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/farmacista/ordenes-linea'}">
-                                <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Ordenes en línea
+                            <a class="nav-link" style="background: #F5F9FC" th:href="@{'/farmacista/ordenes-linea'}">
+                                <i class="bi bi-bar-chart btn" role="button" data-bs-toggle="button"></i> Órdenes en línea
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{'/farmacista/ordenes-venta'}">
-                                <i class="bi bi-people"></i> Ordenes de venta
+                                <i class="bi bi-bag-check"></i> Órdenes de venta
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{'/farmacista/chat'}">
-                                <i class="bi bi-people"></i> Chat
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/farmacista/perfil'}">
-                                <i class="bi bi-people"></i> Perfil
+                                <i class="bi bi-chat-left"></i> Chat
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{'/login'}">
-                                <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+                                <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                             </a>
                         </li>
                     </ul>
@@ -119,12 +80,24 @@
             <header class="bg-surface-primary border-bottom pt-6">
                 <div class="container-fluid">
                     <div class="mb-npx">
-                        <div class="row align-items-center">
-                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                 <!-- Title -->
-                                <h1 class="h2 mb-0 ls-tight">
-                                    Bienvenido, <span class="text-primary">Farmacista Javier Marroquin</span></h1>
-                                <br>
+                                <h2 class="mb-0 ls-tight">
+                                    <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
+                                        class="text-primary">Farmacista Javier Marroquin</span></h2>
+                            </div>
+                            <!-- Actions -->
+                            <div class="col-sm-4 col-12 text-sm-end">
+                                <div class="mx-n1">
+                                    <a th:href="@{'/farmacista/perfil'}"
+                                       class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-person-gear"></i>
+                                    </span>
+                                        <span>Mi perfil</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -137,24 +110,22 @@
                     <div class="card shadow border-0 mb-7">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col md-7">
-                                    <h2 class="mb-0">Ordenes de Venta:</h2>
+                                <div class="col">
+                                    <h3 class="mb-0">Lista de órdenes de venta en línea</h3>
                                 </div>
 
-                                <div class="col md-4">
-                                    
-                                </div>
                             </div>
                         </div>
-                        <div class="table-responsive mx-auto">
-                            <table class="table table-hover table-nowrap" id="table">
-                                <thead class="thead-light">
+                        <!--TABLA-->
+                        <div class="container table-responsive mb-4">
+                            <table id="example" class="table table-hover" style="width:100%">
+                                <thead>
                                     <tr>
                                         <th scope="col">Nro Orden</th>
                                         <th scope="col">Nombre del Paciente</th>
                                         <th scope="col">DNI</th>
                                         <th scope="col">Orden Generada en:</th>
-                                        <th scope="col">Revision de orden</th>
+                                        <th scope="col">Estado de orden</th>
                                         <th scope="col">Monto Total</th>
                                         <th scope="col">Acciones</th>
                                     </tr>
@@ -179,26 +150,17 @@
                                         <td>
                                             120
                                         </td>
-                                        <td class="text-end">
+                                        <td class="text-center">
                                             <a th:href="@{'/farmacista/ordenes-linea/ver-orden'}">
-                                                <button type="button" class="btn btn-sm btn-primary">Revisar</button>
+                                                <button type="button" class="btn btn-sm btn-square btn-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                    </button>
                                             </a>
                                         </td>
                                     </tr>
 
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="card-footer border-0 py-5 mx-auto">
-                            <!--<nav aria-label="Page navigation example">
-                          <ul class="pagination">
-                            <li class="page-item"><a class="page-link disabled" href="#">Anterior</a></li>
-                            <li class="page-item"><a class="page-link bg-primary text-white" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-                          </ul>
-                        </nav>-->
                         </div>
                     </div>
                 </div>
@@ -207,18 +169,20 @@
     </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>-->
     <script src="/js/Farmacista/script.js"></script>
 
-    <!--jQuery-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <!--DataTable-->
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/Superadmin/table.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
     <!---->
-    <script src="/js/Farmacista/tablaOrdenes.js"></script>
+<!--    <script src="/js/Farmacista/tablaOrdenes.js"></script>-->
 </body>
 
 </html>

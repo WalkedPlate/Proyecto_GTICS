@@ -60,7 +60,7 @@ public class FarmacistaController {
 
     @GetMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
     public String verOrden(){
-        return "Farmacista/verOrden";
+        return "Farmacista/verOrdenLinea";
     }
 
     @GetMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
@@ -73,12 +73,21 @@ public class FarmacistaController {
         return "Farmacista/Chat";
     }
 
-    //No hay vista de <<perfil>>
+
     @GetMapping(value ={"/farmacista/perfil"})
     public String perfil(){
-        return "Farmacista/index";
+        return "Farmacista/perfil";
     }
 
+    @GetMapping(value ={"/farmacista/editar-perfil"})
+    public String editarPerfil(){
+        return "farmacista/editarPerfil";
+    }
+
+    @GetMapping(value ={"/farmacista/cambiar-contra"})
+    public String cambiarContra(){
+        return "farmacista/cambiarContra";
+    }
 
 
 
