@@ -131,25 +131,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="n: ${#numbers.sequence(2200213,2200220)}">
-                                        <td th:text="${n}">
-
-                                        </td>
-                                        <td>
-                                            Diego Henriquez
-                                        </td>
-                                        <td>
-                                            71273166
-                                        </td>
-                                        <td>
-                                            ChatBot
-                                        </td>
-                                        <td>
-                                            Revision
-                                        </td>
-                                        <td>
-                                            120
-                                        </td>
+                                    <tr th:each="orden,obj : ${listaOrdenes}">
+                                        <td th:text="${orden.codigo}"></td>
+                                        <td th:text="${orden.usuarios.nombre}"></td>
+                                        <td th:text="${orden.usuarios.dni}"></td>
+                                        <td th:text="${orden.tipoOrden.nombre}"></td>
+                                        <td th:text="${orden.estadoOrden.nombre}"></td>
+                                        <td th:text="${orden.monto}"></td>
                                         <td class="text-center">
                                             <a th:href="@{'/farmacista/ordenes-linea/ver-orden'}">
                                                 <button type="button" class="btn btn-sm btn-square btn-primary">

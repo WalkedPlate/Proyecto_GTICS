@@ -1,8 +1,14 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.entity.Ordenes;
+import com.example.proyecto_gtics.entity.TipoOrden;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class FarmacistaController {
@@ -49,7 +55,12 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/ordenes-linea"})
-    public String ordenesLinea(){
+    public String ordenesLinea(Model model){
+        //Añadir que liste estados pendientes y no todos los estados
+        Optional<TipoOrden> tipoOrden1 = tipoOrdenRepository.findById(3);
+        Optional<TipoOrden> tipoOrden2 = tipoOrdenRepository.findById(4);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenOrTipoOrden(tipoOrden1,tipoOrden2);
+        model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesLinea";
     }
 

@@ -32,4 +32,6 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> encuentraOrdenesPorEstadoOrden(Integer ranMin, Integer ranMax,Integer idTipoOrden);
 
     Ordenes findByIdordenes(int idOrden);
+
+    List<Ordenes> findByTipoOrdenOrTipoOrden(Optional<TipoOrden> tipoOrden1 , Optional<TipoOrden> tipoOrden2);
 }
