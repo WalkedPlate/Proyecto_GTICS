@@ -55,7 +55,9 @@ public class SuperadminController {
     public String dashboard(Model model){
         TipoUsuario adminSede = tipoUsuarioRepository.findById("AdministradorDeSede").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
-        List<Usuarios> listaAdminSede = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(adminSede, estado);
+        EstadoUsuario estado2 = estadoUsuarioRepository.findById("Baneado").get();
+        List<Usuarios> listaAdminSede = usuariosRepository.findByTipoUsuarioAndEstadoUsuarioOrEstadoUsuario(adminSede,estado,estado2);
+        //List<Usuarios> listaAdminSede = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(adminSede, estado);
         model.addAttribute("listaAdminSede", listaAdminSede);
 
         List<Sedes> listaSedes = sedesRepository.findAll();

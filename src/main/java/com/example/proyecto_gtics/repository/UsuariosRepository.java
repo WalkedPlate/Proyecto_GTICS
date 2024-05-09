@@ -20,7 +20,6 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
 
     Usuarios findByIdUsuario(int idUsuario);
 
-
-
+    List<Usuarios> findByTipoUsuarioAndEstadoUsuarioOrEstadoUsuario(TipoUsuario tipoUsuario,EstadoUsuario estadoUsuario1,EstadoUsuario estadoUsuario2);
 
 }
