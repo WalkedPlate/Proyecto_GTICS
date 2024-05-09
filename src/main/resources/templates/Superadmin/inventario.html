@@ -147,13 +147,13 @@
                                                     aria-label="Close"></button>
                                         </div>
 
-                                        <form method="post" th:action="@{/superadmin/guardarProducto}">
+                                        <form method="post" th:action="@{/superadmin/guardarProducto}" enctype="multipart/form-data">
                                             <input type="hidden" name="IDProducto" value="0">
                                         <div class="modal-body row">
                                             <div class="row pt-3">
                                                    <div class="col">
                                                     <label>Subir imagen:</label>
-                                                    <input type="file" class="form-control">
+                                                       <input type="file" class="form-control" name="archivo">
                                                 </div>
                                             </div>
 
@@ -270,6 +270,8 @@
                             </div>
 
                             <!--TABLA-->
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                             <div class="container table-responsive mb-4">
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
@@ -287,7 +289,7 @@
                                     <tbody>
                                         <tr th:each="medicamento,obj : ${listaMedicamentos}">
                                             <td class="text-center">
-                                                <img alt="..." src="/img/Superadmin/medicina1.jpg"
+                                                <img alt="..." th:src="@{|/imageProduct/${medicamento.idProductos}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
 
                                             </td>
@@ -333,7 +335,7 @@
                                                     aria-label="Close"></button>
                                         </div>
 
-                                        <form method="post" th:action="@{/superadmin/guardarProducto}">
+                                        <form method="post" th:action="@{/superadmin/guardarProducto}" enctype="multipart/form-data">
                                             <input type="hidden" name="IDProducto" th:value="${medicamento.idProductos}" >
                                             <input type="hidden" name="idProductos" th:value="${medicamento.idProductos}">
                                             <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
@@ -343,7 +345,7 @@
 
                                                 <div class="col">
                                                     <label>Subir imagen:</label>
-                                                    <input type="file" class="form-control">
+                                                    <input type="file" class="form-control" name="archivo">
                                                 </div>
                                             </div>
 

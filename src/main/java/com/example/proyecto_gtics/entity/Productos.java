@@ -44,4 +44,10 @@ public class Productos {
 
     @Column(name = "estado_producto",nullable = false)
     private String estadoProducto;
+
+    @Column(name = "fotonombre",nullable = true)
+    private String fotonombre;
+
+    @Column(name = "fotocontenttype",nullable = true)
+    private String fotocontenttype;
 }

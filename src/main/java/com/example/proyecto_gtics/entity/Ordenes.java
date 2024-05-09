@@ -62,4 +62,10 @@ public class Ordenes {
     @JoinColumn(name = "sedes_idsedes")
     private Sedes sedes;
 
+    @Column(name = "fotonombre",nullable = true)
+    private String fotonombre;
+
+    @Column(name = "fotocontenttype",nullable = true)
+    private String fotocontenttype;
+
 }

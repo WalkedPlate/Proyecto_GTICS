@@ -167,7 +167,7 @@
                                         <tr th:each="detalle, obj :  ${listaDetallesOrden}">
                                             <td class="text-center" th:text="${detalle.productos.idProductos}"></td>
                                             <td class="text-center">
-                                                <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
+                                                <img alt="..." th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                             </td>
 
@@ -259,7 +259,7 @@
                                                     <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
                                                         <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>
                                                         <td class="text-center medicine-name">
-                                                            <img alt="..." src="/img/AdministradorSede/medicina1.jpg"
+                                                            <img alt="..." th:src="@{|/imageProduct/${producto.idProductos}|}"
                                                                  class="avatar avatar-sm rounded-circle me-2">
                                                             <p th:text="${producto.nombre}"></p>
                                                         </td>

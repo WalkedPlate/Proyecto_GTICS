@@ -187,7 +187,7 @@
                                                             <td th:text="${detalle.productos.idProductos}"></td>
                                                             <td>
                                                                 <img alt="..."
-                                                                     th:src="@{/img/AdministradorSede/medicina1.jpg}"
+                                                                     th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"
                                                                      class="avatar avatar-sm rounded-circle">
                                                             </td>
                                                             <td th:text="${detalle.productos.nombre}"></td>
