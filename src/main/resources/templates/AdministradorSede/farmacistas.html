@@ -200,56 +200,58 @@
                                 <div class="row pt-3">
                                     <div class="col">
                                         <label >Nombre:</label>
-                                        <input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}">
-                                    </div>
+                                        <!--<input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}"> -->
+                                         <input  th:field="*{farmacista.nombre}" class="form-control" type="text" th:classappend="${#fields.hasErrors('nombre')?'is-valid':''}"/>
+                                         <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{farmacista.nombre}"></div>
+                                     </div>
 
-                                    <div class="col">
-                                        <label >Correo:</label>
-                                        <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
-                                    </div>
-                                </div>
+                                     <div class="col">
+                                         <label >Correo:</label>
+                                         <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
+                                     </div>
+                                 </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label >DNI:</label>
-                                        <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
-                                    </div>
+                                 <div class="row pt-5">
+                                     <div class="col">
+                                         <label >DNI:</label>
+                                         <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
+                                     </div>
 
-                                    <div class="col">
-                                        <label >Código (colegio médico):</label>
-                                        <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
-                                    </div>
-                                </div>
+                                     <div class="col">
+                                         <label >Código (colegio médico):</label>
+                                         <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
+                                     </div>
+                                 </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label >Distrito de residencia</label>
-                                        <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
-                                    </div>
-                                    <div class="col">
-                                        <label for="sedeAct">Sede:</label>
-                                        <select id="sedeAct" class="form-select" name="idSedes">
-                                            <option th:value="${adminSede.sedes.idSedes}"
-                                                    th:text="${adminSede.sedes.nombre}"
-                                                    th:selected="${true}"></option>
-                                        </select>
+                                 <div class="row pt-5">
+                                     <div class="col">
+                                         <label >Distrito de residencia</label>
+                                         <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
+                                     </div>
+                                     <div class="col">
+                                         <label for="sedeAct">Sede:</label>
+                                         <select id="sedeAct" class="form-select" name="idSedes">
+                                             <option th:value="${adminSede.sedes.idSedes}"
+                                                     th:text="${adminSede.sedes.nombre}"
+                                                     th:selected="${true}"></option>
+                                         </select>
 
-                                    </div>
-                                </div>
+                                     </div>
+                                 </div>
 
 
-                            </div>
+                             </div>
 
-                            <div class="modal-footer mt-3">
-                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                            </form>
-                        </div>
-                        </div>
-                    </div>
+                             <div class="modal-footer mt-3">
+                                 <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
+                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                             </div>
+                             </form>
+                         </div>
+                         </div>
+                     </div>
 
-                    <!-- Modal Eliminar -->
+                     <!-- Modal Eliminar -->
                     <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaEliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -279,8 +281,9 @@
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
                                             <input id="nombre" name="nombre" type="text" class="form-control">
+
                                         </div>
-                                       
+
                                         <div class="col">
                                             <label for="correo">Correo:</label>
                                             <input id="correo" name="correo" type="email" class="form-control">
