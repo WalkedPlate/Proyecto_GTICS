@@ -43,8 +43,8 @@ public class Usuarios {
 
 
     @Column(name = "contrasena",nullable = false,length = 64)
-    @NotBlank
-    @Size(max= 64, message = "La contraseña no valida")
+    //@NotBlank
+    @Size(max= 63, message = "La contraseña no valida")
     private String contrasena;
 
 

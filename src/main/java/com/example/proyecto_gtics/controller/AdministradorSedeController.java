@@ -330,10 +330,12 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value = "/administradorsede/guardarfarmacista")
-    public String guardarFarmacista(@ModelAttribute("usuarios") @Valid Usuarios usuarios , BindingResult bindingResult, @RequestParam("idSedes") int id, RedirectAttributes attr){
+    public String guardarFarmacista(@Valid Usuarios usuarios , BindingResult bindingResult, @RequestParam("idSedes") int id, RedirectAttributes attr){
 
 
         if(bindingResult.hasErrors()){
+           String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("msg",error);
             return "redirect:/administradorsede/farmacistas";
         }else {
             Sedes sedes = sedesRepository.findById(id).get();
