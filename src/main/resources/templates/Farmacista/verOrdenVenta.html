@@ -131,13 +131,13 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-md-7 d-flex justify-content-center align-items-center">
-                                    <h3 class="mb-0">Orden N° 22001213</h3>
+                                    <h3 class="mb-0">Orden N° <span th:text="${orden.codigo}"></span></h3>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <p class="mb-0">Paciente: Diego Henriquez</p>
-                                    <p class="mb-0">Dirección: Av 278 Urb St Rs</p>
-                                    <p class="mb-0">Fecha estimada: 20/04/24</p>
+                                    <p class="mb-0">Paciente: <span th:text="${orden.usuarios.nombre}"></span></p>
+                                    <p class="mb-0">Dirección: <span th:text="${orden.usuarios.direccion}"></span></p>
+                                    <p class="mb-0">Fecha estimada: <span th:text="${orden.fechaEntrega}"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -149,27 +149,17 @@
                                         <th scope="col" class="text-center">Imagen</th>
                                         <th scope="col" class="text-center">Medicina</th>
                                         <th scope="col" class="text-center">Cantidad</th>
-                                        <th scope="col" class="text-center">Cantidad</th>
                                         <th scope="col" class="text-center">Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr th:each="detalleOrden: ${listaDetallesOrden}">
                                         <td class="text-center">
                                             <img src="/img/Farmacista/medicina1.jpg" alt="medicina1">
                                         </td>
-                                        <td>
-                                            Paracetamol 100mg Tableta
-                                        </td>
-                                        <td class="text-center">
-                                            3
-                                        </td>
-                                        <td class="text-center">
-                                            10
-                                        </td>
-                                        <td class="text-center">
-                                            10
-                                        </td>
+                                        <td th:text="${detalleOrden.productos.nombre}" class="text-center"></td>
+                                        <td th:text="${detalleOrden.cantidad}" class="text-center"></td>
+                                        <td th:text="${detalleOrden.montoParcial}" class="text-center"></td>
                                     </tr>
 
                                 </tbody>

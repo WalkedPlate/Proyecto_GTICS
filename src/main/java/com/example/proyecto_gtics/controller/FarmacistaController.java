@@ -86,8 +86,12 @@ public class FarmacistaController {
         return "Farmacista/verOrdenLinea";
     }
 
-    @GetMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
-    public String verOrdenVenta(){
+    @PostMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
+    public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden){
+        Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
+        List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
+        model.addAttribute("listaDetallesOrden",listaDetallesOrden);
+        model.addAttribute("orden",orden);
         return "Farmacista/verOrdenVenta";
     }
 
