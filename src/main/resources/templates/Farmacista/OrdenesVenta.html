@@ -139,14 +139,14 @@
                                         <td th:text="${orden.tipoOrden.nombre}"></td>
                                         <td th:text="${orden.estadoOrden.nombre}"></td>
                                         <td th:text="${orden.monto}"></td>
-                                        <td class="text-center">
+                                        <td class="text-center d-flex justify-content align-center">
                                             <form method="post" th:action="@{'/farmacista/ordenes-venta/ver-orden'}">
                                                 <input type="hidden" name="idOrden" th:value="${orden.idordenes}">
-                                                <button type="submit" class="btn btn-sm btn-square btn-primary">
+                                                <button type="submit" class="btn btn-sm btn-square btn-primary mx-1">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </form>
-                                            <button type="button" class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal" data-bs-target="#modaInvalidar">
+                                            <button type="button" class="btn btn-sm btn-square btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modaInvalidar">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
                                         </td>
