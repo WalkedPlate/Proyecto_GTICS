@@ -18,6 +18,7 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> findByTipoOrdenAndUsuarios(TipoOrden tipoOrden, Usuarios usuarios);
     List<Ordenes> findByTipoOrdenAndSedesAndEstadoOrdenNot(TipoOrden tipoOrden, Sedes sedes, EstadoOrden estadoOrden);
 
+
     Ordenes findFirstByOrderByIdordenesDesc(); // recuperar la última entrada de la tabla
 
     @Query(value = "update ordenes set estado_orden_idestado_orden = ?1 where idordenes = ?2", nativeQuery = true)

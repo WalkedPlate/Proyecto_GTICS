@@ -42,7 +42,7 @@ public class Usuarios {
 
     //Verificar tipo de dato para fotos!
     @Column(name = "foto")
-    private String foto;
+    private byte[] foto;
 
     @Column(name = "direccion",length = 100)
     private String direccion;
@@ -79,5 +79,11 @@ public class Usuarios {
 
     @Column(name = "fecha_ban")
     private Date fechaBan;
+
+    @Column(name = "fotonombre",nullable = true)
+    private String fotonombre;
+
+    @Column(name = "fotocontenttype",nullable = true)
+    private String fotocontenttype;
 
 }

@@ -147,7 +147,7 @@
                             <tbody>
                                 <tr th:each="medicinasede,obj: ${listaMedicinas}">
                                     <td class="text-center">
-                                        <img alt="..." src="/img/Superadmin/medicina1.jpg"
+                                        <img alt="..." th:src="@{|/imageProduct/${medicinasede.productos.idProductos}|}"
                                              class="avatar avatar-sm rounded-circle me-2">
 
                                     </td>

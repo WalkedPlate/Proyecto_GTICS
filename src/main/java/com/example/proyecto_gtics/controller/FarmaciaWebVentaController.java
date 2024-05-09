@@ -51,9 +51,9 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer"})
-    public String paginaPrincipal(Model model){
+    public String paginaPrincipal(Model model, String nombre){
 
-
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         List<Productos> listaProductos = productosRepository.findAll();
         List<Productos> listarProducto = productosRepository.findAll();
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -62,7 +62,7 @@ public class FarmaciaWebVentaController {
             listaCantidades.add(productosRepository.countByCategorias(categorias));
         }
 
-
+        model.addAttribute("nombre", buscarProductos);
         model.addAttribute("listaCantCategorias",listaCantidades);
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listarProducto",listarProducto);
@@ -70,11 +70,22 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/index";
     }
 
-    @GetMapping(value ={"/nada"})
-    public String cabecera(Model model){
+    @GetMapping(value ={"/header"})
+    public String cabecera(Model model, String nombre){
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
         return "FarmaciaWebVenta/fragments_clinicaweb/cabecera";
+    }
+
+    @GetMapping(value ={"/footer"})
+    public String footer(Model model, String nombre){
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+        return "FarmaciaWebVenta/fragments_clinicaweb/footer";
     }
 
     @GetMapping(value ={"/clinicarenacer/paciente"})
@@ -143,6 +154,11 @@ public class FarmaciaWebVentaController {
         model.addAttribute("ListarProductos",productos);
 
         return "FarmaciaWebVenta/carrito";
+    }
+
+    @GetMapping(value ={"/clinicarenacer/paciente/pagar"})
+    public String pagar(){
+        return "FarmaciaWebVenta/pagarCarrito";
     }
 
 }

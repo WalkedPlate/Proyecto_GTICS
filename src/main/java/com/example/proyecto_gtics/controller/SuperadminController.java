@@ -3,12 +3,20 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -129,12 +137,39 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
-    public String guardarProducto(Productos productos,@RequestParam("idCategoria") int idCategoria,@RequestParam("IDProducto") int idProducto){
+    public String guardarProducto(Productos productos, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
+                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr){
+
+
+        //Sobre la foto de un producto --------------------------------------------------------------------------------
+        if (file.isEmpty()) {
+            attr.addFlashAttribute("err","Debe subir una foto.");
+            return "redirect:/superadmin/inventario";
+        }
+        String fileName = file.getOriginalFilename();
+        if (fileName.contains("..")) {
+            attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+            return "redirect:/superadmin/inventario";
+        }
+        try {
+            productos.setFoto(file.getBytes());
+            productos.setFotonombre(fileName);
+            productos.setFotocontenttype(file.getContentType());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+            return "redirect:/superadmin/inventario";
+        }
+        //-----------------------------------------------------------------------------------------------------------
+
         Optional<Productos> optProducto =productosRepository.findById(idProducto);
+
         if(optProducto.isPresent()){
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
+            attr.addFlashAttribute("msg","Producto actualizado exitosamente.");
             productosRepository.save(productos);
         }else{
             //-----------Procesamiento de creacion de codigo de producto--------
@@ -148,17 +183,19 @@ public class SuperadminController {
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
+            attr.addFlashAttribute("msg","Producto creado exitosamente.");
             productosRepository.save(productos);
         }
         return "redirect:/superadmin/inventario";
     }
 
     @PostMapping(value = {"/superadmin/eliminarProducto"})
-    public String eliminarProducto(@RequestParam("idProducto") int idProducto){
+    public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr){
         Optional<Productos> optProduc =productosRepository.findById(idProducto);
         Productos producto = productosRepository.findById(idProducto).get();
         if(optProduc.isPresent()){
             producto.setEstadoProducto("Eliminado");
+            attr.addFlashAttribute("msg","Producto eliminado exitosamente.");
             productosRepository.save(producto);
         }
         return "redirect:/superadmin/inventario";
@@ -332,6 +369,70 @@ public class SuperadminController {
         return "Superadmin/cambiarContra";
     }
 
+
+
+    @GetMapping("/imageProduct/{id}")
+    public ResponseEntity<byte[]> mostrarImagenProducto(@PathVariable("id") Integer id) {
+        Optional<Productos> opt = productosRepository.findById(id);
+        if (opt.isPresent()) {
+            Productos p = opt.get();
+
+            byte[] imagenComoBytes = p.getFoto();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType(p.getFotocontenttype()));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/imageUser/{id}")
+    public ResponseEntity<byte[]> mostrarImagenUsuario(@PathVariable("id") Integer id) {
+        Optional<Usuarios> opt = usuariosRepository.findById(id);
+        if (opt.isPresent()) {
+            Usuarios u = opt.get();
+
+            byte[] imagenComoBytes = u.getFoto();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType(u.getFotocontenttype()));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/imageReceta/{id}")
+    public ResponseEntity<byte[]> mostrarImagenRecetaMedica(@PathVariable("id") Integer id) {
+        Optional<Ordenes> opt = ordenesRepository.findById(id);
+        if (opt.isPresent()) {
+            Ordenes o = opt.get();
+
+            byte[] imagenComoBytes = o.getFotoReceta();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType(o.getFotocontenttype()));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
 
 
 }
