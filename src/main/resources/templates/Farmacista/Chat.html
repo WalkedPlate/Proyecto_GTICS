@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer Farmacista</title>
+        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="stylesheet" href="/css/Farmacista/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <!--DataTable-->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <style>
+            .page-item.active .page-link {
+                z-index: 3;
+                color: #fff;
+                background-color: #94a6b3;
+                border-color: #94a6b3;
+            }
+        </style>
+    </head>
+
+    <body class="bg-surface-secondary">
+        <!-- Dashboard -->
+        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+            <!-- Vertical Navbar -->
+            <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+                 id="navbarVertical">
+                <div class="container-fluid">
+                    <!-- Toggler -->
+                    <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Brand -->
+                    <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/farmacista'}">
+                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                                src="/img/Login/icono.png" width="40" class="pr-6">
+                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                        </h3>
+                    </a>
+
+                    <!-- Collapse -->
+                    <div class="collapse navbar-collapse" id="sidebarCollapse">
+                        <!-- Navigation -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link"  th:href="@{'/farmacista'}">
+                                    <i class="bi bi-house"></i> Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista/ordenes-linea'}">
+                                    <i class="bi bi-bar-chart "></i> Órdenes en línea
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/farmacista/ordenes-venta'}">
+                                    <i class="bi bi-bag-check " ></i> Órdenes de venta
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link"  style="background: #F5F9FC" th:href="@{'/farmacista/chat'}">
+                                    <i class="bi bi-chat-left btn" role="button" data-bs-toggle="button"></i> Chat
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{'/login'}">
+                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Header -->
+                <header class="bg-surface-primary border-bottom pt-6">
+                    <div class="container-fluid">
+                        <div class="mb-npx">
+                            <div class="row align-items-center mb-5">
+                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                    <!-- Title -->
+                                    <h2 class="mb-0 ls-tight">
+                                        <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary">Farmacista Javier Marroquin</span></h2>
+                                </div>
+                                <!-- Actions -->
+                                <div class="col-sm-4 col-12 text-sm-end">
+                                    <div class="mx-n1">
+                                        <a th:href="@{'/farmacista/perfil'}"
+                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-person-gear"></i>
+                                    </span>
+                                            <span>Mi perfil</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </header>
+                <!-- Main -->
+                <main>
+
+                    <section class="gradient-custom">
+                        <div class="container py-5">
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-lg-5 col-xl-5 mb-4 mb-md-0">
+
+                                    <h5 class="font-weight-bold mb-3 text-center">Pacientes</h5>
+
+                                    <div class="card mask-custom">
+                                        <div class="card-body">
+
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a  class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">John Doe</p>
+                                                                <p class="small text-black">Hola como estas?</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Ahora</p>
+                                                            <span class="badge bg-primary float-end">1</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Danny Smith</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Hace 5min</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Alex Steward</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Ayer</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Ashley Olsen</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Ayer</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Kate Moss</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Ayer</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Lara Croft</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Ayer</p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li class="p-2">
+                                                    <a class="d-flex justify-content-between link-light">
+                                                        <div class="d-flex flex-row">
+                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                                                            <div class="pt-1">
+                                                                <p class="fw-bold text-black mb-0">Brad Pitt</p>
+                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pt-1">
+                                                            <p class="small text-black mb-1">Hace 5min</p>
+                                                            <span class="text-white float-end"><i class="fas fa-check" aria-hidden="true"></i></span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6 col-lg-7 col-xl-7">
+
+                                    <ul class="list-unstyled text-white">
+                                        <li class="d-flex justify-content-between mb-4">
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                                            <div class="card mask-custom">
+                                                <div class="card-header d-flex justify-content-between p-3"
+                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <p class="fw-bold mb-0">Brad Pitt</p>
+                                                    <p class=" small mb-0"><i class="far fa-clock"></i> Hace 12 min</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="mb-0">
+                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                                        labore et dolore magna aliqua.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex justify-content-between mb-4">
+                                            <div class="card mask-custom w-100">
+                                                <div class="card-header d-flex justify-content-between p-3"
+                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <p class="fw-bold mb-0">Lara Croft</p>
+                                                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 10 min</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="mb-0">
+                                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                                        laudantium.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                                                 class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                                        </li>
+                                        <li class="d-flex justify-content-between mb-4">
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                                            <div class="card mask-custom">
+                                                <div class="card-header d-flex justify-content-between p-3"
+                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
+                                                    <p class="fw-bold mb-0">Brad Pitt</p>
+                                                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 9 min</p>
+                                                </div>
+                                                <div class="card-body">
+                                                    <p class="mb-0">
+                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                                        labore et dolore magna aliqua.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="mb-3">
+                                            <div data-mdb-input-init class="form-outline form-white">
+                                                <textarea class="form-control" id="textAreaExample3" rows="4"></textarea>
+                                                <label class="form-label" for="textAreaExample3">Mensaje</label>
+                                            </div>
+                                        </li>
+                                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-rounded float-end">Enviar</button>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </section>
+
+
+
+
+                </main>
+            </div>
+        </div>
+
+
+        <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>-->
+        <script src="/js/Farmacista/script.js"></script>
+
+    </body>
+
+</html>
