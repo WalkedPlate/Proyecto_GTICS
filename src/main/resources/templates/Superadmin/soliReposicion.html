@@ -146,6 +146,7 @@
                     <div class="modal fade" th:each="listaDetalles, obj : ${listaDetallesDoble}" th:id ="${'verOrden'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
+                                <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
                                 <div class="modal-header">
                                     <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -176,7 +177,7 @@
 
                                     </div>
                                 </div>
-                                <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
+
                                 <div class="modal-footer d-flex justify-content-center">
                                     <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aceptarOrden">Aceptar</button>
                                     <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazarOrden">Rechazar</button>
