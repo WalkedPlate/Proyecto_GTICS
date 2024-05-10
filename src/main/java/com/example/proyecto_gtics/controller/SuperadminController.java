@@ -1,6 +1,7 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.http.HttpHeaders;
@@ -77,7 +78,7 @@ public class SuperadminController {
     public String guardarAdminSede(Usuarios adminSede,@RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede){
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(adminsede.isPresent()){
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
@@ -133,12 +134,14 @@ public class SuperadminController {
 
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
+
+        model.addAttribute("listaCantidadPorProducto",productosSedeRepository.obtenerCantidadTotalPorProducto());
         return "Superadmin/inventario";
     }
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
     public String guardarProducto(Productos productos, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
-                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr){
+                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes){
 
 
         //Sobre la foto de un producto --------------------------------------------------------------------------------
@@ -169,6 +172,14 @@ public class SuperadminController {
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
+
+            for (Integer idSede : idSedes){
+                Sedes sede = sedesRepository.findByIdSedes(idSede);
+                ProductosSedes productosSedes = new ProductosSedes();
+                productosSedes.setSedes(sede);
+                productosSedes.setProductos(productos);
+                productosSedeRepository.save(productosSedes);
+            }
             attr.addFlashAttribute("msg","Producto actualizado exitosamente.");
             productosRepository.save(productos);
         }else{
@@ -185,6 +196,20 @@ public class SuperadminController {
             productos.setEstadoProducto("Activo");
             attr.addFlashAttribute("msg","Producto creado exitosamente.");
             productosRepository.save(productos);
+
+            Productos productoConsultar = productosRepository.findByCodigo(codigo);
+            for (Integer idSede : idSedes){
+                Sedes sede = sedesRepository.findByIdSedes(idSede);
+                ProductosSedes productosSedes = new ProductosSedes();
+                ProductosSedesId productosSedesId = new ProductosSedesId();
+                productosSedesId.setIdProductos(productoConsultar.getIdProductos());
+                productosSedesId.setIdSedes(idSede);
+                productosSedes.setId(productosSedesId);
+                productosSedes.setSedes(sede);
+                productosSedes.setProductos(productoConsultar);
+                productosSedes.setCantidad(200);
+                productosSedeRepository.save(productosSedes);
+            }
         }
         return "redirect:/superadmin/inventario";
     }

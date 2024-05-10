@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ProductosRepository extends JpaRepository<Productos,Integer> {
-    List<Productos> findByNombre(String nombre);
+    //List<Productos> findByNombre(String nombre);
     List<Productos> findByCategorias(Categorias categorias);
 
     List<Productos> findByEstadoProducto(String estadoProducto);
@@ -22,4 +22,6 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
 
     //SpringData JPA
     List<Productos> findByNombreContainingIgnoreCase(String nombre);
+
+    Productos findByCodigo(String codigo);
 }

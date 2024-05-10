@@ -21,4 +21,7 @@ public class ProductosSedes {
     @ManyToOne
     @JoinColumn(name = "sedes_idsedes")
     private Sedes sedes;
+
+    @Column(name = "cantidad" , nullable = false)
+    private Integer cantidad;
 }
