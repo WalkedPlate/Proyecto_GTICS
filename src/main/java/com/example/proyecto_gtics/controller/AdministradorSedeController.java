@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.thymeleaf.model.IModel;
 
 import javax.naming.Binding;
 import java.sql.SQLException;
@@ -338,61 +339,39 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value = "/administradorsede/guardarfarmacista")
-    public String guardarFarmacista(Usuarios usuarios, @RequestParam("idSedes") int id, RedirectAttributes attr){
+    public String guardarFarmacista(@Valid Usuarios usuarios , BindingResult bindingResult, @RequestParam("idSedes") int id, RedirectAttributes attr){
 
-        Sedes sedes = sedesRepository.findById(id).get();
-        if (sedes == null) {
-            attr.addFlashAttribute("msg","error=sede_invalida");
+
+        if(bindingResult.hasErrors()){
+           String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/administradorsede/farmacistas";
+        }else {
+            Sedes sedes = sedesRepository.findById(id).get();
+            if (sedes == null) {
+                attr.addFlashAttribute("err","error=sede_invalida");
+                return "redirect:/administradorsede/farmacistas";
+            }
+            if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
+                usuarios.setSedes(sedes);
+                usuarios.setContrasena("Temporal_password");
+                usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+                usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+                usuariosRepository.save(usuarios);
+                attr.addFlashAttribute("msg","Farmacista creado exitosamente");
+            }
+            else {   // Caso Actualizar farmacista
+                usuarios.setSedes(sedes);
+                usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
+                usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+                usuariosRepository.save(usuarios);
+                attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
+            }
+
+
             return "redirect:/administradorsede/farmacistas";
         }
 
-
-        // Validación del nombre
-        if (usuarios.getNombre() == null || usuarios.getNombre().isEmpty() || usuarios.getNombre().matches("^\\d{1,44}.*$")) {
-            attr.addFlashAttribute("msg","error=nombre_invalido");
-            return "redirect:/administradorsede/farmacistas";
-        } else if (!isValidEmail(usuarios.getCorreo())) {
-            attr.addFlashAttribute("msg","error=correo_invalido");
-            return "redirect:/administradorsede/farmacistas";
-        } else if (!validarDNI(usuarios.getDni())) {
-            attr.addFlashAttribute("msg","error=DNI_invalido");
-            return "redirect:/administradorsede/farmacistas";
-        } else if (!validarDNI(usuarios.getCodigoColegio())) {
-            attr.addFlashAttribute("msg","error=codigo_invalido");
-            return "redirect:/administradorsede/farmacistas";
-        } else if (!validarCampo(usuarios.getDistritoResidencia())) {
-            attr.addFlashAttribute("msg","error=direccion_invalido");
-            return "redirect:/administradorsede/farmacistas";
-        }
-
-
-    try {
-        if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
-            usuarios.setSedes(sedes);
-            usuarios.setContrasena("Temporal_password");
-            usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
-            usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
-            usuariosRepository.save(usuarios);
-            attr.addFlashAttribute("msg","Farmacista creado exitosamente");
-        }
-        else {   // Caso Actualizar farmacista
-            usuarios.setSedes(sedes);
-            usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
-            usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
-            usuariosRepository.save(usuarios);
-            attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
-        }
-    }catch (DataIntegrityViolationException e) {
-        // Capturar excepciones de integridad de datos específicas
-        System.out.println("Error de integridad de datos: " + e.getMessage());
-    } catch (Exception e) {
-        // Capturar cualquier otro tipo de excepción
-        System.out.println("Error inesperado: " + e.getMessage());
-    }
-
-
-
-        return "redirect:/administradorsede/farmacistas";
     }
 
     @GetMapping("/administradorsede/borrarfarmacista")
