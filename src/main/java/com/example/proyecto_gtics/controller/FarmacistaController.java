@@ -105,7 +105,7 @@ public class FarmacistaController {
             paciente = usuariosRepository.findByDni(paciente.getDni()).get();
         }
 
-        crearOrden(paciente,1,4,idDoctor); // creamos la orden
+        crearOrden(paciente,6,4,idDoctor); // creamos la orden (tipo carrito)
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
 
         int index = 0;
@@ -121,6 +121,7 @@ public class FarmacistaController {
                 detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
             }
         }
+        ordenesRepository.cambiarTipoOrden(1,ordenCreada.getIdordenes()); // Finalmente cambiamos el tipo de orden a orden presencial
 
         attr.addFlashAttribute("msg","Orden Registrada exitosamente");
         return "redirect:/farmacista";

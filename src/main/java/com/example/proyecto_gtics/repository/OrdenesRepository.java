@@ -23,6 +23,10 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     @Query(value = "update ordenes set estado_orden_idestado_orden = ?1 where idordenes = ?2", nativeQuery = true)
     void cambiarEstadoOrden(Integer estadoOrden, Integer idOrden);
 
+    @Query(value = "update ordenes set tipo_orden_idtipo_orden = ?1 where idordenes = ?2", nativeQuery = true)
+    void cambiarTipoOrden(Integer tipoOrden, Integer idOrden);
+
+
     List<Ordenes> findByTipoOrden(Optional<TipoOrden> tipoOrden); //Buscar por tipo de orden
 
     List<Ordenes> findByTipoOrdenAndEstadoOrden(Optional<TipoOrden> tipoOrden , Optional<EstadoOrden> estadoOrden);
