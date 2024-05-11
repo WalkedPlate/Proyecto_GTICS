@@ -1,524 +1,560 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Clínica Renacer SuperAdmin</title>
-        <link rel="icon" href="/img/Login/icono.png"/>
-        <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
-        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
-        <style>
-            .page-item.active .page-link {
-                z-index: 3;
-                color: #fff;
-                background-color: #94a6b3;
-                border-color: #94a6b3;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Renacer SuperAdmin</title>
+    <link rel="icon" href="/img/Login/icono.png"/>
+    <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+    <style>
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #94a6b3;
+            border-color: #94a6b3;
+        }
 
-            .form-check-label {
-                color: #525F7F;
-                font-weight: normal;
-            }
-            .form-control, .form-select {
-                color: #525F7F;
-            }
-        </style>
-    </head>
+        .form-check-label {
+            color: #525F7F;
+            font-weight: normal;
+        }
 
-    <body>
-        <!-- Dashboard -->
-        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-            <!-- Vertical Navbar -->
-            <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
-                 id="navbarVertical">
-                <div class="container-fluid">
-                    <!-- Toggler -->
-                    <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- Brand -->
-                    <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
-                        <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
-                                src="/img/Superadmin/icono.png" width="40" class="pr-6">
-                            <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
-                        </h3>
-                    </a>
+        .form-control, .form-select {
+            color: #525F7F;
+        }
+    </style>
+</head>
 
-                    <!-- Collapse -->
-                    <div class="collapse navbar-collapse" id="sidebarCollapse">
-                        <!-- Navigation -->
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{'/superadmin'}">
-                                    <i class="bi bi-house"></i> Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin/inventario'}">
-                                    <i class="bi bi-clipboard btn" role="button" data-bs-toggle="button"></i> Inventario
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{'/superadmin/orden-reposicion'}">
-                                    <i class="bi bi-bag-plus"></i> Órdenes de reposición
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{'/login'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <!-- Main content -->
-            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-                <!-- Header -->
-                <header class="bg-surface-primary border-bottom pt-6">
-                    <div class="container-fluid">
-                        <div class="mb-npx">
-                            <div class="row align-items-center mb-5">
-                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
-                                    <!-- Title -->
-                                    <h2 class="mb-0 ls-tight">
-                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary">S.Admin.Robert Harry</span></h2>
-                                </div>
-                                <!-- Actions -->
-                                <div class="col-sm-4 col-12 text-sm-end">
-                                    <div class="mx-n1">
-                                        <a th:href="@{'/superadmin/perfil'}"
-                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+<body>
+<!-- Dashboard -->
+<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+    <!-- Vertical Navbar -->
+    <nav class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
+         id="navbarVertical">
+        <div class="container-fluid">
+            <!-- Toggler -->
+            <button class="navbar-toggler ms-n2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Brand -->
+            <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" th:href="@{'/superadmin'}">
+                <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+                        src="/img/Superadmin/icono.png" width="40" class="pr-6">
+                    <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                </h3>
+            </a>
+
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="sidebarCollapse">
+                <!-- Navigation -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/superadmin'}">
+                            <i class="bi bi-house"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="background: #F5F9FC" th:href="@{'/superadmin/inventario'}">
+                            <i class="bi bi-clipboard btn" role="button" data-bs-toggle="button"></i> Inventario
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/superadmin/orden-reposicion'}">
+                            <i class="bi bi-bag-plus"></i> Órdenes de reposición
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{'/login'}">
+                            <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Main content -->
+    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+        <!-- Header -->
+        <header class="bg-surface-primary border-bottom pt-6">
+            <div class="container-fluid">
+                <div class="mb-npx">
+                    <div class="row align-items-center mb-5">
+                        <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                            <!-- Title -->
+                            <h2 class="mb-0 ls-tight">
+                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                    class="text-primary">S.Admin.Robert Harry</span></h2>
+                        </div>
+                        <!-- Actions -->
+                        <div class="col-sm-4 col-12 text-sm-end">
+                            <div class="mx-n1">
+                                <a th:href="@{'/superadmin/perfil'}"
+                                   class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                         <i class="bi bi-person-gear"></i>
                                     </span>
-                                            <span>Mi perfil</span>
-                                        </a>
-                                    </div>
-                                </div>
+                                    <span>Mi perfil</span>
+                                </a>
                             </div>
                         </div>
                     </div>
-                </header>
-                <!-- Main -->
-                <main class="py-6 bg-surface-secondary">
-                    <div class="container-fluid">
-                        <div class="card shadow border-0 mb-7">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col-sm-6 col-12 mb-4 mb-sm-0">
-                                        <h3 class="mb-0 ls-tight"> Lista de medicinas </h3>
-                                    </div>
-                                    <!-- Actions -->
-                                    <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                </div>
+            </div>
+        </header>
+        <!-- Main -->
+        <main class="py-6 bg-surface-secondary">
+            <div class="container-fluid">
+                <div class="card shadow border-0 mb-7">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                <h3 class="mb-0 ls-tight"> Lista de medicinas </h3>
+                            </div>
+                            <!-- Actions -->
+                            <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
 
-                                        <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
-                                           data-bs-toggle="modal" data-bs-target="#modaAgregar">
+                                <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
+                                   data-bs-toggle="modal" data-bs-target="#modaAgregar">
                                         <span class="pe-2">
                                             <i class="bi bi-plus"></i>
                                         </span>
-                                            <span>Agregar</span>
-                                        </a>
-                                        <!--<a th:href="@{'/superadmin/inventario/restricciones'}" class="btn d-inline-flex btn-sm btn-danger mx-1">
-                                            <span class=" pe-2">
-                                                <i class="bi bi-shield-x"></i>
-                                            </span>
-                                            <span>Restricción</span>
-                                        </a>-->
-                                    </div>
+                                    <span>Agregar</span>
+                                </a>
+                                <!--<a th:href="@{'/superadmin/inventario/restricciones'}" class="btn d-inline-flex btn-sm btn-danger mx-1">
+                                    <span class=" pe-2">
+                                        <i class="bi bi-shield-x"></i>
+                                    </span>
+                                    <span>Restricción</span>
+                                </a>-->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Modal agregar -->
+                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
+                                        nuevo</h3>
+                                    <h3 style="color:#5C60F5; padding-left:5px "> medicamento</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
 
-                            </div>
-                            <!-- Modal agregar -->
-                            <div class="modal fade" id ="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
-                                                nuevo</h3>
-                                            <h3 style="color:#5C60F5; padding-left:5px "> medicamento</h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                <form method="post" th:action="@{/superadmin/guardarProducto}"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="IDProducto" value="0">
+                                    <div class="modal-body row">
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                <label>Subir imagen:</label>
+                                                <input type="file" class="form-control" name="archivo">
+                                            </div>
                                         </div>
 
-                                        <form method="post" th:action="@{/superadmin/guardarProducto}" enctype="multipart/form-data">
-                                            <input type="hidden" name="IDProducto" value="0">
-                                        <div class="modal-body row">
-                                            <div class="row pt-3">
-                                                   <div class="col">
-                                                    <label>Subir imagen:</label>
-                                                       <input type="file" class="form-control" name="archivo">
-                                                </div>
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Nombre:</label>
+                                                <input name="nombre" type="text" class="form-control"
+                                                       placeholder="Ingrese el nombre del medicamento">
                                             </div>
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Nombre:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                           placeholder="Ingrese el nombre del medicamento">
-                                                </div>
 
+                                            <div class="col">
+                                                <label>Precio (S/.):</label>
+                                                <input name="precio" type="number" class="form-control"
+                                                       placeholder="Ingrese el precio del medicamento">
+                                            </div>
+                                        </div>
 
-                                                <div class="col">
-                                                    <label>Precio (S/.):</label>
-                                                    <input name="precio" type="number" class="form-control"
-                                                           placeholder="Ingrese el precio del medicamento">
-                                                </div>
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Categoria:</label>
+                                                <select name="idCategoria" class="form-select">
+                                                    <option selected disabled>--Ingrese una categoria--</option>
+                                                    <option th:each="categoria : ${listaCategorias}"
+                                                            th:text="${categoria.nombre}"
+                                                            th:value="${categoria.idCategorias}"></option>
+                                                </select>
                                             </div>
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Categoria:</label>
-                                                    <select name="idCategoria" class="form-select">
-                                                        <option selected disabled>--Ingrese una categoria--</option>
-                                                        <option th:each="categoria : ${listaCategorias}" th:text="${categoria.nombre}" th:value="${categoria.idCategorias}"></option>
-                                                    </select>
-                                                </div>
 
-
-                                                <div class="col">
-                                                    <label>Fecha de vencimiento:</label>
-                                                    <input name="fechaVencimiento" type="date" class="form-control"
-                                                           placeholder="Ingresa la fecha del vencimiento">
-                                                </div>
+                                            <div class="col">
+                                                <label>Fecha de vencimiento:</label>
+                                                <input name="fechaVencimiento" type="date" class="form-control"
+                                                       placeholder="Ingresa la fecha del vencimiento">
                                             </div>
+                                        </div>
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Descripción:</label>
-                                                    <textarea name="descripcion" class="form-control" cols="30"
-                                                              rows="10"></textarea>
-                                                </div>
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Descripción:</label>
+                                                <textarea name="descripcion" class="form-control" cols="30"
+                                                          rows="10"></textarea>
                                             </div>
+                                        </div>
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Seleccione las sedes que pueden visualizar el
-                                                        producto:</label>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <!-- Lista de sedes con checkboxes agrupadas -->
-                                                            <!--<div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       id="checkTodos" onclick="marcarTodos()">
-                                                                <label class="form-check-label" for="checkTodos">Marcar
-                                                                    todos</label>
-                                                            </div>-->
-                                                            <!-- Agrupar las sedes en 4 columnas -->
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-check">
-                                                                        <input class="form-check-input" type="checkbox"
-                                                                               id="checkTodos" onclick="marcarTodos()">
-                                                                        <label class="form-check-label" for="checkTodos">Marcar
-                                                                            todos</label>
-                                                                    </div>
-                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index < 5}">
-                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
-                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
-                                                                    </div>
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Seleccione las sedes que pueden visualizar el
+                                                    producto:</label>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <!-- Lista de sedes con checkboxes agrupadas -->
+                                                        <!--<div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="checkTodos" onclick="marcarTodos()">
+                                                            <label class="form-check-label" for="checkTodos">Marcar
+                                                                todos</label>
+                                                        </div>-->
+                                                        <!-- Agrupar las sedes en 4 columnas -->
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           id="checkTodos" onclick="marcarTodos()">
+                                                                    <label class="form-check-label" for="checkTodos">Marcar
+                                                                        todos</label>
                                                                 </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index >= 5 and iterStat.index < 10}">
-                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
-                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
-                                                                    </div>
+                                                                <div class="form-check"
+                                                                     th:each="sede, iterStat : ${listaSedes}"
+                                                                     th:if="${iterStat.index < 5}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}">
+                                                                    <label class="form-check-label"
+                                                                           th:text="${sede.nombre}"></label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-check"
+                                                                     th:each="sede, iterStat : ${listaSedes}"
+                                                                     th:if="${iterStat.index >= 5 and iterStat.index < 10}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}">
+                                                                    <label class="form-check-label"
+                                                                           th:text="${sede.nombre}"></label>
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
 
                                                 </div>
-                                            </div>
 
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#agregar">Agregar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Modal agregado exitaosamente-->
-                            <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Medicina agregada exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--TABLA-->
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                            <div class="container table-responsive mb-4">
-                                <table id="example" class="table table-hover" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="text-center">Imagen</th>
-                                            <th scope="col" class="text-center">Medicina</th>
-                                            <th scope="col" class="text-center">Cantidad Disponible</th>
-                                            <th scope="col" class="text-center">Precio x Unid. (S/.)</th>
-                                            <th scope="col" class="text-center">Categoria</th>
-<!--                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>-->
-<!--                                            <th scope="col" class="text-center">Estado</th>-->
-                                            <th scope="col" class="text-center">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="medicamento,obj : ${listaMedicamentos}">
-                                            <td class="text-center">
-                                                <img alt="..." th:src="@{|/imageProduct/${medicamento.idProductos}|}"
-                                                     class="avatar avatar-sm rounded-circle me-2">
-
-                                            </td>
-                                            <td>
-                                                <p th:text="${medicamento.nombre}" class="text-heading font-semibold text-uppercase text-center"></p>
-                                            </td>
-                                            <td class="text-center" th:text="${obj.index>=listaCantidadPorProducto.size()? 0 : listaCantidadPorProducto.get(obj.index).getCantidadTotal()}"></td>
-                                            <!--<th:block th:each="dto : ${listaCantidadPorProducto}" th:if="${dto.getIdProductoDTO()==medicamento.idProductos}">
-                                                <td  th:text="${dto.getCantidadTotal()}" class="text-center"></td>
-                                                <td th:if="${dto.getIdProductoDTO()!= medicamento.idProductos}" class="text-center">0</td>
-                                            </th:block>-->
-                                            <td th:text="${medicamento.precio}" class="text-center"></td>
-                                            <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
-<!--                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>-->
-<!--                                            <td class="text-center">
-                                                <a class="text-heading font-semibold"
-                                                   th:href="@{'/superadmin/inventario/estado-reposicion'}">
-                                                    Ver estado de reposición
-                                                </a>
-                                            </td>-->
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-sm btn-primary btn-square"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger btn-square"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaBanear'+ obj.index}">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- Modal editar -->
-                            <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
-                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Edición de datos
-                                                del </h3>
-                                            <h3 style="color:#5C60F5; padding-left:5px ">medicamento</h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-
-                                        <form method="post" th:action="@{/superadmin/guardarProducto}" enctype="multipart/form-data">
-                                            <input type="hidden" name="IDProducto" th:value="${medicamento.idProductos}" >
-                                            <input type="hidden" name="idProductos" th:value="${medicamento.idProductos}">
-                                            <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
-                                        <div class="modal-body row">
-                                            <div class="row pt-3">
-
-
-                                                <div class="col">
-                                                    <label>Subir imagen:</label>
-                                                    <input type="file" class="form-control" name="archivo">
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Medicina:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                           th:value="${medicamento.nombre}">
-                                                </div>
-
-
-                                                <div class="col">
-                                                    <label>Precio (S/.):</label>
-                                                    <input name="precio" type="number" class="form-control"
-                                                           th:value="${medicamento.precio}">
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Categoria:</label>
-                                                    <select class="form-select" name="idCategoria">
-                                                        <option th:value="${medicamento.categorias.idCategorias}"
-                                                                th:text="${medicamento.categorias.nombre}"
-                                                                th:selected="${true}"
-                                                        ></option>
-                                                        <option th:each="categoria : ${listaCategorias}"
-                                                                th:if="${medicamento.categorias.nombre != categoria.nombre}"
-                                                                th:value="${categoria.idCategorias}"
-                                                                th:text="${categoria.nombre}"
-                                                        ></option>
-                                                    </select>
-                                                </div>
-
-
-                                                <div class="col">
-                                                    <label>Fecha de vencimiento:</label>
-                                                    <input name="fechaVencimiento" type="date" class="form-control"
-                                                           th:value="${medicamento.fechaVencimiento}">
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Descripción:</label>
-                                                    <textarea name="descripcion" class="form-control" cols="30"
-                                                              rows="10" th:text="${medicamento.descripcion}"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Seleccione las sedes que pueden visualizar el
-                                                        producto:</label>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <!-- Agrupar las sedes en 4 columnas -->
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index < 5}">
-                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
-                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index >= 5 and iterStat.index < 10}">
-                                                                        <input class="form-check-input" type="checkbox" name="idSedes" th:value="${sede.idSedes}">
-                                                                        <label class="form-check-label" th:text="${sede.nombre}"></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#actualizar">Actualizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                        </form>
+
+
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Modal elminar -->
-                            <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}" th:id ="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form method="post" th:action="@{/superadmin/eliminarProducto}">
-                                            <input type="hidden" name="idProducto" th:value="${medicamento.idProductos}">
-                                        <div class="modal-header">
-                                            <h3 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro
-                                                que desea eliminar este producto?</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#elimar">Eliminar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                        </form>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#agregar">Agregar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                            Cancelar
+                                        </button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-
-                            <!--Modal agregado exitasoamente-->
-                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Producto actualizado exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--Modal eliminado exitaosamente-->
-                            <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Producto eliminado exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </div>
                     </div>
-                </main>
+
+                    <!--Modal agregado exitaosamente-->
+                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h3 class="text-center">Medicina agregada exitosamente.</h3>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--TABLA-->
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                    <div class="container table-responsive mb-4">
+                        <table id="example" class="table table-hover" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="text-center">Imagen</th>
+                                <th scope="col" class="text-center">Medicina</th>
+                                <th scope="col" class="text-center">Cantidad Disponible</th>
+                                <th scope="col" class="text-center">Precio x Unid. (S/.)</th>
+                                <th scope="col" class="text-center">Categoria</th>
+                                <!--                                            <th scope="col" class="text-center">Fecha de Vencimiento</th>-->
+                                <!--                                            <th scope="col" class="text-center">Estado</th>-->
+                                <th scope="col" class="text-center">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="medicamento,obj : ${listaMedicamentos}">
+                                <td class="text-center">
+                                    <img alt="..." th:src="@{|/imageProduct/${medicamento.idProductos}|}"
+                                         class="avatar avatar-sm rounded-circle me-2">
+
+                                </td>
+                                <td>
+                                    <p th:text="${medicamento.nombre}"
+                                       class="text-heading font-semibold text-uppercase text-center"></p>
+                                </td>
+                                <td class="text-center"
+                                    th:text="${obj.index>=listaCantidadPorProducto.size()? 0 : listaCantidadPorProducto.get(obj.index).getCantidadTotal()}"></td>
+                                <!--<th:block th:each="dto : ${listaCantidadPorProducto}" th:if="${dto.getIdProductoDTO()==medicamento.idProductos}">
+                                    <td  th:text="${dto.getCantidadTotal()}" class="text-center"></td>
+                                    <td th:if="${dto.getIdProductoDTO()!= medicamento.idProductos}" class="text-center">0</td>
+                                </th:block>-->
+                                <td th:text="${medicamento.precio}" class="text-center"></td>
+                                <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
+                                <!--                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>-->
+                                <!--                                            <td class="text-center">
+                                                                                <a class="text-heading font-semibold"
+                                                                                   th:href="@{'/superadmin/inventario/estado-reposicion'}">
+                                                                                    Ver estado de reposición
+                                                                                </a>
+                                                                            </td>-->
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-primary btn-square"
+                                            data-bs-toggle="modal" th:data-bs-target="${'#modaActualizar'+ obj.index}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger btn-square"
+                                            data-bs-toggle="modal" th:data-bs-target="${'#modaBanear'+ obj.index}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Modal editar -->
+                    <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}"
+                         th:id="${'modaActualizar'+ obj.index}" tabindex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Edición de datos
+                                        del </h3>
+                                    <h3 style="color:#5C60F5; padding-left:5px ">medicamento</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+
+                                <form method="post" th:action="@{/superadmin/guardarProducto}"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="IDProducto" th:value="${medicamento.idProductos}">
+                                    <input type="hidden" name="idProductos" th:value="${medicamento.idProductos}">
+                                    <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
+                                    <div class="modal-body row">
+                                        <div class="row pt-3">
+
+
+                                            <div class="col">
+                                                <label>Subir imagen:</label>
+                                                <input type="file" class="form-control" name="archivo">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Medicina:</label>
+                                                <input name="nombre" type="text" class="form-control"
+                                                       th:value="${medicamento.nombre}">
+                                            </div>
+
+
+                                            <div class="col">
+                                                <label>Precio (S/.):</label>
+                                                <input name="precio" type="number" class="form-control"
+                                                       th:value="${medicamento.precio}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Categoria:</label>
+                                                <select class="form-select" name="idCategoria">
+                                                    <option th:value="${medicamento.categorias.idCategorias}"
+                                                            th:text="${medicamento.categorias.nombre}"
+                                                            th:selected="${true}"
+                                                    ></option>
+                                                    <option th:each="categoria : ${listaCategorias}"
+                                                            th:if="${medicamento.categorias.nombre != categoria.nombre}"
+                                                            th:value="${categoria.idCategorias}"
+                                                            th:text="${categoria.nombre}"
+                                                    ></option>
+                                                </select>
+                                            </div>
+
+
+                                            <div class="col">
+                                                <label>Fecha de vencimiento:</label>
+                                                <input name="fechaVencimiento" type="date" class="form-control"
+                                                       th:value="${medicamento.fechaVencimiento}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Descripción:</label>
+                                                <textarea name="descripcion" class="form-control" cols="30"
+                                                          rows="10" th:text="${medicamento.descripcion}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label>Seleccione las sedes que pueden visualizar el
+                                                    producto:</label>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <!-- Agrupar las sedes en 4 columnas -->
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-check" th:each="sede, iterStat : ${listaSedes}" th:if="${iterStat.index < 5}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}"
+                                                                           th:each="productoSede : ${listaProductoSede}"
+                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes!=sede.idSedes}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}"
+                                                                           th:each="productoSede : ${listaProductoSede}"
+                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes==sede.idSedes}"
+                                                                           checked>
+                                                                    <label class="form-check-label" th:text="${sede.nombre}"></label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-check"
+                                                                     th:each="sede, iterStat : ${listaSedes}"
+                                                                     th:if="${iterStat.index >= 5 and iterStat.index < 10}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}"
+                                                                           th:each="productoSede : ${listaProductoSede}"
+                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes!=sede.idSedes}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="idSedes" th:value="${sede.idSedes}"
+                                                                           th:each="productoSede : ${listaProductoSede}"
+                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes==sede.idSedes}"
+                                                                           checked>
+                                                                    <label class="form-check-label"
+                                                                           th:text="${sede.nombre}"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#actualizar">Actualizar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal elminar -->
+                    <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}"
+                         th:id="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" th:action="@{/superadmin/eliminarProducto}">
+                                    <input type="hidden" name="idProducto" th:value="${medicamento.idProductos}">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5 text-center" id="exampleModalLabel">¿Esta seguro
+                                            que desea eliminar este producto?</h3>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#elimar">Eliminar
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Modal agregado exitasoamente-->
+                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h3 class="text-center">Producto actualizado exitosamente.</h3>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Modal eliminado exitaosamente-->
+                    <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h3 class="text-center">Producto eliminado exitosamente.</h3>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
-        </div>
+        </main>
+    </div>
+</div>
 
 
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/Superadmin/table.js"></script>
-        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-        <script>
-            new DataTable('#example');
-        </script>
-        <script>
-            function marcarTodos() {
-                var checkboxes = document.getElementsByName('idSedes');
-                var checkTodos = document.getElementById('checkTodos');
-                for (var i = 0; i < checkboxes.length; i++) {
-                    checkboxes[i].checked = checkTodos.checked;
-                }
-            }
-        </script>
+<script src="/js/Superadmin/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="/js/Superadmin/table.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example');
+</script>
+<script>
+    function marcarTodos() {
+        var checkboxes = document.getElementsByName('idSedes');
+        var checkTodos = document.getElementById('checkTodos');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = checkTodos.checked;
+        }
+    }
+</script>
 
-    </body>
+</body>
 </html>

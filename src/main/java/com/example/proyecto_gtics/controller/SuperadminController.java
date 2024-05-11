@@ -136,6 +136,8 @@ public class SuperadminController {
         model.addAttribute("listaSedes",listaSedes);
 
         model.addAttribute("listaCantidadPorProducto",productosSedeRepository.obtenerCantidadTotalPorProducto());
+
+        model.addAttribute("listaProductoSede",productosSedeRepository.findAll());
         return "Superadmin/inventario";
     }
 
@@ -175,10 +177,29 @@ public class SuperadminController {
 
             for (Integer idSede : idSedes){
                 Sedes sede = sedesRepository.findByIdSedes(idSede);
-                ProductosSedes productosSedes = new ProductosSedes();
-                productosSedes.setSedes(sede);
-                productosSedes.setProductos(productos);
-                productosSedeRepository.save(productosSedes);
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
+                //ProductosSedes productosSedes = new ProductosSedes();// Me genera duda
+                //ProductosSedesId productosSedesId = new ProductosSedesId();
+                //productosSedesId.setIdProductos(productos.getIdProductos());
+                //productosSedesId.setIdSedes(idSede);
+                //productosSedes.setId(productosSedesId);
+                //productosSedes.setProductos(productos);
+                if(productosSedes == null){
+                    ProductosSedes productosSedes1 = new ProductosSedes();
+                    ProductosSedesId productosSedesId = new ProductosSedesId();
+                    productosSedesId.setIdProductos(productos.getIdProductos());
+                    productosSedesId.setIdSedes(idSede);
+                    productosSedes1.setId(productosSedesId);
+                    productosSedes1.setProductos(productos);
+                    productosSedes1.setSedes(sede);
+                    productosSedes1.setSedes(sede);
+                    productosSedes1.setCantidad(200);
+                    productosSedeRepository.save(productosSedes1);
+                }else{
+                    productosSedeRepository.save(productosSedes);
+                }
+                //productosSedes.setSedes(sede);
+
             }
             attr.addFlashAttribute("msg","Producto actualizado exitosamente.");
             productosRepository.save(productos);

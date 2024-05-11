@@ -17,4 +17,6 @@ public interface ProductosSedeRepository extends JpaRepository<ProductosSedes,Pr
 
     @Query(value = "select sum(cantidad) as cantidadTotal, productos_idproductos as idProductoDTO from proyecto_gtics.productos_has_sedes group by productos_idproductos;",nativeQuery = true)
     List<CantidadTotalPorProducto> obtenerCantidadTotalPorProducto();
+
+    ProductosSedes findByProductosAndSedes(Productos productos,Sedes sedes);
 }
