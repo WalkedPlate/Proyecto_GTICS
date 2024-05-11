@@ -2,15 +2,21 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 @Controller
 public class FarmacistaController {
@@ -51,6 +57,11 @@ public class FarmacistaController {
         this.usuariosRepository = usuariosRepository;
     }
 
+    //Formatear strings a dates
+    DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
+    DateTimeFormatter formatDateToSring = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
     @GetMapping(value ={"/farmacista"})
     public String paginaPrincipal(Model model){
         Sedes sede = sedesRepository.findByIdSedes(2);
@@ -61,6 +72,59 @@ public class FarmacistaController {
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listaDoctores",usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,sede,activo));
         return "Farmacista/index";
+    }
+
+    @PostMapping(value = "/farmacista/guardarOrden")
+    public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<Integer> listaCantidades,
+                               @RequestParam("checkbox") List<String> listCheckbox, @Valid Usuarios paciente, BindingResult bindingResult,
+                               @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
+                               RedirectAttributes attr){
+
+
+        if (bindingResult.hasErrors()) {
+            String error = bindingResult.getFieldError("dni").toString();
+            attr.addFlashAttribute("err",error);
+
+            return "redirect:/farmacista";
+        }
+
+        if (!usuarioYaRegistrado(paciente.getDni())){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
+            paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
+            paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
+            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+            paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            paciente.setContrasena("Temporal_password");
+            paciente.setCorreo("Temporal_email");
+            paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            usuariosRepository.save(paciente);
+            paciente = usuariosRepository.findFirstByOrderByIdUsuarioDesc();
+            attr.addFlashAttribute("wrn","Aviso: Se creó un nuevo registro del paciente con el DNI ingresado.");
+        }
+        else {
+            attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
+            paciente = usuariosRepository.findByDni(paciente.getDni()).get();
+        }
+
+        crearOrden(paciente,1,4,idDoctor); // creamos la orden
+        Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
+
+        int index = 0;
+        for(Integer id: listaIdsProductos){
+            Productos p = productosRepository.findById(id).get();
+            Integer cantidad = listaCantidades.get(index);
+            if(listCheckbox.get(index).equalsIgnoreCase("on")){
+                DetallesOrden detallesOrden = new DetallesOrden();
+                detallesOrden.setOrdenes(ordenCreada);
+                detallesOrden.setProductos(p);
+                detallesOrden.setCantidad(cantidad);
+                detallesOrden.setMontoParcial(cantidad*p.getPrecio());
+                detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
+            }
+        }
+
+        attr.addFlashAttribute("msg","Orden Registrada exitosamente");
+        return "redirect:/farmacista";
+
     }
 
     @GetMapping(value ={"/farmacista/ordenes-linea"})
@@ -121,6 +185,35 @@ public class FarmacistaController {
     }
 
 
+    public void crearOrden(Usuarios usuario, Integer tipoOrden, Integer estadoOrden, Integer idDoctor) {
+        Ordenes orden = new Ordenes();
+        orden.setEstadoOrden(estadoOrdenRepository.findById(estadoOrden).get()); //Estado se configura en aceptado (no importa mucho en una orden carrito)
+        orden.setTipoOrden(tipoOrdenRepository.findById(tipoOrden).get()); // Tipo de orden
+        orden.setUsuarios(usuario);
+        orden.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
+        orden.setSedes(sedesRepository.findById(2).get());
+        orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
+
+        orden.setCodigo(UUID.randomUUID().toString());
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        orden.setFechaRegistro(fechaActual.format(formatDateToSring));
+        LocalDate fechaEntrega = fechaActual.plusDays(20);
+        orden.setFechaEntrega(fechaEntrega.format(formatDateToSring));
+
+        ordenesRepository.save(orden); // creamos la
+
+    }
+
+    public Boolean usuarioYaRegistrado(Integer dni){
+        boolean yaRegistrado = false;
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+
+        if (opt.isPresent()){
+            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        }
+
+        return yaRegistrado;
+    }
 
 
 }

@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Range;
+
 @Getter
 @Setter
 @Entity
@@ -89,9 +91,10 @@ public class Usuarios {
     private String seguro;
 
     @Column(name = "dni")
-    @NotBlank
-    @Pattern(regexp = "\\d{8}", message = "El DNI no es valido")
-    private String dni;
+    @Digits(integer = 10, fraction = 0)
+    @Positive
+    @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
+    private Integer dni;
 
     //@OneToOne
     //@JoinColumn(name = "preferencias_usuario_idpreferencias_usuario",nullable = false)

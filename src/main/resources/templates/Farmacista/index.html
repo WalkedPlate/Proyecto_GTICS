@@ -109,6 +109,7 @@
                 </div>
             </header>
             <!-- Main -->
+            <form method="post" th:action="@{/farmacista/guardarOrden}">
             <main class="py-6 bg-surface-secondary">
                 <div class="container-fluid">
                     <div class="card shadow border-0 mb-7">
@@ -131,6 +132,9 @@
                             </div>
                         </div>
                         <!--TABLA-->
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                        <div th:if="${wrn != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                         <div class="container table-responsive mb-4">
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
@@ -146,6 +150,7 @@
                                 </thead>
                                 <tbody>
                                     <tr th:each="producto,obj : ${listaProductos}">
+                                        <input type="hidden" name="listaIdsProductos" th:value="${producto.productos.idProductos}">
                                         <td>
                                             <a class="text-heading font-semibold" href="#">
                                                 <img th:src="@{|/imageProduct/${producto.productos.idProductos}|}" alt="medicina1" style="height: 80px;">
@@ -157,13 +162,13 @@
                                         </td>
                                         <td th:text="${producto.productos.precio}"></td>
                                         <td>
-                                            <input type="number" placeholder="1">
+                                            <input type="number" placeholder="0" name="listaCantidades">
                                         </td>
                                         <td>
                                             100
                                         </td>
                                         <td class="text-end">
-                                            <input class="form-check-input" type="checkbox" value="" id="miCheckbox">
+                                            <input class="form-check-input" type="checkbox" id="miCheckbox" name="checkbox">
                                             <label class="form-check-label" for="miCheckbox">
                                                 Selecciona esto
                                             </label>
@@ -192,7 +197,7 @@
                                                 aria-label="Close"></button>
                                         </div>
 
-                                        <form method="post">
+
                                         <div class="modal-body row">
 
                                             <div class="row pt-5">
@@ -226,7 +231,7 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="doctor">Doctor:</label>
-                                                    <select id="doctor" class="form-select" name="doctor">
+                                                    <select id="doctor" class="form-select" name="idDoctor">
                                                         <option th:each="doctor, obj : ${listaDoctores}" th:text="${doctor.nombre}" th:selected="${obj.index} == 0" th:value="${doctor.idUsuario}"></option>
                                                     </select>
                                                 </div>
@@ -239,12 +244,11 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#modalGenerarBoleta">Generar Boleta</button>
+                                            <button type="submit" >Generar Boleta</button>
                                             <button type="button" class="btn btn-danger"
                                                 data-bs-dismiss="modal">Cancelar</button>
                                         </div>
-                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -360,6 +364,7 @@
                     </div>
                 </div>
             </main>
+            </form>
         </div>
     </div>
 
