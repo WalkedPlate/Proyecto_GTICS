@@ -80,13 +80,13 @@ public class FarmacistaController {
                                @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
                                RedirectAttributes attr){
 
-
         if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldError("dni").toString();
+            String error = bindingResult.getFieldErrors("dni").toString();
             attr.addFlashAttribute("err",error);
 
             return "redirect:/farmacista";
         }
+
 
         if (!usuarioYaRegistrado(paciente.getDni())){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
             paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
@@ -101,9 +101,21 @@ public class FarmacistaController {
             attr.addFlashAttribute("wrn","Aviso: Se creó un nuevo registro del paciente con el DNI ingresado.");
         }
         else {
-            attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
+
             paciente = usuariosRepository.findByDni(paciente.getDni()).get();
+
+            if(paciente.getTipoUsuario().getIdTipoUsuario().equalsIgnoreCase("Paciente")){
+                attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
+            }
+            else {
+                attr.addFlashAttribute("err","Aviso: El DNI  ya se encuentra registrado en el sistema y no pertenece a un usuario con el rol Paciente.");
+                return "redirect:/farmacista";
+            }
+
         }
+
+
+
 
         crearOrden(paciente,6,4,idDoctor); // creamos la orden (tipo carrito)
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
