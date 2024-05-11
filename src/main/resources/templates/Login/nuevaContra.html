@@ -1,88 +1,92 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cambio contraseña</title>
-    <link rel="icon" href="/img/Login/icono.png" />
-    <link rel="stylesheet" href="/css/Login/style_login.css" />
-  </head>
-  <body>
-    <main>
-      <div class="box">
-        <div class="inner-box">
-          <div class="forms-wrap">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Cambio contraseña</title>
+        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="stylesheet" href="/css/Login/style_login.css"/>
+    </head>
+    <body>
+        <main>
+            <div class="box">
+                <div class="inner-box">
+                    <div class="forms-wrap">
 
-            <form autocomplete="off" class="sign-in-form">
-                <div class="logo">
-                    <img src="/img/Login/icono.png" alt="renacer" />
-                    <div>
-                      <p>Clínica</p>
-                      <h1>Renacer</h1> 
+                        <form autocomplete="off" class="sign-in-form" id="passwordForm" novalidate>
+                            <div class="logo">
+                                <img src="/img/Login/icono.png" alt="renacer"/>
+                                <div>
+                                    <p>Clínica</p>
+                                    <h1>Renacer</h1>
+                                </div>
+                            </div>
+
+                            <div class="heading">
+                                <h3>Cambie su contraseña</h3>
+                            </div>
+
+                            <div class="actual-form">
+                                <div class="input-wrap">
+                                    <input
+                                            id="newPassword"
+                                            type="password"
+                                            class="input-field"
+                                            autocomplete="off"
+                                    />
+                                    <label>Nueva contraseña</label>
+                                </div>
+
+                                <div class="input-wrap">
+                                    <input
+                                            id="confirmPassword"
+                                            type="password"
+                                            class="input-field"
+                                            autocomplete="off"
+                                    />
+                                    <label>Confirme contraseña</label>
+                                </div>
+
+                                <p id="newPasswordError" class="error-message"></p>
+                                <p id="confirmPasswordError" class="error-message"></p>
+                                <input type="submit" value="Guardar cambios" class="sign-btn">
+
+
+                            </div>
+                        </form>
                     </div>
-                  </div>
-    
-                  <div class="heading">
-                    <h3>Cambie su contraseña</h3>
-                  </div>
-    
-                  <div class="actual-form">
-                    <div class="input-wrap">
-                      <input
-                        type="password"
-                        class="input-field"
-                        autocomplete="off"
-                        required
-                      />
-                      <label>Nueva contraseña</label>
+
+                    <div class="carousel">
+                        <div class="images-wrapper">
+                            <img src="/img/Login/medicamentos.png" class="image img-1 show" alt=""/>
+                            <img src="/img/Login/farmacista.png" class="image img-2" alt=""/>
+                            <img src="/img/Login/entrega.png" class="image img-3" alt=""/>
+                        </div>
+
+                        <div class="text-slider">
+                            <div class="text-wrap">
+                                <div class="text-group">
+                                    <h2>Medicamentos al alcance</h2>
+                                    <h2>Asesoramiento farmacéutico</h2>
+                                    <h2>Entrega rápida garantizada</h2>
+                                </div>
+                            </div>
+
+                            <div class="bullets">
+                                <span class="active" data-value="1"></span>
+                                <span data-value="2"></span>
+                                <span data-value="3"></span>
+                            </div>
+                        </div>
                     </div>
-    
-                    <div class="input-wrap">
-                        <input
-                          type="password"
-                          class="input-field"
-                          autocomplete="off"
-                          required
-                        />
-                        <label>Confirme contraseña</label>
-                      </div>
-                    <input type="submit" value="Guardar cambios" class="sign-btn" />
-    
-                    
-                  </div>
-            </form>
-          </div>
-
-          <div class="carousel">
-            <div class="images-wrapper">
-              <img src="/img/Login/medicamentos.png" class="image img-1 show" alt="" />
-              <img src="/img/Login/farmacista.png" class="image img-2" alt="" />
-              <img src="/img/Login/entrega.png" class="image img-3" alt="" />
-            </div>
-
-            <div class="text-slider">
-              <div class="text-wrap">
-                <div class="text-group">
-                  <h2>Medicamentos al alcance</h2>
-                  <h2>Asesoramiento farmacéutico</h2>
-                  <h2>Entrega rápida garantizada</h2>
                 </div>
-              </div>
-
-              <div class="bullets">
-                <span class="active" data-value="1"></span>
-                <span data-value="2"></span>
-                <span data-value="3"></span>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
+        </main>
 
-    <!-- Javascript file -->
+        <!-- Javascript file -->
 
-    <script src="/js/Login/app.js"></script>
-  </body>
+        <script src="/js/Login/app.js"></script>
+        <script src="/js/Login/validarContra.js"></script>
+    </body>
 </html>
