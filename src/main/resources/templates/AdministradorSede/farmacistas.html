@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Renacer Admin Sede</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Renacer Admin Sede</title>
     <link rel="icon" href="/img/Superadmin/icono.png"/>
-  <link rel="stylesheet" href="/css/AdministradorSede/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <!--DataTable-->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -88,7 +88,7 @@
                         <a class="nav-link" th:href="@{'/login'}">
                             <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                         </a>
-                    </li>  
+                    </li>
                 </ul>
             </div>
         </div>
@@ -142,44 +142,45 @@
                             </div>
                         </div>
                         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                     </div>
                     <!--TABLA-->
                     <div class="container table-responsive mb-4">
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
-                                <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Sede</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Distrito de residencia</th>
-                                    <th scope="col">Código</th>
-                                    <th scope="col">Correo</th>
-                                    <th scope="col">Estado de usuario</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Sede</th>
+                                <th scope="col">DNI</th>
+                                <th scope="col">Distrito de residencia</th>
+                                <th scope="col">Código</th>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Estado de usuario</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="farmacista,obj: ${listaFarmacistas}">
-                                    <td>
-                                        <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a  th:text="${farmacista.nombre}" class="text-heading font-semibold" href="#">
-                                        </a>
-                                    </td>
-                                    <td th:text="${adminSede.sedes.nombre}"></td>
-                                    <td th:text="${farmacista.dni}"></td>
-                                    <td th:text="${farmacista.distritoResidencia}"></td>
-                                    <td th:text="${farmacista.codigoColegio}"></td>
-                                    <td th:text="${farmacista.correo}"></td>
-                                    <td th:text="${farmacista.estadoUsuario.idEstadoUsuario}"></td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn btn-sm btn-square btn-primary" data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button type="button"  class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal"  th:data-bs-target ="${'#modaEliminar'+ obj.index}">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tr th:each="farmacista,obj: ${listaFarmacistas}">
+                                <td>
+                                    <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
+                                    <a  th:text="${farmacista.nombre}" class="text-heading font-semibold" href="#">
+                                    </a>
+                                </td>
+                                <td th:text="${adminSede.sedes.nombre}"></td>
+                                <td th:text="${farmacista.dni}"></td>
+                                <td th:text="${farmacista.distritoResidencia}"></td>
+                                <td th:text="${farmacista.codigoColegio}"></td>
+                                <td th:text="${farmacista.correo}"></td>
+                                <td th:text="${farmacista.estadoUsuario.idEstadoUsuario}"></td>
+                                <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-square btn-primary" data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button type="button"  class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal"  th:data-bs-target ="${'#modaEliminar'+ obj.index}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
 
                             </tbody>
                         </table>
@@ -188,64 +189,64 @@
                     <!-- Modal Actualizar -->
                     <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h3 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del Farmacista</h3>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
-                            <div class="modal-body row">
-                                <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
-                                <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
-                                <div class="row pt-3">
-                                    <div class="col">
-                                        <label >Nombre:</label>
-                                        <input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}">
-                                    </div>
-
-                                    <div class="col">
-                                        <label >Correo:</label>
-                                        <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
-                                    </div>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del Farmacista</h3>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
+                                <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
+                                    <div class="modal-body row">
+                                        <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
+                                        <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                <label >Nombre:</label>
+                                                <input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}">
+                                            </div>
 
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label >DNI:</label>
-                                        <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
+                                            <div class="col">
+                                                <label >Correo:</label>
+                                                <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label >DNI:</label>
+                                                <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
+                                            </div>
+
+                                            <div class="col">
+                                                <label >Código (colegio médico):</label>
+                                                <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label >Distrito de residencia</label>
+                                                <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
+                                            </div>
+                                            <div class="col">
+                                                <label for="sedeAct">Sede:</label>
+                                                <select id="sedeAct" class="form-select" name="idSedes">
+                                                    <option th:value="${adminSede.sedes.idSedes}"
+                                                            th:text="${adminSede.sedes.nombre}"
+                                                            th:selected="${true}"></option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+
                                     </div>
 
-                                    <div class="col">
-                                        <label >Código (colegio médico):</label>
-                                        <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
+                                    <div class="modal-footer mt-3">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
-                                </div>
-
-                                <div class="row pt-5">
-                                    <div class="col">
-                                        <label >Distrito de residencia</label>
-                                        <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
-                                    </div>
-                                    <div class="col">
-                                        <label for="sedeAct">Sede:</label>
-                                        <select id="sedeAct" class="form-select" name="idSedes">
-                                            <option th:value="${adminSede.sedes.idSedes}"
-                                                    th:text="${adminSede.sedes.nombre}"
-                                                    th:selected="${true}"></option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-
+                                </form>
                             </div>
-
-                            <div class="modal-footer mt-3">
-                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                            </form>
-                        </div>
                         </div>
                     </div>
 
@@ -256,7 +257,7 @@
                                 <div class="modal-header">
                                     <h3 class="text-center">¿Está seguro de eliminar al farmacista seleccionado?</h3>
                                 </div>
-                                
+
                                 <div class="modal-footer d-flex justify-content-center">
                                     <a type="button" class="btn btn-primary" th:href="@{'/administradorsede/borrarfarmacista?idFarmacista=' + ${farmacista.idUsuario}}">Eliminar</a>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
@@ -270,55 +271,55 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
-                                <div class="modal-header">
-                                <h3 class="modal-title fs-5" id="exampleModalLabel">Solicitar registro de Farmacista</h3>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body row">
-                                    <div class="row pt-3">
-                                        <div class="col">
-                                            <label for="nombre">Nombre:</label>
-                                            <input id="nombre" name="nombre" type="text" class="form-control">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Solicitar registro de Farmacista</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body row">
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                <label for="nombre">Nombre:</label>
+                                                <input id="nombre" name="nombre" type="text" class="form-control">
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="correo">Correo:</label>
+                                                <input id="correo" name="correo" type="email" class="form-control">
+                                            </div>
                                         </div>
-                                       
-                                        <div class="col">
-                                            <label for="correo">Correo:</label>
-                                            <input id="correo" name="correo" type="email" class="form-control">
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label for="dni">DNI:</label>
+                                                <input id="dni" name="dni" type="number" class="form-control">
+                                            </div>
+
+
+                                            <div class="col">
+                                                <label for="codigoColegio">Código (colegio médico)</label>
+                                                <input id="codigoColegio" name="codigoColegio" type="number" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label for="distritoResidencia">Distrito de residencia</label>
+                                                <input id="distritoResidencia" name="distritoResidencia" type="text" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <label for="sedeN">Sede:</label>
+                                                <select id="sedeN" class="form-select" name="idSedes">
+                                                    <option th:value="${adminSede.sedes.idSedes}"
+                                                            th:text="${adminSede.sedes.nombre}"
+                                                            th:selected="${true}"></option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="dni">DNI:</label>
-                                            <input id="dni" name="dni" type="number" class="form-control">
-                                        </div>
-                                        
-        
-                                        <div class="col">
-                                            <label for="codigoColegio">Código (colegio médico)</label>
-                                            <input id="codigoColegio" name="codigoColegio" type="number" class="form-control">
-                                        </div>
+                                    <div class="modal-footer mt-3">
+                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrado">Registrar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
-    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label for="distritoResidencia">Distrito de residencia</label>
-                                            <input id="distritoResidencia" name="distritoResidencia" type="text" class="form-control">
-                                        </div>
-                                        <div class="col">
-                                            <label for="sedeN">Sede:</label>
-                                            <select id="sedeN" class="form-select" name="idSedes">
-                                                <option th:value="${adminSede.sedes.idSedes}"
-                                                        th:text="${adminSede.sedes.nombre}"
-                                                        th:selected="${true}"></option>
-                                            </select>
-                                        </div>
-                                    </div>                                    
-                                </div>
-                                <div class="modal-footer mt-3">
-                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrado">Registrar</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                </div>
                                 </form>
                             </div>
                         </div>
@@ -327,39 +328,39 @@
                     <!--Modal actualizado exitosamente (no se muestra) -->
                     <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h3 class="text-center">Farmacista actualizado exitosamente.</h3>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="text-center">Farmacista actualizado exitosamente.</h3>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok</button>
+                                </div>
                             </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
                         </div>
                     </div>
 
                     <!--Modal registrado exitosamente (no se muestra) -->
                     <div class="modal fade" id="registrado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                          <div class="modal-content">
-                              <div class="container text-center">
-                                  <div class="row row-cols-1">
-                                      <div class="col pt-5 icono">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                              <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                          </svg>
-                                      </div>
-                                      <div class="col">
-                                          <h3 class="text-center pt-5 pb-5">Solicitud de registro de Farmacista enviado exitosamente.</h3>
-                                      </div>
-                                  </div>
-                              </div>
+                            <div class="modal-content">
+                                <div class="container text-center">
+                                    <div class="row row-cols-1">
+                                        <div class="col pt-5 icono">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                                            </svg>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="text-center pt-5 pb-5">Solicitud de registro de Farmacista enviado exitosamente.</h3>
+                                        </div>
+                                    </div>
+                                </div>
 
-                              <div class="modal-footer d-flex justify-content-center">
-                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                              </div>
-                          </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -387,7 +388,7 @@
                             </div>
                         </div>
                     </div>
-                        
+
 
                 </div>
             </div>
@@ -399,13 +400,13 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>-->
 
 <!--DataTable-->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/Superadmin/table.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example'); /*cambiar de acuerdo al id de la tabla*/
-    </script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="/js/Superadmin/table.js"></script>
+<script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example'); /*cambiar de acuerdo al id de la tabla*/
+</script>
 <!---->
 <!--<script src="/js/AdministradorSede/controladorTablaFarma.js"></script>-->
 </body>

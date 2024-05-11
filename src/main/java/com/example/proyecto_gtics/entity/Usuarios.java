@@ -9,7 +9,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-
+import jakarta.validation.constraints.*;
 @Getter
 @Setter
 @Entity
@@ -28,29 +28,49 @@ public class Usuarios {
     @JoinColumn(name = "sedes_idsedes")
     private Sedes sedes;
 
+
     @Column(name = "nombre",nullable = false,length = 45)
+    @NotBlank
+    @Size(max= 44, message = "El nombre no puede ser muy largo")
     private String nombre;
 
+
+
     @Column(name = "correo",nullable = false,length = 100)
+    @NotBlank
+    @Size(max= 99, message = "El correo no puede ser muy largo")
     private String correo;
 
+
     @Column(name = "contrasena",nullable = false,length = 64)
+    //@NotBlank
+    @Size(max= 63, message = "La contraseña no valida")
     private String contrasena;
 
+
     @Column(name = "descripcion",nullable = true,length = 200)
+    @Size(max= 199, message = "Descripcion muy alrga")
     private String descripcion;
 
     //Verificar tipo de dato para fotos!
     @Column(name = "foto")
+    //@Size(max= 200, message = "Descripcion muy larga")
     private byte[] foto;
 
+
+
+
     @Column(name = "direccion",length = 100)
+    @Size(max= 99, message = "direccion muy larga")
     private String direccion;
 
+
     @Column(name = "distrito_residencia",length = 100)
+    @Size(max= 99, message = "distrito muy largo")
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 100)
+    @Pattern(regexp = "\\d{8}", message = "El código del colegio debe ser un número entero de 8 digitos")
     private  String codigoColegio;
 
     @ManyToOne
@@ -58,15 +78,19 @@ public class Usuarios {
     private TipoUsuario tipoUsuario;
 
     @Column(name = "token",length = 200)
+    @Size(max = 199)
     private String token;
 
     @Column(name = "fecha_registro")
     private Date fechaRegistro; //Cambio de String -> Date / Si causa algun problema regresarlo a String!!
 
     @Column(name = "seguro",length = 100)
+    @Size(max = 99)
     private String seguro;
 
     @Column(name = "dni")
+    @NotBlank
+    @Pattern(regexp = "\\d{8}", message = "El DNI no es valido")
     private String dni;
 
     //@OneToOne
