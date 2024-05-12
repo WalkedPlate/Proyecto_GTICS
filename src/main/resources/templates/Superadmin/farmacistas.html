@@ -98,6 +98,11 @@
 
                             <!--TABLA-->
                             <div class="container table-responsive mb-4">
+                                <!--Mensajes de soli aceptada o negada -->
+                                <div class="row pt-3">
+                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                </div>
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
@@ -159,44 +164,44 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" th:action="@{/superadmin/guardarfarmacista}">
+                                        <form method="post" th:action="@{/superadmin/guardarfarmacista}" class="needs-validation" novalidate>
                                         <div class="modal-body row">
                                             <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input id="nombre" type="text" class="form-control"
-                                                           name="nombre" th:value="${farmacista.nombre}">
+                                                    <input pattern="[A-Za-z].+" maxlength="80" id="nombre" type="text" class="form-control"
+                                                           name="nombre" th:value="${farmacista.nombre}" required>
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="correo">Correo:</label>
-                                                    <input id="correo" type="email" class="form-control"
-                                                           name="correo" th:value="${farmacista.correo}">
+                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  id="correo" type="email" class="form-control"
+                                                           name="correo" th:value="${farmacista.correo}" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="dni">DNI:</label>
-                                                    <input id="dni" type="number" class="form-control" name="dni" th:value="${farmacista.dni}">
+                                                    <label>DNI:</label>
+                                                    <input minlength="8" maxlength="8" id="numberInput" type="text" class="form-control" name="dni" th:value="${farmacista.dni}" required>
                                                 </div>
 
 
                                                 <div class="col">
-                                                    <label for="codigo">Código (colegio médico)</label>
-                                                    <input id="codigo" type="number" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}">
+                                                    <label>Código (colegio médico)</label>
+                                                    <input minlength="8" maxlength="8" id="numberInput2" type="text" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}">
+                                                    <input maxlength="80" id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}" required>
                                                 </div>
                                                 <div class="col">
                                                     <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select" name="idSedes">
+                                                    <select id="sede" class="form-select" name="idSedes" required>
                                                         <option th:value="${farmacista.sedes.idSedes}"
                                                                 th:text="${farmacista.sedes.nombre}"
                                                                 th:selected="${true}"
@@ -213,8 +218,7 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#actualizar">Actualizar
+                                            <button type="submit" class="btn btn-primary">Actualizar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
@@ -237,8 +241,7 @@
                                         <form method="post" th:action="@{/superadmin/eliminarfarmacistas}">
                                         <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminar">Eliminar
+                                            <button type="submit" class="btn btn-primary">Eliminar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
@@ -249,8 +252,8 @@
                                 </div>
                             </div>
 
-                            <!--Modal agregado exitaosamente-->
-                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <!--Modal actualizar exitaosamente (NO SALE) -->
+<!--                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -263,10 +266,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
 
-                            <!-- Modal eliminado exitosamente -->
-                            <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <!-- Modal eliminado exitosamente (NO SALE) -->
+<!--                            <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -280,7 +283,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
 
 
                         </div>
@@ -297,6 +300,52 @@
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
         <script>
             new DataTable('#example');
+        </script>
+        <script>
+            // JavaScript para permitir solo la entrada de números
+            document.getElementById("numberInput").addEventListener("keydown", function(event) {
+                // Permite las teclas de flecha, retroceso y suprimir
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                // Permite los dígitos numéricos
+                if (event.key < "0" || event.key > "9") {
+                    event.preventDefault();
+                }
+            });
+        </script>
+        <script>
+            // JavaScript para permitir solo la entrada de números
+            document.getElementById("numberInput2").addEventListener("keydown", function(event) {
+                // Permite las teclas de flecha, retroceso y suprimir
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                // Permite los dígitos numéricos
+                if (event.key < "0" || event.key > "9") {
+                    event.preventDefault();
+                }
+            });
+        </script>
+        <script>
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })()
         </script>
     </body>
 </html>
