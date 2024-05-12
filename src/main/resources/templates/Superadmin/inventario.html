@@ -146,6 +146,9 @@
                                     <h3 style="color:#5C60F5; padding-left:5px "> medicamento</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${err}" class="alert alert-success" role="alert"></div>
+
                                 </div>
 
                                 <form method="post" class="needs-validation" th:action="@{/superadmin/guardarProducto}"
@@ -178,7 +181,6 @@
                                             <div class="col">
                                                 <label>Categoria:</label>
                                                 <select name="idCategoria" class="form-select" required>
-                                                    <option selected disabled value="">--Ingrese una categoria--</option>
                                                     <option th:each="categoria : ${listaCategorias}"
                                                             th:text="${categoria.nombre}"
                                                             th:value="${categoria.idCategorias}"></option>

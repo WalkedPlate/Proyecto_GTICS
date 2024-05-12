@@ -162,7 +162,7 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
-    public String guardarProducto(Productos productos, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
+    public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
                                   @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes){
 
 
@@ -188,7 +188,15 @@ public class SuperadminController {
         }
         //-----------------------------------------------------------------------------------------------------------
 
+
+
         Optional<Productos> optProducto =productosRepository.findById(idProducto);
+
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin/inventario";
+        }else {
 
         if(optProducto.isPresent()){
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
@@ -253,6 +261,7 @@ public class SuperadminController {
             }
         }
         return "redirect:/superadmin/inventario";
+    }
     }
 
     @PostMapping(value = {"/superadmin/eliminarProducto"})
