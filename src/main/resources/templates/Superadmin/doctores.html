@@ -23,7 +23,7 @@
 <!-- Dashboard -->
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
     <!-- Vertical Navbar -->
-    <nav th:insert="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
+    <nav th:replace="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
     <!-- Main content -->
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
         <!-- Header -->
@@ -76,8 +76,7 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                 <h3 class="mb-0 ls-tight"> Lista de Doctores </h3>
-                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
                             </div>
                             <!-- Actions -->
                             <div class="col-sm-6 col-12 text-sm-end">
@@ -103,7 +102,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body row">
-                                    
+
                                     <div class="row pt-3">
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
@@ -145,7 +144,7 @@
                                     
                                 </div>
                                 <div class="modal-footer mt-3">
-                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                                 </form>
@@ -154,6 +153,7 @@
                     </div>
 
                     <!--Modal agregado exitaosamente-->
+<!--
                     <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -166,9 +166,15 @@
                           </div>
                         </div>
                     </div>
+-->
 
                     <!--TABLA-->
+
                     <div class="container table-responsive mb-4">
+                        <div class="row pt-3">
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        </div>
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
@@ -210,6 +216,39 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
     <script>
         new DataTable('#example');
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
     </script>
 </body>
 </html>

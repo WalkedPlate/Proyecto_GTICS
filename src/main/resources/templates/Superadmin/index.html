@@ -83,8 +83,6 @@
                                 <div class="row align-items-center">
                                     <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                         <h3 class="mb-0 ls-tight">Lista de Administradores de Sedes </h3>
-                                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                                     </div>
                                     <!-- Actions -->
                                     <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
@@ -148,6 +146,7 @@
                                                 <div class="col">
                                                     <label for="sedeAdmin">Sede:</label>
                                                     <select id="sedeAdmin" name="idSedes" class="form-select">
+                                                        <option selected disabled>--Ingresa una sede--</option>
                                                         <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                                     </select>
                                                 </div>

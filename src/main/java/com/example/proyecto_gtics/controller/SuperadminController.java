@@ -409,7 +409,7 @@ public class SuperadminController {
         Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
         doctor.setSedes(sede);//Asignamos la sede
         usuariosRepository.save(doctor);
-            attr.addFlashAttribute("msg","Doctor Creado exitosamente");
+            attr.addFlashAttribute("msg","Doctor creado exitosamente");
 
             return "redirect:/superadmin/doctores";
     }

@@ -11,6 +11,18 @@
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossorigin="anonymous">
         <link rel="stylesheet" href="/css/Login/registro.css"/>
+        <style>
+            /* Estilo para ocultar las flechas en los campos de entrada de tipo número */
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance: textfield; /* Firefox */
+            }
+        </style>
     </head>
 
     <body>
@@ -54,7 +66,10 @@
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input type="text" class="form-control" placeholder="DNI" minlength="8" maxlength="8"
+                                        <input
+                                                id="numberInput"
+                                                minlength="8" maxlength="8"
+                                                type="text" class="form-control" placeholder="DNI"
                                                autocomplete="off" required/>
                                         <label>DNI</label>
                                     </div>
@@ -109,7 +124,19 @@
 
             </div>
         </main>
-
+        <script>
+            // JavaScript para permitir solo la entrada de números
+            document.getElementById("numberInput").addEventListener("keydown", function(event) {
+                // Permite las teclas de flecha, retroceso y suprimir
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                // Permite los dígitos numéricos
+                if (event.key < "0" || event.key > "9") {
+                    event.preventDefault();
+                }
+            });
+        </script>
         <script>
             (() => {
                 'use strict'
@@ -130,6 +157,7 @@
                 })
             })()
         </script>
+
     </body>
 
 </html>
