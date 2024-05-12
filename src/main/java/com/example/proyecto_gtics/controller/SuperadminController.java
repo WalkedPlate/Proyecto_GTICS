@@ -332,19 +332,26 @@ public class SuperadminController {
         return "Superadmin/farmacistas";
     }
 
-    @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
-    public String soliFarmacistas(Model model){
+        @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
+        public String soliFarmacistas(Model model){
 
-        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
-        EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
-        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
-        model.addAttribute("listaFarmacistas",listaFarmacistas);
-        return "Superadmin/soliFarmacistas";
-    }
+            TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
+            EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
+            List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
+            model.addAttribute("listaFarmacistas",listaFarmacistas);
+            return "Superadmin/soliFarmacistas";
+        }
 
     @PostMapping(value = {"/superadmin/guardarfarmacista"})
-    public String guardarFarmacistas(Usuarios farmacista,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
+    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
         Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
+
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin/farmacistas";
+        }else {
+
         if(farma.isPresent()){
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             farmacista.setContrasena(usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()).getContrasena());
@@ -355,6 +362,7 @@ public class SuperadminController {
             usuariosRepository.save(farmacista);
         }
         return "redirect:/superadmin/farmacistas";
+    }
     }
 
     @PostMapping(value = {"/superadmin/eliminarfarmacistas"})
