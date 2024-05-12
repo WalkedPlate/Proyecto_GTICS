@@ -4,6 +4,7 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +69,8 @@ public class AdministradorSedeController {
         this.usuariosRepository = usuariosRepository;
     }
 
+    @Autowired
+    CodigoColegioRespository codigoColegioRespository;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -347,13 +350,22 @@ public class AdministradorSedeController {
             attr.addFlashAttribute("err",error);
             return "redirect:/administradorsede/farmacistas";
         }else {
-            Sedes sedes = sedesRepository.findById(id).get();
-            if (sedes == null) {
+
+
+            Optional<Sedes> sedesOpt = sedesRepository.findById(id);
+            if (sedesOpt.isEmpty()) {
                 attr.addFlashAttribute("err","error=sede_invalida");
                 return "redirect:/administradorsede/farmacistas";
             }
             if(usuarios.getIdUsuario() == null){ // Caso crear farmacista
-                usuarios.setSedes(sedes);
+
+                if(!validarCodigoColegio(usuarios.getCodigoColegio())){
+                    attr.addFlashAttribute("err","El código de colegio no es válido.");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
+
+                usuarios.setSedes(sedesOpt.get());
                 usuarios.setContrasena("Temporal_password");
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
@@ -361,7 +373,7 @@ public class AdministradorSedeController {
                 attr.addFlashAttribute("msg","Farmacista creado exitosamente");
             }
             else {   // Caso Actualizar farmacista
-                usuarios.setSedes(sedes);
+                usuarios.setSedes(sedesOpt.get());
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
                 usuariosRepository.save(usuarios);
@@ -474,7 +486,16 @@ private boolean isValidEmail(String email) {
 
 
 
+    public boolean validarCodigoColegio(String codigo) {
 
+        boolean valido = false;
+        Optional<CodigoColegio> opt = codigoColegioRespository.findByCodigo(codigo);
+        if(opt.isPresent()){
+            valido = true;
+
+        }
+        return valido;
+    }
 
 
 }
