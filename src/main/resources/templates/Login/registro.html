@@ -46,14 +46,14 @@
 
                 <div class="row ">
                     <div class="col">
-                        <form class="needs-validation" novalidate>
+                        <form class="needs-validation" novalidate method="post" th:action="@{/guardarPaciente}">
                             <div class="row justify-content-center">
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
                                         <input
                                                 pattern="[A-Za-z]+"
                                                 type="text" class="form-control" placeholder="Nombre" autocomplete="off" maxlength="20"
-                                               required/>
+                                                name="nombres" required/>
                                         <label>Nombre</label>
                                     </div>
 
@@ -61,7 +61,7 @@
                                         <input
                                                 pattern="[A-Za-z]+"
                                                 type="text" class="form-control" placeholder="Apellido" maxlength="20"
-                                               autocomplete="off" required/>
+                                               autocomplete="off" name="apellidos" required/>
                                         <label>Apellido</label>
                                     </div>
 
@@ -70,14 +70,14 @@
                                                 id="numberInput"
                                                 minlength="8" maxlength="8"
                                                 type="text" class="form-control" placeholder="DNI"
-                                               autocomplete="off" required/>
+                                               autocomplete="off" name="dni" required/>
                                         <label>DNI</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
                                         <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
                                                 type="email" class="form-control" placeholder="Correo electrónico"
-                                               autocomplete="off" required/>
+                                               autocomplete="off" name="correo" required/>
                                         <label>Correo electrónico</label>
                                     </div>
                                 </div>
@@ -86,13 +86,13 @@
 
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" placeholder="Dirección" maxlength="80"
-                                               autocomplete="off" required/>
+                                               autocomplete="off" name="direccion" required/>
                                         <label>Dirección</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" placeholder="Distrito"
-                                               autocomplete="off" required/>
+                                               autocomplete="off" name="distritoResidencia" required/>
                                         <label>Distrito</label>
                                     </div>
 

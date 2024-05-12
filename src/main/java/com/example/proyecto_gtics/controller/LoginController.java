@@ -1,12 +1,16 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -61,6 +65,24 @@ public class LoginController {
     @GetMapping(value ={"/registro"})
     public String registro(){
         return "Login/registro";
+    }
+
+    @PostMapping(value = {"/guardarPaciente"})
+    public  String guardarPaciente(Usuarios paciente, @RequestParam("nombres") String nombres , @RequestParam("apellidos") String apellidos){
+
+        //Comprobar si existe el paciente:
+        Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
+
+        if(consultaPaciente.isPresent()){
+            return "redirect:/login";
+        }else {
+            paciente.setNombre(nombres + ' ' + apellidos);
+            paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            paciente.setContrasena("Temporal_password");
+            paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
+            usuariosRepository.save(paciente);
+        }
+        return "redirect:/login";
     }
 
     @GetMapping(value ={"/cambiar-contrasena"})
