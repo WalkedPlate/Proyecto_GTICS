@@ -29,7 +29,8 @@
                                 <h6>¿No tienes una cuenta?</h6>
                                 <a th:href="@{'/registro'}">Regístrate</a>
                             </div>
-
+                            <div th:if="${err != null}" th:text="${err}" style="color: red" role="alert"></div>
+                            <div th:if="${msg != null}" th:text="${msg}" style="color: green" role="alert"></div>
                             <div class="actual-form">
                                 <div class="input-wrap">
                                     <input
