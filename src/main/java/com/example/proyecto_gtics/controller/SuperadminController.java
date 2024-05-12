@@ -261,7 +261,7 @@ public class SuperadminController {
         Productos producto = productosRepository.findById(idProducto).get();
         if(optProduc.isPresent()){
             producto.setEstadoProducto("Eliminado");
-            attr.addFlashAttribute("msg","Producto eliminado exitosamente.");
+            attr.addFlashAttribute("del","Producto eliminado exitosamente.");
             productosRepository.save(producto);
         }
         return "redirect:/superadmin/inventario";
