@@ -72,7 +72,9 @@ public class Usuarios {
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 100)
-    @Pattern(regexp = "\\d{8}", message = "El código del colegio debe ser un número entero de 8 digitos")
+    @Digits(integer = 10, fraction = 0)
+    @Positive
+    @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
     private  String codigoColegio;
 
     @ManyToOne

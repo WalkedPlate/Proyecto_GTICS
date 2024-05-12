@@ -4,12 +4,15 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -374,10 +377,18 @@ public class SuperadminController {
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
         return "Superadmin/doctores";
-    }
 
+    }
     @PostMapping(value = {"/superadmin/guardarDoctor"})
-    public String guardarDoctor(Usuarios doctor,@RequestParam("idSede") int idSede){
+    public String guardarDoctor(@Valid Usuarios doctor, BindingResult bindingResult, @RequestParam("idSede") @Valid int idSede,BindingResult bindingResultSedes, RedirectAttributes attr){
+
+        if(bindingResult.hasErrors() || idSede<0 ||idSede > 10 ){
+           String error = bindingResult.getFieldError().getDefaultMessage().toString();
+           attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin/doctores";
+        }else {
+
+
         doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
         doctor.setContrasena("Temporal_password");
         doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
@@ -385,7 +396,10 @@ public class SuperadminController {
         Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
         doctor.setSedes(sede);//Asignamos la sede
         usuariosRepository.save(doctor);
-        return "redirect:/superadmin/doctores";
+            attr.addFlashAttribute("msg","Doctor Creado exitosamente");
+
+            return "redirect:/superadmin/doctores";
+    }
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})

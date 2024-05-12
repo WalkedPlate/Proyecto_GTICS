@@ -1,6 +1,7 @@
 package com.example.proyecto_gtics.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
