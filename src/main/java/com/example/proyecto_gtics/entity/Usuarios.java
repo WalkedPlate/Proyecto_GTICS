@@ -72,9 +72,7 @@ public class Usuarios {
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 100)
-    @Digits(integer = 10, fraction = 0)
-    @Positive
-    @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
+    @Digits(integer = 10, fraction = 0, message = "El codigo es no valido no es valido")
     private  String codigoColegio;
 
     @ManyToOne
@@ -95,6 +93,7 @@ public class Usuarios {
     @Column(name = "dni")
     @Digits(integer = 10, fraction = 0)
     @Positive
+    @NotNull
     @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
     private Integer dni;
 
@@ -104,6 +103,8 @@ public class Usuarios {
     private Integer preferenciasUsuario;
 
     @Column(name = "dias_ban")
+    @Digits(integer = 5,fraction = 0)
+    @Range(min = 0, max = 100, message = "dias no validos")
     private Integer diasBan;
 
     @Column(name = "fecha_ban")

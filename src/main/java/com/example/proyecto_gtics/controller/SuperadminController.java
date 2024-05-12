@@ -78,10 +78,17 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
-    public String guardarAdminSede(Usuarios adminSede,@RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede){
+    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr ){
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin";
+        }else {
+
+
         if(adminsede.isPresent()){
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());// implementar:agarrar el estado de la base de datos
             adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
@@ -94,28 +101,33 @@ public class SuperadminController {
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
         }
-
-        usuariosRepository.save(adminSede);
+            attr.addFlashAttribute("msg","Administrador guardado exitosamente");
+            usuariosRepository.save(adminSede);
         return "redirect:/superadmin/administradores-sede";
+    }
     }
 
     @PostMapping("/superadmin/eliminarAdminSede")
-    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id){
-        Optional<Usuarios> optSede =usuariosRepository.findById(id);
+    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id, RedirectAttributes redirectAttributes) {
+        Optional<Usuarios> optSede = usuariosRepository.findById(id);
         Usuarios adminSede = usuariosRepository.findByIdUsuario(id);
-        if(optSede.isPresent()){
+        if (optSede.isPresent()) {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
             usuariosRepository.save(adminSede);
             //usuariosRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("mensaje", "Administrador de sede eliminado correctamente");
         }
         return "redirect:/superadmin/administradores-sede";
     }
 
     @PostMapping(value = {"/superadmin/banearAdminSede"})
-    public String banearAdminSede(@RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede){
+    public String banearAdminSede( @RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede,RedirectAttributes attr){
+        System.out.println(diasBan);
         Date fechaActual = new Date();
         Usuarios adminSede = usuariosRepository.findByIdUsuario(idAdminSede);
         Optional<Usuarios> optSede =usuariosRepository.findById(idAdminSede);
+
+
         if(optSede.isPresent()){
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
             adminSede.setDiasBan(diasBan);
@@ -124,6 +136,7 @@ public class SuperadminController {
         }
         return "redirect:/superadmin/administradores-sede";
     }
+
 
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model){
