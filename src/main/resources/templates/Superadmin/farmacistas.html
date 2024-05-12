@@ -98,7 +98,7 @@
 
                             <!--TABLA-->
                             <div class="container table-responsive mb-4">
-                                <!--Mensajes de soli aceptada o negada -->
+                                <!--Mensajes de eliminado y actualizado -->
                                 <div class="row pt-3">
                                     <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
                                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
@@ -106,13 +106,13 @@
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Nombre</th>
-                                            <th scope="col">Sede</th>
-                                            <th scope="col">DNI</th>
-                                            <th scope="col">Distrito de residencia</th>
-                                            <th scope="col">Código</th>
-                                            <th scope="col">Correo</th>
-                                            <th>Acciones</th>
+                                            <th scope="col" class="text-center">Nombre</th>
+                                            <th scope="col" class="text-center">Sede</th>
+                                            <th scope="col" class="text-center">DNI</th>
+                                            <th scope="col" class="text-center">Distrito de residencia</th>
+                                            <th scope="col" class="text-center">Código</th>
+                                            <th scope="col" class="text-center">Correo</th>
+                                            <th class="text-center">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -124,15 +124,15 @@
 
                                                 </a>
                                             </td>
-                                            <td th:text="${farmacista.sedes.nombre}">
+                                            <td th:text="${farmacista.sedes.nombre}" class="text-center">
 
-                                            <td th:text="${farmacista.dni}"></td>
-                                            <td th:text="${farmacista.distritoResidencia}"></td>
-                                            <td th:text="${farmacista.codigoColegio}">
+                                            <td th:text="${farmacista.dni}" class="text-center"></td>
+                                            <td th:text="${farmacista.distritoResidencia}" class="text-center"></td>
+                                            <td th:text="${farmacista.codigoColegio}" class="text-center">
                                             </td>
-                                            <td th:text="${farmacista.correo}">
+                                            <td th:text="${farmacista.correo}" class="text-center">
                                             </td>
-                                            <td class="text-end">
+                                            <td class="text-center">
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
                                                         data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">

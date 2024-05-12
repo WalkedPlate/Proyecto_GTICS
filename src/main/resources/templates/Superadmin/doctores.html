@@ -111,7 +111,7 @@
                                     
                                         <div class="col">
                                             <label for="correo">Correo:</label>
-                                            <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo" required>
+                                            <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo" required>
                                         </div>
                                     </div>
                                     
@@ -131,11 +131,12 @@
                                     <div class="row pt-5">
                                         <div class="col">
                                             <label for="distrito">Distrito de residencia</label>
-                                            <input id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito" required>
+                                            <input maxlength="40" id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito" required>
                                         </div>
                                         <div class="col">
                                             <label for="sedeDoctor">Sede:</label>
                                             <select id="sedeDoctor" name="idSede" class="form-select" required>
+                                                <option selected disabled value="">--Ingresa una sede--</option>
                                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                             </select>
                                         </div>
@@ -152,21 +153,6 @@
                         </div>
                     </div>
 
-                    <!--Modal agregado exitaosamente-->
-<!--
-                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body text-center">
-                              <h3>Doctor agregado exitosamente.</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
--->
 
                     <!--TABLA-->
 

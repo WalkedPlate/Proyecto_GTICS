@@ -103,7 +103,7 @@
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <form method="post" th:action="@{/superadmin/guardarAdminSede}">
+                                        <form method="post" class="needs-validation" th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                             <input type="hidden" name="idUsuario" value="0">
                                         <div class="modal-header">
                                             <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
@@ -116,37 +116,37 @@
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input id="nombre" name="nombre" type="text" class="form-control"
-                                                           placeholder="Coloca su nombre">
+                                                    <input pattern="[A-Za-z].+" maxlength="80" id="nombre" name="nombre" type="text" class="form-control"
+                                                           placeholder="Coloca su nombre" required>
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="correo">Correo:</label>
-                                                    <input id="correo" name="correo" type="email" class="form-control"
-                                                           placeholder="Coloca su correo">
+                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" name="correo" type="email" class="form-control"
+                                                           placeholder="Coloca su correo" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="dni">DNI:</label>
-                                                    <input id="dni" name="dni" type="number" class="form-control"
-                                                           placeholder="Coloca el N° de DNI">
+                                                    <label>DNI:</label>
+                                                    <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control"
+                                                           placeholder="Coloca el N° de DNI" required>
                                                 </div>
 
 
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input id="distrito" name="distritoResidencia" type="text" class="form-control"
-                                                           placeholder="Coloca su distrito">
+                                                    <input maxlength="40" id="distrito" name="distritoResidencia" type="text" class="form-control"
+                                                           placeholder="Coloca su distrito" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="sedeAdmin">Sede:</label>
-                                                    <select id="sedeAdmin" name="idSedes" class="form-select">
-                                                        <option selected disabled>--Ingresa una sede--</option>
+                                                    <select id="sedeAdmin" name="idSedes" class="form-select" required>
+                                                        <option selected disabled value="">--Ingresa una sede--</option>
                                                         <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                                     </select>
                                                 </div>
@@ -155,8 +155,7 @@
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#agregar">Agregar
+                                            <button type="submit" class="btn btn-primary">Agregar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
@@ -167,24 +166,15 @@
                                 </div>
                             </div>
 
-                            <!--Modal agregado exitaosamente-->
-                            <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body text-center">
-                                            <h3 class="text-center">Administrador de sede agregado exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!--TABLA-->
                             <div class="container table-responsive mb-4">
+                                <!--Mensajes de guardado, eliminado y actualizado -->
+                                <div class="row pt-3">
+                                    <div th:if="${ban != null}" th:text="${ban}" class="alert alert-warning" role="alert"></div>
+                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                </div>
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
@@ -246,40 +236,40 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" th:action="@{/superadmin/guardarAdminSede}">
+                                        <form method="post" class="needs-validation" th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                         <div class="modal-body row">
                                             <input type="hidden" name="idUsuario" th:value="${adminSede.idUsuario}">
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label>Nombre:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                            th:value="${adminSede.nombre}">
+                                                    <input pattern="[A-Za-z].+" maxlength="80" name="nombre" type="text" class="form-control"
+                                                            th:value="${adminSede.nombre}" required>
                                                 </div>
 
                                                 <div class="col">
                                                     <label>Correo:</label>
-                                                    <input name="correo" type="email" class="form-control"
-                                                           th:value="${adminSede.correo}">
+                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" name="correo" type="email" class="form-control"
+                                                           th:value="${adminSede.correo}" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>DNI:</label>
-                                                    <input name="dni" type="number" class="form-control" th:value="${adminSede.dni}">
+                                                    <input minlength="8" maxlength="8" id="numberInput2"  name="dni" type="text" class="form-control" th:value="${adminSede.dni}" required>
                                                 </div>
 
 
                                                 <div class="col">
                                                     <label>Distrito de residencia</label>
-                                                    <input name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}">
+                                                    <input maxlength="40" name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>Sede:</label>
-                                                    <select class="form-select" name="idSedes">
+                                                    <select class="form-select" name="idSedes" required>
                                                         <option th:value="${adminSede.sedes.idSedes}"
                                                                 th:text="${adminSede.sedes.nombre}"
                                                                 th:selected="${true}"
@@ -296,8 +286,7 @@
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#actualizar">Actualizar
+                                            <button type="submit" class="btn btn-primary">Actualizar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
@@ -319,7 +308,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" th:action="@{/superadmin/banearAdminSede}">
+                                        <form method="post" class="needs-validation" th:action="@{/superadmin/banearAdminSede}" novalidate>
                                         <input type="hidden" th:value="${adminSede.idUsuario}" name="idAdminSede">
                                         <div class="modal-body row">
 
@@ -339,8 +328,9 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="diasBan">Días baneados:</label>
-                                                    <select id="diasBan" name="diasBan" class="form-select">
-                                                        <option selected>0</option>
+                                                    <select id="diasBan" name="diasBan" class="form-select" required>
+                                                        <option selected disabled value="">--Ingresa una sede--</option>
+                                                        <option>0</option>
                                                         <option>1</option>
                                                         <option>2</option>
                                                         <option>3</option>
@@ -352,15 +342,17 @@
 
                                                 <div class="col">
                                                     <label for="razon">Razón:</label>
-                                                    <textarea class="form-control" id="razon"></textarea>
+                                                    <textarea minlength="10" maxlength="300" class="form-control" id="razon" required></textarea>
+                                                    <div class="invalid-feedback">
+                                                        Este campo debe tener como mínimo 10 carácteres.
+                                                    </div>
                                                 </div>
                                             </div>
 
 
                                         </div>
                                         <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#banear">Banear
+                                            <button type="submit" class="btn btn-primary">Banear
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                                 Cancelar
@@ -371,38 +363,7 @@
                                 </div>
                             </div>
 
-                            <!--Modal actualizado exitaosamente-->
-                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Administrador de sede ha sido actualizado
-                                                exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!--Modal baneado exitaosamente-->
-                            <div class="modal fade" id="banear" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">El baneo se realizó exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!--Modal eliminar-->
                             <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}"  th:id ="${'eliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -414,8 +375,7 @@
                                         <form method="post" th:action="@{/superadmin/eliminarAdminSede}">
                                             <input type="hidden" name="idAdminSede" th:value="${adminSede.idUsuario}">
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#eliminado">Eliminar
+                                            <button type="submit" class="btn btn-primary">Eliminar
                                             </button>
                                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                         </div>
@@ -424,22 +384,6 @@
                                 </div>
                             </div>
 
-                            <!--Modal eliminado exitaosamente-->
-                            <div class="modal fade" id="eliminado" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Se eliminó al administrador de sede exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer mt-3 d-flex justify-content-center">
-
-                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -455,6 +399,52 @@
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
         <script>
             new DataTable('#example');
+        </script>
+        <script>
+            // JavaScript para permitir solo la entrada de números
+            document.getElementById("numberInput").addEventListener("keydown", function(event) {
+                // Permite las teclas de flecha, retroceso y suprimir
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                // Permite los dígitos numéricos
+                if (event.key < "0" || event.key > "9") {
+                    event.preventDefault();
+                }
+            });
+        </script>
+        <script>
+            // JavaScript para permitir solo la entrada de números
+            document.getElementById("numberInput2").addEventListener("keydown", function(event) {
+                // Permite las teclas de flecha, retroceso y suprimir
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                // Permite los dígitos numéricos
+                if (event.key < "0" || event.key > "9") {
+                    event.preventDefault();
+                }
+            });
+        </script>
+        <script>
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })()
         </script>
     </body>
 </html>

@@ -94,15 +94,17 @@ public class SuperadminController {
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            attr.addFlashAttribute("msg","Datos del administrador de sede actualizados exitosamente");
         }
         else {
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             adminSede.setContrasena("Temporal_password");
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente");
         }
-            attr.addFlashAttribute("msg","Administrador guardado exitosamente");
+
             usuariosRepository.save(adminSede);
         return "redirect:/superadmin/administradores-sede";
     }
@@ -116,7 +118,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
             usuariosRepository.save(adminSede);
             //usuariosRepository.deleteById(id);
-            redirectAttributes.addFlashAttribute("mensaje", "Administrador de sede eliminado correctamente");
+            redirectAttributes.addFlashAttribute("del", "Administrador de sede eliminado exitosamente");
         }
         return "redirect:/superadmin/administradores-sede";
     }
@@ -133,6 +135,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
             adminSede.setDiasBan(diasBan);
             adminSede.setFechaBan(fechaActual);
+            attr.addFlashAttribute("ban","Administrador de sede baneado exitosamente");
             usuariosRepository.save(adminSede);
         }
         return "redirect:/superadmin/administradores-sede";
