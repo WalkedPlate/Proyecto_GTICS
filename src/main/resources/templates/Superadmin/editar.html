@@ -30,31 +30,6 @@
                             <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
                         </h3>
                     </a>
-                    <!-- User menu (mobile)
-                    <div class="navbar-user d-lg-none">
-                        Dropdown
-                        <div class="dropdown">
-                            Toggle
-                            <a href="#" id="sidebarAvatar" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                               aria-expanded="false">
-                                <div class="avatar-parent-child">
-                                    <img alt="Image Placeholder"
-                                         src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                                         class="avatar avatar- rounded-circle">
-                                    <span class="avatar-child avatar-badge bg-success"></span>
-                                </div>
-                            </a>
-                            Menu
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="sidebarAvatar">
-                                <a href="#" class="dropdown-item">Perfil</a>
-                                <a href="#" class="dropdown-item">Configuracion</a>
-                                <a href="#" class="dropdown-item">Cerrar Sesión</a>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    -->
                     <!-- Collapse -->
                     <div class="collapse navbar-collapse" id="sidebarCollapse">
                         <!-- Navigation -->
@@ -123,56 +98,53 @@
                                     <h2><strong>Edita tu perfil</strong></h2>
                                     <hr>
                                 </div>
+                                <!--Form para editar perfil con validaciones en js-->
+                                <form id="myForm">
+                                    <div class="col d-flex pb-6">
+                                        <div class="col-4 d-flex justify-content-center align-items-center">
+                                            <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250" class="rounded-circle">
+                                        </div>
+                                        <div class="col" style="margin:0px 30px">
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input type="text" class="form-control" id="nombre" placeholder="Coloca tu nombre">
+                                                    <p id="nombreError" class="text-danger"></p>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="apellido">Apellido:</label>
+                                                    <input type="text" class="form-control" id="apellido" placeholder="Coloca tu apellido">
+                                                    <p id="apellidoError" class="text-danger"></p>
+                                                </div>
+                                            </div>
 
-                                <div class="col d-flex pb-6">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250"
-                                             class="rounded-circle">
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="correo">Correo electrónico:</label>
+                                                    <input type="email" class="form-control" id="correo" placeholder="correo@correo.com">
+                                                    <p id="correoError" class="text-danger"></p>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="distrito">Distrito de residencia:</label>
+                                                    <input type="text" class="form-control" id="distrito" placeholder="Coloca tu distrito de residencia">
+                                                    <p id="distritoError" class="text-danger"></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col" style="margin:0px 30px">
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="nombre">Nombre:</label>
-                                                <input type="text" class="form-control" placeholder="Coloca tu nombre">
-                                            </div>
 
-                                            <div class="col">
-                                                <label for="apellido">Apellido:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Coloca tu apellido">
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="correo">Correo electrónico:</label>
-                                                <input type="email" class="form-control"
-                                                       placeholder="correo@correo.com">
-                                            </div>
-                                        </div>
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="distrito">Distrito de residencia:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Coloca tu distrito de residencia">
-                                            </div>
-                                        </div>
+                                    <hr>
+                                    <div id="successMessage" class="text-success text-center"></div>
+                                    <div class="pt-2 pb-3 d-flex justify-content-center">
+                                        <button class="btn btn-primary btn-xs" style="margin-right: 5px" type="submit">Guardar Cambios</button>
+                                        <a href="/superadmin/perfil" class="btn btn-danger btn-xs" role="button">Cancelar</a>
                                     </div>
-                                </div>
-
-                                <hr>
-
-                                <div class=" pt-2 pb-3 d-flex justify-content-center">
-
-                                    <a  class="btn btn-primary btn-xs" role="button"
-                                       style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#modalGuardar">Guardar Cambios</a>
-
-                                    <a th:href="@{'/superadmin/perfil'}" class="btn btn-danger btn-xs" role="button">Cancelar</a>
-
-                                </div>
+                                </form>
 
                                 <!-- Modal guardar -->
-                                <div class="modal fade" id="modalGuardar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <!--<div class="modal fade" id="modalGuardar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-body">
@@ -198,7 +170,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
 
                             </div>
 
@@ -215,5 +187,6 @@
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
         <script src="/js/Superadmin/script.js"></script>
+        <script src="/js/Superadmin/editProfile.js"></script>
     </body>
 </html>

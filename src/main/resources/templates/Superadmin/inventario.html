@@ -146,39 +146,41 @@
                                     <h3 style="color:#5C60F5; padding-left:5px "> medicamento</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${err}" class="alert alert-success" role="alert"></div>
+
                                 </div>
 
-                                <form method="post" th:action="@{/superadmin/guardarProducto}"
-                                      enctype="multipart/form-data">
+                                <form method="post" class="needs-validation" th:action="@{/superadmin/guardarProducto}"
+                                      enctype="multipart/form-data" novalidate>
                                     <input type="hidden" name="IDProducto" value="0">
                                     <div class="modal-body row">
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label>Subir imagen:</label>
-                                                <input type="file" class="form-control" name="archivo">
+                                                <input type="file" class="form-control" name="archivo" accept="image/*" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label>Nombre:</label>
-                                                <input name="nombre" type="text" class="form-control"
-                                                       placeholder="Ingrese el nombre del medicamento">
+                                                <input pattern="[A-Za-z].+" maxlength="80" name="nombre" type="text" class="form-control"
+                                                       placeholder="Ingrese el nombre del medicamento" required>
                                             </div>
 
 
                                             <div class="col">
                                                 <label>Precio (S/.):</label>
-                                                <input name="precio" type="number" class="form-control"
-                                                       placeholder="Ingrese el precio del medicamento">
+                                                <input pattern="[0-9]+(\.[0-9]+)?" id="numberInput" name="precio" type="text" class="form-control"
+                                                       placeholder="Ingrese el precio del medicamento" required min="0">
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label>Categoria:</label>
-                                                <select name="idCategoria" class="form-select">
-                                                    <option selected disabled>--Ingrese una categoria--</option>
+                                                <select name="idCategoria" class="form-select" required>
                                                     <option th:each="categoria : ${listaCategorias}"
                                                             th:text="${categoria.nombre}"
                                                             th:value="${categoria.idCategorias}"></option>
@@ -188,16 +190,19 @@
 
                                             <div class="col">
                                                 <label>Fecha de vencimiento:</label>
-                                                <input name="fechaVencimiento" type="date" class="form-control"
-                                                       placeholder="Ingresa la fecha del vencimiento">
+                                                <input name="fechaVencimiento" id="fechaVencimiento" type="date" class="form-control"
+                                                       placeholder="Ingresa la fecha del vencimiento" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label>Descripción:</label>
-                                                <textarea name="descripcion" class="form-control" cols="30"
-                                                          rows="10"></textarea>
+                                                <textarea minlength="10" maxlength="200" name="descripcion" class="form-control" cols="30"
+                                                          rows="10" required></textarea>
+                                                <div class="invalid-feedback">
+                                                    Este campo debe tener como mínimo 10 carácteres.
+                                                </div>
                                             </div>
                                         </div>
 
@@ -253,8 +258,7 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#agregar">Agregar
+                                        <button type="submit" class="btn btn-primary">Agregar
                                         </button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                             Cancelar
@@ -265,26 +269,14 @@
                         </div>
                     </div>
 
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <h3 class="text-center">Medicina agregada exitosamente.</h3>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!--TABLA-->
-                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                     <div class="container table-responsive mb-4">
+                        <!--Mensajes de medicina agregada, eliminada y actualizada -->
+                        <div class="row pt-3">
+                            <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        </div>
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                             <tr>
@@ -352,40 +344,39 @@
                                             aria-label="Close"></button>
                                 </div>
 
-                                <form method="post" th:action="@{/superadmin/guardarProducto}"
-                                      enctype="multipart/form-data">
+                                <form method="post" class="needs-validation" th:action="@{/superadmin/guardarProducto}"
+                                      enctype="multipart/form-data" novalidate>
                                     <input type="hidden" name="IDProducto" th:value="${medicamento.idProductos}">
                                     <input type="hidden" name="idProductos" th:value="${medicamento.idProductos}">
                                     <input type="hidden" name="codigo" th:value="${medicamento.codigo}">
                                     <div class="modal-body row">
                                         <div class="row pt-3">
 
-
                                             <div class="col">
                                                 <label>Subir imagen:</label>
-                                                <input type="file" class="form-control" name="archivo">
+                                                <input type="file" class="form-control" name="archivo" accept="image/*" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label>Medicina:</label>
-                                                <input name="nombre" type="text" class="form-control"
-                                                       th:value="${medicamento.nombre}">
+                                                <input pattern="[A-Za-z].+" maxlength="80" name="nombre" type="text" class="form-control"
+                                                       th:value="${medicamento.nombre}" required>
                                             </div>
 
 
                                             <div class="col">
                                                 <label>Precio (S/.):</label>
-                                                <input name="precio" type="number" class="form-control"
-                                                       th:value="${medicamento.precio}">
+                                                <input pattern="[0-9]+(\.[0-9]+)?" id="numberInput2" name="precio" type="text" class="form-control"
+                                                       th:value="${medicamento.precio}" required min="0">
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
-                                                <label>Categoria:</label>
-                                                <select class="form-select" name="idCategoria">
+                                                <label>Categoría:</label>
+                                                <select class="form-select" name="idCategoria" required>
                                                     <option th:value="${medicamento.categorias.idCategorias}"
                                                             th:text="${medicamento.categorias.nombre}"
                                                             th:selected="${true}"
@@ -401,16 +392,19 @@
 
                                             <div class="col">
                                                 <label>Fecha de vencimiento:</label>
-                                                <input name="fechaVencimiento" type="date" class="form-control"
-                                                       th:value="${medicamento.fechaVencimiento}">
+                                                <input name="fechaVencimiento" id="fechaVencimiento2" type="date" class="form-control"
+                                                       th:value="${medicamento.fechaVencimiento}" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label>Descripción:</label>
-                                                <textarea name="descripcion" class="form-control" cols="30"
-                                                          rows="10" th:text="${medicamento.descripcion}"></textarea>
+                                                <textarea minlength="10" maxlength="200" name="descripcion" class="form-control" cols="30"
+                                                          rows="10" th:text="${medicamento.descripcion}" required></textarea>
+                                                <div class="invalid-feedback">
+                                                    Este campo debe tener como mínimo 10 carácteres.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-5">
@@ -461,8 +455,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#actualizar">Actualizar
+                                        <button type="submit" class="btn btn-primary">Actualizar
                                         </button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                                             Cancelar
@@ -473,7 +466,7 @@
                         </div>
                     </div>
 
-                    <!-- Modal elminar -->
+                    <!-- Modal eliminar -->
                     <div class="modal fade" th:each="medicamento, obj : ${listaMedicamentos}"
                          th:id="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
@@ -494,38 +487,6 @@
                                         </button>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Modal agregado exitasoamente-->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <h3 class="text-center">Producto actualizado exitosamente.</h3>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Modal eliminado exitaosamente-->
-                    <div class="modal fade" id="elimar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <h3 class="text-center">Producto eliminado exitosamente.</h3>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -555,6 +516,81 @@
         }
     }
 </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números y el punto decimal
+        document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos y el punto decimal
+            if (!((event.key >= "0" && event.key <= "9") || event.key === ".")) {
+                event.preventDefault();
+            }
+            // Permite solo un punto decimal
+            if (event.key === "." && this.value.includes(".")) {
+                event.preventDefault();
+            }
+        });
+    </script>
 
+    <script>
+        // JavaScript para permitir solo la entrada de números y el punto decimal
+        document.getElementById("numberInput2").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos y el punto decimal
+            if (!((event.key >= "0" && event.key <= "9") || event.key === ".")) {
+                event.preventDefault();
+            }
+            // Permite solo un punto decimal
+            if (event.key === "." && this.value.includes(".")) {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+    <script>
+        // Obtener el elemento de entrada de fecha
+        var fechaVencimientoInput = document.getElementById('fechaVencimiento');
+
+        // Obtener la fecha actual en formato 'yyyy-mm-dd'
+        var fechaActual = new Date().toISOString().split('T')[0];
+
+        // Establecer la fecha mínima en el campo de entrada de fecha
+        fechaVencimientoInput.setAttribute('min', fechaActual);
+    </script>
+    <script>
+        // Obtener el elemento de entrada de fecha
+        var fechaVencimientoInput = document.getElementById('fechaVencimiento2');
+
+        // Obtener la fecha actual en formato 'yyyy-mm-dd'
+        var fechaActual = new Date().toISOString().split('T')[0];
+
+        // Establecer la fecha mínima en el campo de entrada de fecha
+        fechaVencimientoInput.setAttribute('min', fechaActual);
+    </script>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </body>
 </html>

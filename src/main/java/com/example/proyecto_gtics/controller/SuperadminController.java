@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.w3c.dom.Attr;
 
 import java.io.IOException;
 import java.util.*;
@@ -93,15 +94,17 @@ public class SuperadminController {
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            attr.addFlashAttribute("msg","Datos del administrador de sede actualizados exitosamente");
         }
         else {
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
+            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             adminSede.setContrasena("Temporal_password");
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente");
         }
-            attr.addFlashAttribute("msg","Administrador guardado exitosamente");
+
             usuariosRepository.save(adminSede);
         return "redirect:/superadmin/administradores-sede";
     }
@@ -115,7 +118,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
             usuariosRepository.save(adminSede);
             //usuariosRepository.deleteById(id);
-            redirectAttributes.addFlashAttribute("mensaje", "Administrador de sede eliminado correctamente");
+            redirectAttributes.addFlashAttribute("del", "Administrador de sede eliminado exitosamente");
         }
         return "redirect:/superadmin/administradores-sede";
     }
@@ -132,6 +135,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
             adminSede.setDiasBan(diasBan);
             adminSede.setFechaBan(fechaActual);
+            attr.addFlashAttribute("ban","Administrador de sede baneado exitosamente");
             usuariosRepository.save(adminSede);
         }
         return "redirect:/superadmin/administradores-sede";
@@ -158,7 +162,7 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
-    public String guardarProducto(Productos productos, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
+    public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
                                   @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes){
 
 
@@ -184,7 +188,15 @@ public class SuperadminController {
         }
         //-----------------------------------------------------------------------------------------------------------
 
+
+
         Optional<Productos> optProducto =productosRepository.findById(idProducto);
+
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin/inventario";
+        }else {
 
         if(optProducto.isPresent()){
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
@@ -250,6 +262,7 @@ public class SuperadminController {
         }
         return "redirect:/superadmin/inventario";
     }
+    }
 
     @PostMapping(value = {"/superadmin/eliminarProducto"})
     public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr){
@@ -257,7 +270,7 @@ public class SuperadminController {
         Productos producto = productosRepository.findById(idProducto).get();
         if(optProduc.isPresent()){
             producto.setEstadoProducto("Eliminado");
-            attr.addFlashAttribute("msg","Producto eliminado exitosamente.");
+            attr.addFlashAttribute("del","Producto eliminado exitosamente.");
             productosRepository.save(producto);
         }
         return "redirect:/superadmin/inventario";
@@ -328,50 +341,62 @@ public class SuperadminController {
         return "Superadmin/farmacistas";
     }
 
-    @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
-    public String soliFarmacistas(Model model){
+        @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
+        public String soliFarmacistas(Model model){
 
-        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
-        EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
-        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
-        model.addAttribute("listaFarmacistas",listaFarmacistas);
-        return "Superadmin/soliFarmacistas";
-    }
+            TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
+            EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
+            List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
+            model.addAttribute("listaFarmacistas",listaFarmacistas);
+            return "Superadmin/soliFarmacistas";
+        }
 
     @PostMapping(value = {"/superadmin/guardarfarmacista"})
-    public String guardarFarmacistas(Usuarios farmacista,@RequestParam("idSedes") int idSede){
+    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
         Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
+
+        if(bindingResult.hasErrors()){
+            String error = bindingResult.getFieldError().getDefaultMessage().toString();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/superadmin/farmacistas";
+        }else {
+
         if(farma.isPresent()){
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             farmacista.setContrasena(usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()).getContrasena());
             farmacista.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
             Sedes sedes = sedesRepository.findById(idSede).get();
             farmacista.setSedes(sedes);
+            attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
             usuariosRepository.save(farmacista);
         }
         return "redirect:/superadmin/farmacistas";
     }
+    }
 
     @PostMapping(value = {"/superadmin/eliminarfarmacistas"})
-    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id){
+    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id, RedirectAttributes attr){
         Optional<Usuarios> optSede =usuariosRepository.findById(id);
         Usuarios farmacista = usuariosRepository.findByIdUsuario(id);
         if(optSede.isPresent()){
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Eliminado").get());
+            attr.addFlashAttribute("del","Farmacista eliminado exitosamente");
             usuariosRepository.save(farmacista);
         }
         return "redirect:/superadmin/farmacistas";
     }
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
-    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){
+    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr){
 
         Usuarios farmacista = usuariosRepository.findByIdUsuario(idFarmacista);
         if(valor == 1){
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            attr.addFlashAttribute("msg","Solicitud de registro de farmacista aceptada.");
             usuariosRepository.save(farmacista);
         } else if (valor == 2) {
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Denegado").get());
+            attr.addFlashAttribute("err","Solicitud de registro de farmacista denegada.");
             usuariosRepository.save(farmacista);
         }else {
             return "redirect:/superadmin/farmacistas/solicitudes";
@@ -409,7 +434,7 @@ public class SuperadminController {
         Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
         doctor.setSedes(sede);//Asignamos la sede
         usuariosRepository.save(doctor);
-            attr.addFlashAttribute("msg","Doctor Creado exitosamente");
+            attr.addFlashAttribute("msg","Doctor creado exitosamente");
 
             return "redirect:/superadmin/doctores";
     }

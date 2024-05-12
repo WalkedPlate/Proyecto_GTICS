@@ -125,80 +125,51 @@
                                     <hr>
                                 </div>
 
-                                <div class="col d-flex pb-6">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <img src="/img/AdministradorSede/profile-3.jpeg" alt="" width="250"
-                                             class="rounded-circle">
-                                    </div>
-                                    <div class="col" style="margin:0px 30px">
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="nombre">Nombre:</label>
-                                                <input type="text" class="form-control" placeholder="Coloca tu nombre">
-                                            </div>
-
-                                            <div class="col">
-                                                <label for="apellido">Apellido:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Coloca tu apellido">
-                                            </div>
+                                <!--Form para editar perfil con validaciones en js-->
+                                <form id="myForm">
+                                    <div class="col d-flex pb-6">
+                                        <div class="col-4 d-flex justify-content-center align-items-center">
+                                            <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250" class="rounded-circle">
                                         </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="correo">Correo electrónico:</label>
-                                                <input type="email" class="form-control"
-                                                       placeholder="correo@correo.com">
+                                        <div class="col" style="margin:0px 30px">
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input type="text" class="form-control" id="nombre" placeholder="Coloca tu nombre">
+                                                    <p id="nombreError" class="text-danger"></p>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="apellido">Apellido:</label>
+                                                    <input type="text" class="form-control" id="apellido" placeholder="Coloca tu apellido">
+                                                    <p id="apellidoError" class="text-danger"></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="distrito">Distrito de residencia:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Coloca tu distrito de residencia">
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="correo">Correo electrónico:</label>
+                                                    <input type="email" class="form-control" id="correo" placeholder="correo@correo.com">
+                                                    <p id="correoError" class="text-danger"></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr>
-
-                                <div class=" pt-2 pb-3 d-flex justify-content-center">
-
-                                    <a  class="btn btn-primary btn-xs" role="button"
-                                        style="margin-right: 5px" data-bs-toggle="modal" data-bs-target="#modalGuardar">Guardar Cambios</a>
-
-                                    <a th:href="@{'/administradorsede/perfil'}" class="btn btn-danger btn-xs" role="button">Cancelar</a>
-
-                                </div>
-
-                                <!-- Modal guardar -->
-                                <div class="modal fade" id="modalGuardar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div class="container text-center">
-                                                    <div class="row row-cols-1">
-                                                        <div class="col pt-5 icono">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                                            </svg>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h3 class="text-center pt-5">Se han guardado los cambios exitosamente</h3>
-                                                        </div>
-                                                    </div>
-                                                </div>                                            </div>
-                                            <div class="modal-footer d-flex justify-content-center">
-                                                <a th:href="@{'/administradorsede/perfil'}" >
-                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                                                </a>
-
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="distrito">Distrito de residencia:</label>
+                                                    <input type="text" class="form-control" id="distrito" placeholder="Coloca tu distrito de residencia">
+                                                    <p id="distritoError" class="text-danger"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                    <hr>
+                                    <div id="successMessage" class="text-success text-center"></div>
+                                    <div class="pt-2 pb-3 d-flex justify-content-center">
+                                        <button class="btn btn-primary btn-xs" style="margin-right: 5px" type="submit">Guardar Cambios</button>
+                                        <a href="/administradorsede/perfil" class="btn btn-danger btn-xs" role="button">Cancelar</a>
+                                    </div>
+                                </form>
+
 
                             </div>
 
@@ -215,5 +186,6 @@
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
         <script src="/js/Superadmin/script.js"></script>
+        <script src="/js/Superadmin/editProfile.js"></script>
     </body>
 </html>

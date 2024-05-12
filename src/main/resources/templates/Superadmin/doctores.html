@@ -23,7 +23,7 @@
 <!-- Dashboard -->
 <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
     <!-- Vertical Navbar -->
-    <nav th:insert="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
+    <nav th:replace="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
     <!-- Main content -->
     <div class="h-screen flex-grow-1 overflow-y-lg-auto">
         <!-- Header -->
@@ -76,8 +76,7 @@
                         <div class="row align-items-center">
                             <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                 <h3 class="mb-0 ls-tight"> Lista de Doctores </h3>
-                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
                             </div>
                             <!-- Actions -->
                             <div class="col-sm-6 col-12 text-sm-end">
@@ -97,46 +96,47 @@
                     <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
-                                <form method="post" th:action="@{/superadmin/guardarDoctor}">
+                                <form method="post" class="needs-validation" th:action="@{/superadmin/guardarDoctor}" novalidate>
                                 <div class="modal-header">
                                 <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del nuevo <strong style="color:#5C60F5">Doctor</strong></h3>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body row">
-                                    
+
                                     <div class="row pt-3">
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
-                                            <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Coloca su nombre">
+                                            <input pattern="[A-Za-z].+" maxlength="80" id="nombre" name="nombre" type="text" class="form-control" placeholder="Coloca su nombre" required>
                                         </div>
                                     
                                         <div class="col">
                                             <label for="correo">Correo:</label>
-                                            <input id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo">
+                                            <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo" required>
                                         </div>
                                     </div>
                                     
                                     <div class="row pt-5">
                                         <div class="col">
-                                            <label for="dni">DNI:</label>
-                                            <input id="dni" name="dni" type="number" class="form-control" placeholder="Coloca el N° de DNI">
+                                            <label >DNI:</label>
+                                            <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control" placeholder="Coloca el N° de DNI" required>
                                         </div>
                                         
         
                                         <div class="col">
-                                            <label for="codigo">Código (colegio médico):</label>
-                                            <input id="codigo" name="codigoColegio" type="number" class="form-control" placeholder="Coloca el código del doctor">
+                                            <label>Código (colegio médico):</label>
+                                            <input minlength="8" maxlength="8" id="numberInput2" name="codigoColegio" type="text" class="form-control" placeholder="Coloca el código del doctor" required>
                                         </div>
                                     </div>
 
                                     <div class="row pt-5">
                                         <div class="col">
                                             <label for="distrito">Distrito de residencia</label>
-                                            <input id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito">
+                                            <input maxlength="40" id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito" required>
                                         </div>
                                         <div class="col">
                                             <label for="sedeDoctor">Sede:</label>
-                                            <select id="sedeDoctor" name="idSede" class="form-select">
+                                            <select id="sedeDoctor" name="idSede" class="form-select" required>
+                                                <option selected disabled value="">--Ingresa una sede--</option>
                                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                             </select>
                                         </div>
@@ -145,7 +145,7 @@
                                     
                                 </div>
                                 <div class="modal-footer mt-3">
-                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                                 </form>
@@ -153,31 +153,23 @@
                         </div>
                     </div>
 
-                    <!--Modal agregado exitaosamente-->
-                    <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-body text-center">
-                              <h3>Doctor agregado exitosamente.</h3>
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
 
                     <!--TABLA-->
+
                     <div class="container table-responsive mb-4">
+                        <div class="row pt-3">
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        </div>
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Sede</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Distrito de residencia</th>
-                                    <th scope="col">Código</th>
-                                    <th scope="col">Correo</th>
+                                    <th scope="col" class="text-center">Nombre</th>
+                                    <th scope="col" class="text-center">Sede</th>
+                                    <th scope="col" class="text-center">DNI</th>
+                                    <th scope="col" class="text-center">Distrito de residencia</th>
+                                    <th scope="col" class="text-center">Código</th>
+                                    <th scope="col" class="text-center">Correo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,11 +178,11 @@
                                         <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a th:text="${doctor.nombre}" class="text-heading font-semibold" href="#"></a>
                                     </td>
-                                    <td th:text="${doctor.sedes.nombre}"></td>
-                                    <td th:text="${doctor.dni}"></td>
-                                    <td th:text="${doctor.distritoResidencia}"></td>
-                                    <td th:text="${doctor.codigoColegio}"></td>
-                                    <td th:text="${doctor.correo}"></td>
+                                    <td th:text="${doctor.sedes.nombre}" class="text-center"></td>
+                                    <td th:text="${doctor.dni}" class="text-center"></td>
+                                    <td th:text="${doctor.distritoResidencia}" class="text-center"></td>
+                                    <td th:text="${doctor.codigoColegio}" class="text-center"></td>
+                                    <td th:text="${doctor.correo}" class="text-center"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -210,6 +202,52 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
     <script>
         new DataTable('#example');
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("numberInput2").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
     </script>
 </body>
 </html>

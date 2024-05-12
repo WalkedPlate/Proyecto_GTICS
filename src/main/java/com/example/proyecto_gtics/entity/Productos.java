@@ -1,8 +1,11 @@
 package com.example.proyecto_gtics.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import jdk.jfr.ContentType;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.InputStream;
 
@@ -21,21 +24,34 @@ public class Productos {
     private Categorias categorias;
 
     @Column(name = "nombre", length = 45,nullable = false)
+    @NotBlank
+    @Size(max= 45, message = "Nombre no valido")
     private String nombre;
 
     @Column(name = "codigo",length = 100,nullable = false)
+    @NotBlank
+    @Size(max= 100, message = "Codigo no valido")
     private String codigo;
 
     @Column(name = "foto")
+    @Size(max = 134217728, message = "La foto no puede exceder 128 MB")
+    //@ContentType(allowed = {"image/jpeg", "image/png", "image/gif"}, message = "El archivo adjunto debe ser una imagen (JPEG, PNG o GIF)")
     private byte[] foto;
 
     @Column(name = "descripcion",length = 200,nullable = false)
+    @NotBlank
+    @Size(max= 200, message = "Codigo no valido")
     private String descripcion;
 
     @Column(name = "fecha_vencimiento",nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") // Ajusta el patrón según el formato esperado de la fecha
+    @NotBlank
     private String fechaVencimiento;
 
     @Column(name = "precio",nullable = false)
+    @NotNull
+    //@Digits(integer = 10,fraction = 2,message = "Precio No valido")
+    @Positive
     private float precio;
 
     @ManyToOne
