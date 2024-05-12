@@ -96,7 +96,7 @@
                     <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
-                                <form method="post" th:action="@{/superadmin/guardarDoctor}">
+                                <form method="post" class="needs-validation" th:action="@{/superadmin/guardarDoctor}" novalidate>
                                 <div class="modal-header">
                                 <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del nuevo <strong style="color:#5C60F5">Doctor</strong></h3>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -106,36 +106,36 @@
                                     <div class="row pt-3">
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
-                                            <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Coloca su nombre">
+                                            <input pattern="[A-Za-z].+" maxlength="40" id="nombre" name="nombre" type="text" class="form-control" placeholder="Coloca su nombre" required>
                                         </div>
                                     
                                         <div class="col">
                                             <label for="correo">Correo:</label>
-                                            <input id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo">
+                                            <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo" required>
                                         </div>
                                     </div>
                                     
                                     <div class="row pt-5">
                                         <div class="col">
-                                            <label for="dni">DNI:</label>
-                                            <input id="dni" name="dni" type="number" class="form-control" placeholder="Coloca el N° de DNI">
+                                            <label >DNI:</label>
+                                            <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control" placeholder="Coloca el N° de DNI" required>
                                         </div>
                                         
         
                                         <div class="col">
-                                            <label for="codigo">Código (colegio médico):</label>
-                                            <input id="codigo" name="codigoColegio" type="number" class="form-control" placeholder="Coloca el código del doctor">
+                                            <label>Código (colegio médico):</label>
+                                            <input minlength="8" maxlength="8" id="numberInput2" name="codigoColegio" type="text" class="form-control" placeholder="Coloca el código del doctor" required>
                                         </div>
                                     </div>
 
                                     <div class="row pt-5">
                                         <div class="col">
                                             <label for="distrito">Distrito de residencia</label>
-                                            <input id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito">
+                                            <input id="distrito" name="distritoResidencia" type="text" class="form-control" placeholder="Coloca su distrito" required>
                                         </div>
                                         <div class="col">
                                             <label for="sedeDoctor">Sede:</label>
-                                            <select id="sedeDoctor" name="idSede" class="form-select">
+                                            <select id="sedeDoctor" name="idSede" class="form-select" required>
                                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                             </select>
                                         </div>
@@ -178,12 +178,12 @@
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Sede</th>
-                                    <th scope="col">DNI</th>
-                                    <th scope="col">Distrito de residencia</th>
-                                    <th scope="col">Código</th>
-                                    <th scope="col">Correo</th>
+                                    <th scope="col" class="text-center">Nombre</th>
+                                    <th scope="col" class="text-center">Sede</th>
+                                    <th scope="col" class="text-center">DNI</th>
+                                    <th scope="col" class="text-center">Distrito de residencia</th>
+                                    <th scope="col" class="text-center">Código</th>
+                                    <th scope="col" class="text-center">Correo</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -192,11 +192,11 @@
                                         <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                         <a th:text="${doctor.nombre}" class="text-heading font-semibold" href="#"></a>
                                     </td>
-                                    <td th:text="${doctor.sedes.nombre}"></td>
-                                    <td th:text="${doctor.dni}"></td>
-                                    <td th:text="${doctor.distritoResidencia}"></td>
-                                    <td th:text="${doctor.codigoColegio}"></td>
-                                    <td th:text="${doctor.correo}"></td>
+                                    <td th:text="${doctor.sedes.nombre}" class="text-center"></td>
+                                    <td th:text="${doctor.dni}" class="text-center"></td>
+                                    <td th:text="${doctor.distritoResidencia}" class="text-center"></td>
+                                    <td th:text="${doctor.codigoColegio}" class="text-center"></td>
+                                    <td th:text="${doctor.correo}" class="text-center"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -220,6 +220,19 @@
     <script>
         // JavaScript para permitir solo la entrada de números
         document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("numberInput2").addEventListener("keydown", function(event) {
             // Permite las teclas de flecha, retroceso y suprimir
             if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
                 return;

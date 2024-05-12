@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.w3c.dom.Attr;
 
 import java.io.IOException;
 import java.util.*;
@@ -364,14 +365,16 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
-    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista,@RequestParam("valor") int valor){
+    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr){
 
         Usuarios farmacista = usuariosRepository.findByIdUsuario(idFarmacista);
         if(valor == 1){
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            attr.addFlashAttribute("msg","Solicitud de registro de farmacista aceptada.");
             usuariosRepository.save(farmacista);
         } else if (valor == 2) {
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Denegado").get());
+            attr.addFlashAttribute("err","Solicitud de registro de farmacista denegada.");
             usuariosRepository.save(farmacista);
         }else {
             return "redirect:/superadmin/farmacistas/solicitudes";

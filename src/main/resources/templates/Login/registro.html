@@ -11,7 +11,7 @@
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossorigin="anonymous">
         <link rel="stylesheet" href="/css/Login/registro.css"/>
-        <style>
+<!--        <style>
             /* Estilo para ocultar las flechas en los campos de entrada de tipo número */
             input[type=number]::-webkit-inner-spin-button,
             input[type=number]::-webkit-outer-spin-button {
@@ -22,7 +22,7 @@
             input[type=number] {
                 -moz-appearance: textfield; /* Firefox */
             }
-        </style>
+        </style>-->
     </head>
 
     <body>
@@ -51,16 +51,16 @@
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
                                         <input
-                                                pattern="[A-Za-z]+"
-                                                type="text" class="form-control" placeholder="Nombre" autocomplete="off" maxlength="20"
+                                                pattern="[A-Za-z].+"
+                                                type="text" class="form-control" placeholder="Nombre" autocomplete="off" maxlength="40"
                                                 name="nombres" required/>
                                         <label>Nombre</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
                                         <input
-                                                pattern="[A-Za-z]+"
-                                                type="text" class="form-control" placeholder="Apellido" maxlength="20"
+                                                pattern="[A-Za-z].+"
+                                                type="text" class="form-control" placeholder="Apellido" maxlength="40"
                                                autocomplete="off" name="apellidos" required/>
                                         <label>Apellido</label>
                                     </div>
@@ -93,7 +93,7 @@
                                     <div class="form-floating mb-3">
                                         <input type="text" class="form-control" placeholder="Distrito"
                                                autocomplete="off" name="distritoResidencia" required/>
-                                        <label>Distrito</label>
+                                        <label>Distrito de residencia</label>
                                     </div>
 
                                     <div class="form-control mb-3">

@@ -129,6 +129,11 @@
 
               <!--TABLA-->
               <div class="container table-responsive mb-4">
+                <!--Mensajes de soli aceptada o negada -->
+                <div class="row pt-3">
+                  <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                  <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                </div>
                 <table id="example" class="table table-hover" style="width:100%">
                   <thead>
                     <tr>
@@ -154,17 +159,44 @@
                         <form method="post" th:action="@{/superadmin/aceptar-rechazar-farmacista}">
                           <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
                           <input type="hidden" name="valor" value="1">
-                        <button type="submit" class="btn btn-sm btn-primary btn-square" style="margin: 2px" data-bs-toggle="modal" data-bs-target="#modalAceptar">
+                        <button type="submit" class="btn btn-sm btn-primary btn-square" style="margin: 2px" >
                           <i class="bi bi-check-circle"></i>
                         </button>
                         </form>
 
-                        <form method="post" th:action="@{/superadmin/aceptar-rechazar-farmacista}">
+           <!--             <form method="post" th:action="@{/superadmin/aceptar-rechazar-farmacista}">
                           <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
-                          <input type="hidden" name="valor" value="2">
-                        <button type="submit" class="btn btn-sm btn-danger btn-square" style="margin: 2px" data-bs-toggle="modal" data-bs-target="#modalRechazar">
+                          <input type="hidden" name="valor" value="2">-->
+                        <button type="button" class="btn btn-sm btn-danger btn-square" style="margin: 2px" data-bs-toggle="modal" data-bs-target="#modalRechazar">
                           <i class="bi bi-x-circle"></i>
                         </button>
+                   <!--     </form>-->
+
+                        <!-- Modal rechazar y el rechazo se debería de ver como el mensaje de solicitud aceptada-->
+                        <form method="post" class="needs-validation" th:action="@{/superadmin/aceptar-rechazar-farmacista}" novalidate>
+                          <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
+                          <input type="hidden" name="valor" value="2">
+                        <div class="modal fade" id="modalRechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <h3 class="text-center pt-8">Escriba el motivo del rechazo:</h3>
+                              <div class="modal-body row">
+
+                                <div class="col-lg-12 pt-3">
+                                  <label for="razon">Motivo:</label>
+                                  <textarea minlength="10" maxlength="300" class="form-control" id="razon" style="min-width: 100%; width: 100%" required></textarea>
+                                  <div class="invalid-feedback">
+                                    Este campo debe tener como mínimo 10 carácteres.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer justify-content-center">
+                                <button type="submit" class="btn btn-primary" >Rechazar</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         </form>
                       </td>
                     </tr>
@@ -174,8 +206,8 @@
 
 
 
-              <!-- Modal Aceptar -->
-              <div class="modal fade" id="modalAceptar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <!-- Modal Aceptar (probable que lo quite) -->
+  <!--            <div class="modal fade" id="modalAceptar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog ">
                   <div class="modal-content">
                     <div class="container text-center">
@@ -198,14 +230,14 @@
                   </div>
                 </div>
               </div>
+-->
 
-              <!-- Modal rechazar -->
-              <div class="modal fade" id="modalRechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <!-- Modal rechazar (esta arriba) -->
+<!--              <div class="modal fade" id="modalRechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <h3 class="text-center pt-8">Escriba el motivo del rechazo:</h3>
                     <div class="modal-body row">
-
                       <div class="col-lg-12 pt-3">
                         <label for="razon">Motivo:</label>
                         <textarea class="form-control" id="razon" style="min-width: 100%; width: 100%"></textarea>
@@ -217,12 +249,15 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
 
 
               <!--Modal rechazado exitosamente-->
-              <div class="modal fade" id="modalRechazoExitoso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+              <!--Modal rechazado exitosamente (probable que lo quite)-->
+<!--              <div class="modal fade" id="modalRechazoExitoso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="container text-center">
@@ -244,7 +279,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
 
 
             </div>
@@ -261,6 +296,26 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
     <script>
       new DataTable('#example');
+    </script>
+    <script>
+      (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
     </script>
   </body>
 </html>
