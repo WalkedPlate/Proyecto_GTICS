@@ -101,6 +101,14 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/index";
     }
 
+    @GetMapping(value = "/historialPedidos")
+    public String historialPedidos(Model model){
+
+        return "FarmaciaWebVenta/";
+    }
+
+
+
     @GetMapping(value ={"/header"})
     public String cabecera(Model model, String nombre){
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
