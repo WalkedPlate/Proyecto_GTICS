@@ -219,8 +219,10 @@ public class FarmaciaWebVentaController {
 
         DetallesOrden detallesOrden = new DetallesOrden();
         detallesOrden.setOrdenes(ordenesRepository.findByIdordenes(idCarrito));
-        detallesOrden.setProductos(productosRepository.findById(idProductos).get());
+        Productos p =productosRepository.findById(idProductos).get();
+        detallesOrden.setProductos(p);
         detallesOrden.setCantidad(1);
+        detallesOrden.setMontoParcial(p.getPrecio()*1);
 
         if(validarDuplicadoDeProductoEnUnaOrden(detallesOrden, ordenesRepository.findByIdordenes(idCarrito))){
             attr.addFlashAttribute("err","Ya se agregó al carrito.");

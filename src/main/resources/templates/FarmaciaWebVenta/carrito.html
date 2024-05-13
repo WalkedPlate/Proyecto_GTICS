@@ -144,7 +144,7 @@
                                                 <th>Producto</th>
                                                 <th>Precio</th>
                                                 <th>Cantidad</th>
-                                                <th>Subtotal</th>
+                                                <th>Subtotal (S/.)</th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
@@ -176,10 +176,10 @@
                                                     </td>
                                                     <td>
                                                         <div class="input-group">
-                                                            <input id="cantidad1" type="number" class="form-control" th:value="${detalle.cantidad}" min="1" onchange="actualizarSubtotal('fila1')" name="cantidad">
+                                                            <input  type="number" class="form-control" th:value="${detalle.cantidad}" min="1"  name="cantidad">
                                                         </div>
                                                     </td>
-                                                    <td id="subtotal1" th:text="${detalle.productos.precio}"></td>
+                                                    <td  th:text="${detalle.montoParcial}"></td>
 
 
                                                     <td class="text-end">
