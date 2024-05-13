@@ -72,7 +72,7 @@ public class Usuarios {
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 100)
-    @Pattern(regexp = "\\d{8}", message = "El código del colegio debe ser un número entero de 8 digitos")
+    //@Pattern(regexp = "\\d{6}", message = "El código del colegio debe ser un número entero de 6 digitos")
     private  String codigoColegio;
 
     @ManyToOne

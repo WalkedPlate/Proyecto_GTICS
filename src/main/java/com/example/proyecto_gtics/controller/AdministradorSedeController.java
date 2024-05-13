@@ -25,6 +25,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -201,10 +202,11 @@ public class AdministradorSedeController {
     public String guardarDetalleOrden(@Valid DetallesOrden detalle, BindingResult bindingResult, RedirectAttributes attr, @RequestParam("ordenes") Integer idOrden, @RequestParam(name="nuevaOrden",required = false) Integer nuevaOrden,
                                       @RequestParam("esNuevaOrden") Integer esNuevaOrden){
 
-        /*
+
         if (bindingResult.hasErrors()) {
-            return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + idOrden;
-        }*/
+            attr.addFlashAttribute("err","La cantidad debe ser un número entero positivo.");
+            return  (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=") + idOrden ;
+        }
 
         Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
 
@@ -364,6 +366,11 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
+                if(usuarioYaRegistrado(usuarios.getDni())){
+                    attr.addFlashAttribute("err","El DNI ya está registrado.");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
 
                 usuarios.setSedes(sedesOpt.get());
                 usuarios.setContrasena("Temporal_password");
@@ -495,6 +502,17 @@ private boolean isValidEmail(String email) {
 
         }
         return valido;
+    }
+
+    public Boolean usuarioYaRegistrado(Integer dni){
+        boolean yaRegistrado = false;
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+
+        if (opt.isPresent()){
+            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        }
+
+        return yaRegistrado;
     }
 
 

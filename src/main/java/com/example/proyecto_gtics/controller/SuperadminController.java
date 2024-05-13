@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,6 +64,9 @@ public class SuperadminController {
         this.usuariosRepository = usuariosRepository;
     }
 
+    @Autowired
+    CodigoColegioRespository codigoColegioRespository;
+
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model){
@@ -90,9 +94,14 @@ public class SuperadminController {
             attr.addFlashAttribute("err",error);
             return "redirect:/superadmin";
         }else {
+            if(usuarioYaRegistrado(adminSede.getDni())){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/farmacistas";
+            }
 
 
         if(adminsede.isPresent()){
+
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());// implementar:agarrar el estado de la base de datos
             adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
             Sedes sedes = sedesRepository.findById(id).get();
@@ -227,7 +236,6 @@ public class SuperadminController {
                     productosSedes1.setId(productosSedesId);
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
-                    productosSedes1.setSedes(sede);
                     productosSedes1.setCantidad(200);
                     productosSedeRepository.save(productosSedes1);
                 }else{
@@ -238,6 +246,7 @@ public class SuperadminController {
             }
             attr.addFlashAttribute("msg","Producto actualizado exitosamente.");
             productosRepository.save(productos);
+            return "redirect:/superadmin/inventario";
         }else{
             //-----------Procesamiento de creacion de codigo de producto--------
             Random random = new Random();
@@ -250,7 +259,6 @@ public class SuperadminController {
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
-            attr.addFlashAttribute("msg","Producto creado exitosamente.");
             productosRepository.save(productos);
 
             Productos productoConsultar = productosRepository.findByCodigo(codigo);
@@ -266,8 +274,10 @@ public class SuperadminController {
                 productosSedes.setCantidad(200);
                 productosSedeRepository.save(productosSedes);
             }
+            attr.addFlashAttribute("msg","Producto creado exitosamente.");
+            return "redirect:/superadmin/inventario";
         }
-        return "redirect:/superadmin/inventario";
+
     }
     }
 
@@ -390,6 +400,11 @@ public class SuperadminController {
         }else {
 
         if(farma.isPresent()){
+            if(!validarCodigoColegio(farmacista.getCodigoColegio())){
+                attr.addFlashAttribute("err","El código de colegio no es válido.");
+                return "redirect:/superadmin/farmacistas";
+            }
+
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             farmacista.setContrasena(usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()).getContrasena());
             farmacista.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
@@ -456,6 +471,16 @@ public class SuperadminController {
            attr.addFlashAttribute("err",error);
             return "redirect:/superadmin/doctores";
         }else {
+
+            if(!validarCodigoColegio(doctor.getCodigoColegio())){
+                attr.addFlashAttribute("err","El código de colegio no es válido.");
+                return "redirect:/superadmin/doctores";
+            }
+
+            if(usuarioYaRegistrado(doctor.getDni())){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/doctores";
+            }
 
 
         doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
@@ -528,6 +553,30 @@ public class SuperadminController {
 
     }
 
+
+
+    public boolean validarCodigoColegio(String codigo) {
+
+        boolean valido = false;
+        Optional<CodigoColegio> opt = codigoColegioRespository.findByCodigo(codigo);
+        if(opt.isPresent()){
+            valido = true;
+
+        }
+        return valido;
+    }
+
+
+    public Boolean usuarioYaRegistrado(Integer dni){
+        boolean yaRegistrado = false;
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+
+        if (opt.isPresent()){
+            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        }
+
+        return yaRegistrado;
+    }
 
 
 

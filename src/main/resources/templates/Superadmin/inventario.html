@@ -155,6 +155,7 @@
                                 <form method="post" class="needs-validation" th:action="@{/superadmin/guardarProducto}"
                                       enctype="multipart/form-data" novalidate>
                                     <input type="hidden" name="IDProducto" value="0">
+                                    <input type="hidden" name="codigo" value="000000">
                                     <div class="modal-body row">
                                         <div class="row pt-3">
                                             <div class="col">
@@ -278,6 +279,8 @@
                         <div class="row pt-3">
                             <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
                             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                         </div>
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
