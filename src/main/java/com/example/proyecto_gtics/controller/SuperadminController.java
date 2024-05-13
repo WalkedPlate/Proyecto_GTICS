@@ -96,7 +96,7 @@ public class SuperadminController {
         }else {
             if(usuarioYaRegistrado(adminSede.getDni())){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
-                return "redirect:/superadmin/farmacistas";
+                return "redirect:/superadmin/administradores-sede";
             }
 
 
@@ -403,6 +403,10 @@ public class SuperadminController {
             if(!validarCodigoColegio(farmacista.getCodigoColegio())){
                 attr.addFlashAttribute("err","El código de colegio no es válido.");
                 return "redirect:/superadmin/farmacistas";
+            }
+            if(usuarioYaRegistrado(farmacista.getDni())){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
             }
 
             farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
