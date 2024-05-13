@@ -155,7 +155,7 @@
                                 <tbody>
                                     <tr th:each="detalleOrden: ${listaDetallesOrden}">
                                         <td class="text-center">
-                                            <img src="/img/Farmacista/medicina1.jpg" alt="medicina1">
+                                            <img th:src="@{|/imageProduct/${detalleOrden.productos.idProductos}|}" alt="medicina1">
                                         </td>
                                         <td th:text="${detalleOrden.productos.nombre}" class="text-center"></td>
                                         <td th:text="${detalleOrden.cantidad}" class="text-center"></td>

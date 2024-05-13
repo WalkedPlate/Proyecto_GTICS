@@ -75,17 +75,30 @@ public class FarmacistaController {
     }
 
     @PostMapping(value = "/farmacista/guardarOrden")
-    public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<Integer> listaCantidades,
-                               @RequestParam("checkbox") List<String> listCheckbox, @Valid Usuarios paciente, BindingResult bindingResult,
+    public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<String> listaCantidades,
+                               /*@RequestParam("checkbox") List<String> listCheckbox,*/ @Valid Usuarios paciente, BindingResult bindingResult,
                                @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
                                RedirectAttributes attr){
 
         if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldErrors("dni").toString();
-            attr.addFlashAttribute("err",error);
+            String errorDni = bindingResult.getFieldErrors("dni").toString();
+            String errorNombre = bindingResult.getFieldErrors("nombre").toString();
+            String errorCorreo = bindingResult.getFieldErrors("correo").toString();
+            attr.addFlashAttribute("err",errorDni + "\n" + errorNombre +"\n" + errorCorreo );
 
             return "redirect:/farmacista";
         }
+
+        for(String s : listaCantidades){
+            try {
+                Integer.parseInt(s);
+            }
+            catch (NumberFormatException n){
+                attr.addFlashAttribute("err","Las cantidades deben ser números.");
+                return "redirect:/farmacista";
+            }
+        }
+
 
 
         if (!usuarioYaRegistrado(paciente.getDni())){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
@@ -114,28 +127,38 @@ public class FarmacistaController {
 
         }
 
-
-
-
-        crearOrden(paciente,6,4,idDoctor); // creamos la orden (tipo carrito)
+        crearOrden(paciente,6,8,idDoctor); // creamos la orden (tipo carrito)
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
 
         int index = 0;
         for(Integer id: listaIdsProductos){
             Productos p = productosRepository.findById(id).get();
-            Integer cantidad = listaCantidades.get(index);
-            if(listCheckbox.get(index).equalsIgnoreCase("on")){
-                DetallesOrden detallesOrden = new DetallesOrden();
-                detallesOrden.setOrdenes(ordenCreada);
-                detallesOrden.setProductos(p);
-                detallesOrden.setCantidad(cantidad);
-                detallesOrden.setMontoParcial(cantidad*p.getPrecio());
-                detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
+            String cantidadStr = listaCantidades.get(index);
+
+            try{
+                Integer cantidad = Integer.parseInt(cantidadStr);
+                if(cantidad > 0){
+                    DetallesOrden detallesOrden = new DetallesOrden();
+                    detallesOrden.setOrdenes(ordenCreada);
+                    detallesOrden.setProductos(p);
+                    detallesOrden.setCantidad(cantidad);
+                    detallesOrden.setMontoParcial(cantidad*p.getPrecio());
+                    detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
+                }
             }
+            catch (NumberFormatException n){
+                attr.addFlashAttribute("err","Las cantidades deben ser números.");
+                return "redirect:/farmacista";
+            }
+
+
+            index++;
         }
-        ordenesRepository.cambiarTipoOrden(1,ordenCreada.getIdordenes()); // Finalmente cambiamos el tipo de orden a orden presencial
+        ordenCreada.setTipoOrden(tipoOrdenRepository.findById(1).get()); // Finalmente cambiamos el tipo de orden a orden presencial
+        ordenesRepository.save(ordenCreada);
 
         attr.addFlashAttribute("msg","Orden Registrada exitosamente");
+        attr.addFlashAttribute("wrn","Solo se añadieron las medicinas en las cuales se ingresó un número entero positivo en la cantidad solicitada.");
         return "redirect:/farmacista";
 
     }

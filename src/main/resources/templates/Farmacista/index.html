@@ -134,7 +134,7 @@
                         <!--TABLA-->
                         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                         <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                        <div th:if="${wrn != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                         <div class="container table-responsive mb-4">
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
@@ -145,7 +145,7 @@
                                         <th scope="col">Precio x unid (S/.)</th>
                                         <th scope="col">Cantidad solicitada</th>
                                         <th scope="col">Precio Total</th>
-                                        <th scope="col">Anadir</th>
+                                        <!--<th scope="col">Anadir</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -162,16 +162,16 @@
                                         </td>
                                         <td th:text="${producto.productos.precio}"></td>
                                         <td>
-                                            <input type="number" placeholder="0" name="listaCantidades">
+                                            <input type="number" placeholder="0" name="listaCantidades" value="0">
                                         </td>
                                         <td>
                                             100
                                         </td>
-                                        <td class="text-end">
-                                            <input class="form-check-input" type="checkbox" id="miCheckbox" name="checkbox">
+                                        <!-- <td class="text-end">
+                                            <input class="form-check-input" type="checkbox" id="miCheckbox" name="checkbox" >
                                             <label class="form-check-label" for="miCheckbox">
                                                 Selecciona esto
-                                            </label>
+                                            </label> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -201,6 +201,7 @@
                                         <div class="modal-body row">
 
                                             <div class="row pt-5">
+                                                <input type="hidden" name="correo" value="name@example.com">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
                                                     <input type="text" class="form-control" placeholder="Nombre del paciente" name="nombre" id="nombre">
