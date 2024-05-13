@@ -308,7 +308,7 @@ public class AdministradorSedeController {
         Optional<Ordenes> optOrden =ordenesRepository.findById(id);
         if(optOrden.isPresent()){
             Ordenes ordenToSave = optOrden.get();
-            ordenToSave.setEstadoOrden(estadoOrdenRepository.findById(4).get()); //Se cambia el estado de la orden a 4 (Eliminado)
+            ordenToSave.setEstadoOrden(estadoOrdenRepository.findById(2).get()); //Se cambia el estado de la orden a 4 (Eliminado)
             ordenesRepository.save(ordenToSave);
         }
 
