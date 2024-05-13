@@ -94,11 +94,11 @@ public class SuperadminController {
             attr.addFlashAttribute("err",error);
             return "redirect:/superadmin";
         }else {
-            if(usuarioYaRegistrado(adminSede.getDni())){
+            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario())){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
-            if(correoYaRegistrado(adminSede.getCorreo())){
+            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario())){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
@@ -408,12 +408,12 @@ public class SuperadminController {
                 attr.addFlashAttribute("err","El código de colegio no es válido.");
                 return "redirect:/superadmin/farmacistas";
             }
-            if(usuarioYaRegistrado(farmacista.getDni())){
+            if(usuarioYaRegistrado(farmacista.getDni(),farmacista.getIdUsuario())){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
 
-            if(correoYaRegistrado(farmacista.getCorreo())){
+            if(correoYaRegistrado(farmacista.getCorreo(),farmacista.getIdUsuario())){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
@@ -490,12 +490,12 @@ public class SuperadminController {
                 return "redirect:/superadmin/doctores";
             }
 
-            if(usuarioYaRegistrado(doctor.getDni())){
+            if(usuarioYaRegistrado(doctor.getDni(),doctor.getIdUsuario())){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
 
-            if(correoYaRegistrado(doctor.getCorreo())){
+            if(correoYaRegistrado(doctor.getCorreo(), doctor.getIdUsuario())){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
@@ -585,23 +585,27 @@ public class SuperadminController {
     }
 
 
-    public Boolean usuarioYaRegistrado(Integer dni){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario){
         boolean yaRegistrado = false;
         Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
         if (opt.isPresent()){
-            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+            if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                yaRegistrado = true;
+            }
         }
 
         return yaRegistrado;
     }
 
-    public Boolean correoYaRegistrado(String correo){
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario){
         boolean yaRegistrado = false;
         Usuarios opt = usuariosRepository.findByCorreo(correo);
 
         if (opt!=null){
-            yaRegistrado = true;
+            if(!Objects.equals(opt.getIdUsuario(), idUsuario)){
+                yaRegistrado = true;
+            }
         }
 
         return yaRegistrado;

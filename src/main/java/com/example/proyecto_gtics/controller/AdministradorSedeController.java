@@ -368,12 +368,12 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
-                if(usuarioYaRegistrado(usuarios.getDni())){
+                if(usuarioYaRegistrado(usuarios.getDni(),usuarios.getIdUsuario())){
                     attr.addFlashAttribute("err","El DNI ya está registrado.");
                     return "redirect:/administradorsede/farmacistas";
                 }
 
-                if(correoYaRegistrado(usuarios.getCorreo())){
+                if(correoYaRegistrado(usuarios.getCorreo(),usuarios.getIdUsuario())){
                     attr.addFlashAttribute("err","El correo ya está registrado.");
                     return "redirect:/administradorsede/farmacistas";
                 }
@@ -511,23 +511,27 @@ private boolean isValidEmail(String email) {
         return valido;
     }
 
-    public Boolean usuarioYaRegistrado(Integer dni){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario){
         boolean yaRegistrado = false;
         Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
         if (opt.isPresent()){
-            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+            if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                yaRegistrado = true;
+            }
         }
 
         return yaRegistrado;
     }
 
-    public Boolean correoYaRegistrado(String correo){
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario){
         boolean yaRegistrado = false;
         Usuarios opt = usuariosRepository.findByCorreo(correo);
 
         if (opt!=null){
-            yaRegistrado = true;
+            if(!Objects.equals(opt.getIdUsuario(), idUsuario)){
+                yaRegistrado = true;
+            }
         }
 
         return yaRegistrado;

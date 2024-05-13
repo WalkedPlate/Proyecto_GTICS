@@ -114,11 +114,24 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/historialPedidos";
     }
 
-    @GetMapping(value = "/verPedido")
-    public String verPedido(){
+    @GetMapping(value = "paciente/verPedido")
+    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden){
+
+        Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
+
+        if(opt.isEmpty()){
+            return "redirect:/clinicarenacer";
+        }
+
+        List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenes(opt.get());
+
+        model.addAttribute("ordenActual",opt.get());
+        model.addAttribute("listaDetalles",listaDetalles);
 
         return "FarmaciaWebVenta/verPedido";
     }
+
+
 
 
     @GetMapping(value ={"/header"})
@@ -196,6 +209,8 @@ public class FarmaciaWebVentaController {
         model.addAttribute("listaCategorias", listaCategorias);
         return "FarmaciaWebVenta/producto";
     }
+
+
 
 
 

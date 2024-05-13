@@ -91,7 +91,7 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">#</th>
                                                     <th class="text-center">Imagen</th>
                                                     <th class="text-center">Nombre Producto</th>
                                                     <th class="text-center">Cantidad</th>
@@ -99,16 +99,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="text-center">1</td>
-                                                    <td class="text-center">
-                                                        <img alt="..." class="avatar avatar-sm rounded-circle">
-                                                        <!--th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"-->
+                                                <tr th:each="detalle, obj : ${listaDetalles}">
+                                                    <td class="text-center" th:text="${obj + 1}"></td>
+                                                    <td class="text-center" >
+                                                        <img alt="..." class="avatar avatar-sm rounded-circle" th:src="@{|/imageProduct/${detalle.productos.idProductos}|}">
+
 
                                                     </td>
-                                                    <td class="text-center"> Paracetamol</td>
-                                                    <td class="text-center"> 5</td>
-                                                    <td class="text-center"> 10</td>
+                                                    <td class="text-center" th:text="${detalle.productos.nombre}"></td>
+                                                    <td class="text-center" th:text="${detalle.cantidad}"></td>
+                                                    <td class="text-center" th:text="${detalle.montoParcial}"></td>
                                                 </tr>
                                             </tbody>
                                         </table>

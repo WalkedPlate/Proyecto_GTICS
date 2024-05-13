@@ -84,7 +84,7 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div  class="col-sm-8 col-12 mb-4 mb-sm-0">
-                                <h3 class="mb-0 ls-tight">Órdenes de reposición</h3>
+                                <h3 class="mb-0 ls-tight">Mis Órdenes</h3>
                             </div>
                         </div>
                     </div>
@@ -116,22 +116,18 @@
 
                                         </a>
                                     </td>
-                                    <td class="text-center" th:text="${orden.usuarios.direccion}"></td>
+                                    <td class="text-center" th:text="${orden.direccion}"></td>
                                     <td class="text-center" th:text="${orden.estadoOrden.nombre}"></td>
                                     <td class="text-center" th:text="${orden.fechaEntrega}"></td>
                                     <td class="text-center" th:text="${orden.monto}"></td>
                                     <td class="text-center" >
                                      <!--   <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">-->
-                                            <a>
+                                            <a th:href="@{'paciente/verPedido?idOrden=' + ${orden.idordenes}}">
                                             <button type="button" class="btn btn-sm btn-square btn-primary" >
                                                 <i class="bi bi-eye"></i>
                                             </button>
                                         </a>
 
-                                        <button type="button" class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal"
-                                                data-bs-target ="#modaEliminar" >
-                                            <i class="bi bi-trash"></i>
-                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
