@@ -104,6 +104,7 @@
                                     <th scope="col" class="text-center">Nro de orden</th>
                                     <th scope="col" class="text-center">Destino</th>
                                     <th scope="col" class="text-center">Estado</th>
+                                    <th scope="col" class="text-center">Fecha de Registro</th>
                                     <th scope="col" class="text-center">Fecha de Entrega</th>
                                     <th scope="col" class="text-center">Costo (S/.)</th>
                                     <th scope="col" class="text-center">Acciones</th>
@@ -118,6 +119,7 @@
                                     </td>
                                     <td class="text-center" th:text="${orden.direccion}"></td>
                                     <td class="text-center" th:text="${orden.estadoOrden.nombre}"></td>
+                                    <td class="text-center" th:text="${orden.fechaRegistro}"></td>
                                     <td class="text-center" th:text="${orden.fechaEntrega}"></td>
                                     <td class="text-center" th:text="${orden.monto}"></td>
                                     <td class="text-center" >

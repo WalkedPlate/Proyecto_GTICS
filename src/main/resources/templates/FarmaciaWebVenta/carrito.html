@@ -146,13 +146,15 @@
                                                 <th>Cantidad</th>
                                                 <th>Subtotal</th>
                                                 <th></th>
+                                                <th></th>
                                             </tr>
                                             </thead>
 
                                             <tbody>
-                                            <form th:action="@{/clinicarenacer/paciente/eliminardetalles}" method="post">
+
 
                                                 <tr  th:each="detalle, obj :  ${listaDetallesOrden}">
+                                                    <form th:action="@{/clinicarenacer/paciente/actualizardetalles}" method="post">
                                                     <input type= "hidden" th:value="1000" name="idCarrito">
                                                     <input type= "hidden" th:value="${detalle.idDetallesOrden}" name="idDetalle">
                                                     <td>
@@ -174,16 +176,22 @@
                                                     </td>
                                                     <td>
                                                         <div class="input-group">
-                                                            <input id="cantidad1" type="number" class="form-control" value="1" min="1" onchange="actualizarSubtotal('fila1')">
+                                                            <input id="cantidad1" type="number" class="form-control" value="1" min="1" onchange="actualizarSubtotal('fila1')" name="cantidad">
                                                         </div>
                                                     </td>
-                                                    <td id="subtotal1">S/. 2.00</td>
+                                                    <td id="subtotal1" th:text="${detalle.productos.precio}"></td>
+
+
                                                     <td class="text-end">
-                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <button type="submit" class="btn btn-danger">Actualizar</button>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <a type="button" class="btn btn-danger" th:href="@{'/clinicarenacer/paciente/eliminardetalles?idDetalle=' + ${detalle.idDetallesOrden} + '&' + 'idCarrito='+ ${ordenCarrito.idordenes} }">Eliminar</a>
                                                     </td>
 
+                                                    </form>
                                                 </tr>
-                                            </form>
+
 
                                             </tbody>
                                         </table>
@@ -204,6 +212,7 @@
 
 
         </div>
+
 
         <div class="sidebar-category product-featured">
             <div class="sidebar-top">

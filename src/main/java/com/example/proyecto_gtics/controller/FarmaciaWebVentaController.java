@@ -307,7 +307,7 @@ public class FarmaciaWebVentaController {
         }
     }
 
-    @PostMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
+    @GetMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
         public String EliminarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito, RedirectAttributes attr){
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
         if(optionalDetallesOrden.isPresent()){
@@ -320,6 +320,25 @@ public class FarmaciaWebVentaController {
             return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
         }
     }
+
+    @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
+    public String actualizarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito,
+                                           RedirectAttributes attr, @RequestParam("cantidad") Integer cantidad){
+
+        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
+        if(optionalDetallesOrden.isPresent()){
+            DetallesOrden detalle = optionalDetallesOrden.get();
+            detalle.setCantidad(cantidad);
+            detallesOrdenRepository.save(detalle);
+            attr.addFlashAttribute("msg","La cantidad se actualizó correctamente.");
+            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+        }
+        else {
+            attr.addFlashAttribute("err","Error.");
+            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+        }
+    }
+
 
     @GetMapping(value = {"/clinicarenacer/paciente/carrito"})
         public String carrito(Model model, @RequestParam(name = "idCarrito", required = false) Integer idCarrito){
@@ -347,7 +366,12 @@ public class FarmaciaWebVentaController {
         }
 
     @GetMapping(value ={"/clinicarenacer/paciente/pagar"})
-    public String pagar(){
+    public String pagar(@RequestParam("idDetalle") List<Integer> listIdsDetalle, @RequestParam("cantidad") List<Integer> listaCantidades,
+                        @RequestParam("idCarrito") Integer idCarrito){
+
+
+
+
         return "FarmaciaWebVenta/pagarCarrito";
     }
 
