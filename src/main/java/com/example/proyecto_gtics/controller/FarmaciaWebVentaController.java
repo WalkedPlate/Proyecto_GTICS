@@ -341,6 +341,7 @@ public class FarmaciaWebVentaController {
             Integer cantidad = Integer.parseInt(cantidadStr);
             if(cantidad>0){
                 detalle.setCantidad(cantidad);
+                detalle.setMontoParcial(cantidad*detalle.getProductos().getPrecio());
                 detallesOrdenRepository.save(detalle);
                 attr.addFlashAttribute("msg","La cantidad se actualizó correctamente.");
                 return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
