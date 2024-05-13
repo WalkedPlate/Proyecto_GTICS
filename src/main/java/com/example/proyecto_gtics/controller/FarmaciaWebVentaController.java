@@ -103,6 +103,13 @@ public class FarmaciaWebVentaController {
 
     @GetMapping(value = "/historialPedidos")
     public String historialPedidos(Model model){
+        Usuarios paciente = usuariosRepository.findByIdUsuario(1027);
+
+        TipoOrden web = tipoOrdenRepository.findById(3).get();
+
+        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndUsuarios(web,paciente);
+
+        model.addAttribute("listaOrdenes",listaOrdenes);
 
         return "FarmaciaWebVenta/historialPedidos";
     }

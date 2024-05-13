@@ -92,4 +92,44 @@ public class LoginController {
     public String recuperarCuenta(){
         return "Login/nuevaContra";
     }
+
+
+    @PostMapping(value = "login/validarCampos")
+    public String validarCampos(@RequestParam("email") String correo, @RequestParam("password") String password, RedirectAttributes attr){
+
+        Usuarios user = usuariosRepository.findByCorreo(correo);
+        if(user == null){
+            attr.addFlashAttribute("err","credenciales inválidas.");
+            return "redirect:/login";
+        }
+
+        Integer idUser = user.getIdUsuario();
+        if(user.getContrasena().equalsIgnoreCase(password)){
+
+            switch (idUser) {
+                case 1 -> {
+                    return "redirect:/superadmin";
+                }
+                case 12 -> {
+                    return "redirect:/administradorsede";
+                }
+                case 1027 -> {
+                    return "redirect:/farmacista";
+                }
+                case 1002 -> {
+                    return "redirect:/clinicarenacer";
+                }
+                default -> {
+                    return "redirect:/login";
+                }
+            }
+
+        }
+        else{
+            attr.addFlashAttribute("err","credenciales inválidas.");
+            return "redirect:/login";
+        }
+
+
+    }
 }

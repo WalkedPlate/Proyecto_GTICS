@@ -373,6 +373,11 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
+                if(correoYaRegistrado(usuarios.getCorreo())){
+                    attr.addFlashAttribute("err","El correo ya está registrado.");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
 
                 usuarios.setSedes(sedesOpt.get());
                 usuarios.setContrasena("Temporal_password");
@@ -512,6 +517,17 @@ private boolean isValidEmail(String email) {
 
         if (opt.isPresent()){
             yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        }
+
+        return yaRegistrado;
+    }
+
+    public Boolean correoYaRegistrado(String correo){
+        boolean yaRegistrado = false;
+        Usuarios opt = usuariosRepository.findByCorreo(correo);
+
+        if (opt!=null){
+            yaRegistrado = true;
         }
 
         return yaRegistrado;

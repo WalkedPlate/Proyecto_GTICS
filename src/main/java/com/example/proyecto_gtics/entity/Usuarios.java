@@ -38,7 +38,7 @@ public class Usuarios {
 
 
 
-    @Column(name = "correo",nullable = false,length = 100)
+    @Column(name = "correo",nullable = false,length = 100, unique = true)
     @NotBlank
     @Size(max= 99, message = "El correo no puede ser muy largo")
     private String correo;

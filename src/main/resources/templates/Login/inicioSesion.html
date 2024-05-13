@@ -13,7 +13,7 @@
             <div class="box">
                 <div class="inner-box">
                     <div class="forms-wrap">
-                        <form autocomplete="off" class="sign-in-form" id="signin-form" novalidate>
+                        <form th:action="@{/login/validarCampos}" autocomplete="off" method="post" class="sign-in-form" id="signin-form" novalidate>
                             <div class="logo">
                                 <img src="/img/Login/icono.png" alt="renacer"/>
 
@@ -38,6 +38,7 @@
                                             type="email"
                                             class="input-field"
                                             autocomplete="off"
+                                            name="email"
                                     />
                                     <label>Correo electrónico</label>
 
@@ -49,6 +50,7 @@
                                             type="password"
                                             class="input-field"
                                             autocomplete="off"
+                                            name="password"
                                     />
                                     <label>Contraseña</label>
 

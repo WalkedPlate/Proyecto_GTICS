@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.repository;
 
 import com.example.proyecto_gtics.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
     Optional<Usuarios> findByDni(Integer dni);
 
     Usuarios findFirstByOrderByIdUsuarioDesc(); // recuperar la última entrada de la tabla
+
+    Usuarios findByCorreo(String correo);
 
 
 }
