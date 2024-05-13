@@ -66,6 +66,10 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
+
         TipoUsuario adminSede = tipoUsuarioRepository.findById("AdministradorDeSede").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         EstadoUsuario estado2 = estadoUsuarioRepository.findById("Baneado").get();
@@ -144,6 +148,9 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
 
         List<Productos> listaMedicamentos = productosRepository.findByEstadoProducto("Activo");
         //List<Productos> listaMedicamentos = productosRepository.findAll();
@@ -277,17 +284,27 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/inventario/estado-reposicion"})
-    public String estadoReposiciones(){
+    public String estadoReposiciones(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
         return "Superadmin/estadoReposicion";
     }
 
     @GetMapping(value ={"/superadmin/inventario/restricciones"})
-    public String restricciones(){
+    public String restricciones(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
         return "Superadmin/restricciones";
     }
 
     @GetMapping(value ={"/superadmin/orden-reposicion"})
     public String ordenReposicion(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
+
         //Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
         List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadoOrden(4,10,2);
         model.addAttribute("listaOrdenes",listaOrdenes);
@@ -306,6 +323,10 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
     public String solicitudesReposicion(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
+
         Optional<TipoOrden> tipoOrden = tipoOrdenRepository.findById(2);
         Optional<EstadoOrden> estadoOrden = estadoOrdenRepository.findById(1);
         List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndEstadoOrden(tipoOrden,estadoOrden);
@@ -331,6 +352,10 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/farmacistas"})
     public String farmacistas(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
+
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista, estado);
@@ -341,15 +366,18 @@ public class SuperadminController {
         return "Superadmin/farmacistas";
     }
 
-        @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
-        public String soliFarmacistas(Model model){
+    @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
+    public String soliFarmacistas(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
 
-            TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
-            EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
-            List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
-            model.addAttribute("listaFarmacistas",listaFarmacistas);
-            return "Superadmin/soliFarmacistas";
-        }
+
+        TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("En revisión").get();
+        List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(farmacista,estado);
+        model.addAttribute("listaFarmacistas",listaFarmacistas);
+        return "Superadmin/soliFarmacistas";
+    }
 
     @PostMapping(value = {"/superadmin/guardarfarmacista"})
     public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
@@ -406,6 +434,9 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/doctores"})
     public String doctores(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
 
         TipoUsuario doctores = tipoUsuarioRepository.findById("Doctor").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
@@ -442,6 +473,9 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/pacientes"})
     public String pacientes(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
 
         TipoUsuario paciente = tipoUsuarioRepository.findById("Paciente").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
@@ -451,18 +485,47 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/perfil"})
-    public String perfil(){
+    public String perfil(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
         return "Superadmin/editarPerfil";
     }
 
     @GetMapping(value ={"/superadmin/editar-perfil"})
-    public String editarPerfil(){
+    public String editarPerfil(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
         return "Superadmin/editar";
     }
 
     @GetMapping(value ={"/superadmin/cambiar-contra"})
-    public String cambiarContra(){
+    public String cambiarContra(Model model){
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+        model.addAttribute("superadmin",superadmin);
+
         return "Superadmin/cambiarContra";
+    }
+
+    @PostMapping(value = "/superadmin/actualizar-contra")
+    public String actualizarContra(@RequestParam("pass1") String pass1,
+                                   @RequestParam("pass2") String pass2,
+                                   RedirectAttributes attr){
+
+        Usuarios superadmin = usuariosRepository.findById(1).get();
+
+        if(pass1.equalsIgnoreCase(pass2)){
+            superadmin.setContrasena(pass1);
+            usuariosRepository.save(superadmin);
+            attr.addFlashAttribute("msg","Contraseña actualizada exitosamente.");
+            return "redirect:/superadmin/cambiar-contra";
+        }
+        else {
+            attr.addFlashAttribute("err","Las contraseñas no coinciden.");
+            return "redirect:/superadmin/cambiar-contra";
+        }
+
     }
 
 

@@ -15,12 +15,15 @@
                 // Show success message
                 document.getElementById('successMessage').innerText = 'Contraseña cambiada correctamente';
                 form.classList.remove('was-validated');
+                form.submit();
 
                 // Optional: Clear password fields after successful submission
                 document.getElementById('newPassword').value = '';
                 document.getElementById('confirmPassword').value = '';
+
             } else {
                 form.classList.remove('was-validated');
+
             }
         }, false);
     });
