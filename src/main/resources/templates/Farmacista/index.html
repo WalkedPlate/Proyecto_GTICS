@@ -109,7 +109,7 @@
                 </div>
             </header>
             <!-- Main -->
-            <form method="post" th:action="@{/farmacista/guardarOrden}">
+            <form method="post" class="needs-validation" th:action="@{/farmacista/guardarOrden}" novalidate>
             <main class="py-6 bg-surface-secondary">
                 <div class="container-fluid">
                     <div class="card shadow border-0 mb-7">
@@ -162,7 +162,8 @@
                                         </td>
                                         <td th:text="${producto.productos.precio}"></td>
                                         <td>
-                                            <input type="number" placeholder="0" name="listaCantidades" value="0">
+                                            <input
+                                                    type="number" placeholder="0" name="listaCantidades" value="0" min="0">
                                         </td>
                                         <td>
                                             100
@@ -204,25 +205,25 @@
                                                 <input type="hidden" name="correo" value="name@example.com">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control" placeholder="Nombre del paciente" name="nombre" id="nombre">
+                                                    <input type="text" class="form-control" placeholder="Nombre del paciente" name="nombre" id="nombre" required>
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="dni">DNI:</label>
-                                                    <input type="text" class="form-control" placeholder="DNI del paciente" name="dni" id="dni">
+                                                    <label >DNI:</label>
+                                                    <input minlength="8" maxlength="8" id="numberInput" type="text" class="form-control" placeholder="DNI del paciente" name="dni"  required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="edad">Edad:</label>
-                                                    <input type="number" class="form-control" placeholder="Edad del paciente" name="edad" id="edad">
+                                                    <input type="number" class="form-control" placeholder="Edad del paciente" name="edad" id="edad" min="10" required>
                                                 </div>
 
 
                                                 <div class="col">
                                                     <label for="seguro">¿Tiene seguro?</label>
-                                                    <select id="seguro" class="form-select" name="seguro">
+                                                    <select id="seguro" class="form-select" name="seguro" required>
                                                         <option selected th:value="'si'">Sí</option>
                                                         <option th:value="'no'">No</option>
                                                     </select>
@@ -232,20 +233,20 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="doctor">Doctor:</label>
-                                                    <select id="doctor" class="form-select" name="idDoctor">
+                                                    <select id="doctor" class="form-select" name="idDoctor" required>
                                                         <option th:each="doctor, obj : ${listaDoctores}" th:text="${doctor.nombre}" th:selected="${obj.index} == 0" th:value="${doctor.idUsuario}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="col">
                                                     <label>Fecha de entrega:</label>
-                                                    <input name="fechaEntregaStr" type="date" class="form-control"
-                                                           placeholder="Ingresa la fecha de entrega">
+                                                    <input id="fechaEntregaStr" name="fechaEntregaStr" type="date" class="form-control"
+                                                           placeholder="Ingresa la fecha de entrega" required>
                                                 </div>
                                             </div>
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" >Generar Boleta</button>
+                                            <button type="submit" class="btn btn-primary" >Generar Boleta</button>
                                             <button type="button" class="btn btn-danger"
                                                 data-bs-dismiss="modal">Cancelar</button>
                                         </div>
@@ -256,7 +257,7 @@
 
                             <!--Modal generar boleta exitosamente-->
 
-                            <div class="modal fade" id="modalGenerarBoleta" tabindex="-1"
+                        <!--    <div class="modal fade" id="modalGenerarBoleta" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -298,13 +299,13 @@
                                                             <td>10 unidades del Medicamento 2</td>
                                                             <td style="padding-left: 30px;">5</td>
                                                         </tr>
-                                                        <!-- Línea divisora -->
+                                                        &lt;!&ndash; Línea divisora &ndash;&gt;
                                                         <tr>
                                                             <td colspan="2">
                                                                 <hr>
                                                             </td>
                                                         </tr>
-                                                        <!-- Total -->
+                                                        &lt;!&ndash; Total &ndash;&gt;
                                                         <tr>
                                                             <th style="padding-left: 30px; text-align: right;">Total</th>
                                                             <th style="padding-left: 30px;">15</th>
@@ -342,9 +343,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <!--Modal generar orden de venta exitosamente-->
-                            <div class="modal fade" id="generarOrdenVenta" tabindex="-1"
+<!--                            <div class="modal fade" id="generarOrdenVenta" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -359,7 +360,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
 
                     </div>
@@ -384,6 +385,49 @@
     </script>
     <!---->
     <!--<script src="/js/Farmacista/controladorTabla.js"></script>-->
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // Obtener el elemento de entrada de fecha
+        var fechaVencimientoInput = document.getElementById('fechaEntregaStr');
+
+        // Obtener la fecha actual en formato 'yyyy-mm-dd'
+        var fechaActual = new Date().toISOString().split('T')[0];
+
+        // Establecer la fecha mínima en el campo de entrada de fecha
+        fechaVencimientoInput.setAttribute('min', fechaActual);
+    </script>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </body>
 
 </html>
