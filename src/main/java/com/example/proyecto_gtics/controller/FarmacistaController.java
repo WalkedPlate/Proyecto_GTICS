@@ -107,7 +107,7 @@ public class FarmacistaController {
             LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
             paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             paciente.setContrasena("Temporal_password");
-            paciente.setCorreo("Temporal_email");
+            paciente.setCorreo(UUID.randomUUID().toString());
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             usuariosRepository.save(paciente);
             paciente = usuariosRepository.findFirstByOrderByIdUsuarioDesc();
