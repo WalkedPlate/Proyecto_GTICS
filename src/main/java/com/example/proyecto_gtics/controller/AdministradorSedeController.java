@@ -307,7 +307,9 @@ public class AdministradorSedeController {
     public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id){
         Optional<Ordenes> optOrden =ordenesRepository.findById(id);
         if(optOrden.isPresent()){
-            ordenesRepository.cambiarEstadoOrden(4,id); //Se cambia el estado de la orden a 4 (Eliminado)
+            Ordenes ordenToSave = optOrden.get();
+            ordenToSave.setEstadoOrden(estadoOrdenRepository.findById(4).get()); //Se cambia el estado de la orden a 4 (Eliminado)
+            ordenesRepository.save(ordenToSave);
         }
 
         return "redirect:/administradorsede/ordenes-reposicion";
