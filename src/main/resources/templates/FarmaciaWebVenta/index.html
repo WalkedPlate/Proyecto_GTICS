@@ -536,7 +536,7 @@
                 <div th:each="producto, obj: ${listaProductos}" class="showcase">
 
                   <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
-                    <input type= "hidden" th:value="${idCarrito}" name="idCarrito">
+                    <input type= "hidden" th:value="1000" name="idCarrito">
                     <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
                     <div class="showcase-banner">
 

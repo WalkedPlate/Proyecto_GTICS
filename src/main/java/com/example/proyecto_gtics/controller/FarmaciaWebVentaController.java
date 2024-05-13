@@ -69,7 +69,7 @@ public class FarmaciaWebVentaController {
                                   @RequestParam(name = "idCarrito", required = false) Integer idCarrito){
 
         //Optional<Productos> optProductos= productosRepository.findById(idCarrito);
-        Integer id;
+        /*Integer id;
         if(noprimeraVez != null){
             //Creamos una orden tipo carrito
             crearOrdenCarrito(usuariosRepository.findByIdUsuario(1019));
@@ -77,7 +77,7 @@ public class FarmaciaWebVentaController {
             id = ordenRecuperada.getIdordenes();
         }else{
             id = 0;
-        }
+        }*/
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         List<Productos> listaProductos = productosRepository.findAll();
@@ -93,11 +93,11 @@ public class FarmaciaWebVentaController {
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listarProducto",listarProducto);
         model.addAttribute("listaCategorias", listaCategorias);
-        if (id==0){
+        /*if (id==0){
             model.addAttribute("idCarrito",idCarrito);
         }else{
             model.addAttribute("idCarrito",id);
-        }
+        }*/
         return "FarmaciaWebVenta/index";
     }
 
