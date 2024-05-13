@@ -203,55 +203,61 @@
 
               <div class="showcase-container">
 
-                <div class="showcase">
-                  
-                  <div class="showcase-banner">
-                    <img th:src="@{|/imageProduct/${productoActual.idProductos}|}" alt="..." class="showcase-img">
-                  </div>
+                <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
+                  <input type= "hidden" th:value="1000" name="idCarrito">
+                  <input type="hidden" th:value="${productoActual.idProductos}" name="idProductos">
 
-                  <div class="showcase-content">
-                    
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
+                  <div class="showcase">
+
+                    <div class="showcase-banner">
+                      <img th:src="@{|/imageProduct/${productoActual.idProductos}|}" alt="..." class="showcase-img">
                     </div>
 
-                    <a th:href="@{'/clinicarenacer/producto'}">
-                      <h3 th:text="${productoActual.nombre}" class="showcase-title"></h3>
-                    </a>
+                    <div class="showcase-content">
 
-                    <p th:text="${productoActual.descripcion}" class="showcase-desc">
-
-                    </p>
-
-                    <div class="price-box">
-                      <p th:text="'S/. ' +${productoActual.precio}" class="price"></p>
-                    </div>
-
-                    <a href="carrito.html">
-                      <button class="add-cart-btn">añadir al carrito</button>
-                    </a>
-                    <div class="showcase-status">
-                      <div class="wrapper">
-                        <p>
-                          Vendidos: <b>20</b>
-                        </p>
-
-                        <p>
-                          Disponibles: <b>40</b>
-                        </p>
+                      <div class="showcase-rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
                       </div>
 
-                      <div class="showcase-status-bar"></div>
+                      <a th:href="@{'/clinicarenacer/producto'}">
+                        <h3 th:text="${productoActual.nombre}" class="showcase-title"></h3>
+                      </a>
+
+                      <p th:text="${productoActual.descripcion}" class="showcase-desc">
+
+                      </p>
+
+                      <div class="price-box">
+                        <p th:text="'S/. ' +${productoActual.precio}" class="price"></p>
+                      </div>
+
+                      <button type="submit" class="add-cart-btn">añadir al carrito</button>
+
+                      <div class="showcase-status">
+                        <div class="wrapper">
+                          <p>
+                            Vendidos: <b>20</b>
+                          </p>
+
+                          <p>
+                            Disponibles: <b>40</b>
+                          </p>
+                        </div>
+
+                        <div class="showcase-status-bar"></div>
+                      </div>
+
+
                     </div>
 
-
                   </div>
+                </form>
 
-                </div>
+
 
               </div>
 
@@ -276,7 +282,7 @@
                 <div class="showcase-banner">
 
                     <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                    <img th:src="@{|/imageProduct/${medicamento.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
                     <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
 

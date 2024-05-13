@@ -117,7 +117,7 @@
 
     <div class="product-container">
         <div class="container">
-            <a th:href="@{'/clinicarenacer/paciente/carrito'}" > < Volver al Carrito </a>
+            <a th:href="@{'/clinicarenacer/paciente/carrito?idCarrito='+ ${1000}}" > < Volver al Carrito </a>
         </div>
 
 
@@ -127,15 +127,17 @@
           <!--
             - Carrito de compras
           -->
+            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+            <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
-            <div class="product-featured">
-
-                <div class="showcase-wrapper has-scrollbar">
-                    <div class="showcase-container">
-                        <h4> Necesitamos algunos datos para continuar</h4>
-                        <hr>
-
-                        <form action="">
+            <form th:action="@{/clinicarenacer/paciente/guardarDatos}" method="post" enctype="multipart/form-data">
+                <div class="product-featured">
+                    <div class="showcase-wrapper has-scrollbar">
+                        <div class="showcase-container">
+                            <h4> Necesitamos algunos datos para continuar</h4>
+                            <hr>
+                            <input type="hidden" th:value="1000" name="idCarrito">
                             <div class="row pt-3">
                                 <div class="col">
                                     <label for="nombre">Nombre:</label>
@@ -158,6 +160,13 @@
                                            placeholder="Coloca el N° de DNI">
                                 </div>
                             </div>
+                            <div class="row pt-3">
+                                <h6>Por favor, adjunta una imagen de tu receta</h6>
+                                <div class="col">
+                                    <label for="direccion">Adjunta la receta:</label>
+                                    <input type="file" class="form-control" name="archivo" accept="image/*" required>
+                                </div>
+                            </div>
 
                             <div class="row pt-2">
                                 <div class="form-check">
@@ -167,65 +176,94 @@
                                     </label>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="showcase-wrapper has-scrollbar">
-                    <div class="showcase-container">
-                        <h4>¿En dónde recibirás tu pedido?</h4>
-                        <hr>
-
-                        <form action="">
-                            <h6>Recibe tu pedido donde estés</h6>
-                            <div class="row pt-3">
-                                <div class="col">
-                                    <label for="direccion">Dirección:</label>
-                                    <input id="direccion" name="direccion" type="text" class="form-control"
-                                           placeholder="Coloca tu dirección actual">
-                                </div>
-                                <div class="col">
-                                    <label for="distrito">Distrito:</label>
-                                    <input id="distrito" name="distrito" type="text" class="form-control"
-                                           placeholder="Coloca tu distrito">
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-
-                <div class="showcase-wrapper has-scrollbar">
-                    <div class="showcase-container">
-                        <h5>Comprueba tus datos antes de finalizar tu compra</h5>
-                        <hr>
-                        <p>Datos personales: --</p>
-                        <p>Tipo de entrega: </p>
-                        <p>Comprobante de pago: --</p>
-                        <p>Medio de pago: --</p>
-                        <p>Fecha de entrega: --</p>
-
-                        <hr>
-                        <div class="row pt-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    He leído y acepto los Términos y Condiciones y las Políticas de Privacidad
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end pt-4">
-                            <a th:href="@{'/clinicarenacer/paciente/pagar'}" class="d-grid gap-2 col-6 mx-auto">
-                                <button type="button" class="btn btn-primary">Finalizar Compra</button>
-                            </a>
                         </div>
                     </div>
 
+                    <div class="showcase-wrapper has-scrollbar">
+                        <div class="showcase-container">
+                            <h4>Por favor, selecciona el doctor y la sede si es que se recogerá de manera presencial: </h4>
+                            <hr>
+
+                            <form action="">
+                                <div class="row pt-3">
+                                    <div class="col">
+                                        <label for="direccion">Selecciona al Doctor:</label>
+                                        <select name="idCategoria" class="form-select" required>
+                                            <option value="value1">Value 1</option>
+                                            <option value="value2" selected>Value 2</option>
+                                            <option value="value3">Value 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="distrito">Distrito:</label>
+                                        <select name="idCategoria" class="form-select" required>
+                                            <option value="value1">Value 1</option>
+                                            <option value="value2" selected>Value 2</option>
+                                            <option value="value3">Value 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="showcase-wrapper has-scrollbar">
+                        <div class="showcase-container">
+                            <h4>¿En dónde recibirás tu pedido?</h4>
+                            <hr>
+
+                            <form action="">
+                                <h6>Recibe tu pedido donde estés</h6>
+                                <div class="row pt-3">
+                                    <div class="col">
+                                        <label for="direccion">Dirección:</label>
+                                        <input id="direccion" name="direccion" type="text" class="form-control"
+                                               placeholder="Coloca tu dirección actual">
+                                    </div>
+                                    <div class="col">
+                                        <label for="distrito">Distrito:</label>
+                                        <input id="distrito" name="distrito" type="text" class="form-control"
+                                               placeholder="Coloca tu distrito">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="showcase-wrapper has-scrollbar">
+                        <div class="showcase-container">
+                            <h5>Comprueba tus datos antes de finalizar tu compra</h5>
+                            <hr>
+                            <p>Datos personales: --</p>
+                            <p>Tipo de entrega: </p>
+                            <p>Comprobante de pago: --</p>
+                            <p>Medio de pago: --</p>
+                            <p>Fecha de entrega: --</p>
+
+                            <hr>
+                            <div class="row pt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        He leído y acepto los Términos y Condiciones y las Políticas de Privacidad
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end pt-4">
+                                <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+
+                            </div>
+                        </div>
+
+
+                    </div>
 
                 </div>
+            </form>
 
-            </div>
 
 
 

@@ -85,7 +85,7 @@
           </svg> Regístrarse</a>
         </button>
 
-        <a th:href="@{'/clinicarenacer/paciente/carrito'}" >
+        <a th:href="@{'/clinicarenacer/paciente/carrito?idCarrito='+ ${1000}}">
           <button class="action-btn main-links">
             <ion-icon name="bag-handle-outline"></ion-icon>
             <span class="count">1</span>
@@ -134,7 +134,7 @@
       <ion-icon name="menu-outline"></ion-icon>
     </button>
 
-    <a th:href="@{'/clinicarenacer/paciente/carrito'}" >
+    <a th:href="@{'/clinicarenacer/paciente/carrito?idCarrito='+ ${1000}}">
       <button class="action-btn">
         <ion-icon name="bag-handle-outline"></ion-icon>
         <span class="count">1</span>

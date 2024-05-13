@@ -40,18 +40,18 @@ public class Usuarios {
 
     @Column(name = "correo",nullable = false,length = 100)
     @NotBlank
-    @Size(max= 99, message = "El correo electrónico no puede ser muy largo")
+    @Size(max= 99, message = "El correo no puede ser muy largo")
     private String correo;
 
 
     @Column(name = "contrasena",nullable = false,length = 64)
     //@NotBlank
-    @Size(max= 63, message = "La contraseña no es válida")
+    @Size(max= 63, message = "La contraseña no valida")
     private String contrasena;
 
 
     @Column(name = "descripcion",nullable = true,length = 200)
-    @Size(max= 199, message = "Descripcion muy larga")
+    @Size(max= 199, message = "Descripcion muy alrga")
     private String descripcion;
 
     //Verificar tipo de dato para fotos!
@@ -68,11 +68,11 @@ public class Usuarios {
 
 
     @Column(name = "distrito_residencia",length = 100)
-    @Size(max= 99, message = "El distrito de residencia es muy largo")
+    @Size(max= 99, message = "distrito muy largo")
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 100)
-    @Digits(integer = 10, fraction = 0, message = "El código del colegio médico no es valido")
+    @Pattern(regexp = "\\d{8}", message = "El código del colegio debe ser un número entero de 8 digitos")
     private  String codigoColegio;
 
     @ManyToOne
@@ -93,7 +93,6 @@ public class Usuarios {
     @Column(name = "dni")
     @Digits(integer = 10, fraction = 0)
     @Positive
-    @NotNull
     @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
     private Integer dni;
 
@@ -103,8 +102,6 @@ public class Usuarios {
     private Integer preferenciasUsuario;
 
     @Column(name = "dias_ban")
-    @Digits(integer = 5,fraction = 0)
-    @Range(min = 0, max = 100, message = "dias no validos")
     private Integer diasBan;
 
     @Column(name = "fecha_ban")

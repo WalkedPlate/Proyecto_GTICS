@@ -135,6 +135,9 @@
                             <div class="table-responsive">
                                 <form action="" class="form-cart">
                                     <div class="item">
+                                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                        <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                                         <table class="table table-bordered" id="cart-table">
                                             <thead class="table-dark">
                                             <tr>
@@ -147,34 +150,41 @@
                                             </thead>
 
                                             <tbody>
-                                            <tr id="fila1">
-                                                <td>
-                                                    <div class="content ">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col d-flex justify-content-center">
-                                                                    <img src="/img/FarmaciaWebVenta/products/analgesico1.jpg" alt="analgésicos" width="50">
+                                            <form th:action="@{/clinicarenacer/paciente/eliminardetalles}" method="post">
+
+                                                <tr  th:each="detalle, obj :  ${listaDetallesOrden}">
+                                                    <input type= "hidden" th:value="1000" name="idCarrito">
+                                                    <input type= "hidden" th:value="${detalle.idDetallesOrden}" name="idDetalle">
+                                                    <td>
+                                                        <div class="content ">
+                                                            <div class="container">
+                                                                <div class="row">
+                                                                    <div class="col d-flex justify-content-center">
+                                                                        <img th:src="@{|/imageProduct/${detalle.productos.idProductos}|}" alt="analgésicos" width="50">
+                                                                    </div>
+                                                                    <div class="col" th:text="${detalle.productos.nombre}"><a th:href="@{'/clinicarenacer/producto?idProductos='+${detalle.productos.idProductos}}"></a></div>
                                                                 </div>
-                                                                <div class="col"><a href="#">Producto 1</a></div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td class="mg ">
-                                                    <div class="d-flex justify-content-center">
-                                                        <p class="d-flex align-items-center">S/. 1.00</p>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input id="cantidad1" type="number" class="form-control" value="1" min="1" onchange="actualizarSubtotal('fila1')">
-                                                    </div>
-                                                </td>
-                                                <td id="subtotal1">S/. 2.00</td>
-                                                <td class="text-end">
-                                                    <button type="button" class="btn btn-danger">Eliminar</button>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                    <td class="mg ">
+                                                        <div class="d-flex justify-content-center">
+                                                            <p class="d-flex align-items-center" th:text="'S/. ' +${detalle.productos.precio}"></p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input id="cantidad1" type="number" class="form-control" value="1" min="1" onchange="actualizarSubtotal('fila1')">
+                                                        </div>
+                                                    </td>
+                                                    <td id="subtotal1">S/. 2.00</td>
+                                                    <td class="text-end">
+                                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    </td>
+
+                                                </tr>
+                                            </form>
+
                                             </tbody>
                                         </table>
                                     </div>

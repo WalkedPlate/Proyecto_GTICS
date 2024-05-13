@@ -531,44 +531,48 @@
 
             <h2 class="title">Tus Productos</h2>
 
-            <div class="product-grid">
+              <div class="product-grid">
 
-              <div th:each="producto, obj: ${listaProductos}" class="showcase">
+                <div th:each="producto, obj: ${listaProductos}" class="showcase">
 
-                <div class="showcase-banner">
+                  <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
+                    <input type= "hidden" th:value="${idCarrito}" name="idCarrito">
+                    <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
+                    <div class="showcase-banner">
 
-                  <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                  <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                  <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                      <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
+                      <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                      <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
-                  <div class="showcase-actions">
-                    <button class="btn-action">
-                      <ion-icon name="bag-add-outline"></ion-icon>
-                    </button>
+                      <div class="showcase-actions">
+                        <button type="submit" class="btn-action">
+                          <ion-icon name="bag-add-outline"></ion-icon>
+                        </button>
 
-                  </div>
+                      </div>
+
+                    </div>
+
+                    <div  class="showcase-content">
+
+                      <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
+
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}">
+                        <h3 th:text="${producto.descripcion}" class="showcase-title"></h3>
+                      </a>
+
+                      <div class="price-box">
+                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                      </div>
+
+                    </div>
+                  </form>
+
 
                 </div>
 
-                <div  class="showcase-content">
-
-                  <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
-
-                  <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 th:text="${producto.descripcion}" class="showcase-title"></h3>
-                  </a>
-
-                  <div class="price-box">
-                    <p th:text="'S/. ' +${producto.precio}" class="price"></p>
-                  </div>
-
-                </div>
 
               </div>
-
-
-            </div>
-
           </div>
 
         </div>
