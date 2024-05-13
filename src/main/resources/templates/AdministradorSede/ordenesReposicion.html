@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clínica Renacer Admin Sede</title>
-    <link rel="icon" href="/img/Login/icono.png"/>
+    <link rel="icon" href="/img/Superadmin/icono.png"/>
     <link rel="stylesheet" href="/css/AdministradorSede/style.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -150,87 +150,16 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal agregar -->
-                        <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos de la
-                                            nueva<br> <strong>Orden de Reposicion</strong>:</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-                                    <form method="post" th:action="@{/administradorsede/guardarorden-reposicion}">
-                                    <div class="modal-body row">
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="idProducto">Nombre del Producto:</label>
-                                                <select id="idProducto"  name="idProducto" class="form-select">
-                                                    <option th:each="medicinasede,obj: ${listaMedicinas}" th:value="${medicinasede.productos.idProductos}" th:text="${medicinasede.productos.nombre}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <label for="cantidad">Cantidad</label>
-                                                <input id="cantidad" name="cantidad" type="number" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="fechaEntrega">Fecha de entrega:</label>
-                                                <input id="fechaEntrega" name="fechaEntrega" type="date" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="sede">Sede Destino:</label>
-                                                <select id="sede" class="form-select">
-                                                    <option selected>San Miguel 1</option>
-                                                    <option>San Miguel 2</option>
-                                                    <option>San Miguel 3</option>
-                                                    <option>San Miguel 4</option>
-                                                    <option>San Miguel 5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#agregar">Generar</button>
-                                        <button type="button" class="btn btn-danger"
-                                            data-bs-dismiss="modal">Cancelar</button>
-                                    </div>
-                                    </form>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!--Modal agregado exitaosamente-->
-                        <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <h2 class="text-center">Orden de Reposicion generada exitosamente.</h2>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary "
-                                            data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!--TABLA-->
                         <div class="container table-responsive mb-4">
+                            <!--Mensajes de medicina agregada, eliminada y actualizada -->
+                            <div class="row pt-3">
+                                <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            </div>
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
@@ -255,7 +184,6 @@
                                         <td class="text-center" th:text="${ordenRepo.monto}"></td>
                                         <td class="text-center">
                                             <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">
-<!--                                                <button type="button" class="btn btn-sm btn-square btn-primary"  data-bs-toggle="modal" data-bs-target="#verOrden">-->
                                                 <button type="button" class="btn btn-sm btn-square btn-primary" >
                                                     <i class="bi bi-eye"></i>
                                                 </button>
@@ -271,47 +199,7 @@
                             </table>
                         </div>
 
-                        <!-- Modal ver orden -->
-                        <div class="modal fade" id="verOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">ID</th>
-                                                        <th class="text-center">Imagen</th>
-                                                        <th class="text-center">Nombre Producto</th>
-                                                        <th class="text-center">Cantidad</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center">123</td>
-                                                        <td class="text-center">
-                                                            <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
-                                                        </td>
-                                                        <td class="text-center">Paracetamol</td>
-                                                        <td class="text-center">100</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
 
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <a type="button" th:href="@{'/administradorsede/editarOrden'}" class="btn  btn-warning"> Editar</a>
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Modal Eliminar -->
                         <div class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -332,8 +220,8 @@
                         </div>
 
 
-                        <!--Modal eliminado exitaosamente-->
-                        <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <!--Modal eliminado exitaosamente (se debería borrar)-->
+<!--                        <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -347,7 +235,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
                 </div>

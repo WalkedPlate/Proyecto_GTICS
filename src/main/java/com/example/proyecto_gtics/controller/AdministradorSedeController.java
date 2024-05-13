@@ -295,8 +295,8 @@ public class AdministradorSedeController {
         LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
         ordenCarrito.setFechaRegistro(fechaActual.format(formatDateToSring));
         ordenCarrito.setEstadoOrden(estadoOrdenRepository.findById(1).get()); // Seteamos el estado de orden como Pendiente
-
         ordenesRepository.save(ordenCarrito);
+        attr.addFlashAttribute("msg","Se ha generado una nueva orden de reposición.");
         return "redirect:/administradorsede/ordenes-reposicion";
     }
 

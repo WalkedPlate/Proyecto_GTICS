@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Clínica Renacer Admin Sede</title>
-        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="icon" href="/img/Superadmin/icono.png"/>
         <link rel="stylesheet" href="/css/AdministradorSede/style.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -32,6 +32,12 @@
             .navbar-vertical.navbar-light .navbar-nav .nav-link i, .navbar-vertical.navbar-light .navbar-nav .nav-link svg{
                 display: flex;
             }
+            .card-centered {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
         </style>
     </head>
 
@@ -153,17 +159,21 @@
                                         </a>
                                     </div>
                                 </div>
+                                <!--Mensaje de orden editada y generada -->
+                                <div class="row mt-1">
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                </div>
                             </div>
 
                         </div>
 
-                        <div class="row">
+                        <div class="row card-centered">
 
-                            <div class="col-xl-6 col-sm-8 col-xs-12">
+                            <div class="col-sm-10 col-xxl-8  ">
 
                                 <div class="card shadow border-0 mb-7">
                                     <div class="card-container">
-                                        <div class="card" style="width: 100%; min-width: 385px">
+                                        <div class="card" style="width: 100%;">
 
                                             <div class="card-header text-center" style="background: #373a93">
                                                 <h4 class="mb-0 ls-tight" style="color: white">Medicamentos
@@ -174,25 +184,24 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th>ID</th>
-                                                            <th>Imagen</th>
-                                                            <th>Nombre Producto</th>
-                                                            <th>Cantidad</th>
-                                                            <th>Monto Parcial (S/.)</th>
-                                                            <!--<th>Acciones</th>-->
+                                                            <th class="text-center">ID</th>
+                                                            <th class="text-center">Imagen</th>
+                                                            <th class="text-center">Nombre Producto</th>
+                                                            <th class="text-center">Cantidad</th>
+                                                            <th class="text-center">Monto Parcial (S/.)</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr th:each="detalle, obj :${listaDetallesOrden}">
-                                                            <td th:text="${detalle.productos.idProductos}"></td>
-                                                            <td>
+                                                            <td th:text="${detalle.productos.idProductos}" class="text-center"></td>
+                                                            <td class="text-center">
                                                                 <img alt="..."
                                                                      th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"
                                                                      class="avatar avatar-sm rounded-circle">
                                                             </td>
-                                                            <td th:text="${detalle.productos.nombre}"></td>
-                                                            <td th:text="${detalle.cantidad}"></td>
-                                                            <td th:text="${detalle.montoParcial}"></td>
+                                                            <td th:text="${detalle.productos.nombre}" class="text-center"></td>
+                                                            <td th:text="${detalle.cantidad}" class="text-center"></td>
+                                                            <td th:text="${detalle.montoParcial}" class="text-center"></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

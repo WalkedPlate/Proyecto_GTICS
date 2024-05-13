@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Clínica Renacer Admin Sede</title>
-        <link rel="icon" href="/img/Login/icono.png"/>
+        <link rel="icon" href="/img/Superadmin/icono.png"/>
         <link rel="stylesheet" href="/css/AdministradorSede/style.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
@@ -149,10 +149,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                            <div th:if="${wrn != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                            <div class="card-body table-responsive ">
+
+
+                            <!--TABLA-->
+                            <div class="container table-responsive">
+                                <div class="row mt-1">
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                    <div th:if="${wrn != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                </div>
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -211,7 +216,7 @@
                             </div>
                         </div>
                         <!--Modal editar orden exitaosamente-->
-                        <div class="modal fade" id="editarOrden" tabindex="-1" aria-labelledby="exampleModalLabel"
+<!--                        <div class="modal fade" id="editarOrden" tabindex="-1" aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -234,7 +239,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                         <!--Modal agregar medicinas -->
                         <div class="modal fade" id="inventario" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel"
                              aria-hidden="true">
@@ -284,7 +289,7 @@
                         <div class="modal fade" th:each="producto, obj : ${listaProductos}" th:id="${'seleccionarCant' + obj.index}" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel2" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}">
+                                    <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarDetalleOrden}" novalidate>
                                         <input type="hidden" name="esNuevaOrden" th:value="${esNuevaOrden}">
 
                                         <input type="hidden" name="productos" th:value="${producto.idProductos}">
@@ -296,11 +301,11 @@
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1" th:text="${producto.nombre}"></span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  name="cantidad">
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  name="cantidad" required min="1">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Solicitar</button>
+                                        <button type="submit" class="btn btn-primary" >Solicitar</button>
                                         <button type="button" class="btn btn-danger" data-bs-target="#agregar" data-bs-toggle="modal">Cancelar</button>
 
                                     </div>
@@ -312,7 +317,7 @@
                         <!-- Modal editar cantidad de medicina -->
                         <div class="modal fade" th:each="detalle, obj : ${listaDetallesOrden}" th:id="${'modalEditar'+ obj.index}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <form method="post" th:action="@{/administradorsede/guardarDetalleOrden}"  th:object="${detalle}">
+                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarDetalleOrden}"  th:object="${detalle}" novalidate>
                                 <div class="modal-content">
                                     <input type="hidden" name="esNuevaOrden" th:value="${esNuevaOrden}">
 
@@ -325,12 +330,12 @@
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1" th:text="${detalle.productos.nombre}"></span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  th:name="*{'cantidad'}"   th:value="${detalle.cantidad}">
+                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  th:name="*{'cantidad'}"   th:value="${detalle.cantidad}" required min="1">
                                             <!-- <div class="invalid-feedback" th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"></div>-->
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Cambiar</button>
+                                        <button type="submit" class="btn btn-primary">Cambiar</button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
 
                                     </div>
@@ -358,7 +363,26 @@
         <script>
             new DataTable('#example');
         </script>
+        <script>
+            (() => {
+                'use strict'
 
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })()
+        </script>
 
     </body>
 
