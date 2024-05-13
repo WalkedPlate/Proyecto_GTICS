@@ -291,8 +291,12 @@ public class FarmaciaWebVentaController {
             ordenPreSave.setFotoReceta(file.getBytes());
             ordenPreSave.setFotonombre(fileName);
             ordenPreSave.setFotocontenttype(file.getContentType());
+            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+            ordenPreSave.setFechaRegistro(fechaActual.format(formatDateToSring));
+            LocalDate fechaEntrega = fechaActual.plusDays(20);
+            ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
 
-            ordenPreSave.setUsuarios(paciente);
+            ordenPreSave.setUsuarios(usuariosRepository.findByIdUsuario(1027));
             ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
             ordenesRepository.save(ordenPreSave);
 
@@ -307,7 +311,7 @@ public class FarmaciaWebVentaController {
         }
     }
 
-    @GetMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
+    @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
         public String EliminarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito, RedirectAttributes attr){
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
         if(optionalDetallesOrden.isPresent()){
@@ -321,17 +325,32 @@ public class FarmaciaWebVentaController {
         }
     }
 
-    @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
+    @PostMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
     public String actualizarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito,
-                                           RedirectAttributes attr, @RequestParam("cantidad") Integer cantidad){
+                                           RedirectAttributes attr, @RequestParam("cantidad") String cantidadStr){
 
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
         if(optionalDetallesOrden.isPresent()){
             DetallesOrden detalle = optionalDetallesOrden.get();
-            detalle.setCantidad(cantidad);
-            detallesOrdenRepository.save(detalle);
-            attr.addFlashAttribute("msg","La cantidad se actualizó correctamente.");
-            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            try {
+                Integer.parseInt(cantidadStr);
+            }catch (NumberFormatException n){
+                attr.addFlashAttribute("err","La cantidad debe ser un número");
+                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            }
+            Integer cantidad = Integer.parseInt(cantidadStr);
+            if(cantidad>0){
+                detalle.setCantidad(cantidad);
+                detallesOrdenRepository.save(detalle);
+                attr.addFlashAttribute("msg","La cantidad se actualizó correctamente.");
+                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            }
+            else {
+                attr.addFlashAttribute("err","La cantidad debe ser positiva.");
+                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            }
+
+
         }
         else {
             attr.addFlashAttribute("err","Error.");
@@ -366,10 +385,7 @@ public class FarmaciaWebVentaController {
         }
 
     @GetMapping(value ={"/clinicarenacer/paciente/pagar"})
-    public String pagar(@RequestParam("idDetalle") List<Integer> listIdsDetalle, @RequestParam("cantidad") List<Integer> listaCantidades,
-                        @RequestParam("idCarrito") Integer idCarrito){
-
-
+    public String pagar(@RequestParam("idCarrito") Integer idCarrito){
 
 
         return "FarmaciaWebVenta/pagarCarrito";
