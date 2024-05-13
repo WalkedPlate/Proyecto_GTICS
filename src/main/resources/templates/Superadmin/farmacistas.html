@@ -171,13 +171,14 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="80" id="nombre" type="text" class="form-control"
+                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" type="text" class="form-control"
                                                            name="nombre" th:value="${farmacista.nombre}" required>
                                                 </div>
 
                                                 <div class="col">
                                                     <label for="correo">Correo:</label>
-                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  id="correo" type="email" class="form-control"
+                                                    <input maxlength="100"
+                                                            pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  id="correo" type="email" class="form-control"
                                                            name="correo" th:value="${farmacista.correo}" required>
                                                 </div>
                                             </div>
@@ -191,14 +192,14 @@
 
                                                 <div class="col">
                                                     <label>Código (colegio médico)</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput2" type="text" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}" required>
+                                                    <input minlength="6" maxlength="6" id="numberInput2" type="text" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}" required>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input maxlength="80" id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}" required>
+                                                    <input maxlength="99" id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}" required>
                                                 </div>
                                                 <div class="col">
                                                     <label for="sede">Sede:</label>

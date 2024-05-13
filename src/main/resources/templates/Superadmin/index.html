@@ -116,7 +116,7 @@
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="80" id="nombre" name="nombre" type="text" class="form-control"
+                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control"
                                                            placeholder="Coloca su nombre" required>
                                                 </div>
 
@@ -137,7 +137,7 @@
 
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
-                                                    <input maxlength="40" id="distrito" name="distritoResidencia" type="text" class="form-control"
+                                                    <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
                                                            placeholder="Coloca su distrito" required>
                                                 </div>
                                             </div>
@@ -242,7 +242,7 @@
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label>Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="80" name="nombre" type="text" class="form-control"
+                                                    <input pattern="[A-Za-z].+" maxlength="45" name="nombre" type="text" class="form-control"
                                                             th:value="${adminSede.nombre}" required>
                                                 </div>
 
@@ -262,7 +262,7 @@
 
                                                 <div class="col">
                                                     <label>Distrito de residencia</label>
-                                                    <input maxlength="40" name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
+                                                    <input maxlength="99" name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
                                                 </div>
                                             </div>
 
@@ -342,7 +342,7 @@
 
                                                 <div class="col">
                                                     <label for="razon">Razón:</label>
-                                                    <textarea minlength="10" maxlength="300" class="form-control" id="razon" required></textarea>
+                                                    <textarea minlength="10" maxlength="200" class="form-control" id="razon" required></textarea>
                                                     <div class="invalid-feedback">
                                                         Este campo debe tener como mínimo 10 carácteres.
                                                     </div>

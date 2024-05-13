@@ -201,7 +201,7 @@
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label >Nombre:</label>
-                                                <input  pattern="[A-Za-z].+" maxlength="60" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
+                                                <input  pattern="[A-Za-z].+" maxlength="45" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
                                             </div>
 
                                             <div class="col">
@@ -218,14 +218,14 @@
 
                                             <div class="col">
                                                 <label >Código (colegio médico):</label>
-                                                <input  minlength="8" maxlength="8" id="codigoColegioEdit" name="codigoColegio" type="text"  class="form-control"  th:value="${farmacista.codigoColegio}" required>
+                                                <input  minlength="6" maxlength="6" id="codigoColegioEdit" name="codigoColegio" type="text"  class="form-control"  th:value="${farmacista.codigoColegio}" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label >Distrito de residencia</label>
-                                                <input  maxlength="80" name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}" required>
+                                                <input  maxlength="99" name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}" required>
                                             </div>
                                             <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
                                             <!--<div class="col">
@@ -280,7 +280,7 @@
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label for="nombre">Nombre:</label>
-                                                <input pattern="[A-Za-z].+" maxlength="60" id="nombre" name="nombre" type="text" class="form-control" required>
+                                                <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control" required>
                                             </div>
 
                                             <div class="col">
@@ -298,14 +298,14 @@
 
                                             <div class="col">
                                                 <label for="codigoColegio">Código (colegio médico)</label>
-                                                <input minlength="8" maxlength="8" id="codigoColegio" name="codigoColegio" type="text" class="form-control" required>
+                                                <input minlength="6" maxlength="6" id="codigoColegio" name="codigoColegio" type="text" class="form-control" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label for="distritoResidencia">Distrito de residencia</label>
-                                                <input maxlength="80" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
+                                                <input maxlength="99" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
                                             </div>
                                             <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
                                             <!--<div class="col">
