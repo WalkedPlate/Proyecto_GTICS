@@ -114,6 +114,11 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/historialPedidos";
     }
 
+    @GetMapping(value = "/verPedido")
+    public String verPedido(){
+
+        return "FarmaciaWebVenta/verPedido";
+    }
 
 
     @GetMapping(value ={"/header"})
