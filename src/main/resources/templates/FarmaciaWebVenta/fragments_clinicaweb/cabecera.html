@@ -72,17 +72,34 @@
       </form>
 
       <div class="header-user-actions">
-        <button class="action-btn main-links">
+  <!--      <button class="action-btn main-links">
           <a class="nav-link" style="font-size: 0.5em" th:href="@{'/login'}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
           </svg>Iniciar Sesión</a>
         </button>
-
+-->
         <button class="action-btn main-links">
+          <a class="nav-link" style="font-size: 0.5em" th:href="@{'/editProfile'}"><span class="material-symbols-outlined">
+              face
+              </span>Editar Perfil</a>
+        </button>
+
+        <!--<button class="action-btn main-links">
           <a class="nav-link" style="font-size: 0.5em" th:href="@{'/registro'}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-video3" viewBox="0 0 16 16">
             <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0m-6 5.7c0 .8.8.8.8.8h6.4s.8 0 .8-.8-.8-3.2-4-3.2-4 2.4-4 3.2"/>
             <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5.243c.122-.326.295-.668.526-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7.81c.353.23.656.496.91.783Q16 12.312 16 12V4a2 2 0 0 0-2-2z"/>
           </svg> Regístrarse</a>
+        </button>-->
+        <button class="action-btn main-links">
+          <a class="nav-link" style="font-size: 0.5em" th:href="@{'/historialPedidos'}"> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-video3" viewBox="0 0 16 16">
+            <path d="M14 9.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0m-6 5.7c0 .8.8.8.8.8h6.4s.8 0 .8-.8-.8-3.2-4-3.2-4 2.4-4 3.2"/>
+            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5.243c.122-.326.295-.668.526-1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v7.81c.353.23.656.496.91.783Q16 12.312 16 12V4a2 2 0 0 0-2-2z"/>
+          </svg> Historial Pedidos</a>
+        </button>
+        <button class="action-btn main-links">
+          <a class="nav-link" style="font-size: 0.5em"  th:href="@{'/login'}"> <span class="material-symbols-outlined">
+              logout
+              </span> Cerrar Sesión</a>
         </button>
 
         <a th:href="@{'/clinicarenacer/paciente/carrito?idCarrito='+ ${1000}}">
