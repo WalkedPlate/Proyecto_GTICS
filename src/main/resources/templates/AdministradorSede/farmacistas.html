@@ -194,40 +194,41 @@
                                     <h3 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del Farmacista</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
+                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
                                     <div class="modal-body row">
                                         <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                         <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label >Nombre:</label>
-                                                <input  name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}">
+                                                <input  pattern="[A-Za-z].+" maxlength="60" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
                                             </div>
 
                                             <div class="col">
                                                 <label >Correo:</label>
-                                                <input name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}">
+                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label >DNI:</label>
-                                                <input name= "dni" type="number" class="form-control"  th:value="${farmacista.dni}">
+                                                <input minlength="8" maxlength="8" id="dniEdit" name="dni" type="text" class="form-control"  th:value="${farmacista.dni}" required>
                                             </div>
 
                                             <div class="col">
                                                 <label >Código (colegio médico):</label>
-                                                <input  name= "codigoColegio" type="number" class="form-control"  th:value="${farmacista.codigoColegio}">
+                                                <input  minlength="8" maxlength="8" id="codigoColegioEdit" name="codigoColegio" type="text"  class="form-control"  th:value="${farmacista.codigoColegio}" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label >Distrito de residencia</label>
-                                                <input name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}">
+                                                <input  maxlength="80" name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}" required>
                                             </div>
-                                            <div class="col">
+                                            <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
+                                            <!--<div class="col">
                                                 <label for="sedeAct">Sede:</label>
                                                 <select id="sedeAct" class="form-select" name="idSedes">
                                                     <option th:value="${adminSede.sedes.idSedes}"
@@ -235,14 +236,14 @@
                                                             th:selected="${true}"></option>
                                                 </select>
 
-                                            </div>
+                                            </div>-->
                                         </div>
 
 
                                     </div>
 
                                     <div class="modal-footer mt-3">
-                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar</button>
+                                        <button type="submit" class="btn btn-primary">Actualizar</button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
                                 </form>
@@ -270,7 +271,7 @@
                     <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
-                                <form method="post" th:action="@{/administradorsede/guardarfarmacista}">
+                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
                                     <div class="modal-header">
                                         <h3 class="modal-title fs-5" id="exampleModalLabel">Solicitar registro de Farmacista</h3>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -279,45 +280,47 @@
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label for="nombre">Nombre:</label>
-                                                <input id="nombre" name="nombre" type="text" class="form-control">
+                                                <input pattern="[A-Za-z].+" maxlength="60" id="nombre" name="nombre" type="text" class="form-control" required>
                                             </div>
 
                                             <div class="col">
                                                 <label for="correo">Correo:</label>
-                                                <input id="correo" name="correo" type="email" class="form-control">
+                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" name="correo" type="email" class="form-control" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label for="dni">DNI:</label>
-                                                <input id="dni" name="dni" type="number" class="form-control">
+                                                <input minlength="8" maxlength="8" id="dni" name="dni" type="text" class="form-control" required>
                                             </div>
 
 
                                             <div class="col">
                                                 <label for="codigoColegio">Código (colegio médico)</label>
-                                                <input id="codigoColegio" name="codigoColegio" type="number" class="form-control">
+                                                <input minlength="8" maxlength="8" id="codigoColegio" name="codigoColegio" type="text" class="form-control" required>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
                                                 <label for="distritoResidencia">Distrito de residencia</label>
-                                                <input id="distritoResidencia" name="distritoResidencia" type="text" class="form-control">
+                                                <input maxlength="80" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
                                             </div>
-                                            <div class="col">
-                                                <label for="sedeN">Sede:</label>
-                                                <select id="sedeN" class="form-select" name="idSedes">
+                                            <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
+                                            <!--<div class="col">
+                                                <label for="sedeAct">Sede:</label>
+                                                <select id="sedeAct" class="form-select" name="idSedes">
                                                     <option th:value="${adminSede.sedes.idSedes}"
                                                             th:text="${adminSede.sedes.nombre}"
                                                             th:selected="${true}"></option>
                                                 </select>
-                                            </div>
+
+                                            </div>-->
                                         </div>
                                     </div>
                                     <div class="modal-footer mt-3">
-                                        <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrado">Registrar</button>
+                                        <button type="submit" class="btn btn-primary" >Registrar</button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     </div>
                                 </form>
@@ -326,7 +329,7 @@
                     </div>
 
                     <!--Modal actualizado exitosamente (no se muestra) -->
-                    <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+             <!--       <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -337,10 +340,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
                     <!--Modal registrado exitosamente (no se muestra) -->
-                    <div class="modal fade" id="registrado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <!--         <div class="modal fade" id="registrado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="container text-center">
@@ -363,9 +366,9 @@
                             </div>
                         </div>
                     </div>
-
+-->
                     <!-- Modal Eliminado exitosamente (no se muestra) -->
-                    <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--                    <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="container text-center">
@@ -387,7 +390,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
 
                 </div>
@@ -407,6 +410,78 @@
 <script>
     new DataTable('#example'); /*cambiar de acuerdo al id de la tabla*/
 </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("dni").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("codigoColegio").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("dniEdit").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        // JavaScript para permitir solo la entrada de números
+        document.getElementById("codigoColegioEdit").addEventListener("keydown", function(event) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+        });
+    </script>
+    <script>
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 <!---->
 <!--<script src="/js/AdministradorSede/controladorTablaFarma.js"></script>-->
 </body>
