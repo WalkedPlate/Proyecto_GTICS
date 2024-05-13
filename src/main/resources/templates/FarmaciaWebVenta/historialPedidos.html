@@ -1,10 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer Paciente</title>
+        <link rel="icon" href="/img/Superadmin/icono.png"/>
+        <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+        <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
+        <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
+        <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+        <style>
+            /* Estilos personalizados para los botones de paginación */
+            .page-item.active .page-link {
+                z-index: 3;
+                color: #fff;
+                background-color: #94a6b3;
+                border-color: #94a6b3;
+            }
+            /* Estilos para el icono del doctor */
+            .material-symbols-outlined {
+                font-size: 20px;
+                margin-left: -2px;
+                font-variation-settings:
+                        'FILL' 0,
+                        'wght' 200,
+                        'GRAD' 0,
+                        'opsz' 24
+            }
+            .navbar-vertical.navbar-light .navbar-nav .nav-link i, .navbar-vertical.navbar-light .navbar-nav .nav-link svg{
+                display: flex;
+            }
+        </style>
+    </head>
+    <body >
+        <div class="overlay" data-overlay></div>
+
+        <!--
+          - MODAL
+        -->
+
+        <div  data-modal>
+
+            <div  data-modal-overlay></div>
+
+            <div >
+
+                <button  data-modal-close>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <!--
+          - NOTIFICATION TOAST
+        -->
+
+        <div data-toast>
+
+            <button  data-toast-close>
+
+            </button>
+
+        </div>
+
+        <header th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera}">
+        </header>
+
+        <main class="py-6">
+            <div class="container-fluid">
+                <div class="card shadow border-5 mb-7">
+                    <div class="card-header">
+                        <div class="row align-items-center">
+                            <div  class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                <h3 class="mb-0 ls-tight">Órdenes de reposición</h3>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--TABLA-->
+                    <div class="container table-responsive mb-4">
+                        <!--Mensajes de medicina agregada, eliminada y actualizada -->
+                        <div class="row pt-3">
+                            <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        </div>
+                        <table id="example" class="table table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">Nro de orden</th>
+                                    <th scope="col" class="text-center">Destino</th>
+                                    <th scope="col" class="text-center">Estado</th>
+                                    <th scope="col" class="text-center">Fecha de Entrega</th>
+                                    <th scope="col" class="text-center">Costo (S/.)</th>
+                                    <th scope="col" class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        <a class="text-heading font-semibold" > 123
+
+                                        </a>
+                                    </td>
+                                    <td class="text-center">direccion paciente</td>
+                                    <td class="text-center">estado de envio</td>
+                                    <td class="text-center">13/05/24</td>
+                                    <td class="text-center">100</td>
+                                    <td class="text-center">
+                                     <!--   <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">-->
+                                            <a>
+                                            <button type="button" class="btn btn-sm btn-square btn-primary" >
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                        </a>
+
+                                        <button type="button" class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal"
+                                                data-bs-target ="#modaEliminar" >
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <!-- Modal Eliminar -->
+                    <div class="modal fade"  tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true" id ="modaEliminar">
+                        <div class="modal-dialog">
+                            <div class="modal-content text-center">
+                                <div class="modal-header">
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro que desea
+                                        eliminar la orden?</h3>
+                                </div>
+
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <a type="button" class="btn btn-primary" href="#">Eliminar</a>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </main>
+        <script src="/js/AdministradorSede/script.js"></script>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/Superadmin/table.js"></script>
+        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+        <script>
+            new DataTable('#example');
+        </script>
     </body>
 </html>

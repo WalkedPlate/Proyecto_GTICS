@@ -104,7 +104,7 @@ public class FarmaciaWebVentaController {
     @GetMapping(value = "/historialPedidos")
     public String historialPedidos(Model model){
 
-        return "FarmaciaWebVenta/";
+        return "FarmaciaWebVenta/historialPedidos";
     }
 
 
