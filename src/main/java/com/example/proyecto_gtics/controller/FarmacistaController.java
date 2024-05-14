@@ -81,10 +81,9 @@ public class FarmacistaController {
                                RedirectAttributes attr){
 
         if (bindingResult.hasErrors()) {
-            String errorDni = bindingResult.getFieldErrors("dni").toString();
-            String errorNombre = bindingResult.getFieldErrors("nombre").toString();
-            String errorCorreo = bindingResult.getFieldErrors("correo").toString();
-            attr.addFlashAttribute("err",errorDni + "\n" + errorNombre +"\n" + errorCorreo );
+            String error = bindingResult.getFieldError().getDefaultMessage();
+
+            attr.addFlashAttribute("err",error);
 
             return "redirect:/farmacista";
         }
@@ -145,6 +144,7 @@ public class FarmacistaController {
                     detallesOrden.setMontoParcial(cantidad*p.getPrecio());
                     detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
                 }
+
             }
             catch (NumberFormatException n){
                 attr.addFlashAttribute("err","Las cantidades deben ser números.");

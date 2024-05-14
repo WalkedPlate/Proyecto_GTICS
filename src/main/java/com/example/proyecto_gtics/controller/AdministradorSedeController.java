@@ -387,6 +387,11 @@ public class AdministradorSedeController {
                 attr.addFlashAttribute("msg","Farmacista creado exitosamente");
             }
             else {   // Caso Actualizar farmacista
+                if(!validarCodigoColegio(usuarios.getCodigoColegio())){
+                    attr.addFlashAttribute("err","El código de colegio no es válido.");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
                 usuarios.setSedes(sedesOpt.get());
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
