@@ -223,8 +223,14 @@ public class SuperadminController {
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
 
+            //--------------------Cambios en el for por probar-----------------------------------------
+            List<Sedes> sedesTotales = sedesRepository.findAll();
+            List<Sedes> sedesVista =new ArrayList<>();//Sedes mandadas desde la vista
             for (Integer idSede : idSedes){
                 Sedes sede = sedesRepository.findByIdSedes(idSede);
+                //----------------Codigo añadido-------------------------------------------
+                sedesVista.add(sede);// Llenamos la lista
+                //--------------------------------------------------------------------------
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
                 //ProductosSedes productosSedes = new ProductosSedes();// Me genera duda
                 //ProductosSedesId productosSedesId = new ProductosSedesId();
@@ -245,41 +251,55 @@ public class SuperadminController {
                 }else{
                     productosSedeRepository.save(productosSedes);
                 }
-                //productosSedes.setSedes(sede);
-
             }
+            sedesTotales.removeAll(sedesVista);// *
+            for (Sedes sede : sedesTotales){
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
+                if (productosSedes != null){
+                    productosSedeRepository.delete(productosSedes);
+                }
+            }
+            //------------------Aqui finaliza los cambios de prueba del for-----------------------
+
             attr.addFlashAttribute("msg","Producto actualizado exitosamente.");
             productosRepository.save(productos);
             return "redirect:/superadmin/inventario";
         }else{
-            //-----------Procesamiento de creacion de codigo de producto--------
-            Random random = new Random();
-            String letras = productos.getNombre().substring(0,3).toUpperCase();
-            int numero = random.nextInt(900)+100;
-            String codigo = letras + numero;
-            //------------------------------------------------------------------
+            Productos pruebaProducto = productosRepository.findByNombre(productos.getNombre());
+            if (pruebaProducto == null){
+                //-----------Procesamiento de creacion de codigo de producto--------
+                Random random = new Random();
+                String letras = productos.getNombre().substring(0,3).toUpperCase();
+                int numero = random.nextInt(900)+100;
+                String codigo = letras + numero;
+                //------------------------------------------------------------------
 
-            productos.setCodigo(codigo);
-            Categorias categoria = categoriasRepository.findById(idCategoria).get();
-            productos.setCategorias(categoria);
-            productos.setEstadoProducto("Activo");
-            productosRepository.save(productos);
+                productos.setCodigo(codigo);
+                Categorias categoria = categoriasRepository.findById(idCategoria).get();
+                productos.setCategorias(categoria);
+                productos.setEstadoProducto("Activo");
+                productosRepository.save(productos);
 
-            Productos productoConsultar = productosRepository.findByCodigo(codigo);
-            for (Integer idSede : idSedes){
-                Sedes sede = sedesRepository.findByIdSedes(idSede);
-                ProductosSedes productosSedes = new ProductosSedes();
-                ProductosSedesId productosSedesId = new ProductosSedesId();
-                productosSedesId.setIdProductos(productoConsultar.getIdProductos());
-                productosSedesId.setIdSedes(idSede);
-                productosSedes.setId(productosSedesId);
-                productosSedes.setSedes(sede);
-                productosSedes.setProductos(productoConsultar);
-                productosSedes.setCantidad(200);
-                productosSedeRepository.save(productosSedes);
+                Productos productoConsultar = productosRepository.findByCodigo(codigo);
+                for (Integer idSede : idSedes){
+                    Sedes sede = sedesRepository.findByIdSedes(idSede);
+                    ProductosSedes productosSedes = new ProductosSedes();
+                    ProductosSedesId productosSedesId = new ProductosSedesId();
+                    productosSedesId.setIdProductos(productoConsultar.getIdProductos());
+                    productosSedesId.setIdSedes(idSede);
+                    productosSedes.setId(productosSedesId);
+                    productosSedes.setSedes(sede);
+                    productosSedes.setProductos(productoConsultar);
+                    productosSedes.setCantidad(200);
+                    productosSedeRepository.save(productosSedes);
+                }
+                attr.addFlashAttribute("msg","Producto creado exitosamente.");
+                return "redirect:/superadmin/inventario";
+            }else {
+                attr.addFlashAttribute("err","Producto Repetido");
+                return "redirect:/superadmin/inventario";
             }
-            attr.addFlashAttribute("msg","Producto creado exitosamente.");
-            return "redirect:/superadmin/inventario";
+
         }
 
     }

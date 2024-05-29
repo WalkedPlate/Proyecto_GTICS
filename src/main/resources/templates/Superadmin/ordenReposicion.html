@@ -160,7 +160,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°<span th:text="${listaOrdenes.get(obj.index).codigo}"></span></h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -176,7 +176,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr th:each="detalles, obj : ${listaDetalles}">
-                                                            <td  class="text-center" th:text="${detalles.productos.idProductos}"></td>
+                                                            <td  class="text-center" th:text="${detalles.productos.codigo}"></td>
                                                             <td  class="text-center">
                                                                 <img alt="..." th:src="@{|/imageProduct/${detalles.productos.idProductos}|}" class="avatar avatar-sm rounded-circle me-2">
                                                             </td>
