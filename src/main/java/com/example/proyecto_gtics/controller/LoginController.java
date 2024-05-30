@@ -70,7 +70,7 @@ public class LoginController {
 
 
     @GetMapping(value ={"","/","/login"})
-    public String login(@RequestParam("logout") String logout, RedirectAttributes attr,
+    public String login(@RequestParam(name = "logout",required = false) String logout, RedirectAttributes attr,
                         Authentication authentication, HttpServletRequest request,
                         HttpSession session){
 
