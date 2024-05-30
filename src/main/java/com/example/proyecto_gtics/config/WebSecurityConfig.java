@@ -125,7 +125,7 @@ public class WebSecurityConfig {
 
         http.logout(out -> out
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/logout").permitAll()
+                .logoutSuccessUrl("/login?logout").permitAll()
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true));
 

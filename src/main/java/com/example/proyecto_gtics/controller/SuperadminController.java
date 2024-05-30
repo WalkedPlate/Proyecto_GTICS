@@ -90,6 +90,7 @@ public class SuperadminController {
     public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr ){
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
+            System.out.println(adminsede.get().getDni());
             String error = bindingResult.getFieldError().getDefaultMessage().toString();
             attr.addFlashAttribute("err",error);
             return "redirect:/superadmin";

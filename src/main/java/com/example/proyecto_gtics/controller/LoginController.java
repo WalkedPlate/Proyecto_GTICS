@@ -6,8 +6,11 @@ import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.Authenticator;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,10 +70,27 @@ public class LoginController {
 
 
     @GetMapping(value ={"","/","/login"})
-    public String login(){
+    public String login(@RequestParam("logout") String logout, RedirectAttributes attr,
+                        Authentication authentication, HttpServletRequest request,
+                        HttpSession session){
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+            if (savedRequest != null) {
+                String targetUrl = savedRequest.getRedirectUrl();
+                return "redirect:" + targetUrl;
+            }
+            return "redirect:/";  // Página principal por defecto si no hay URL almacenada
+        }
+
+        if(logout!=null){
+            attr.addFlashAttribute("msg","Sesión cerrada exitosamente.");
+        }
+
         return "Login/inicioSesion";
     }
 
+    //No está en uso
     @GetMapping(value ={"/logout"})
     public String logout(){
         return "Login/cierreSesion";
@@ -99,7 +120,8 @@ public class LoginController {
         }else {
             //Generación de token
             String token = tokenService.generateToken(paciente.getCorreo());
-            String link = request.getContextPath()+ "/cambiar-contrasena?token=" + token;
+            String link = request.getScheme() + "://"+ request.getServerName()
+                    + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
             paciente.setNombre(nombres + ' ' + apellidos);
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
