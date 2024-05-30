@@ -156,20 +156,24 @@ public class LoginController {
             Optional<Usuarios> optionalUsuario = usuariosRepository.findByCorreo(email);
 
             if (!optionalUsuario.isPresent()) {
-                return "redirect:/login?error";
+                attr.addFlashAttribute("err","No existe un usuario con el correo asociado al token.");
+                return "redirect:/login";
             }
 
             if(pass1.equalsIgnoreCase(pass2)){
                 Usuarios usuario = optionalUsuario.get();
                 usuario.setContrasena(passwordEncoder.encode(pass1));
+                usuario.setUsandoContrasenaTemporal(false);
                 usuariosRepository.save(usuario);
                 tokenService.removeToken(token);
+                attr.addFlashAttribute("msg","Cambio de contraseña exitoso");
+                return "redirect:/login?sucess";
             }
             else {
                 attr.addFlashAttribute("err","Las contraseñas no coinciden.");
                 return "redirect:/cambiar-contrasena";
             }
-            return "redirect:/login?cambioContrasenaExitoso";
+
 
         }
 

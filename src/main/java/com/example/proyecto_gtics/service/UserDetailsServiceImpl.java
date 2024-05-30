@@ -15,8 +15,9 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl {
 
+    /*
     private final UsuariosRepository usuariosRepository;
 
     public UserDetailsServiceImpl(UsuariosRepository usuariosRepository) {
@@ -52,4 +53,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(usuario.getCorreo(), usuario.getContrasena(), authorities);
     }
+
+     */
 }

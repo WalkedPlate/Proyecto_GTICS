@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.config;
 
+import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
 import com.example.proyecto_gtics.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -26,11 +28,13 @@ public class WebSecurityConfig {
     final UsuariosRepository usuariosRepository;
     final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+
     public WebSecurityConfig(DataSource dataSource, UsuariosRepository usuariosRepository,
                              CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
         this.dataSource = dataSource;
         this.usuariosRepository = usuariosRepository;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+
     }
 
     @Bean
@@ -57,8 +61,7 @@ public class WebSecurityConfig {
                 formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/submitLoginForm")
-                        .successHandler(customAuthenticationSuccessHandler)
-                        );
+                        .successHandler(customAuthenticationSuccessHandler));
 
 
         http.authorizeHttpRequests((authorize) -> authorize

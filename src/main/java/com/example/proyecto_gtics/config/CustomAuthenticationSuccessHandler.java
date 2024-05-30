@@ -24,36 +24,30 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private UsuariosRepository usuariosRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
-        Usuarios usuario = usuariosRepository.findByCorreo(username).orElse(null);
+        Usuarios usuario = usuariosRepository.findByCorreo(username).get();
 
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
-        }
+        DefaultSavedRequest defaultSavedRequest =
+                (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
 
-        // Verificar si la contraseña es la temporal
-        if (usuario.getUsandoContrasenaTemporal()) {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", usuario);
-            response.sendRedirect("/cambiar-contrasena?token=" + usuario.getToken());
-        } else {
-            DefaultSavedRequest defaultSavedRequest =
-                    (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+        HttpSession session = request.getSession();
+        session.setAttribute("usuario", usuario);
 
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", usuario);
 
-            if (defaultSavedRequest != null) {
+        if (defaultSavedRequest != null) {
 
-                String targetURl = defaultSavedRequest.getRequestURL();
-                new DefaultRedirectStrategy().sendRedirect(request, response, targetURl);
-            } else { //estoy viniendo del botón de login
+            String targetURl = defaultSavedRequest.getRequestURL();
+            new DefaultRedirectStrategy().sendRedirect(request, response, targetURl);
+        } else { //estoy viniendo del botón de login
+
+            // Verificar si la contraseña es la temporal
+            if (usuario.getUsandoContrasenaTemporal()) {
+                response.sendRedirect("/cambiar-contrasena?token=" + usuario.getToken());
+            }
+            else {
                 String rol = "";
                 for (GrantedAuthority role : authentication.getAuthorities()) {
                     rol = role.getAuthority();
@@ -71,8 +65,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 } else{
                     response.sendRedirect("/mesas/list");
                 }
-
             }
+
+
+
         }
     }
 }

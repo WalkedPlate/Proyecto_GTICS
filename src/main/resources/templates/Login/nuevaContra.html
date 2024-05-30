@@ -17,7 +17,7 @@
                             <p th:if="${error != null}" th:text="${error}"></p>
                         </div>
 
-                        <form action="/cambiarContrasena" method="post">
+                        <form th:action="'/cambiarContrasena'" method="post">
                             <input type="hidden" name="token" th:value="${token}">
 
                             <div class="logo">
