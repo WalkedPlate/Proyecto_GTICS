@@ -13,6 +13,8 @@
             <div class="box">
                 <div class="inner-box">
                     <div class="forms-wrap">
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                         <div>
                             <p th:if="${error != null}" th:text="${error}"></p>
                         </div>

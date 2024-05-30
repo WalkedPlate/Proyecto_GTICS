@@ -139,7 +139,7 @@ public class LoginController {
             return "Login/nuevaContra";
         }
 
-        return "redirect:/login";
+        return "Login/nuevaContra";
     }
 
     @PostMapping("/cambiarContrasena")
@@ -179,7 +179,7 @@ public class LoginController {
 
         }
 
-        return "redirect:/login";
+        return "redirect:/login?errorEnPost";
     }
 
 

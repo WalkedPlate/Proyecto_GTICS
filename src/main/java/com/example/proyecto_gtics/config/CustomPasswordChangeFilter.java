@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.config;
 
+/*
 
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Component
 public class CustomPasswordChangeFilter extends OncePerRequestFilter {
+
 
     final UsuariosRepository usuariosRepository;
 
@@ -56,3 +58,6 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
 
 
 }
+
+
+ */

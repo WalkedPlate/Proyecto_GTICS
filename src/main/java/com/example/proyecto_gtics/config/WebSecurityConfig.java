@@ -2,7 +2,6 @@ package com.example.proyecto_gtics.config;
 
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
-import com.example.proyecto_gtics.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,16 +27,16 @@ public class WebSecurityConfig {
     final DataSource dataSource;
     final UsuariosRepository usuariosRepository;
     final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    final CustomPasswordChangeFilter customPasswordChangeFilter;
+    //final CustomPasswordChangeFilter customPasswordChangeFilter;
 
 
     public WebSecurityConfig(DataSource dataSource, UsuariosRepository usuariosRepository,
-                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-                             CustomPasswordChangeFilter customPasswordChangeFilter) {
+                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler
+                             /*CustomPasswordChangeFilter customPasswordChangeFilter*/) {
         this.dataSource = dataSource;
         this.usuariosRepository = usuariosRepository;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-        this.customPasswordChangeFilter = customPasswordChangeFilter;
+        //this.customPasswordChangeFilter = customPasswordChangeFilter;
 
     }
 
@@ -66,17 +65,67 @@ public class WebSecurityConfig {
                 formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/submitLoginForm")
-                        .successHandler(customAuthenticationSuccessHandler));
+                        .successHandler((request, response, authentication) -> {
+
+                            DefaultSavedRequest defaultSavedRequest =
+                                    (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+
+                            Usuarios usuario = usuariosRepository.findByCorreo(authentication.getName()).get();
+
+                            HttpSession session = request.getSession();
+                            session.setAttribute("usuario", usuario);
+
+
+                            if (defaultSavedRequest != null) {
+
+                                String targetURl = defaultSavedRequest.getRequestURL();
+                                new DefaultRedirectStrategy().sendRedirect(request, response, targetURl);
+                            } else { //estoy viniendo del botón de login
+
+                                // Verificar si la contraseña es la temporal
+                                if (usuario.getUsandoContrasenaTemporal()) {
+                                    response.sendRedirect("/cambiar-contrasena?token=" + usuario.getToken());
+                                }
+                                else {
+                                    String rol = "";
+                                    for (GrantedAuthority role : authentication.getAuthorities()) {
+                                        rol = role.getAuthority();
+                                        break;
+                                    }
+
+                                    if (rol.equals("AdministradorDeSede")) {
+                                        response.sendRedirect("/administradorsede");
+                                    } else if (rol.equals("Farmacista")) {
+                                        response.sendRedirect("/farmacista");
+                                    } else if (rol.equals("Paciente")){
+                                        response.sendRedirect("/clinicarenacer");
+                                    } else if (rol.equals("SuperAdmin")) {
+                                        response.sendRedirect("/superadmin");
+                                    } else{
+                                        response.sendRedirect("/clinicarenacer");
+                                    }
+                                }
+
+
+
+                            }
+                        }
+
+
+                        ));
 
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/farmacista","/farmacista/**").hasAnyAuthority("Farmacista")
+                .requestMatchers("/superadmin","/superadmin/**").hasAnyAuthority("SuperAdmin")
+                .requestMatchers("/administradorsede","/administradorsede/**").hasAnyAuthority("AdministradorDeSede")
                 .anyRequest().permitAll()
         )
         ;
 
         http.logout(out -> out
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login").permitAll()
+                .logoutSuccessUrl("/logout").permitAll()
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true));
 
