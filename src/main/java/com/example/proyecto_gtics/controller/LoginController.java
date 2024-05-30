@@ -74,6 +74,7 @@ public class LoginController {
                         Authentication authentication, HttpServletRequest request,
                         HttpSession session){
 
+        /*
         if (authentication != null && authentication.isAuthenticated()) {
             DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
             if (savedRequest != null) {
@@ -81,7 +82,7 @@ public class LoginController {
                 return "redirect:" + targetUrl;
             }
             return "redirect:/";  // Página principal por defecto si no hay URL almacenada
-        }
+        }*/
 
         if(logout!=null){
             attr.addFlashAttribute("msg","Sesión cerrada exitosamente.");
@@ -90,11 +91,13 @@ public class LoginController {
         return "Login/inicioSesion";
     }
 
-    //No está en uso
-    //@GetMapping(value ={"/logout"})
-    //public String logout(){
-      //  return "Login/cierreSesion";
-    //}
+
+
+    @GetMapping(value ={"/logout"})
+    public String logout(){
+      return "Login/cierreSesion";
+    }
+
 
     /*Inicio para SuperAdmin*/
     @GetMapping(value ={"/loginSuperAdmin"})

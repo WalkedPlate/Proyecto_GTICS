@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -67,13 +68,14 @@ public class SuperadminController {
 
     @Autowired
     CodigoColegioRespository codigoColegioRespository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model,HttpSession session){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
-        //Usuarios superadmin = usuariosRepository.findById(1).get();
+
         model.addAttribute("superadmin",superadmin);
 
 
@@ -164,8 +166,8 @@ public class SuperadminController {
 
 
     @GetMapping(value ={"/superadmin/inventario"})
-    public String inventario(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String inventario(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -322,24 +324,24 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/inventario/estado-reposicion"})
-    public String estadoReposiciones(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String estadoReposiciones(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/estadoReposicion";
     }
 
     @GetMapping(value ={"/superadmin/inventario/restricciones"})
-    public String restricciones(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String restricciones(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/restricciones";
     }
 
     @GetMapping(value ={"/superadmin/orden-reposicion"})
-    public String ordenReposicion(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String ordenReposicion(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -360,8 +362,8 @@ public class SuperadminController {
 
 
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
-    public String solicitudesReposicion(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String solicitudesReposicion(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -389,8 +391,8 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/farmacistas"})
-    public String farmacistas(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String farmacistas(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -405,8 +407,8 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
-    public String soliFarmacistas(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String soliFarmacistas(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -485,8 +487,8 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/doctores"})
-    public String doctores(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String doctores(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -539,8 +541,8 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})
-    public String pacientes(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String pacientes(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
 
@@ -552,24 +554,24 @@ public class SuperadminController {
     }
 
     @GetMapping(value ={"/superadmin/perfil"})
-    public String perfil(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String perfil(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editarPerfil";
     }
 
     @GetMapping(value ={"/superadmin/editar-perfil"})
-    public String editarPerfil(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String editarPerfil(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editar";
     }
 
     @GetMapping(value ={"/superadmin/cambiar-contra"})
-    public String cambiarContra(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String cambiarContra(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/cambiarContra";
@@ -578,12 +580,12 @@ public class SuperadminController {
     @PostMapping(value = "/superadmin/actualizar-contra")
     public String actualizarContra(@RequestParam("pass1") String pass1,
                                    @RequestParam("pass2") String pass2,
-                                   RedirectAttributes attr){
+                                   RedirectAttributes attr, HttpSession session){
 
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
 
         if(pass1.equalsIgnoreCase(pass2)){
-            superadmin.setContrasena(pass1);
+            superadmin.setContrasena(passwordEncoder.encode(pass1));
             usuariosRepository.save(superadmin);
             attr.addFlashAttribute("msg","Contraseña actualizada exitosamente.");
             return "redirect:/superadmin/cambiar-contra";

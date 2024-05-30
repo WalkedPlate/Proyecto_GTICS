@@ -6,6 +6,7 @@ import com.example.proyecto_gtics.repository.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -72,6 +73,8 @@ public class AdministradorSedeController {
 
     @Autowired
     CodigoColegioRespository codigoColegioRespository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();

@@ -3,6 +3,8 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +58,9 @@ public class FarmacistaController {
         this.tipoUsuarioRepository = tipoUsuarioRepository;
         this.usuariosRepository = usuariosRepository;
     }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
