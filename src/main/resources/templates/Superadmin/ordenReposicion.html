@@ -139,7 +139,7 @@
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${orden.usuarios.nombre}" class="text-heading font-semibold" href="#"></a>
                                             </td>
-                                            <td th:text="${orden.idordenes}" class="text-center"></td>
+                                            <td th:text="${orden.codigo}" class="text-center"></td>
                                             <td class="text-center" th:text="${orden.usuarios.sedes.nombre}"></td>
                                             <td class="text-center" th:text="${orden.estadoOrden.nombre}"></td>
                                             <td class="text-center" th:text="${orden.fechaEntrega}"></td>
@@ -168,7 +168,7 @@
                                                 <table class="table table-bordered">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">ID</th>
+                                                            <th class="text-center">#</th>
                                                             <th class="text-center">Imagen</th>
                                                             <th class="text-center">Nombre Producto</th>
                                                             <th class="text-center">Cantidad</th>
@@ -176,7 +176,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr th:each="detalles, obj : ${listaDetalles}">
-                                                            <td  class="text-center" th:text="${detalles.productos.codigo}"></td>
+                                                            <td  class="text-center" th:text="${obj.index + 1}"></td>
                                                             <td  class="text-center">
                                                                 <img alt="..." th:src="@{|/imageProduct/${detalles.productos.idProductos}|}" class="avatar avatar-sm rounded-circle me-2">
                                                             </td>

@@ -148,7 +148,7 @@
                             <div class="modal-content">
 
                                 <div class="modal-header">
-                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°123</h3>
+                                    <h3 class="modal-title fs-5" id="exampleModalLabel">Orden de reposición N°<span th:text="${listaOrdenes.get(obj.index).codigo}"></span></h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -156,7 +156,7 @@
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">ID</th>
+                                                    <th class="text-center">#</th>
                                                     <th class="text-center">Imagen</th>
                                                     <th class="text-center">Nombre Producto</th>
                                                     <th class="text-center">Cantidad</th>
@@ -164,9 +164,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr th:each="detalles, obj : ${listaDetalles}">
-                                                    <td th:text="${detalles.productos.idProductos}" class="text-center"></td>
+                                                    <td th:text="${obj.index + 1}" class="text-center"></td>
                                                     <td class="text-center">
-                                                        <img alt="..." src="/img/Superadmin/medicina1.jpg" class="avatar avatar-sm rounded-circle me-2">
+                                                        <img alt="..." th:src="@{|/imageProduct/${detalles.productos.idProductos}|}" class="avatar avatar-sm rounded-circle me-2">
                                                     </td>
                                                     <td class="text-center" th:text="${detalles.productos.nombre}"></td>
                                                     <td class="text-center" th:text="${detalles.cantidad}"></td>
