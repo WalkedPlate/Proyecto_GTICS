@@ -620,7 +620,7 @@ public class SuperadminController {
 
     public Boolean correoYaRegistrado(String correo, Integer idUsuario){
         boolean yaRegistrado = false;
-        Usuarios opt = usuariosRepository.findByCorreo(correo);
+        Usuarios opt = usuariosRepository.findByCorreo(correo).get();
 
         if (opt!=null){
             if(!Objects.equals(opt.getIdUsuario(), idUsuario)){

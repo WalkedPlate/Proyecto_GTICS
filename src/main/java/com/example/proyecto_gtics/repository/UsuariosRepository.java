@@ -25,7 +25,7 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
 
     Usuarios findFirstByOrderByIdUsuarioDesc(); // recuperar la última entrada de la tabla
 
-    Usuarios findByCorreo(String correo);
+    Optional<Usuarios> findByCorreo(String correo);
 
 
 }

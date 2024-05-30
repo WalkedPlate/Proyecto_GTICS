@@ -8,15 +8,17 @@ import lombok.Setter;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Date;
 import jakarta.validation.constraints.*;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "usuarios")
-public class Usuarios {
+public class Usuarios implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario" , nullable = false)
@@ -112,5 +114,13 @@ public class Usuarios {
 
     @Column(name = "fotocontenttype",nullable = true)
     private String fotocontenttype;
+
+    @Column(name = "usando_contrasena_temporal", nullable = false)
+    private Boolean usandoContrasenaTemporal;
+
+
+    public static String generateTemporaryPassword(int length) {
+        return RandomStringUtils.randomAlphanumeric(length); // Genera una cadena alfanumérica de longitud especificada
+    }
 
 }

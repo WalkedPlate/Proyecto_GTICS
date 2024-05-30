@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "tipo_usuario")
-public class TipoUsuario {
+public class TipoUsuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtipo_usuario" , nullable = false)

@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "sedes")
-public class Sedes {
+public class Sedes implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idsedes" , nullable = false)

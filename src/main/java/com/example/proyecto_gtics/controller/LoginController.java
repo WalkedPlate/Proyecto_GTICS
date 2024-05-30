@@ -3,6 +3,10 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.EmailService;
+import com.example.proyecto_gtics.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +56,22 @@ public class LoginController {
         this.usuariosRepository = usuariosRepository;
     }
 
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TokenService tokenService;
+
+
     @GetMapping(value ={"","/","/login"})
     public String login(){
         return "Login/inicioSesion";
+    }
+
+    @GetMapping(value ={"/logout"})
+    public String logout(){
+        return "Login/cierreSesion";
     }
 
     /*Inicio para SuperAdmin*/
@@ -78,26 +95,93 @@ public class LoginController {
             attr.addFlashAttribute("err","Ya existe un usuario con los datos ingresados.");
             return "redirect:/login";
         }else {
+            //Generación de token
+            String token = tokenService.generateToken(paciente.getCorreo());
+            String link = "http://localhost:8080/cambiar-contrasena?token=" + token;
+
             paciente.setNombre(nombres + ' ' + apellidos);
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-            paciente.setContrasena("Temporal_password");
+            //Contraseña
+            String temporalPassword = Usuarios.generateTemporaryPassword(10);
+            String passwordEncriptada = passwordEncoder.encode(temporalPassword);
+            paciente.setContrasena(passwordEncriptada);
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
+            paciente.setUsandoContrasenaTemporal(true);
+            paciente.setToken(token);
             usuariosRepository.save(paciente);
             attr.addFlashAttribute("msg","Registro exitoso, se le enviarán sus credenciales por correo.");
+
+
+
+
+            //Envío de correo con contraseña temporal
+            String to = paciente.getCorreo();
+            String subject = "Cambie su contraseña";
+            emailService.sendEmail(to, subject, link, temporalPassword);
+
         }
         return "redirect:/login";
     }
 
     @GetMapping(value ={"/cambiar-contrasena"})
-    public String recuperarCuenta(){
-        return "Login/nuevaContra";
+    public String recuperarCuenta(@RequestParam(name = "token",required = false) String token, Model model){
+
+        if(token != null ){
+            String email = tokenService.getEmailFromToken(token);
+            if (email == null) {
+                return "redirect:/login?errorToken";
+            }
+
+            model.addAttribute("token", token);
+
+            return "Login/nuevaContra";
+        }
+
+        return "redirect:/login";
     }
+
+    @PostMapping("/cambiarContrasena")
+    public String cambiarContrasena(@RequestParam(name = "token",required = false) String token, @RequestParam("pass1") String pass1,
+                                    @RequestParam("pass2") String pass2, Model model,
+                                    RedirectAttributes attr) {
+
+        if(token != null ){
+            String email = tokenService.getEmailFromToken(token);
+
+            if (email == null) {
+                model.addAttribute("error", "Token inválido o expirado.");
+                return "Login/nuevaContra";
+            }
+
+            Optional<Usuarios> optionalUsuario = usuariosRepository.findByCorreo(email);
+
+            if (!optionalUsuario.isPresent()) {
+                return "redirect:/login?error";
+            }
+
+            if(pass1.equalsIgnoreCase(pass2)){
+                Usuarios usuario = optionalUsuario.get();
+                usuario.setContrasena(passwordEncoder.encode(pass1));
+                usuariosRepository.save(usuario);
+                tokenService.removeToken(token);
+            }
+            else {
+                attr.addFlashAttribute("err","Las contraseñas no coinciden.");
+                return "redirect:/cambiar-contrasena";
+            }
+            return "redirect:/login?cambioContrasenaExitoso";
+
+        }
+
+        return "redirect:/login";
+    }
+
 
 
     @PostMapping(value = "login/validarCampos")
     public String validarCampos(@RequestParam("email") String correo, @RequestParam("password") String password, RedirectAttributes attr){
 
-        Usuarios user = usuariosRepository.findByCorreo(correo);
+        Usuarios user = usuariosRepository.findByCorreo(correo).get();
         if(user == null){
             attr.addFlashAttribute("err","credenciales inválidas.");
             return "redirect:/login";
