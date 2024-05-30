@@ -308,10 +308,6 @@
                                 </td>
                                 <td class="text-center"
                                     th:text="${obj.index>=listaCantidadPorProducto.size()? 0 : listaCantidadPorProducto.get(obj.index).getCantidadTotal()}"></td>
-                                <!--<th:block th:each="dto : ${listaCantidadPorProducto}" th:if="${dto.getIdProductoDTO()==medicamento.idProductos}">
-                                    <td  th:text="${dto.getCantidadTotal()}" class="text-center"></td>
-                                    <td th:if="${dto.getIdProductoDTO()!= medicamento.idProductos}" class="text-center">0</td>
-                                </th:block>-->
                                 <td th:text="${medicamento.precio}" class="text-center"></td>
                                 <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
                                 <!--                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>-->
