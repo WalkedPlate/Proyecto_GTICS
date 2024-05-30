@@ -63,7 +63,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 } else if (rol.equals("SuperAdmin")) {
                     response.sendRedirect("/superadmin");
                 } else{
-                    response.sendRedirect("/mesas/list");
+                    response.sendRedirect("/clinicarenacer");
                 }
             }
 

@@ -16,6 +16,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
 import javax.sql.DataSource;
@@ -27,13 +28,16 @@ public class WebSecurityConfig {
     final DataSource dataSource;
     final UsuariosRepository usuariosRepository;
     final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    final CustomPasswordChangeFilter customPasswordChangeFilter;
 
 
     public WebSecurityConfig(DataSource dataSource, UsuariosRepository usuariosRepository,
-                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                             CustomPasswordChangeFilter customPasswordChangeFilter) {
         this.dataSource = dataSource;
         this.usuariosRepository = usuariosRepository;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customPasswordChangeFilter = customPasswordChangeFilter;
 
     }
 
@@ -56,6 +60,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        //http.addFilterBefore(customPasswordChangeFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin ->
                 formLogin

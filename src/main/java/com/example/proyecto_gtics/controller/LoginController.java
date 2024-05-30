@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -86,7 +87,8 @@ public class LoginController {
     }
 
     @PostMapping(value = {"/guardarPaciente"})
-    public  String guardarPaciente(Usuarios paciente, @RequestParam("nombres") String nombres , @RequestParam("apellidos") String apellidos, RedirectAttributes attr){
+    public  String guardarPaciente(Usuarios paciente, @RequestParam("nombres") String nombres , @RequestParam("apellidos") String apellidos,
+                                   HttpServletRequest request, RedirectAttributes attr){
 
         //Comprobar si existe el paciente:
         Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
@@ -97,7 +99,7 @@ public class LoginController {
         }else {
             //Generación de token
             String token = tokenService.generateToken(paciente.getCorreo());
-            String link = "http://localhost:8080/cambiar-contrasena?token=" + token;
+            String link = request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
             paciente.setNombre(nombres + ' ' + apellidos);
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
@@ -181,6 +183,8 @@ public class LoginController {
     }
 
 
+
+    //Obsoleto - Se borrará pronto!
 
     @PostMapping(value = "login/validarCampos")
     public String validarCampos(@RequestParam("email") String correo, @RequestParam("password") String password, RedirectAttributes attr){
