@@ -199,6 +199,24 @@ public class FarmacistaController {
         return "Farmacista/verOrdenVenta";
     }
 
+    @PostMapping(value ={"/farmacista/ordenes-linea/aprobar"})
+    public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr){
+
+        Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
+        if(opt.isPresent()){
+            Ordenes ordenes = opt.get();
+            ordenes.setEstadoOrden(estadoOrdenRepository.findById(4).get());
+            ordenesRepository.save(ordenes);
+            return "redirect:/farmacista/ordenes-linea";
+        }
+        else {
+            return "redirect:/farmacista/ordenes-linea";
+        }
+
+
+    }
+
+
     @GetMapping(value ={"/farmacista/chat"})
     public String chat(){
         return "Farmacista/Chat";

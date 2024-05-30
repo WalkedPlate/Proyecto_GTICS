@@ -146,7 +146,7 @@
                             </table>
                         </div>
                         <div class="card-footer border-0 py-5 mx-auto d-flex justify-content align-center">
-                            <button type="button" class="btn btn-sm btn-primary mx-2" data-bs-toggle="modal"
+                            <button th:if="${orden.estadoOrden.nombre=='Pendiente'}" type="button" class="btn btn-sm btn-primary mx-2" data-bs-toggle="modal"
                                 data-bs-target="#modalAprobar">
                                 Aprobar
                             </button>
@@ -166,8 +166,12 @@
                                         <p>¿Estás seguro de querer aprobar esta orden?</p>
                                     </div>
                                     <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary"  data-bs-toggle="modal"
-                                            data-bs-target="#modalAceptar">Aceptar</button>
+                                        <form  th:if="${orden.estadoOrden.nombre=='Pendiente'}" th:action="@{'/farmacista/ordenes-linea/aprobar'}"  method="post">
+                                            <input th:if="${orden.estadoOrden.nombre=='Pendiente'}" type="hidden" name="idOrden" th:value="${orden.idordenes}">
+                                            <button th:if="${orden.estadoOrden.nombre=='Pendiente'}" type="submit" class="btn btn-primary"  data-bs-toggle="modal"
+                                                    >Aceptar</button>
+                                        </form>
+
 
                                         <button type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Cancelar</button>

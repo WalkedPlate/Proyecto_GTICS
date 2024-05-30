@@ -91,10 +91,10 @@ public class LoginController {
     }
 
     //No está en uso
-    @GetMapping(value ={"/logout"})
-    public String logout(){
-        return "Login/cierreSesion";
-    }
+    //@GetMapping(value ={"/logout"})
+    //public String logout(){
+      //  return "Login/cierreSesion";
+    //}
 
     /*Inicio para SuperAdmin*/
     @GetMapping(value ={"/loginSuperAdmin"})

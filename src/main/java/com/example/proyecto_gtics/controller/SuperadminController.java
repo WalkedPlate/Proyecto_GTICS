@@ -4,6 +4,7 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -68,9 +69,11 @@ public class SuperadminController {
     CodigoColegioRespository codigoColegioRespository;
 
 
+
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
-    public String dashboard(Model model){
-        Usuarios superadmin = usuariosRepository.findById(1).get();
+    public String dashboard(Model model,HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        //Usuarios superadmin = usuariosRepository.findById(1).get();
         model.addAttribute("superadmin",superadmin);
 
 
