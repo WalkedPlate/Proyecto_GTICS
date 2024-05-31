@@ -17,10 +17,12 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.sql.DataSource;
 
 @Configuration
+@CrossOrigin
 public class WebSecurityConfig {
 
 
@@ -65,53 +67,7 @@ public class WebSecurityConfig {
                 formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/submitLoginForm")
-                        .successHandler((request, response, authentication) -> {
-
-                            DefaultSavedRequest defaultSavedRequest =
-                                    (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-
-                            Usuarios usuario = usuariosRepository.findByCorreo(authentication.getName()).get();
-
-                            HttpSession session = request.getSession();
-                            session.setAttribute("usuario", usuario);
-
-
-                            if (defaultSavedRequest != null) {
-
-                                String targetURl = defaultSavedRequest.getRequestURL();
-                                new DefaultRedirectStrategy().sendRedirect(request, response, targetURl);
-                            } else { //estoy viniendo del botón de login
-
-                                // Verificar si la contraseña es la temporal
-                                if (usuario.getUsandoContrasenaTemporal()) {
-                                    response.sendRedirect("/cambiar-contrasena?token=" + usuario.getToken());
-                                }
-                                else {
-                                    String rol = "";
-                                    for (GrantedAuthority role : authentication.getAuthorities()) {
-                                        rol = role.getAuthority();
-                                        break;
-                                    }
-
-                                    if (rol.equals("AdministradorDeSede")) {
-                                        response.sendRedirect("/administradorsede");
-                                    } else if (rol.equals("Farmacista")) {
-                                        response.sendRedirect("/farmacista");
-                                    } else if (rol.equals("Paciente")){
-                                        response.sendRedirect("/clinicarenacer");
-                                    } else if (rol.equals("SuperAdmin")) {
-                                        response.sendRedirect("/superadmin");
-                                    } else{
-                                        response.sendRedirect("/clinicarenacer");
-                                    }
-                                }
-
-
-
-                            }
-                        }
-
-
+                        .successHandler(customAuthenticationSuccessHandler
                         ));
 
 
