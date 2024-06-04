@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
 @Entity
 @Table(name = "detalles_orden")
-public class DetallesOrden {
+public class DetallesOrden implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

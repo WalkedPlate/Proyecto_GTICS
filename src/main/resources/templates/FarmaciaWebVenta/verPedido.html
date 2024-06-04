@@ -63,7 +63,7 @@
                                        th:href="@{'/historialPedidos'}">
                                         Historial de pedidos</a>
                                 </h3>
-                                <h3 class="text-success">Orden N° x</h3>
+                                <h3 th:text="'Orden N° ' +${ordenActual.codigo}" class="text-success"> </h3>
                             </div>
                         </div>
                         <!--Mensaje de orden editada y generada -->

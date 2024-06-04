@@ -1,5 +1,7 @@
 package com.example.proyecto_gtics.config;
 
+import com.example.proyecto_gtics.entity.DetallesOrden;
+import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
 import jakarta.servlet.ServletException;
@@ -17,6 +19,7 @@ import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -33,8 +36,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         DefaultSavedRequest defaultSavedRequest =
                 (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
 
+
         HttpSession session = request.getSession();
         session.setAttribute("usuario", usuario);
+        session.setAttribute("carrito", new ArrayList<DetallesOrden>());
 
 
         if (defaultSavedRequest != null) {

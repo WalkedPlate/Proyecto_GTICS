@@ -8,12 +8,13 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.InputStream;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "productos")
-public class Productos {
+public class Productos implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idproductos" , nullable = false)
@@ -49,7 +50,7 @@ public class Productos {
     private String fechaVencimiento;
 
     @Column(name = "precio",nullable = false)
-    @NotNull
+    @NotNull @DecimalMin(value = "0.1")
     //@Digits(integer = 10,fraction = 2,message = "Precio No valido")
     @Positive
     private float precio;

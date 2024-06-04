@@ -117,7 +117,7 @@
 
     <div class="product-container">
         <div class="container">
-            <a th:href="@{'/clinicarenacer/paciente/carrito?idCarrito='+ ${1000}}" > < Volver al Carrito </a>
+            <a th:href="@{'/clinicarenacer/paciente/carrito'}" > < Volver al Carrito </a>
         </div>
 
 
@@ -289,22 +289,24 @@
                             </thead>
 
                             <tbody>
-                            <tr id="fila1">
+                            <tr th:each="detalle, obj : ${listaDetallesOrden}">
                                 <td>
                                     <div class="content ">
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col d-flex justify-content-center">
-                                                    <img src="/img/FarmaciaWebVenta/products/analgesico1.jpg" alt="analgésicos" width="50">
+                                                    <img th:src="@{|/imageProduct/${detalle.productos.idProductos}|}" alt="analgésicos" width="50">
                                                 </div>
-                                                <div class="col"><a href="#">Producto 1</a></div>
+                                                <div class="col" th:text="${detalle.productos.nombre}">
+                                                    <a th:href="@{'/clinicarenacer/producto?idProductos=' + ${detalle.productos.idProductos}}"></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="mg ">
+                                <td class="mg">
                                     <div class="d-flex justify-content-center">
-                                        <p class="d-flex align-items-center">S/. 1.00</p>
+                                        <p class="d-flex align-items-center" th:text="${detalle.montoParcial}"></p>
                                     </div>
                                 </td>
                             </tr>
@@ -312,7 +314,7 @@
                         </table>
                     </div>
                 </form>
-                <h6 id="cantidadTotal" >Productos(0)</h6>
+                <h6 id="cantidadTotal" th:text="'Productos('+${listaDetallesOrden.size()}+')'" ></h6>
                 <h6 id="costoTotal" >Total a pagar: S/. 0.00</h6>
             </div>
         </div>

@@ -14,6 +14,8 @@ public interface DetallesOrdenRepository extends JpaRepository<DetallesOrden,Int
 
     List<DetallesOrden> findByOrdenes(Ordenes ordenReposicion);
 
+    List<DetallesOrden> findByOrdenesIdordenes(Integer idOrden);
+
     @Query(value = "SELECT sum(monto_parcial) FROM proyecto_gtics.detalles_orden where ordenes_idordenes = ?1", nativeQuery = true)
     Float calcularMontoTotal(Integer idOrden);
 

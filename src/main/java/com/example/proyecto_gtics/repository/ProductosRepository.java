@@ -26,4 +26,5 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
     Productos findByCodigo(String codigo);
 
     Productos findByNombre(String nombre);
+
 }
