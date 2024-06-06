@@ -1,6 +1,6 @@
 const ctx = document.getElementById('myChart')
-const names = ['San Miguel 1' , 'San Miguel 2','San Miguel 3','San Miguel 4','San Miguel 5']
-const ages = [24,10,54,51,15]
+const names = Object.keys(window.listaNroTransPorSede)
+const ages = Object.values(window.listaNroTransPorSede);
 
 const myChart = new Chart(ctx , {
     type: 'bar',
