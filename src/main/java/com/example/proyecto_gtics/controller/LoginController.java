@@ -151,26 +151,62 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    @GetMapping(value ={"/generar-Token"})
-    public String generarNuevoToken(@RequestParam(name = "token",required = false) String token, Model model,
-                                  RedirectAttributes attr){
+    @PostMapping(value ={"/generarToken"})
+    public String generarNuevoToken(@RequestParam(name = "email",required = false) String email, Model model,
+                                  RedirectAttributes attr, HttpServletRequest request){
 
-        if(token != null ){
-            String email = tokenService.getEmailFromToken(token);
-            if (email == null) {
-                attr.addFlashAttribute("err","Correo inválido.");
-                return "redirect:/login?errorToken";
+        if(email != null ){
+
+            Optional<Usuarios> opt = usuariosRepository.findByCorreo(email);
+            if(opt.isPresent()){
+                Usuarios usuario = opt.get();
+
+                //Generación de token
+                String token = tokenService.generateToken(email);
+                String link = request.getScheme() + "://"+ request.getServerName()
+                        + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
+
+                if(usuario.getUsandoContrasenaTemporal()){
+
+                    //Contraseña
+                    String temporalPassword = Usuarios.generateTemporaryPassword(10);
+                    String passwordEncriptada = passwordEncoder.encode(temporalPassword);
+                    usuario.setContrasena(passwordEncriptada);
+                    usuario.setToken(token);
+                    usuariosRepository.save(usuario);
+
+                    //Envío de correo con contraseña temporal
+                    String to = email;
+                    String subject = "Cambie su contraseña";
+                    String pathToImage = "static/img/Login/icono.png";
+                    String imageId = "image001";
+                    emailService.sendEmail(to, subject, link, temporalPassword,pathToImage,imageId);
+                    attr.addFlashAttribute("msg","Solictud válida, se le enviará un enlace por correo.");
+                    return "redirect:/login";
+                }
+                else {
+                    usuario.setToken(token);
+                    usuariosRepository.save(usuario);
+
+                    //Envío de correo con el link para cambiar su contraseña
+                    String to = usuario.getCorreo();
+                    String subject = "Reestablecer Contraseña";
+                    String pathToImage = "static/img/Login/icono.png";
+                    String imageId = "image001";
+                    emailService.sendEmailPasswordChange(to, subject, link, "j",pathToImage,imageId);
+
+                    attr.addFlashAttribute("msg","Solictud válida, se le enviará un enlace por correo.");
+                    return "redirect:/login";
+
+                }
             }
-            if(email.equalsIgnoreCase("expiration")){
-
+            else {
+                attr.addFlashAttribute("err","Correo asociado al token inválido");
+                return "redirect:/login";
             }
-
-            model.addAttribute("token", token);
-
-            return "Login/nuevaContra";
         }
         else {
-            attr.addFlashAttribute("err","Necesitas un token.");
+            attr.addFlashAttribute("err","Correo asociado al token inválido");
             return "redirect:/login";
         }
 
@@ -184,13 +220,17 @@ public class LoginController {
         if(token != null ){
             String email = tokenService.getEmailFromToken(token);
             if (email == null) {
-                attr.addFlashAttribute("err","Correo inválido.");
-                return "redirect:/login?errorToken";
+                attr.addFlashAttribute("err","Token inválido.");
+                return "redirect:/login";
             }
-            if(email.equalsIgnoreCase("expiration")){
+            model.addAttribute("email",email);
 
+            if(tokenService.expiredToken(token)){
+                model.addAttribute("generar",1);
+
+                return "Login/nuevaContra";
             }
-
+            model.addAttribute("generar",0);
             model.addAttribute("token", token);
 
             return "Login/nuevaContra";
@@ -240,7 +280,7 @@ public class LoginController {
 
         }
         else{
-            //attr.addFlashAttribute("err","Tienes prohibido el acceso a esta vista.");
+            attr.addFlashAttribute("err","Error en el token");
             return "redirect:/login";
         }
 
@@ -279,12 +319,6 @@ public class LoginController {
                 attr.addFlashAttribute("err","Correo inválido");
                 return "redirect:/login";
             }
-
-
-
-
-
-
 
         }
         else{

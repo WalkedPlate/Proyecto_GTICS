@@ -19,8 +19,8 @@
                             <p th:if="${error != null}" th:text="${error}"></p>
                         </div>
 
-                        <form th:action="'/cambiarContrasena'" method="post">
-                            <input type="hidden" name="token" th:value="${token}">
+
+
 
                             <div class="logo">
                                 <img src="/img/Login/icono.png" alt="renacer"/>
@@ -30,40 +30,51 @@
                                 </div>
                             </div>
 
-                            <div class="heading">
-                                <h3>Cambie su contraseña</h3>
-                            </div>
+                            <form th:action="'/generarToken'" method="post" th:if="${generar}==1">
+                                <input type="hidden" name="email" th:value="${email}">
+                                <div class="heading">
+                                    <h3>Token Expirado</h3>
+                                </div>
+                                <p class="mb-5 display-4">El token que usó está expirado. Puede generar uno nuevo con el siguiente botón.</p>
+                                <input type="submit" value="Generar nuevo token" class="sign-btn">
+                            </form>
 
-                            <div class="actual-form">
-                                <div class="input-wrap">
-                                    <input
-                                            id="newPassword"
-                                            type="password"
-                                            class="input-field"
-                                            autocomplete="off"
-                                            name="pass1"
-                                    />
-                                    <label>Nueva contraseña</label>
+                            <form th:action="'/cambiarContrasena'" method="post" th:if="${generar}==0">
+                                <input type="hidden" name="token" th:value="${token}">
+                                <div class="heading">
+                                    <h3>Cambie su contraseña</h3>
                                 </div>
 
-                                <div class="input-wrap">
-                                    <input
-                                            id="confirmPassword"
-                                            type="password"
-                                            class="input-field"
-                                            autocomplete="off"
-                                            name="pass2"
-                                    />
-                                    <label>Confirme contraseña</label>
+                                <div class="actual-form">
+                                    <div class="input-wrap">
+                                        <input
+                                                id="newPassword"
+                                                type="password"
+                                                class="input-field"
+                                                autocomplete="off"
+                                                name="pass1"
+                                        />
+                                        <label>Nueva contraseña</label>
+                                    </div>
+
+                                    <div class="input-wrap">
+                                        <input
+                                                id="confirmPassword"
+                                                type="password"
+                                                class="input-field"
+                                                autocomplete="off"
+                                                name="pass2"
+                                        />
+                                        <label>Confirme contraseña</label>
+                                    </div>
+
+                                    <p id="newPasswordError" class="error-message"></p>
+                                    <p id="confirmPasswordError" class="error-message"></p>
+                                    <input type="submit" value="Guardar cambios" class="sign-btn">
+
+
                                 </div>
-
-                                <p id="newPasswordError" class="error-message"></p>
-                                <p id="confirmPasswordError" class="error-message"></p>
-                                <input type="submit" value="Guardar cambios" class="sign-btn">
-
-
-                            </div>
-                        </form>
+                            </form>
                     </div>
 
                     <div class="carousel">

@@ -102,7 +102,7 @@
           <button type="button" class="btn btn-outline-primary dropdown-toggle" style="display: flex;
       align-items: center;" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="/img/Superadmin/profile-3.jpeg" class="rounded-circle" alt="perfil" width="40" height="40" style="margin-right: 10px;">
-            Nombre
+            <span th:text="${session.usuario.nombre}"></span>
           </button>
           <ul class="dropdown-menu">
             <li><button class="action-btn main-links">
@@ -111,11 +111,16 @@
               </span>Editar Perfil</a>
             </button></li>
             <li><hr class="dropdown-divider"></li>
-            <li><button class="action-btn main-links">
+
+            <li><form th:action="@{/logout}" method="post">
+              <button class="action-btn main-links" type="submit">
               <a class="nav-link" style="font-size: 0.5em"  th:href="@{'/login'}"> <span class="material-symbols-outlined">
               logout
               </span> Cerrar Sesión</a>
-            </button></li>
+            </button>
+            </form>
+            </li>
+
           </ul>
         </div>
 

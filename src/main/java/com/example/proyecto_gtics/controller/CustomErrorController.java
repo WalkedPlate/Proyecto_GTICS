@@ -22,22 +22,29 @@ public class CustomErrorController implements ErrorController {
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 model.addAttribute("error", "404");
                 model.addAttribute("message", "Página no encontrada.");
-                return "error/404";
+                return "Error/404";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 model.addAttribute("error", "500");
                 model.addAttribute("message", "Error interno del servidor");
-                return "error/500";
+                return "Error/500";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 model.addAttribute("error", "403");
                 model.addAttribute("message", "Acceso denegado");
-                return "error/403";
+                return "Error/403";
             }
+            else {
+                model.addAttribute("error", "Error desconocido");
+                model.addAttribute("message", "Algo salió mal");
+                model.addAttribute("title", "Error desconocido");
+                return "Error/genericError";
+            }
+
         }
 
         model.addAttribute("error", "Error desconocido");
         model.addAttribute("message", "Algo salió mal");
         model.addAttribute("title", "Error desconocido");
-        return "error/genericError";
+        return "Error/genericError";
     }
 
 }
