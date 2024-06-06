@@ -59,16 +59,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     break;
                 }
 
-                if (rol.equals("AdministradorDeSede")) {
-                    response.sendRedirect("/administradorsede");
-                } else if (rol.equals("Farmacista")) {
-                    response.sendRedirect("/farmacista");
-                } else if (rol.equals("Paciente")){
-                    response.sendRedirect("/clinicarenacer");
-                } else if (rol.equals("SuperAdmin")) {
-                    response.sendRedirect("/superadmin");
-                } else{
-                    response.sendRedirect("/clinicarenacer");
+                switch (rol) {
+                    case "AdministradorDeSede" -> response.sendRedirect("/administradorsede");
+                    case "Farmacista" -> response.sendRedirect("/farmacista");
+                    case "Paciente" -> response.sendRedirect("/clinicarenacer");
+                    case "SuperAdmin" -> response.sendRedirect("/superadmin");
+                    default -> response.sendRedirect("/errorEnLaRedirecc");
                 }
             }
 

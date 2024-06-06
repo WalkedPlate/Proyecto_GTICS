@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -68,8 +69,12 @@ public class FarmacistaController {
 
 
     @GetMapping(value ={"/farmacista"})
-    public String paginaPrincipal(Model model){
-        Sedes sede = sedesRepository.findByIdSedes(2);
+    public String paginaPrincipal(Model model, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        Sedes sede = farmacista.getSedes();
         TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
         EstadoUsuario activo = estadoUsuarioRepository.findById("Activo").get();
 
@@ -83,7 +88,10 @@ public class FarmacistaController {
     public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<String> listaCantidades,
                                /*@RequestParam("checkbox") List<String> listCheckbox,*/ @Valid Usuarios paciente, BindingResult bindingResult,
                                @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
-                               RedirectAttributes attr){
+                               RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
 
         if (bindingResult.hasErrors()) {
             String error = bindingResult.getFieldError().getDefaultMessage();
@@ -169,7 +177,10 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/ordenes-linea"})
-    public String ordenesLinea(Model model){
+    public String ordenesLinea(Model model, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
 
         Optional<TipoOrden> tipoOrden1 = tipoOrdenRepository.findById(3);
         Optional<TipoOrden> tipoOrden2 = tipoOrdenRepository.findById(4);
@@ -180,14 +191,20 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/ordenes-venta"})
-    public String ordenesVenta(Model model){
+    public String ordenesVenta(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
 
     @PostMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
-    public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden){
+    public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
         model.addAttribute("listaDetallesOrden",listaDetallesOrden);
@@ -196,7 +213,10 @@ public class FarmacistaController {
     }
 
     @PostMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
-    public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden){
+    public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
         model.addAttribute("listaDetallesOrden",listaDetallesOrden);
@@ -205,7 +225,10 @@ public class FarmacistaController {
     }
 
     @PostMapping(value ={"/farmacista/ordenes-linea/aprobar"})
-    public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr){
+    public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
         if(opt.isPresent()){
@@ -223,24 +246,36 @@ public class FarmacistaController {
 
 
     @GetMapping(value ={"/farmacista/chat"})
-    public String chat(){
+    public String chat(HttpSession session, Model model){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         return "Farmacista/Chat";
     }
 
 
     @GetMapping(value ={"/farmacista/perfil"})
-    public String perfil(){
+    public String perfil(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         return "Farmacista/perfil";
     }
 
     @GetMapping(value ={"/farmacista/editar-perfil"})
-    public String editarPerfil(){
-        return "farmacista/editarPerfil";
+    public String editarPerfil(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        return "Farmacista/editarPerfil";
     }
 
     @GetMapping(value ={"/farmacista/cambiar-contra"})
-    public String cambiarContra(){
-        return "farmacista/cambiarContra";
+    public String cambiarContra(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        return "Farmacista/cambiarContra";
     }
 
 

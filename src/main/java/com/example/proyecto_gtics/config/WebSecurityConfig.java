@@ -29,16 +29,16 @@ public class WebSecurityConfig {
     final DataSource dataSource;
     final UsuariosRepository usuariosRepository;
     final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    //final CustomPasswordChangeFilter customPasswordChangeFilter;
+    final CustomPasswordChangeFilter customPasswordChangeFilter;
 
 
     public WebSecurityConfig(DataSource dataSource, UsuariosRepository usuariosRepository,
-                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler
-                             /*CustomPasswordChangeFilter customPasswordChangeFilter*/) {
+                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                             CustomPasswordChangeFilter customPasswordChangeFilter) {
         this.dataSource = dataSource;
         this.usuariosRepository = usuariosRepository;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-        //this.customPasswordChangeFilter = customPasswordChangeFilter;
+        this.customPasswordChangeFilter = customPasswordChangeFilter;
 
     }
 
@@ -61,7 +61,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        //http.addFilterBefore(customPasswordChangeFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customPasswordChangeFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin ->
                 formLogin

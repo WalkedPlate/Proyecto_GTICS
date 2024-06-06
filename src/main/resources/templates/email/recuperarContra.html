@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="/img/Login/icono.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a nuestra plataforma</title>
+    <title>Reestablecer Contraseña</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,15 +35,11 @@
 <div class="container">
     <h1 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
             src="cid:image001">
-        <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica Renacer</span>
+        <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Reestablecer su contraseña</span>
     </h1>
-    <p>Gracias por registrarte en nuestro sitio. A continuación encontrarás tu contraseña temporal:</p>
-    <p class="password">Contraseña temporal: <span th:text="${password}"></span></p>
-    <p>Por favor, use la contraseña temporal y su correo para iniciar sesión. Cuando inicie sesión, deberá cambiar su contraseña.</p>
-    <p>Recuerde que esta contraseña expirará en 5 minutos</p>
-    <p>También puede usar el siguiente enlace para cambiar su contraseña: <span th:text="${link}"></span></p>
-    <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
-    <p>¡Gracias y bienvenido!</p>
+    <p>Para recuperar su contraseña por favor ingrese al siguiente enlace: <span th:text="${link}"></span></p>
+    <p>Tenga en cuenta que este enlace es válido por 5 minutos.</p>
+    <p>Si no solicitó recuperar su contraseña, ignore este mensaje.</p>
 </div>
 </body>
 </html>

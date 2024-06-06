@@ -1,6 +1,6 @@
 package com.example.proyecto_gtics.config;
 
-/*
+
 
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
@@ -32,7 +32,7 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         // Excluir static resources
-        if (uri.startsWith("/css/") || uri.startsWith("/js/") || uri.startsWith("/images/")) {
+        if (uri.startsWith("/css/") || uri.startsWith("/js/") || uri.startsWith("/images/") || uri.startsWith("/static/") || uri.startsWith("/webjars/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -45,9 +45,14 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
 
             if(usuarioOpt.isPresent()){
                 Usuarios usuario = usuarioOpt.get();
-                if (usuario.getUsandoContrasenaTemporal() && !request.getRequestURI().contains("/cambiar-contrasena")){
-                    response.sendRedirect("/cambiar-contrasena?token=" + usuario.getToken());
+                String path = request.getRequestURI();
+
+                if(usuario.getUsandoContrasenaTemporal() || path.startsWith("/clinicarenacer/paciente") || path.startsWith("/clinicarenacer")){
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+                    return;
                 }
+
+
 
             }
 
@@ -60,4 +65,3 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
 }
 
 
- */

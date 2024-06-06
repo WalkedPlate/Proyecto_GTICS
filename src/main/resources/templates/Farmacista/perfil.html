@@ -55,9 +55,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:action="@{'/logout'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                                </a>
+                                <form th:action="@{/logout}" method="post">
+                                    <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">
+                                        <i class="bi bi-box-arrow-left" ></i> Cerrar sesión
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +76,7 @@
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
                                         <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary" th:text="'Farmacista ' + ${session.usuario.nombre}"></span></h2>
+                                            class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h2>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-sm-end">
@@ -110,15 +112,13 @@
                                              class="rounded-circle">
                                     </div>
                                     <div class="col mt-4" style="margin:0px 5px">
-                                        <span>Nombre: Robert Harry</span>
+                                        <span th:text="'Nombre:  ' + ${farmacista.nombre}"></span>
                                         <br>
-                                        <span>DNI: 12345678</span>
+                                        <span th:text="'DNI:  ' + ${farmacista.dni}"></span>
                                         <br>
-                                        <span>Código (colegio médico): 12345</span>
+                                        <span th:text="'Distrito de residencia: ' + ${farmacista.distritoResidencia}"></span>
                                         <br>
-                                        <span>Distrito de residencia: San Miguel</span>
-                                        <br>
-                                        <span>Correo: robert@gmail.com</span>
+                                        <span th:text="'Correo:  ' + ${farmacista.correo}"></span>
                                     </div>
                                 </div>
 

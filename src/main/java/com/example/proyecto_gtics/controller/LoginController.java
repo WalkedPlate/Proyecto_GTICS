@@ -8,9 +8,12 @@ import com.example.proyecto_gtics.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,20 +74,19 @@ public class LoginController {
 
     @GetMapping(value ={"","/","/login"})
     public String login(@RequestParam(name = "logout",required = false) String logout, RedirectAttributes attr,
-                        Authentication authentication, HttpServletRequest request,
+                        Authentication authentication, HttpServletRequest request, Model model,
                         HttpSession session){
 
-        /*
+/*
         if (authentication != null && authentication.isAuthenticated()) {
-            DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-            if (savedRequest != null) {
-                String targetUrl = savedRequest.getRedirectUrl();
-                return "redirect:" + targetUrl;
-            }
-            return "redirect:/";  // Página principal por defecto si no hay URL almacenada
-        }*/
-
-        if(logout!=null){
+            SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+            String targetUrl = (savedRequest != null) ? savedRequest.getRedirectUrl() : "/";
+            return "redirect:" + targetUrl;
+        }
+        SavedRequest savedRequest = new SimpleSavedRequest(request.getRequestURI());
+        session.setAttribute("SPRING_SECURITY_SAVED_REQUEST", savedRequest);
+*/
+        if(true){
             attr.addFlashAttribute("msg","Sesión cerrada exitosamente.");
         }
 
@@ -104,15 +106,25 @@ public class LoginController {
     }
 
     @PostMapping(value = {"/guardarPaciente"})
-    public  String guardarPaciente(Usuarios paciente, @RequestParam("nombres") String nombres , @RequestParam("apellidos") String apellidos,
+    public  String guardarPaciente(Usuarios paciente, @RequestParam(name = "nombres", required = false) String nombres ,
+                                   @RequestParam(name = "apellidos", required = false) String apellidos,
                                    HttpServletRequest request, RedirectAttributes attr){
 
         //Comprobar si existe el paciente:
         Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
+        if(nombres == null){
+            attr.addFlashAttribute("err","Debe ingresar un nombre");
+            return "redirect:/registro";
+        }
+        if(apellidos == null){
+            attr.addFlashAttribute("err","Debe ingresar apellidos");
+            return "redirect:/registro";
+        }
+
 
         if(consultaPaciente.isPresent()){
             attr.addFlashAttribute("err","Ya existe un usuario con los datos ingresados.");
-            return "redirect:/login";
+            return "redirect:/registro";
         }else {
             //Generación de token
             String token = tokenService.generateToken(paciente.getCorreo());
@@ -137,27 +149,64 @@ public class LoginController {
             //Envío de correo con contraseña temporal
             String to = paciente.getCorreo();
             String subject = "Cambie su contraseña";
-            emailService.sendEmail(to, subject, link, temporalPassword);
+            String pathToImage = "static/img/Login/icono.png";
+            String imageId = "image001";
+            emailService.sendEmail(to, subject, link, temporalPassword,pathToImage,imageId);
 
         }
         return "redirect:/login";
     }
 
-    @GetMapping(value ={"/cambiar-contrasena"})
-    public String recuperarCuenta(@RequestParam(name = "token",required = false) String token, Model model){
+    @GetMapping(value ={"/generar-Token"})
+    public String generarNuevoToken(@RequestParam(name = "token",required = false) String token, Model model,
+                                  RedirectAttributes attr){
 
         if(token != null ){
             String email = tokenService.getEmailFromToken(token);
             if (email == null) {
+                attr.addFlashAttribute("err","Correo inválido.");
                 return "redirect:/login?errorToken";
+            }
+            if(email.equalsIgnoreCase("expiration")){
+
             }
 
             model.addAttribute("token", token);
 
             return "Login/nuevaContra";
         }
+        else {
+            attr.addFlashAttribute("err","Necesitas un token.");
+            return "redirect:/login";
+        }
 
-        return "Login/nuevaContra";
+
+    }
+
+    @GetMapping(value ={"/cambiar-contrasena"})
+    public String recuperarCuenta(@RequestParam(name = "token",required = false) String token, Model model,
+                                  RedirectAttributes attr){
+
+        if(token != null ){
+            String email = tokenService.getEmailFromToken(token);
+            if (email == null) {
+                attr.addFlashAttribute("err","Correo inválido.");
+                return "redirect:/login?errorToken";
+            }
+            if(email.equalsIgnoreCase("expiration")){
+
+            }
+
+            model.addAttribute("token", token);
+
+            return "Login/nuevaContra";
+        }
+        else {
+            attr.addFlashAttribute("err","Necesitas un token.");
+            return "redirect:/login";
+        }
+
+
     }
 
     @PostMapping("/cambiarContrasena")
@@ -169,8 +218,8 @@ public class LoginController {
             String email = tokenService.getEmailFromToken(token);
 
             if (email == null) {
-                model.addAttribute("error", "Token inválido o expirado.");
-                return "Login/nuevaContra";
+                attr.addFlashAttribute("err","Correo inválido.");
+                return "redirect:/login";
             }
 
             Optional<Usuarios> optionalUsuario = usuariosRepository.findByCorreo(email);
@@ -196,50 +245,59 @@ public class LoginController {
 
 
         }
-
-        return "redirect:/login?errorEnPost";
-    }
-
-
-
-    //Obsoleto - Se borrará pronto!
-
-    @PostMapping(value = "login/validarCampos")
-    public String validarCampos(@RequestParam("email") String correo, @RequestParam("password") String password, RedirectAttributes attr){
-
-        Usuarios user = usuariosRepository.findByCorreo(correo).get();
-        if(user == null){
-            attr.addFlashAttribute("err","credenciales inválidas.");
+        else{
+            //attr.addFlashAttribute("err","Tienes prohibido el acceso a esta vista.");
             return "redirect:/login";
         }
 
-        Integer idUser = user.getIdUsuario();
-        if(user.getContrasena().equalsIgnoreCase(password)){
+    }
 
-            switch (idUser) {
-                case 1 -> {
-                    return "redirect:/superadmin";
-                }
-                case 12 -> {
-                    return "redirect:/administradorsede";
-                }
-                case 1027 -> {
-                    return "redirect:/farmacista";
-                }
-                case 1002 -> {
-                    return "redirect:/clinicarenacer";
-                }
-                default -> {
-                    return "redirect:/login";
-                }
+    @PostMapping("/recuperarCuenta")
+    public String recuperarCuenta(@RequestParam(name = "email",required = false) String email, HttpServletRequest request,
+                                    RedirectAttributes attr) {
+
+        if(email != null ){
+
+            Optional<Usuarios> opt = usuariosRepository.findByCorreo(email);
+
+            if(opt.isPresent()){
+                Usuarios usuario = opt.get();
+
+
+                //Generación de token
+                String token = tokenService.generateToken(usuario.getCorreo());
+                String link = request.getScheme() + "://"+ request.getServerName()
+                        + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
+
+
+                //Envío de correo con el link para cambiar su contraseña
+                String to = usuario.getCorreo();
+                String subject = "Reestablecer Contraseña";
+                String pathToImage = "static/img/Login/icono.png";
+                String imageId = "image001";
+                emailService.sendEmailPasswordChange(to, subject, link, "j",pathToImage,imageId);
+
+                attr.addFlashAttribute("msg","Solictud válida, se le enviará un enlace por correo.");
+                return "redirect:/login";
+
             }
+            else {
+                attr.addFlashAttribute("err","Correo inválido");
+                return "redirect:/login";
+            }
+
+
+
+
+
+
 
         }
         else{
-            attr.addFlashAttribute("err","credenciales inválidas.");
+            //attr.addFlashAttribute("err","Tienes prohibido el acceso a esta vista.");
             return "redirect:/login";
         }
 
-
     }
+
 }

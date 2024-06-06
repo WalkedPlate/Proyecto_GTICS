@@ -74,8 +74,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
-
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -92,7 +91,12 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
-    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr ){
+    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,
+                                   @RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr,
+                                   HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
             System.out.println(adminsede.get().getDni());
@@ -134,7 +138,11 @@ public class SuperadminController {
     }
 
     @PostMapping("/superadmin/eliminarAdminSede")
-    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id, RedirectAttributes redirectAttributes) {
+    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id, RedirectAttributes redirectAttributes,
+                                    HttpSession session) {
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Optional<Usuarios> optSede = usuariosRepository.findById(id);
         Usuarios adminSede = usuariosRepository.findByIdUsuario(id);
         if (optSede.isPresent()) {
@@ -147,8 +155,11 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/banearAdminSede"})
-    public String banearAdminSede( @RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede,RedirectAttributes attr){
-        System.out.println(diasBan);
+    public String banearAdminSede( @RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede,RedirectAttributes attr,
+                                   HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Date fechaActual = new Date();
         Usuarios adminSede = usuariosRepository.findByIdUsuario(idAdminSede);
         Optional<Usuarios> optSede =usuariosRepository.findById(idAdminSede);
@@ -167,7 +178,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -189,7 +200,9 @@ public class SuperadminController {
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
     public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
-                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes){
+                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes,
+                                  HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
 
         //Sobre la foto de un producto --------------------------------------------------------------------------------
@@ -312,7 +325,9 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/eliminarProducto"})
-    public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr){
+    public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr, HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Productos> optProduc =productosRepository.findById(idProducto);
         Productos producto = productosRepository.findById(idProducto).get();
         if(optProduc.isPresent()){
@@ -325,7 +340,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario/estado-reposicion"})
     public String estadoReposiciones(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/estadoReposicion";
@@ -333,7 +348,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario/restricciones"})
     public String restricciones(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/restricciones";
@@ -341,7 +356,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/orden-reposicion"})
     public String ordenReposicion(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -363,7 +378,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
     public String solicitudesReposicion(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -383,7 +398,10 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/cambiarEstadoOrden"})
-    public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden){
+    public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden,
+                                     HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         orden.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(accion));
         ordenesRepository.save(orden);
@@ -392,7 +410,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/farmacistas"})
     public String farmacistas(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -408,7 +426,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
     public String soliFarmacistas(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -420,7 +438,10 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarfarmacista"})
-    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
+    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr,
+                                     HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
 
         if(bindingResult.hasErrors()){
@@ -457,7 +478,9 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/eliminarfarmacistas"})
-    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id, RedirectAttributes attr){
+    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id, RedirectAttributes attr, HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Usuarios> optSede =usuariosRepository.findById(id);
         Usuarios farmacista = usuariosRepository.findByIdUsuario(id);
         if(optSede.isPresent()){
@@ -469,7 +492,10 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
-    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr){
+    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr,
+                                            HttpSession session){
+
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         Usuarios farmacista = usuariosRepository.findByIdUsuario(idFarmacista);
         if(valor == 1){
@@ -488,7 +514,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/doctores"})
     public String doctores(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -503,7 +529,10 @@ public class SuperadminController {
 
     }
     @PostMapping(value = {"/superadmin/guardarDoctor"})
-    public String guardarDoctor(@Valid Usuarios doctor, BindingResult bindingResult, @RequestParam("idSede") @Valid int idSede,BindingResult bindingResultSedes, RedirectAttributes attr){
+    public String guardarDoctor(@Valid Usuarios doctor, BindingResult bindingResult, @RequestParam("idSede") @Valid int idSede,BindingResult bindingResultSedes,
+                                RedirectAttributes attr, HttpSession session){
+
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         if(bindingResult.hasErrors() || idSede<0 ||idSede > 10 ){
            String error = bindingResult.getFieldError().getDefaultMessage().toString();
@@ -542,7 +571,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/pacientes"})
     public String pacientes(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -555,7 +584,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/perfil"})
     public String perfil(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editarPerfil";
@@ -563,7 +592,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/editar-perfil"})
     public String editarPerfil(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editar";
@@ -571,7 +600,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/cambiar-contra"})
     public String cambiarContra(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/cambiarContra";
@@ -582,7 +611,8 @@ public class SuperadminController {
                                    @RequestParam("pass2") String pass2,
                                    RedirectAttributes attr, HttpSession session){
 
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
 
         if(pass1.equalsIgnoreCase(pass2)){
             superadmin.setContrasena(passwordEncoder.encode(pass1));

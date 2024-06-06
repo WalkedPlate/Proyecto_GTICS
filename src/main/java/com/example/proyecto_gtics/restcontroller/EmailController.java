@@ -18,7 +18,8 @@ public class EmailController {
     @PostMapping("/send")
     public String sendEmail(@RequestBody EmailRequest emailRequest) {
         try {
-            emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody(), emailRequest.getPassword());
+            emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody(), emailRequest.getPassword(),
+                    emailRequest.getPathToImage(), emailRequest.getImageId());
             return "Email sent successfully";
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,5 +34,7 @@ public class EmailController {
         private String subject;
         private String body;
         private String password;
+        private String pathToImage;
+        private String imageId;
     }
 }

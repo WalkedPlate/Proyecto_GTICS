@@ -52,9 +52,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:action="@{'/logout'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                                </a>
+                                <form th:action="@{/logout}" method="post">
+                                    <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">
+                                        <i class="bi bi-box-arrow-left" ></i> Cerrar sesión
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -71,7 +73,7 @@
                                     <!-- Title -->
                                     <h1 class="h2 mb-0 ls-tight">
                                         <img src="/img/Superadmin/profile-3.jpeg" width="40"> Mi perfil, <span
-                                            class="text-primary" th:text="'SuperAdmin ' + ${session.usuario.nombre}"></span></h1>
+                                            class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span></h1>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-sm-end">
