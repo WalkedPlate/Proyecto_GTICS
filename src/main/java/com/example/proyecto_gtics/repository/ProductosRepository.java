@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.repository;
 
+import com.example.proyecto_gtics.dto.CantProductoMenosPorSede;
 import com.example.proyecto_gtics.entity.Categorias;
 import com.example.proyecto_gtics.entity.Productos;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,5 +27,8 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
     Productos findByCodigo(String codigo);
 
     Productos findByNombre(String nombre);
+
+    @Query(value="select productos.idproductos,productos.nombre, sum(productos_has_sedes.cantidad) as cantidadTotal from productos inner join productos_has_sedes on productos.idproductos = productos_has_sedes.productos_idproductos group by productos.idproductos , productos.nombre having cantidadTotal < 200;",nativeQuery = true)
+    List<CantProductoMenosPorSede> obtenerProductosPocoInventariado();
 
 }

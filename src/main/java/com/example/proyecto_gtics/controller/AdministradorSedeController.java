@@ -1,10 +1,12 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.dto.CantProductoMenosPorSede;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -86,6 +88,14 @@ public class AdministradorSedeController {
     public String paginaPrincipal(Model model, HttpSession session){
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
         model.addAttribute("adminSede",adminSede);
+
+        List<CantProductoMenosPorSede> listCantProductoMenosPorSede = productosRepository.obtenerProductosPocoInventariado();
+        JSONObject jsonObject = new JSONObject();
+        for(CantProductoMenosPorSede cantProductoMenosPorSede : listCantProductoMenosPorSede){
+            jsonObject.put(cantProductoMenosPorSede.getNombre(),cantProductoMenosPorSede.getCantidadTotal());
+        }
+        System.out.println(jsonObject.toString());
+        model.addAttribute("listaCantProductosSede",jsonObject.toString());
 
         return "AdministradorSede/index";
     }
