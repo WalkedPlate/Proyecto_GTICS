@@ -94,12 +94,6 @@ public class LoginController {
     }
 
 
-    /*Inicio para SuperAdmin*/
-    @GetMapping(value ={"/loginSuperAdmin"})
-    public String loginSuperAdmin(){
-        return "Login/inicioSuperAdmin";
-    }
-
     @GetMapping(value ={"/registro"})
     public String registro(){
         return "Login/registro";
