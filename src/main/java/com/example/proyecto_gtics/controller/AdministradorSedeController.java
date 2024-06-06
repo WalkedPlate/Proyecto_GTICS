@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 
 import com.example.proyecto_gtics.dto.CantProductoMenosPorSede;
+import com.example.proyecto_gtics.dto.NroTransaccionesPorSede;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import jakarta.servlet.http.HttpSession;
@@ -89,14 +90,21 @@ public class AdministradorSedeController {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
         model.addAttribute("adminSede",adminSede);
 
+        //Creacion de archivo JSON para añadir DATA en el grafico pastel
         List<CantProductoMenosPorSede> listCantProductoMenosPorSede = productosRepository.obtenerProductosPocoInventariado();
         JSONObject jsonObject = new JSONObject();
         for(CantProductoMenosPorSede cantProductoMenosPorSede : listCantProductoMenosPorSede){
             jsonObject.put(cantProductoMenosPorSede.getNombre(),cantProductoMenosPorSede.getCantidadTotal());
         }
-        System.out.println(jsonObject.toString());
         model.addAttribute("listaCantProductosSede",jsonObject.toString());
 
+        //Creacion de archivo JSON para añadir DATA en el grafico de barras
+        List<NroTransaccionesPorSede> listNroTransaccionesPorSede = ordenesRepository.encuentraNroTransaccinesPorSede();
+        JSONObject jsonObject1 = new JSONObject();
+        for (NroTransaccionesPorSede nroTransaccionesPorSede : listNroTransaccionesPorSede){
+            jsonObject1.put(nroTransaccionesPorSede.getNombre(),nroTransaccionesPorSede.getNroTransacciones());
+        }
+        model.addAttribute("listaNroTransaccionPorSede",jsonObject1.toString());
         return "AdministradorSede/index";
     }
 

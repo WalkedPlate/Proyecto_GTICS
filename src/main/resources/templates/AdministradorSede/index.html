@@ -182,7 +182,7 @@
         <!--Script para graficas-->
         <!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="/js/AdministradorSede/controladorBarra.js"></script>
+        <!--<script src="/js/AdministradorSede/controladorBarra.js"></script>-->
         <!--<script src="/js/AdministradorSede/controladorPastel.js"></script>-->
         <script th:inline="javascript">
             document.addEventListener("DOMContentLoaded", function() {
@@ -200,6 +200,26 @@
                 // Cargar el script después de definir window.listaCantidadProductosSede
                 var script = document.createElement('script');
                 script.src = '/js/AdministradorSede/controladorPastel.js';
+                document.body.appendChild(script);
+
+            });
+        </script>
+        <script th:inline="javascript">
+            document.addEventListener("DOMContentLoaded", function() {
+
+                var listNroTransPorSede = /*[[${listaNroTransaccionPorSede}]]*/ 'default';
+
+                // Parsear el JSON
+                listNroTransPorSede = JSON.parse(listNroTransPorSede);
+
+                window.listaNroTransPorSede = listNroTransPorSede
+
+                // Mostrar los datos en la consola (puedes adaptarlo para mostrarlo en la vista)
+                console.log(listNroTransPorSede);
+
+                // Cargar el script después de definir window.listaCantidadProductosSede
+                var script = document.createElement('script');
+                script.src = '/js/AdministradorSede/controladorBarra.js';
                 document.body.appendChild(script);
 
             });
