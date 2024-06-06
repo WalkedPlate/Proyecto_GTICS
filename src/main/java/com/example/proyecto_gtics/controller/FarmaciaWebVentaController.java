@@ -128,9 +128,14 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value = "/clinicarenacer/paciente/verPedido")
-    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden,  HttpSession session){
+    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden,  HttpSession session, String nombre){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
 
