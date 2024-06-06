@@ -147,7 +147,7 @@ public class FarmacistaController {
                     detallesOrden.setProductos(p);
                     detallesOrden.setCantidad(cantidad);
                     detallesOrden.setMontoParcial(cantidad*p.getPrecio());
-                    detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
+                    detallesOrdenRepository.save(detallesOrden); // Guardrooms los productos y detalles de orden
                 }
 
             }

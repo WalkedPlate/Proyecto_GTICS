@@ -29,7 +29,6 @@
               href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
         <!-- estilos de las otras vistas-->
-        <link rel="stylesheet" href="/css/AdministradorSede/style.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
@@ -58,12 +57,12 @@
                     <div class="card-header">
                         <div class="row align-items-center" style="display: flex">
                             <div class="col-12 mb-4 mb-sm-0" style="display: flex">
-                                <h3 class="mb-0 ls-tight" style="padding-right: 8px">
+                                <h5 class="mb-0 ls-tight" style="padding-right: 8px">
                                     <a class="text-heading"
-                                       th:href="@{'/historialPedidos'}">
+                                       th:href="@{'/clinicarenacer/historialPedidos'}">
                                         Historial de pedidos</a>
-                                </h3>
-                                <h3 th:text="'Orden N° ' +${ordenActual.codigo}" class="text-success"> </h3>
+                                </h5>
+                                <h5 th:text="'< Orden N° ' +${ordenActual.codigo}" class="text-success"> </h5>
                             </div>
                         </div>
                         <!--Mensaje de orden editada y generada -->
@@ -74,9 +73,9 @@
 
                 </div>
 
-                <div class="row card-centered">
+                <div class="row card-centered pt-3 pb-3">
 
-                    <div class="col-sm-10 col-xxl-8  ">
+                    <div class="col-sm-10 col-xxl-8">
 
                         <div class="card shadow border-0 mb-7">
                             <div class="card-container">
@@ -100,7 +99,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr th:each="detalle, obj : ${listaDetalles}">
-                                                    <td class="text-center" th:text="${obj + 1}"></td>
+                                                    <td class="text-center" th:text="${obj.index + 1}"></td>
                                                     <td class="text-center" >
                                                         <img alt="..." class="avatar avatar-sm rounded-circle" th:src="@{|/imageProduct/${detalle.productos.idProductos}|}">
 

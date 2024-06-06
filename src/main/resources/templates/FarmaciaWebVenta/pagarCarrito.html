@@ -137,7 +137,6 @@
                         <div class="showcase-container">
                             <h4> Necesitamos algunos datos para continuar</h4>
                             <hr>
-                            <input type="hidden" th:value="1000" name="idCarrito">
                             <div class="row pt-3">
                                 <div class="col">
                                     <label for="nombre">Nombre:</label>
@@ -184,22 +183,20 @@
                             <h4>Por favor, selecciona el doctor y la sede si es que se recogerá de manera presencial: </h4>
                             <hr>
 
-                            <form action="">
+                            <form class="needs-validation" th:action="@{/superadmin/guardarDoctor}" novalidate>
                                 <div class="row pt-3">
                                     <div class="col">
-                                        <label for="direccion">Selecciona al Doctor:</label>
-                                        <select name="idCategoria" class="form-select" required>
-                                            <option value="value1">Value 1</option>
-                                            <option value="value2" selected>Value 2</option>
-                                            <option value="value3">Value 3</option>
+                                        <label for="doctor">Selecciona al Doctor:</label>
+                                        <select id="doctor" name="iddoctor" class="form-select" required>
+                                            <option selected disabled value="">--Ingresa un doctor--</option>
+                                            <option th:each="doctor : ${listaDoctores}" th:text="${doctor.nombre}" th:value="${doctor.idUsuario}"></option>
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <label for="distrito">Distrito:</label>
-                                        <select name="idCategoria" class="form-select" required>
-                                            <option value="value1">Value 1</option>
-                                            <option value="value2" selected>Value 2</option>
-                                            <option value="value3">Value 3</option>
+                                        <label for="distrito">Sede:</label>
+                                        <select id="distrito" name="idSede" class="form-select" required>
+                                            <option selected disabled value="">--Ingresa una sede--</option>
+                                            <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -222,8 +219,8 @@
                                                placeholder="Coloca tu dirección actual">
                                     </div>
                                     <div class="col">
-                                        <label for="distrito">Distrito:</label>
-                                        <input id="distrito" name="distrito" type="text" class="form-control"
+                                        <label for="distrito2">Distrito:</label>
+                                        <input id="distrito2" name="distrito" type="text" class="form-control"
                                                placeholder="Coloca tu distrito">
                                     </div>
                                 </div>
@@ -315,7 +312,7 @@
                     </div>
                 </form>
                 <h6 id="cantidadTotal" th:text="'Productos('+${listaDetallesOrden.size()}+')'" ></h6>
-                <h6 id="costoTotal" >Total a pagar: S/. 0.00</h6>
+                <h6 id="costoTotal" th:text="'Total a pagar: S/.'+ ${carrito.monto}"></h6>
             </div>
         </div>
 

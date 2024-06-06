@@ -55,6 +55,7 @@ public class Productos implements Serializable {
     @Positive
     private float precio;
 
+
     @ManyToOne
     @JoinColumn(name = "preferencias_usuario_idpreferencias_usuario")
     private PreferenciasUsuario preferenciasUsuario;
