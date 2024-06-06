@@ -51,9 +51,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:action="@{'/logout'}">
-                                    <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                                </a>
+                                <form th:action="@{/logout}" method="post">
+                                    <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">
+                                        <i class="bi bi-box-arrow-left" ></i> Cerrar sesión
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -108,11 +110,11 @@
                                     <div class="col mt-4" style="margin:0px 5px">
                                         <span th:text="'Nombre:  ' + ${superadmin.nombre}"></span>
                                         <br>
-                                        <span th:text="'DNI:  ' + ${superadmin.dni}">DNI: 12345678</span>
+                                        <span th:text="'DNI:  ' + ${superadmin.dni}"></span>
                                         <br>
-                                        <span th:text="'Distrito de residencia: ' + ${superadmin.distritoResidencia}">Distrito de residencia: San Miguel</span>
+                                        <span th:text="'Distrito de residencia: ' + ${superadmin.distritoResidencia}"></span>
                                         <br>
-                                        <span th:text="'Correo:  ' + ${superadmin.correo}">Correo: robert@gmail.com</span>
+                                        <span th:text="'Correo:  ' + ${superadmin.correo}"></span>
                                     </div>
                                 </div>
 

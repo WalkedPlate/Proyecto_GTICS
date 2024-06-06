@@ -3,6 +3,7 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
@@ -82,14 +83,17 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede"})
-    public String paginaPrincipal(){
+    public String paginaPrincipal(Model model, HttpSession session){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         return "AdministradorSede/index";
     }
 
 
     @GetMapping(value ={"/administradorsede/ordenes-reposicion"})
-    public String ordenesReposicion(Model model){
-        Usuarios adminSede = usuariosRepository.findById(12).get(); //Admin de sede logueado
+    public String ordenesReposicion(Model model, HttpSession session){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
         model.addAttribute("adminSede",adminSede);
 
         TipoOrden tipoOrdenRepo = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
@@ -107,7 +111,10 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value={"/administradorsede/verOrden"})
-    public String verOrden(Model model, @RequestParam ("idOrdenRepo") Integer idOrdenRepo){
+    public String verOrden(Model model, @RequestParam ("idOrdenRepo") Integer idOrdenRepo, HttpSession session){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(idOrdenRepo);
 
@@ -128,9 +135,12 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value={"/administradorsede/nuevaOrden"})
-    public String nuevaOrden(Model model, @RequestParam(name="idOrdenRepo", required = false) Integer id, @RequestParam(name="primeraVez", required = false) Integer primeraVez){
+    public String nuevaOrden(Model model, @RequestParam(name="idOrdenRepo", required = false) Integer id,
+                             @RequestParam(name="primeraVez", required = false) Integer primeraVez,
+                             HttpSession session){
 
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
 
         if(primeraVez != null){
             if(primeraVez == 1){
@@ -176,7 +186,11 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value={"/administradorsede/editarOrden"})
-    public String editarOrden( Model model, @RequestParam("idOrdenRepo") Integer id){
+    public String editarOrden( Model model, @RequestParam("idOrdenRepo") Integer id,
+                               HttpSession session){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(id);
         if(optOrden.isPresent()){
@@ -203,15 +217,15 @@ public class AdministradorSedeController {
 
     @PostMapping(value ={ "/administradorsede/guardarDetalleOrden"})
     public String guardarDetalleOrden(@Valid DetallesOrden detalle, BindingResult bindingResult, RedirectAttributes attr, @RequestParam("ordenes") Integer idOrden, @RequestParam(name="nuevaOrden",required = false) Integer nuevaOrden,
-                                      @RequestParam("esNuevaOrden") Integer esNuevaOrden){
+                                      @RequestParam("esNuevaOrden") Integer esNuevaOrden,
+                                      HttpSession session){
 
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
 
         if (bindingResult.hasErrors()) {
             attr.addFlashAttribute("err","La cantidad debe ser un número entero positivo.");
             return  (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=") + idOrden ;
         }
-
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
 
 
         if(detalle.getIdDetallesOrden()==null){//Agregar un nuevo producto y cantidad
@@ -276,7 +290,11 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value = {"/administradorsede/borrarDetalleOrden"})
-    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id, RedirectAttributes attr){
+    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id, RedirectAttributes attr,
+                                     HttpSession session, Model model){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
 
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
         Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(optionalDetallesOrden.get().getOrdenes().getIdordenes());
@@ -293,7 +311,11 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value ={ "/administradorsede/guardarorden-reposicion"})
-    public String guardarOrdenReposicion(@RequestParam("idOrdenCarrito") Integer idOrdenCarrito, RedirectAttributes attr){
+    public String guardarOrdenReposicion(@RequestParam("idOrdenCarrito") Integer idOrdenCarrito, RedirectAttributes attr,
+                                         HttpSession session){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+
 
         Ordenes ordenCarrito = ordenesRepository.findById(idOrdenCarrito).get();
         ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(2).get());
@@ -307,7 +329,11 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value = {"/administradorsede/borrarorden-reposicion"})
-    public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id){
+    public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id,
+                                        HttpSession session, Model model){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         Optional<Ordenes> optOrden =ordenesRepository.findById(id);
         if(optOrden.isPresent()){
             Ordenes ordenToSave = optOrden.get();
@@ -319,9 +345,11 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value ={"/administradorsede/doctores"})
-    public String doctores(Model model){
+    public String doctores(Model model,HttpSession session){
 
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById("Activo").get();
         TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get(); //Tipo de usuario: Doctor
         List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,adminSede.getSedes(),estadoUsuario);
@@ -334,9 +362,12 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede/farmacistas"})
-    public String farmacistas(Model model){
+    public String farmacistas(Model model, HttpSession session){
 
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
+
         EstadoUsuario estado = estadoUsuarioRepository.findById("activo").get();
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get(); //Tipo de usuario: Farmacista
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(farmacista,adminSede.getSedes(),estado);
@@ -349,8 +380,11 @@ public class AdministradorSedeController {
     }
 
     @PostMapping(value = "/administradorsede/guardarfarmacista")
-    public String guardarFarmacista(@Valid Usuarios usuarios , BindingResult bindingResult, @RequestParam("idSedes") int id, RedirectAttributes attr){
+    public String guardarFarmacista(@Valid Usuarios usuarios , BindingResult bindingResult,
+                                    @RequestParam("idSedes") int id, RedirectAttributes attr,
+                                    HttpSession session){
 
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
 
         if(bindingResult.hasErrors()){
            String error = bindingResult.getFieldError().getDefaultMessage().toString();
@@ -409,7 +443,12 @@ public class AdministradorSedeController {
     }
 
     @GetMapping("/administradorsede/borrarfarmacista")
-    public String borrarFarmacista(@RequestParam("idFarmacista") Integer id){
+    public String borrarFarmacista(@RequestParam("idFarmacista") Integer id,
+                                   HttpSession session, Model model){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         Optional<Usuarios> optSede =usuariosRepository.findById(id);
         if(optSede.isPresent()){
             usuariosRepository.deleteById(id);
@@ -420,9 +459,11 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede/medicinas"})
-    public String medicinas(Model model){
+    public String medicinas(Model model, HttpSession session){
 
-        Usuarios adminSede = usuariosRepository.findById(12).get();//Admin de sede logueado
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
         model.addAttribute("listaMedicinas",listMedicinas);
 
@@ -431,17 +472,26 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value ={"/administradorsede/perfil"})
-    public String perfil(){
+    public String perfil(HttpSession session, Model model){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         return "AdministradorSede/perfil";
     }
 
     @GetMapping(value ={"/administradorsede/editar-perfil"})
-    public String editarPerfil(){
+    public String editarPerfil(HttpSession session, Model model){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         return "AdministradorSede/editarPerfil";
     }
 
     @GetMapping(value ={"/administradorsede/cambiar-contra"})
-    public String cambiarContra(){
+    public String cambiarContra(HttpSession session, Model model){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        model.addAttribute("adminSede",adminSede);
+
         return "AdministradorSede/cambiarContra";
     }
 

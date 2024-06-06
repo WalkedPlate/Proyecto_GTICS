@@ -85,9 +85,9 @@ document.getElementById('newpass-form').addEventListener('submit', function(even
     emailError.textContent = '';
 
     // Si la validación es exitosa, mostrar mensaje de éxito
-    emailError.textContent = 'Se ha enviado un correo electrónico con el enlace para restablecer tu contraseña';
+    emailError.textContent = 'Validando el correo...';
     emailError.style.color = 'green';
     emailError.style.fontSize = '0.8em';
     // Reiniciar el formulario
-    this.reset();
+    this.submit();
 });

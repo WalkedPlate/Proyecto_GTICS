@@ -88,9 +88,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:action="@{'/logout'}">
-                                <i class="bi bi-box-arrow-left"></i> Cerrar sesión
-                            </a>
+                            <form th:action="@{/logout}" method="post">
+                                <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">
+                                    <i class="bi bi-box-arrow-left" ></i> Cerrar sesión
+                                </button>
+                            </form>
                         </li>
                     </ul>
                 </div>
@@ -107,7 +109,7 @@
                                 <!-- Title -->
                                 <h2 class="mb-0 ls-tight">
                                     <img src="/img/AdministradorSede/profile-3.jpeg" width="40"> Bienvenido, <span
-                                        class="text-primary" th:text="'Administrador De Sede ' + ${session.usuario.nombre}"></span>
+                                        class="text-primary" th:text="'Administrador De Sede ' + ${adminSede.nombre}"></span>
                                 </h2>
                             </div>
                             <!-- Actions -->

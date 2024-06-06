@@ -25,7 +25,7 @@ public class TokenService {
         if (tokenExpiration.get(token) < System.currentTimeMillis()) {
             tokenStorage.remove(token);
             tokenExpiration.remove(token);
-            return null;
+            return "expiration";
         }
         return tokenStorage.get(token);
     }
