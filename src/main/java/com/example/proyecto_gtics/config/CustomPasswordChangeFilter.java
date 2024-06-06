@@ -47,9 +47,12 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
                 Usuarios usuario = usuarioOpt.get();
                 String path = request.getRequestURI();
 
-                if(usuario.getUsandoContrasenaTemporal() || path.startsWith("/clinicarenacer/paciente") || path.startsWith("/clinicarenacer")){
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
-                    return;
+                if(usuario.getUsandoContrasenaTemporal()){
+                    if(path.startsWith("/clinicarenacer/paciente") || path.startsWith("/clinicarenacer")){
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+                        return;
+                    }
+
                 }
 
 
