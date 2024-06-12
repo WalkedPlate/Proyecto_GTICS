@@ -15,7 +15,7 @@ import java.util.List;
 public interface ProductosSedeRepository extends JpaRepository<ProductosSedes,ProductosSedesId> {
     List<ProductosSedes> findBySedes(Sedes sedes);
 
-    @Query(value = "select sum(cantidad) as cantidadTotal, productos_idproductos as idProductoDTO from proyecto_gtics.productos_has_sedes group by productos_idproductos;",nativeQuery = true)
+    @Query(value = "select productos.idproductos,coalesce(sum(productos_has_sedes.cantidad),0) as cantidadTotal from productos left join productos_has_sedes on productos.idproductos=productos_has_sedes.productos_idproductos group by productos.idproductos;",nativeQuery = true)
     List<CantidadTotalPorProducto> obtenerCantidadTotalPorProducto();
 
     ProductosSedes findByProductosAndSedes(Productos productos,Sedes sedes);
