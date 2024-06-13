@@ -54,8 +54,8 @@
                                     <div class="form-floating mb-3">
                                         <input
                                                 pattern="[A-Za-z].+"
-                                                type="text" class="form-control" placeholder="Nombre" autocomplete="off" maxlength="20"
-                                                name="nombres" required/>
+                                                type="text" class="form-control" placeholder="Apellido" maxlength="50"
+                                                autocomplete="off" name="nombres" id="nombre" readonly/>
                                         <label>Nombre</label>
                                         <div class="invalid-feedback">
                                             Por favor ingrese un nombre.
@@ -65,8 +65,8 @@
                                     <div class="form-floating mb-3">
                                         <input
                                                 pattern="[A-Za-z].+"
-                                                type="text" class="form-control" placeholder="Apellido" maxlength="25"
-                                               autocomplete="off" name="apellidos" required/>
+                                                type="text" class="form-control" placeholder="Apellido" maxlength="50"
+                                               autocomplete="off" name="apellidos" id="apellido" readonly/>
                                         <label>Apellido</label>
                                         <div class="invalid-feedback">
                                             Por favor ingrese un apellido.
@@ -75,7 +75,7 @@
 
                                     <div class="form-floating mb-3">
                                         <input
-                                                id="numberInput"
+                                                id="numberInput" onblur="autocompletarDni()"
                                                 minlength="8" maxlength="8"
                                                 type="text" class="form-control" placeholder="DNI"
                                                autocomplete="off" name="dni" required/>
@@ -147,6 +147,25 @@
 
             </div>
         </main>
+
+        <script>
+            function autocompletarDni() {
+                let dni = document.getElementById("numberInput").value;
+
+                fetch(`/api/dni?dni=${dni}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 422 || data.status === 404) {
+                            alert(data.message);
+                        } else {
+                            document.getElementById("nombre").value = data.data.nombres;
+                            document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        </script>
+
         <script>
             // JavaScript para permitir solo la entrada de números
             document.getElementById("numberInput").addEventListener("keydown", function(event) {

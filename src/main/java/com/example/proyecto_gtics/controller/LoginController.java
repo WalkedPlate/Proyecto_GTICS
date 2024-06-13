@@ -1,12 +1,15 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.dto.ResultDni;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,9 +19,11 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.savedrequest.SimpleSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.Authenticator;
@@ -70,6 +75,8 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private DniService dniService;
 
 
     @GetMapping(value ={"","/","/login"})
@@ -100,13 +107,16 @@ public class LoginController {
     }
 
     @PostMapping(value = {"/guardarPaciente"})
-    public  String guardarPaciente(Usuarios paciente, @RequestParam(name = "nombres", required = false) String nombres ,
+    public  String guardarPaciente(Usuarios paciente, BindingResult bindingResult, @RequestParam(name = "nombres", required = false) String nombres ,
                                    @RequestParam(name = "apellidos", required = false) String apellidos,
                                    HttpServletRequest request, RedirectAttributes attr){
 
         //Comprobar si existe el paciente:
         Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
-        if(nombres == null){
+        //Comprobar si existe el paciente por correo:
+        Optional<Usuarios> consultaPacienteCorreo = usuariosRepository.findByCorreo(paciente.getCorreo());
+/*
+        if(nombres.isEmpty() == null){
             attr.addFlashAttribute("err","Debe ingresar un nombre");
             return "redirect:/registro";
         }
@@ -116,7 +126,14 @@ public class LoginController {
         }
 
 
-        if(consultaPaciente.isPresent()){
+        if (bindingResult.hasErrors()) {
+            String error = bindingResult.getFieldError().getDefaultMessage();
+            attr.addFlashAttribute("err",error);
+            return "redirect:/registro";
+        }
+*/
+
+        if(consultaPaciente.isPresent() || consultaPacienteCorreo.isPresent()){
             attr.addFlashAttribute("err","Ya existe un usuario con los datos ingresados.");
             return "redirect:/registro";
         }else {
@@ -125,7 +142,14 @@ public class LoginController {
             String link = request.getScheme() + "://"+ request.getServerName()
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
-            paciente.setNombre(nombres + ' ' + apellidos);
+            ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
+            if (resultDni == null || resultDni.getStatus() != 200) {
+                attr.addFlashAttribute("err","DNI inválido");
+                return "redirect:/registro";
+            }
+
+
+            paciente.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             //Contraseña
             String temporalPassword = Usuarios.generateTemporaryPassword(10);
@@ -326,6 +350,20 @@ public class LoginController {
             return "redirect:/login";
         }
 
+    }
+
+
+    @GetMapping("/api/dni")
+    public @ResponseBody ResultDni obtenerDatosDni(@RequestParam String dni) {
+        String errorValidacion = dniService.validarDni(dni);
+        if (errorValidacion != null) {
+            ResultDni response = new ResultDni();
+            response.setStatus(422);
+            response.setMessage(errorValidacion);
+            return response;
+        }
+
+        return dniService.obtenerDatosPorDni(dni);
     }
 
 }
