@@ -11,18 +11,18 @@
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossorigin="anonymous">
         <link rel="stylesheet" href="/css/Login/registro.css"/>
-<!--        <style>
-            /* Estilo para ocultar las flechas en los campos de entrada de tipo número */
-            input[type=number]::-webkit-inner-spin-button,
-            input[type=number]::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
+        <!--        <style>
+                    /* Estilo para ocultar las flechas en los campos de entrada de tipo número */
+                    input[type=number]::-webkit-inner-spin-button,
+                    input[type=number]::-webkit-outer-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
 
-            input[type=number] {
-                -moz-appearance: textfield; /* Firefox */
-            }
-        </style>-->
+                    input[type=number] {
+                        -moz-appearance: textfield; /* Firefox */
+                    }
+                </style>-->
     </head>
 
     <body>
@@ -39,8 +39,8 @@
 
                 </div>
 
-                <div class="row text-center mb-4">
-                    <h1>Crea una cuenta</h1>
+                <div class="row text-center mb-3">
+                    <h2>Crea una cuenta</h2>
                 </div>
                 <div th:if="${err != null}" th:text="${err}" style="color: red" role="alert"></div>
                 <div th:if="${msg != null}" th:text="${msg}" style="color: green" role="alert"></div>
@@ -50,44 +50,81 @@
                     <div class="col">
                         <form class="needs-validation" novalidate method="post" th:action="@{/guardarPaciente}">
                             <div class="row justify-content-center">
+                                <div class="col columna">
+                                    <div class="form-floating mb-3">
+                                        <input
+                                                id="numberInput" onblur="autocompletarDni()"
+                                                minlength="8" maxlength="8"
+                                                type="text" class="form-control" placeholder="DNI"
+                                                autocomplete="off" name="dni" required/>
+                                        <label>DNI</label>
+                                        <div class="invalid-feedback">
+                                            El DNI debe tener 8 dígitos.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Nombre y apellidos autocompletados-->
+                            <div class="row justify-content-center">
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
                                         <input
                                                 pattern="[A-Za-z].+"
                                                 type="text" class="form-control" placeholder="Apellido" maxlength="50"
-                                                autocomplete="off" name="nombres" id="nombre" readonly/>
+                                                autocomplete="off" name="nombres" id="nombre"  disabled readonly/>
                                         <label>Nombre</label>
                                         <div class="invalid-feedback">
                                             Por favor ingrese un nombre.
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
                                         <input
                                                 pattern="[A-Za-z].+"
                                                 type="text" class="form-control" placeholder="Apellido" maxlength="50"
-                                               autocomplete="off" name="apellidos" id="apellido" readonly/>
+                                                autocomplete="off" name="apellidos" id="apellido" disabled readonly/>
                                         <label>Apellido</label>
                                         <div class="invalid-feedback">
                                             Por favor ingrese un apellido.
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
-                                        <input
-                                                id="numberInput" onblur="autocompletarDni()"
-                                                minlength="8" maxlength="8"
-                                                type="text" class="form-control" placeholder="DNI"
-                                               autocomplete="off" name="dni" required/>
-                                        <label>DNI</label>
+                                        <input maxlength="99" type="text" class="form-control"
+                                               placeholder="Dirección"
+                                               autocomplete="off" name="direccion" required/>
+                                        <label>Dirección</label>
                                         <div class="invalid-feedback">
-                                            El DNI debe tener 8 dígitos.
+                                            Por favor ingrese una dirección.
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-6 columna">
+                                    <div class="form-floating mb-3">
+                                        <input maxlength="99" type="text" class="form-control"
+                                               placeholder="Distrito"
+                                               autocomplete="off" name="distritoResidencia" required/>
+                                        <label>Distrito de residencia</label>
+                                        <div class="invalid-feedback">
+                                            Por favor ingrese un distrito de residencia.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="row justify-content-center">
+                                <div class="col columna">
                                     <div class="form-floating mb-3">
                                         <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
-                                                type="email" class="form-control" placeholder="Correo electrónico"
+                                               type="email" class="form-control" placeholder="Correo electrónico"
                                                autocomplete="off" name="correo" required/>
                                         <label>Correo electrónico</label>
                                         <div class="invalid-feedback">
@@ -95,35 +132,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 columna">
+                            </div>
 
 
-                                    <div class="form-floating mb-3">
-                                        <input maxlength="99" type="text" class="form-control" placeholder="Dirección"
-                                               autocomplete="off" name="direccion" required/>
-                                        <label>Dirección</label>
-                                        <div class="invalid-feedback">
-                                            Por favor ingrese una dirección.
-                                        </div>
-                                    </div>
-
-                                    <div class="form-floating mb-3">
-                                        <input maxlength="99" type="text" class="form-control" placeholder="Distrito"
-                                               autocomplete="off" name="distritoResidencia" required/>
-                                        <label>Distrito de residencia</label>
-                                        <div class="invalid-feedback">
-                                            Por favor ingrese un distrito de residencia.
-                                        </div>
-                                    </div>
-
+                            <div class="row justify-content-center">
+                                <div class="col columna ">
                                     <div class="form-control mb-3">
                                         <p>¿Cuenta con seguro en la clínica Renacer?</p>
-                                        <div >
+                                        <div>
 
-                                            <input class="form-check-input" type="radio"  name="seguro" value="si" required>
+                                            <input class="form-check-input" type="radio" name="seguro" value="si"
+                                                   required>
                                             <label class="form-check-label">Sí</label>
 
-                                            <input class="form-check-input" type="radio"  name="seguro" value="no" required>
+                                            <input class="form-check-input" type="radio" name="seguro" value="no"
+                                                   required>
                                             <label class="form-check-label"> No</label>
                                             <div class="invalid-feedback">
                                                 Por favor seleccione una opción.
@@ -133,17 +156,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-2 justify-content-center">
-                                <input type="submit" value="Registrar" class="sign-btn">
-                            </div>
-                            <div class="row inicio">
-                                <h6>¿Ya tienes una cuenta?</h6>
-                                <a th:href="@{'/login'}">Entrar</a>
-                            </div>
 
-                        </form>
-                    </div>
+                <div class="row mt-2 justify-content-center">
+                    <input type="submit" value="Registrar" class="sign-btn">
                 </div>
+                <div class="row inicio">
+                    <h6>¿Ya tienes una cuenta?</h6>
+                    <a th:href="@{'/login'}">Entrar</a>
+                </div>
+
+                </form>
+            </div>
+            </div>
 
             </div>
         </main>
@@ -168,7 +192,7 @@
 
         <script>
             // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            document.getElementById("numberInput").addEventListener("keydown", function (event) {
                 // Permite las teclas de flecha, retroceso y suprimir
                 if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
                     return;
