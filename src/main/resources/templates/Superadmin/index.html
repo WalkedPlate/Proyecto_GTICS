@@ -393,6 +393,20 @@
             </div>
         </div>
 
+        <!-- Modal de confirmación para cierre de sesión -->
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title" id="confirmLogoutModalLabel">¿Estás seguro de que quieres cerrar sesión?</h3>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script src="/js/Superadmin/script.js"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -448,5 +462,18 @@
                 })
             })()
         </script>
+
+        <!-- Script para confirmación de cierre de sesión -->
+        <script>
+            function confirmLogout() {
+                $('#confirmLogoutModal').modal('show');
+            }
+
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
+        </script>
+
+
     </body>
 </html>

@@ -39,12 +39,36 @@
                         <i class="bi bi-bag-plus"></i> Órdenes de reposición
                     </a>
                 </li>
+
+                <!--ERROR DE ESTILO-->
+<!--                <li class="nav-item">-->
+<!--                    <form th:action="@{/logout}" method="post">-->
+<!--                        <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">-->
+<!--                            <i class="bi bi-box-arrow-left" ></i> Cerrar sesión-->
+<!--                        </button>-->
+<!--                    </form>-->
+<!--                </li>-->
+
+                <!--SIN MODAL DE CONFIRMACIÓN-->
+<!--                <li class="nav-item">-->
+<!--                    <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">-->
+<!--                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+<!--                    </form>-->
+<!--                    <a href="#" class="nav-link" onclick="document.getElementById('logoutForm').submit();">-->
+<!--                        <i class="bi bi-box-arrow-left"></i> Cerrar sesión-->
+<!--                    </a>-->
+<!--                </li>-->
+
+
+                <!-- CON MODAL DE CONFIRMACION-->
                 <li class="nav-item">
-                    <form th:action="@{/logout}" method="post">
-                        <button class="nav-link" type="submit" style="background: none; padding: 0; cursor: pointer ">
-                            <i class="bi bi-box-arrow-left" ></i> Cerrar sesión
-                        </button>
+                    <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                        <!-- Incluir token CSRF -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
+                    <a href="#" class="nav-link" onclick="confirmLogout(event)">
+                        <i class="bi bi-box-arrow-left"></i> Cerrar sesión
+                    </a>
                 </li>
             </ul>
         </div>

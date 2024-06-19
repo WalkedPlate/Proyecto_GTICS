@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.repository;
 
+import com.example.proyecto_gtics.dto.CantidadProductosPorOrden;
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.Productos;
 import com.example.proyecto_gtics.entity.ProductosSedes;
@@ -19,4 +20,8 @@ public interface ProductosSedeRepository extends JpaRepository<ProductosSedes,Pr
     List<CantidadTotalPorProducto> obtenerCantidadTotalPorProducto();
 
     ProductosSedes findByProductosAndSedes(Productos productos,Sedes sedes);
+
+    @Query(value = "SELECT * FROM proyecto_gtics.productos_has_sedes where productos_has_sedes.productos_idproductos=?1 and productos_has_sedes.sedes_idsedes=?2 ;",nativeQuery = true)
+    ProductosSedes obtenerProductoSedePorId(Integer idProducto, Integer idSede);
+
 }
