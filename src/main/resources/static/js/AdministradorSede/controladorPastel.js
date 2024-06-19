@@ -30,7 +30,7 @@ const myChart2 = new Chart(ctx2 , {
             },
             title: {
                 display: true,
-                text: 'Medicamentos con Poco inventariado'
+                text: 'Medicamentos con poco inventariado'
             }
         }
     }  
