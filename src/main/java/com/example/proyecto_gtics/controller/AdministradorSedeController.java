@@ -563,7 +563,7 @@ private boolean isValidEmail(String email) {
         ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(6).get()); // Tipo de orden 6 (carrito)
         ordenCarrito.setUsuarios(usuario);
         ordenCarrito.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-        ordenCarrito.setSedes(sedesRepository.findById(2).get());
+        ordenCarrito.setSedes(sedesRepository.findById(usuario.getSedes().getIdSedes()).get());
 
         ordenCarrito.setCodigo(UUID.randomUUID().toString());
         LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
