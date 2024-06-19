@@ -285,7 +285,7 @@ public class FarmacistaController {
         orden.setTipoOrden(tipoOrdenRepository.findById(tipoOrden).get()); // Tipo de orden
         orden.setUsuarios(usuario);
         orden.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-        orden.setSedes(sedesRepository.findById(2).get());
+        orden.setSedes(sedesRepository.findById(usuario.getSedes().getIdSedes()).get());
         orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
 
         orden.setCodigo(UUID.randomUUID().toString());
