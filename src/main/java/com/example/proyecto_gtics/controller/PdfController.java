@@ -11,13 +11,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,14 +34,20 @@ public class PdfController {
     @Autowired
     private TipoUsuarioRepository tipoUsuarioRepository;
 
-    @GetMapping("/pdf/usuarios")
-    public ResponseEntity<byte[]> descargarPdf() throws IOException {
+    @PostMapping("/pdf/usuarios")
+    public ResponseEntity<byte[]> descargarPdf(@RequestParam("listaUsuarios") List<Integer> lista) throws IOException {
 
-        EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById("Activo").get();
-        Sedes sede = sedesRepository.findByIdSedes(2);
-        TipoUsuario tipo = tipoUsuarioRepository.findById("Farmacista").get();
+        List<Usuarios> listaUsuarios = new ArrayList<>();
+        for(int idUsuario : lista){
+            Usuarios usuarios = usuariosRepository.findByIdUsuario(idUsuario);
+            listaUsuarios.add(usuarios);
+        }
 
-        List<Usuarios> lista = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(tipo,sede,estadoUsuario);
+        //EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById("Activo").get();
+        //Sedes sede = sedesRepository.findByIdSedes(2);
+        //TipoUsuario tipo = tipoUsuarioRepository.findById("Farmacista").get();
+
+        //List<Usuarios> lista = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(tipo,sede,estadoUsuario);
 
 
 
@@ -63,7 +67,7 @@ public class PdfController {
 
 
          */
-        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(lista,"Lista de usuarios test");
+        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de usuarios test");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=productos.pdf");

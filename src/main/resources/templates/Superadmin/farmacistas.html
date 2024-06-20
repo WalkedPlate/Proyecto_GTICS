@@ -153,6 +153,10 @@
 
                                     </tbody>
                                 </table>
+                                <form method="post" th:action="@{/pdf/usuarios}">
+                                    <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaFarmacistas}" th:value="${usuario.idUsuario}">
+                                    <button type="submit" class="btn btn-primary">Descargar PDF</button>
+                                </form>
                             </div>
 
                             <!-- Modal Actualizar -->

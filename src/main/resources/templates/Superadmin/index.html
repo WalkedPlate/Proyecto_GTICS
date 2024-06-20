@@ -228,7 +228,11 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button onclick="descargarPdf()">Descargar PDF</button>
+                                <!--<button onclick="descargarPdf()">Descargar PDF</button>-->
+                                <form method="post" th:action="@{/pdf/usuarios}">
+                                    <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaAdminSede}" th:value="${usuario.idUsuario}">
+                                    <button type="submit" class="btn btn-primary">Descargar PDF</button>
+                                </form>
                             </div>
 
 
