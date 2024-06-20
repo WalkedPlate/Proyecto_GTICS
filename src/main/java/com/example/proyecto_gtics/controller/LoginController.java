@@ -143,7 +143,7 @@ public class LoginController {
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
             ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
-            if (resultDni == null || resultDni.getStatus() != 200) {
+            if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                 attr.addFlashAttribute("err","DNI inválido");
                 return "redirect:/registro";
             }

@@ -113,7 +113,7 @@ public class FarmacistaController {
 
 
 
-        if (!usuarioYaRegistrado(paciente.getDni())){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
+        if (!usuarioYaRegistrado(paciente.getDni(),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
             paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
@@ -289,7 +289,7 @@ public class FarmacistaController {
         orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
 
         orden.setCodigo(UUID.randomUUID().toString());
-        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
         orden.setFechaRegistro(fechaActual.format(formatDateToSring));
         LocalDate fechaEntrega = fechaActual.plusDays(20);
         orden.setFechaEntrega(fechaEntrega.format(formatDateToSring));
@@ -298,12 +298,41 @@ public class FarmacistaController {
 
     }
 
-    public Boolean usuarioYaRegistrado(Integer dni){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario, boolean registro){ // registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
-        if (opt.isPresent()){
-            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+        if(registro){
+            if (opt.isPresent()){
+                yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
+            }
+        }
+
+        return yaRegistrado;
+    }
+
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario, boolean registro){// registro: true => registro, false => actualizar
+        boolean yaRegistrado = false;
+        Optional<Usuarios> opt = usuariosRepository.findByCorreo(correo);
+
+        if(registro){
+            if (opt.isPresent()){
+                yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
+            }
         }
 
         return yaRegistrado;

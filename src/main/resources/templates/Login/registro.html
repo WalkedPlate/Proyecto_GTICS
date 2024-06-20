@@ -172,7 +172,10 @@
             </div>
         </main>
 
+
+
         <script>
+            //Autocompletar Nombre y Apellidos con el DNI
             function autocompletarDni() {
                 let dni = document.getElementById("numberInput").value;
 
@@ -188,6 +191,14 @@
                     })
                     .catch(error => console.error('Error:', error));
             }
+
+            // Añadir el evento keydown para detectar la tecla Enter
+            document.getElementById('dni').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Evitar que el formulario se envíe
+                    autocompletarDni();
+                }
+            });
         </script>
 
         <script>
