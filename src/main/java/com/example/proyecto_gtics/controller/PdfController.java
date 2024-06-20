@@ -67,10 +67,10 @@ public class PdfController {
 
 
          */
-        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de usuarios test");
+        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de usuarios");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=productos.pdf");
+        headers.add("Content-Disposition", "attachment; filename=usuarios.pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

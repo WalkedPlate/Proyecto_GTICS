@@ -80,9 +80,9 @@
                             </div>
                             <!-- Actions -->
                             <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
-                                <form method="post" th:action="@{/pdf/usuarios}">
+                                <form id="pdfForm" method="post" th:action="@{/pdf/usuarios}">
                                     <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaDoctores}" th:value="${usuario.idUsuario}">
-                                    <button type="submit" class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center"><span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
+                                    <button type="button" class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center" onclick="descargarPDF()"><span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
                                         <span>Descargar PDF</span></button>
                                 </form>
 
@@ -317,6 +317,17 @@
 
         function submitLogout() {
             document.getElementById('logoutForm').submit();
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+
+        function descargarPDF() {
+            var form = document.getElementById("pdfForm");
+            form.submit();
         }
     </script>
 </body>
