@@ -148,10 +148,15 @@
                             </table>
                         </div>
                         <div class="card-footer border-0 py-5 mx-auto d-flex justify-content align-center">
-                            <button th:if="${orden.estadoOrden.nombre=='Pendiente'}" type="button" class="btn btn-sm btn-primary mx-2" data-bs-toggle="modal"
-                                data-bs-target="#modalAprobar">
-                                Aprobar
-                            </button>
+                            <th:block th:if="${orden.estadoOrden.nombre=='Pendiente'}">
+                                <button th:if="${posible==0}" type="button" class="btn btn-sm btn-primary mx-2" data-bs-toggle="modal" disabled>
+                                    Aprobar
+                                </button>
+                                <button th:if="${posible==1}" type="button" class="btn btn-sm btn-primary mx-2" data-bs-toggle="modal"
+                                        data-bs-target="#modalAprobar">
+                                    Aprobar
+                                </button>
+                            </th:block>
                             <a href="Chat.html">
                                 <button type="button" class="btn btn-sm btn-danger mx-2">
                                     Contactar Paciente

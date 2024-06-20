@@ -228,6 +228,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <button onclick="descargarPdf()">Descargar PDF</button>
                             </div>
 
 
@@ -420,6 +421,12 @@
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
         <script>
             new DataTable('#example');
+        </script>
+
+        <script>
+            function descargarPdf() {
+                window.location.href = '/pdf/usuarios';
+            }
         </script>
 
 

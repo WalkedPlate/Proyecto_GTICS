@@ -207,6 +207,7 @@ public class FarmacistaController {
 
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
+        model.addAttribute("posible",comprobarStock(listaDetallesOrden,farmacista.getSedes()));
         model.addAttribute("listaDetallesOrden",listaDetallesOrden);
         model.addAttribute("orden",orden);
         return "Farmacista/verOrdenLinea";
@@ -336,6 +337,17 @@ public class FarmacistaController {
         }
 
         return yaRegistrado;
+    }
+
+    public int comprobarStock(List<DetallesOrden> listaDetallesOrden,Sedes sede){
+        int posible=1;
+        for (DetallesOrden item : listaDetallesOrden){
+            ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(),sede);
+            if(item.getCantidad()>productosSedes.getCantidad()){
+                posible=0;
+            }
+        }
+        return posible;
     }
 
 

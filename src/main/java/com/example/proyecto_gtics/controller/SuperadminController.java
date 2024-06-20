@@ -460,16 +460,13 @@ public class SuperadminController {
 
         //Verificamos que el estado de la orden sea aceptado -> idEstadoOrden = 4 es ACEPTADO
         if(accion == 4){
-
-            List<CantidadProductosPorOrden> listaCantProductosPorOrden = ordenesRepository.obtenerCantidadPorTipoOrdenSedeOrden(orden.getTipoOrden().getIdTipoOrden() , orden.getSedes().getIdSedes() , orden.getIdordenes());
-
+            List<DetallesOrden> listaCantProductosPorOrden = detallesOrdenRepository.findByOrdenes(orden);
             listaCantProductosPorOrden.forEach(item -> {
-                System.out.println(item.getProductosIdproductos() + " y " + item.getProductosIdproductos());
-                Productos producto = productosRepository.findByIdProductos(item.getProductosIdproductos());
-                Sedes sede = sedesRepository.findByIdSedes(item.getSedesIdsedes());
-                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(producto, sede);
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(), orden.getSedes());
                 Integer resultado = productosSedes.getCantidad() + item.getCantidad();//Puede que no exista la relacion producto con sede y me de error verificar que siempre haya una relacion producto sede aunque sea cantidad igual a 0
                 System.out.println("EL RESULTADO ES :" + resultado);
+                productosSedes.setCantidad(resultado);
+                productosSedeRepository.save(productosSedes);
             });
         }
 
