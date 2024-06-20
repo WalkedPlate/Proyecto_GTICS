@@ -236,6 +236,15 @@ public class FarmacistaController {
             Ordenes ordenes = opt.get();
             ordenes.setEstadoOrden(estadoOrdenRepository.findById(4).get());
             ordenesRepository.save(ordenes);
+
+            List<DetallesOrden> listaCantProductosPorOrden = detallesOrdenRepository.findByOrdenes(ordenes);
+            listaCantProductosPorOrden.forEach(item -> {
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(), farmacista.getSedes());
+                Integer resultado = productosSedes.getCantidad()- item.getCantidad();
+                System.out.println("EL RESULTADO ES :" + resultado);
+                productosSedes.setCantidad(resultado);
+                productosSedeRepository.save(productosSedes);
+            });
             return "redirect:/farmacista/ordenes-linea";
         }
         else {
