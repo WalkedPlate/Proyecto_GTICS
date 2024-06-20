@@ -79,7 +79,13 @@
 
                             </div>
                             <!-- Actions -->
-                            <div class="col-sm-6 col-12 text-sm-end">
+                            <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                                <form method="post" th:action="@{/pdf/usuarios}">
+                                    <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaDoctores}" th:value="${usuario.idUsuario}">
+                                    <button type="submit" class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center"><span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
+                                        <span>Descargar PDF</span></button>
+                                </form>
+
                                 <div class="mx-n1">
                                     <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal" data-bs-target="#modaAgregar">
                                     <span class=" pe-2">
@@ -192,10 +198,10 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <form method="post" th:action="@{/pdf/usuarios}">
-                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaDoctores}" th:value="${usuario.idUsuario}">
-                            <button type="submit" class="btn btn-primary">Descargar PDF</button>
-                        </form>
+<!--                        <form method="post" th:action="@{/pdf/usuarios}">-->
+<!--                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaDoctores}" th:value="${usuario.idUsuario}">-->
+<!--                            <button type="submit" class="btn btn-primary">Descargar PDF</button>-->
+<!--                        </form>-->
                     </div>
 
                 </div>

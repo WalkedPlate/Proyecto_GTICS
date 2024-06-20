@@ -1,158 +1,184 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clínica Renacer SuperAdmin</title>
-    <link rel="icon" href="/img/Superadmin/icono.png"/>
-  <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
-    <style>
-        .page-item.active .page-link {
-            z-index: 3;
-            color: #fff;
-            background-color: #94a6b3;
-            border-color: #94a6b3;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clínica Renacer SuperAdmin</title>
+        <link rel="icon" href="/img/Superadmin/icono.png"/>
+        <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+        <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <style>
+            .page-item.active .page-link {
+                z-index: 3;
+                color: #fff;
+                background-color: #94a6b3;
+                border-color: #94a6b3;
+            }
+        </style>
+    </head>
 
-<body>
-<!-- Dashboard -->
-<div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-    <!-- Vertical Navbar -->
-    <nav th:replace="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
-    <!-- Main content -->
-    <div class="h-screen flex-grow-1 overflow-y-lg-auto">
-        <!-- Header -->
-        <header class="bg-surface-primary border-bottom pt-6">
-            <div class="container-fluid">
-                <div class="mb-npx">
-                    <div class="row align-items-center">
-                        <div class="col-sm-8 col-12 mb-4 mb-sm-0">
-                            <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">
-                                <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span></h1>
-                        </div>
-                        <!-- Actions -->
-                        <div class="col-sm-4 col-12 text-sm-end">
-                            <div class="mx-n1">
-                                <a th:href="@{'/superadmin/perfil'}" class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
+    <body>
+        <!-- Dashboard -->
+        <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+            <!-- Vertical Navbar -->
+            <nav th:replace="~{Superadmin/fragments_superadmin/general.html :: navbar}"></nav>
+            <!-- Main content -->
+            <div class="h-screen flex-grow-1 overflow-y-lg-auto">
+                <!-- Header -->
+                <header class="bg-surface-primary border-bottom pt-6">
+                    <div class="container-fluid">
+                        <div class="mb-npx">
+                            <div class="row align-items-center">
+                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                    <!-- Title -->
+                                    <h1 class="h2 mb-0 ls-tight">
+                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                            class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span>
+                                    </h1>
+                                </div>
+                                <!-- Actions -->
+                                <div class="col-sm-4 col-12 text-sm-end">
+                                    <div class="mx-n1">
+                                        <a th:href="@{'/superadmin/perfil'}"
+                                           class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
                                     <span class=" pe-2">
                                          <i class="bi bi-person-gear"></i>
                                     </span>
-                                    <span>Mi perfil</span>
-                                </a>
+                                            <span>Mi perfil</span>
+                                        </a>
 
+                                    </div>
+                                </div>
                             </div>
+                            <!-- Nav -->
+                            <ul class="nav nav-tabs mt-4 overflow-x border-0">
+                                <li class="nav-item ">
+                                    <a th:href="@{'/superadmin'}" class="nav-link font-regular">Administrador de
+                                        Sede</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/farmacistas'}"
+                                       class="nav-link font-regular">Farmacistas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/doctores'}" class="nav-link font-regular">Doctores</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{'/superadmin/pacientes'}" class="nav-link active">Pacientes</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <!-- Nav -->
-                    <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                        <li class="nav-item ">
-                            <a th:href="@{'/superadmin'}" class="nav-link font-regular">Administrador de Sede</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/farmacistas'}" class="nav-link font-regular">Farmacistas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/doctores'}" class="nav-link font-regular">Doctores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{'/superadmin/pacientes'}" class="nav-link active">Pacientes</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-        <!-- Main -->
-        <main class="py-6 bg-surface-secondary">
-            <div class="container-fluid">
-                <div class="card shadow border-0 mb-7">
-                    <div class="card-header">
-                        <h3 class="mb-0">Lista de Pacientes</h3>
-                    </div>
-                    <!--TABLA-->
-                    <div class="container table-responsive mb-4">
-                        <table id="example" class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center">Nombre</th>
-                                    <th scope="col" class="text-center">DNI</th>
-                                    <th scope="col" class="text-center">Correo</th>
-                                    <th scope="col" class="text-center">Seguro</th>
-                                    <th scope="col" class="text-center">Dirección</th>
-                                    <th scope="col" class="text-center">Distrito</th>
-                                    <th class="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="paciente,obj: ${listaPacientes}">
-                                    <td>
-                                        <img alt="..." src="/img/Superadmin/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                        <a th:text="${paciente.nombre}" class="text-heading font-semibold" href="#"></a>
-                                    </td>
-                                    <td th:text="${paciente.dni}" class="text-center"></td>
-                                    <td th:text="${paciente.correo}" class="text-center"></td>
-                                    <td th:text="${paciente.seguro}" class="text-center"></td>
-                                    <td th:text="${paciente.direccion}" class="text-center"></td>
-                                    <td th:text="${paciente.distritoResidencia}" class="text-center"></td>
-                                    <td class="text-center">
-                                        <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                            <i class="bi bi-gear-wide-connected"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <form method="post" th:action="@{/pdf/usuarios}">
-                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaPacientes}" th:value="${usuario.idUsuario}">
-                            <button type="submit" class="btn btn-primary">Descargar PDF</button>
-                        </form>
-                    </div>
+                </header>
+                <!-- Main -->
+                <main class="py-6 bg-surface-secondary">
+                    <div class="container-fluid">
+                        <div class="card shadow border-0 mb-7">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                        <h3 class="mb-0">Lista de Pacientes</h3>
+                                    </div>
+                                    <!-- Actions -->
+                                    <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
 
-                </div>
-            </div>
-        </main>
-    </div>
-</div>
+                                        <form method="post" th:action="@{/pdf/usuarios}">
+                                            <input type="hidden" name="listaUsuarios"
+                                                   th:each="usuario : ${listaPacientes}"
+                                                   th:value="${usuario.idUsuario}">
+                                            <button type="submit"
+                                                    class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center">
+                                                <span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
+                                                <span>Descargar PDF</span></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--TABLA-->
+                            <div class="container table-responsive mb-4">
+                                <table id="example" class="table table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">Nombre</th>
+                                            <th scope="col" class="text-center">DNI</th>
+                                            <th scope="col" class="text-center">Correo</th>
+                                            <th scope="col" class="text-center">Seguro</th>
+                                            <th scope="col" class="text-center">Dirección</th>
+                                            <th scope="col" class="text-center">Distrito</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="paciente,obj: ${listaPacientes}">
+                                            <td>
+                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a th:text="${paciente.nombre}" class="text-heading font-semibold"
+                                                   href="#"></a>
+                                            </td>
+                                            <td th:text="${paciente.dni}" class="text-center"></td>
+                                            <td th:text="${paciente.correo}" class="text-center"></td>
+                                            <td th:text="${paciente.seguro}" class="text-center"></td>
+                                            <td th:text="${paciente.direccion}" class="text-center"></td>
+                                            <td th:text="${paciente.distritoResidencia}" class="text-center"></td>
+                                            <td class="text-center">
+                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
+                                                    <i class="bi bi-gear-wide-connected"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!--                        <form method="post" th:action="@{/pdf/usuarios}">-->
+                                <!--                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaPacientes}" th:value="${usuario.idUsuario}">-->
+                                <!--                            <button type="submit" class="btn btn-primary">Descargar PDF</button>-->
+                                <!--                        </form>-->
+                            </div>
 
-    <!-- Modal de confirmación para cierre de sesión -->
-    <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h3 class="modal-title" id="confirmLogoutModalLabel">¿Estás seguro de que quieres cerrar sesión?</h3>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación para cierre de sesión -->
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-labelledby="confirmLogoutModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title" id="confirmLogoutModalLabel">¿Estás seguro de que quieres cerrar
+                            sesión?</h3>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <script src="/js/Superadmin/script.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/Superadmin/table.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script>
-        new DataTable('#example');
-    </script>
+        <script src="/js/Superadmin/script.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/Superadmin/table.js"></script>
+        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+        <script>
+            new DataTable('#example');
+        </script>
 
-    <!-- Script para confirmación de cierre de sesión -->
-    <script>
-        function confirmLogout() {
-            $('#confirmLogoutModal').modal('show');
-        }
+        <!-- Script para confirmación de cierre de sesión -->
+        <script>
+            function confirmLogout() {
+                $('#confirmLogoutModal').modal('show');
+            }
 
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
-</body>
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
+        </script>
+    </body>
 </html>
