@@ -105,6 +105,7 @@
                                     <div class="modal-content">
                                         <form method="post" class="needs-validation" th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                             <input type="hidden" name="idUsuario" value="0">
+                                            <input type="hidden" name="nombre" value="valid">
                                         <div class="modal-header">
                                             <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
                                                 nuevo <strong style="color:#5C60F5">Administrador de sede</strong></h3>
@@ -113,11 +114,21 @@
                                         </div>
                                         <div class="modal-body row">
 
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label>DNI:</label>
+                                                    <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control"
+                                                           onblur="autocompletarDni()"
+                                                           placeholder="Coloca el N° de DNI" required>
+                                                </div>
+                                            </div>
+
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control"
-                                                           placeholder="Coloca su nombre" required>
+
+                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" type="text" class="form-control"
+                                                           placeholder="Nombre" disabled readonly>
                                                 </div>
 
                                                 <div class="col">
@@ -128,21 +139,13 @@
                                             </div>
 
                                             <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control"
-                                                           placeholder="Coloca el N° de DNI" required>
-                                                </div>
-
 
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
                                                     <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
                                                            placeholder="Coloca su distrito" required>
                                                 </div>
-                                            </div>
 
-                                            <div class="row pt-5">
                                                 <div class="col">
                                                     <label for="sedeAdmin">Sede:</label>
                                                     <select id="sedeAdmin" name="idSedes" class="form-select" required>
@@ -151,6 +154,8 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+
 
 
                                         </div>
@@ -416,6 +421,34 @@
         <script>
             new DataTable('#example');
         </script>
+
+
+        <script>
+            //Autocompletar Nombre y Apellidos con el DNI
+            function autocompletarDni() {
+                let dni = document.getElementById("numberInput").value;
+
+                fetch(`/api/dni?dni=${dni}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 422 || data.status === 404) {
+                            alert(data.message);
+                        } else {
+                            document.getElementById("nombre").value = `${data.data.nombres} ${data.data.apellido_paterno} ${data.data.apellido_materno}` ;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // Añadir el evento keydown para detectar la tecla Enter
+            document.getElementById('dni').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Evitar que el formulario se envíe
+                    autocompletarDni();
+                }
+            });
+        </script>
+
         <script>
             // JavaScript para permitir solo la entrada de números
             document.getElementById("numberInput").addEventListener("keydown", function(event) {

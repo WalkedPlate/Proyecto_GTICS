@@ -52,6 +52,18 @@ public class CustomPasswordChangeFilter extends OncePerRequestFilter {
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
                         return;
                     }
+                    if(path.startsWith("/superadmin") ){
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+                        return;
+                    }
+                    if(path.startsWith("/administradorsede") ){
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+                        return;
+                    }
+                    if(path.startsWith("/farmacista") ){
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+                        return;
+                    }
 
                 }
 

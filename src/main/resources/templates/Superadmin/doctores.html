@@ -97,16 +97,34 @@
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <form method="post" class="needs-validation" th:action="@{/superadmin/guardarDoctor}" novalidate>
+
+                                    <input type="hidden" name="nombre" value="valid">
                                 <div class="modal-header">
                                 <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del nuevo <strong style="color:#5C60F5">Doctor</strong></h3>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body row">
 
+
+                                    <div class="row pt-5">
+                                        <div class="col">
+                                            <label >DNI:</label>
+                                            <input minlength="8" maxlength="8" id="numberInput" name="dni" onblur="autocompletarDni()"
+                                                   type="text" class="form-control" placeholder="Coloca el N° de DNI" required>
+                                        </div>
+
+
+                                        <div class="col">
+                                            <label>Código (colegio médico):</label>
+                                            <input minlength="6" maxlength="6" id="numberInput2" name="codigoColegio" type="text" class="form-control" placeholder="Coloca el código del doctor" required>
+                                        </div>
+                                    </div>
+
                                     <div class="row pt-3">
                                         <div class="col">
                                             <label for="nombre">Nombre:</label>
-                                            <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control" placeholder="Coloca su nombre" required>
+                                            <input pattern="[A-Za-z].+" maxlength="45" id="nombre"
+                                                   type="text" class="form-control" placeholder="Nombre" disabled readonly>
                                         </div>
                                     
                                         <div class="col">
@@ -114,19 +132,7 @@
                                             <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" type="email" name="correo" class="form-control" placeholder="Coloca su correo" required>
                                         </div>
                                     </div>
-                                    
-                                    <div class="row pt-5">
-                                        <div class="col">
-                                            <label >DNI:</label>
-                                            <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control" placeholder="Coloca el N° de DNI" required>
-                                        </div>
-                                        
-        
-                                        <div class="col">
-                                            <label>Código (colegio médico):</label>
-                                            <input minlength="6" maxlength="6" id="numberInput2" name="codigoColegio" type="text" class="form-control" placeholder="Coloca el código del doctor" required>
-                                        </div>
-                                    </div>
+
 
                                     <div class="row pt-5">
                                         <div class="col">
@@ -217,6 +223,35 @@
     <script>
         new DataTable('#example');
     </script>
+
+
+<script>
+    //Autocompletar Nombre y Apellidos con el DNI
+    function autocompletarDni() {
+        let dni = document.getElementById("numberInput").value;
+
+        fetch(`/api/dni?dni=${dni}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 422 || data.status === 404) {
+                    alert(data.message);
+                } else {
+                    document.getElementById("nombre").value = `${data.data.nombres} ${data.data.apellido_paterno} ${data.data.apellido_materno}` ;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Añadir el evento keydown para detectar la tecla Enter
+    document.getElementById('dni').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Evitar que el formulario se envíe
+            autocompletarDni();
+        }
+    });
+</script>
+
+
     <script>
         // JavaScript para permitir solo la entrada de números
         document.getElementById("numberInput").addEventListener("keydown", function(event) {

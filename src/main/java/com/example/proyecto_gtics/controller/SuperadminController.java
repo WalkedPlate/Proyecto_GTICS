@@ -2,8 +2,13 @@ package com.example.proyecto_gtics.controller;
 
 
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
+import com.example.proyecto_gtics.dto.ResultDni;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.DniService;
+import com.example.proyecto_gtics.service.EmailService;
+import com.example.proyecto_gtics.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.Attr;
@@ -67,9 +69,15 @@ public class SuperadminController {
     }
 
     @Autowired
-    CodigoColegioRespository codigoColegioRespository;
+    private CodigoColegioRespository codigoColegioRespository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DniService dniService;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    EmailService emailService;
 
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
@@ -93,28 +101,28 @@ public class SuperadminController {
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
     public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,
                                    @RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr,
-                                   HttpSession session){
+                                   HttpSession session, HttpServletRequest request){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
 
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
-            System.out.println(adminsede.get().getDni());
+
             String error = bindingResult.getFieldError().getDefaultMessage().toString();
             attr.addFlashAttribute("err",error);
             return "redirect:/superadmin";
         }else {
-            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario())){
-                attr.addFlashAttribute("err","El DNI ya está registrado.");
-                return "redirect:/superadmin/administradores-sede";
-            }
-            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario())){
-                attr.addFlashAttribute("err","El correo ya está registrado.");
-                return "redirect:/superadmin/administradores-sede";
-            }
 
 
         if(adminsede.isPresent()){
+            if(usuarioYaRegistrado(adminSede.getDni(),idAdminSede,false)){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+            if(correoYaRegistrado(adminSede.getCorreo(),idAdminSede,false)){
+                attr.addFlashAttribute("err","El correo ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
 
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());// implementar:agarrar el estado de la base de datos
             adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
@@ -122,18 +130,61 @@ public class SuperadminController {
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
             attr.addFlashAttribute("msg","Datos del administrador de sede actualizados exitosamente");
+            usuariosRepository.save(adminSede);
+            return "redirect:/superadmin/administradores-sede";
         }
         else {
+            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario(),true)){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario(),true)){
+                attr.addFlashAttribute("err","El correo ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+
+            //Generación de token
+            String token = tokenService.generateToken(adminSede.getCorreo());
+            String link = request.getScheme() + "://"+ request.getServerName()
+                    + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
+
+            /*
+            ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
+            if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+                attr.addFlashAttribute("err","DNI inválido");
+                return "redirect:/superadmin/administradores-sede";
+            }
+
+
+             */
+
+            //adminSede.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
+            adminSede.setNombre("testing");
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-            adminSede.setContrasena("Temporal_password");
+            //Contraseña
+            String temporalPassword = Usuarios.generateTemporaryPassword(10);
+            String passwordEncriptada = passwordEncoder.encode(temporalPassword);
+            adminSede.setContrasena(passwordEncriptada);
+
+            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            adminSede.setUsandoContrasenaTemporal(true);
+            adminSede.setToken(token);
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
-            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
-            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente");
+            usuariosRepository.save(adminSede);
+            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente. Las credenciales temporales se enviarán" +
+                    " al correo ingresado.");
+
+            //Envío de correo con contraseña temporal
+            String to = adminSede.getCorreo();
+            String subject = "Cambie su contraseña";
+            String pathToImage = "static/img/Login/icono.png";
+            String imageId = "image001";
+            emailService.sendEmail(to, subject, link, temporalPassword,pathToImage,imageId);
+            return "redirect:/superadmin/administradores-sede";
+
         }
 
-            usuariosRepository.save(adminSede);
-        return "redirect:/superadmin/administradores-sede";
     }
     }
 
@@ -455,12 +506,12 @@ public class SuperadminController {
                 attr.addFlashAttribute("err","El código de colegio no es válido.");
                 return "redirect:/superadmin/farmacistas";
             }
-            if(usuarioYaRegistrado(farmacista.getDni(),farmacista.getIdUsuario())){
+            if(usuarioYaRegistrado(farmacista.getDni(),farmacista.getIdUsuario(),false)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
 
-            if(correoYaRegistrado(farmacista.getCorreo(),farmacista.getIdUsuario())){
+            if(correoYaRegistrado(farmacista.getCorreo(),farmacista.getIdUsuario(),false)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
@@ -545,19 +596,19 @@ public class SuperadminController {
                 return "redirect:/superadmin/doctores";
             }
 
-            if(usuarioYaRegistrado(doctor.getDni(),doctor.getIdUsuario())){
+            if(usuarioYaRegistrado(doctor.getDni(),doctor.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
 
-            if(correoYaRegistrado(doctor.getCorreo(), doctor.getIdUsuario())){
+            if(correoYaRegistrado(doctor.getCorreo(), doctor.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
 
-
         doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
         doctor.setContrasena("Temporal_password");
+        doctor.setUsandoContrasenaTemporal(false);
         doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
 
         Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
@@ -629,6 +680,8 @@ public class SuperadminController {
 
 
 
+
+
     public boolean validarCodigoColegio(String codigo) {
 
         boolean valido = false;
@@ -641,26 +694,40 @@ public class SuperadminController {
     }
 
 
-    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario, boolean registro){ // registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
-        if (opt.isPresent()){
-            if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+        if(registro){
+            if (opt.isPresent()){
                 yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
             }
         }
 
         return yaRegistrado;
     }
 
-    public Boolean correoYaRegistrado(String correo, Integer idUsuario){
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario, boolean registro){// registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Usuarios opt = usuariosRepository.findByCorreo(correo).get();
+        Optional<Usuarios> opt = usuariosRepository.findByCorreo(correo);
 
-        if (opt!=null){
-            if(!Objects.equals(opt.getIdUsuario(), idUsuario)){
+        if(registro){
+            if (opt.isPresent()){
                 yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
             }
         }
 
