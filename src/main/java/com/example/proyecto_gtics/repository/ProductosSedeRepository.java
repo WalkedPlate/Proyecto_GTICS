@@ -21,7 +21,7 @@ public interface ProductosSedeRepository extends JpaRepository<ProductosSedes,Pr
 
     ProductosSedes findByProductosAndSedes(Productos productos,Sedes sedes);
 
-    @Query(value = "SELECT * FROM proyecto_gtics.productos_has_sedes where productos_has_sedes.productos_idproductos=?1 and productos_has_sedes.sedes_idsedes=?2 ;",nativeQuery = true)
-    ProductosSedes obtenerProductoSedePorId(Integer idProducto, Integer idSede);
+    /*@Query(value = "SELECT * FROM proyecto_gtics.productos_has_sedes where productos_has_sedes.productos_idproductos=?1 and productos_has_sedes.sedes_idsedes=?2 ;",nativeQuery = true)
+    ProductosSedes obtenerProductoSedePorId(Integer idProducto, Integer idSede);*/
 
 }

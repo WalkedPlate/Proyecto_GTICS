@@ -31,4 +31,6 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
     @Query(value="select productos.idproductos,productos.nombre, sum(productos_has_sedes.cantidad) as cantidadTotal from productos inner join productos_has_sedes on productos.idproductos = productos_has_sedes.productos_idproductos group by productos.idproductos , productos.nombre having cantidadTotal < 200;",nativeQuery = true)
     List<CantProductoMenosPorSede> obtenerProductosPocoInventariado();
 
+    Productos findByIdProductos(Integer idProducto);
+
 }

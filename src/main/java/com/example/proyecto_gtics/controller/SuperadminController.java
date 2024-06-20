@@ -1,6 +1,8 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.dto.CantProductPorOrdenClase;
+import com.example.proyecto_gtics.dto.CantidadProductosPorOrden;
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
@@ -183,7 +185,6 @@ public class SuperadminController {
 
 
         List<Productos> listaMedicamentos = productosRepository.findByEstadoProducto("Activo");
-        //List<Productos> listaMedicamentos = productosRepository.findAll();
         model.addAttribute("listaMedicamentos",listaMedicamentos);
 
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -265,7 +266,7 @@ public class SuperadminController {
                     productosSedes1.setId(productosSedesId);
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
-                    productosSedes1.setCantidad(200);
+                    productosSedes1.setCantidad(0);
                     productosSedeRepository.save(productosSedes1);
                 }else{
                     productosSedeRepository.save(productosSedes);
@@ -309,7 +310,7 @@ public class SuperadminController {
                     productosSedes.setId(productosSedesId);
                     productosSedes.setSedes(sede);
                     productosSedes.setProductos(productoConsultar);
-                    productosSedes.setCantidad(200);
+                    productosSedes.setCantidad(0);
                     productosSedeRepository.save(productosSedes);
                 }
                 attr.addFlashAttribute("msg","Producto creado exitosamente.");
@@ -405,6 +406,22 @@ public class SuperadminController {
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         orden.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(accion));
         ordenesRepository.save(orden);
+
+        //Verificamos que el estado de la orden sea aceptado -> idEstadoOrden = 4 es ACEPTADO
+        if(accion == 4){
+
+            List<CantidadProductosPorOrden> listaCantProductosPorOrden = ordenesRepository.obtenerCantidadPorTipoOrdenSedeOrden(orden.getTipoOrden().getIdTipoOrden() , orden.getSedes().getIdSedes() , orden.getIdordenes());
+
+            listaCantProductosPorOrden.forEach(item -> {
+                System.out.println(item.getProductosIdproductos() + " y " + item.getProductosIdproductos());
+                Productos producto = productosRepository.findByIdProductos(item.getProductosIdproductos());
+                Sedes sede = sedesRepository.findByIdSedes(item.getSedesIdsedes());
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(producto, sede);
+                Integer resultado = productosSedes.getCantidad() + item.getCantidad();//Puede que no exista la relacion producto con sede y me de error verificar que siempre haya una relacion producto sede aunque sea cantidad igual a 0
+                System.out.println("EL RESULTADO ES :" + resultado);
+            });
+        }
+
         return "redirect:/superadmin/solicitudes-reposicion";
     }
 

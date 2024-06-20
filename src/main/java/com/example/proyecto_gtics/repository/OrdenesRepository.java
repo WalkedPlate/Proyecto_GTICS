@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.repository;
 
+import com.example.proyecto_gtics.dto.CantProductPorOrdenClase;
 import com.example.proyecto_gtics.dto.CantidadPorProductoSedeFecha;
 import com.example.proyecto_gtics.dto.CantidadProductosPorOrden;
 import com.example.proyecto_gtics.dto.NroTransaccionesPorSede;
