@@ -67,7 +67,7 @@ public class PdfController {
 
 
          */
-        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de usuarios");
+        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de " + listaUsuarios.get(0).getTipoUsuario().getIdTipoUsuario());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=usuarios.pdf");
