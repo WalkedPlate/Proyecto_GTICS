@@ -152,7 +152,7 @@ public class AdministradorSedeController {
         if (optOrden.isPresent()) {
             Ordenes ordenReposicion = optOrden.get();
             //Validamos que la orden sea de reposicion y que se pertenezaca a la sede 2
-            if (!validarTipoOrden(2, ordenReposicion) || ordenReposicion.getSedes().getIdSedes() != 2) {
+            if (!validarTipoOrden(2, ordenReposicion) || !Objects.equals(ordenReposicion.getSedes().getIdSedes(), adminSede.getSedes().getIdSedes())) {
                 return "redirect:/administradorsede/ordenes-reposicion";
             }
             List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(ordenReposicion);
