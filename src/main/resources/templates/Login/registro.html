@@ -183,7 +183,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 422 || data.status === 404) {
-                            alert(data.message);
+                            //alert(data.message);
                         } else {
                             document.getElementById("nombre").value = data.data.nombres;
                             document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
