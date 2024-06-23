@@ -6,6 +6,7 @@ import com.example.proyecto_gtics.repository.SedesRepository;
 import com.example.proyecto_gtics.repository.TipoUsuarioRepository;
 import com.example.proyecto_gtics.repository.UsuariosRepository;
 import com.example.proyecto_gtics.service.PdfService;
+import com.example.proyecto_gtics.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -67,10 +71,19 @@ public class PdfController {
 
 
          */
-        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de " + listaUsuarios.get(0).getTipoUsuario().getIdTipoUsuario());
+
+        String tipoUsuario = listaUsuarios.get(0).getTipoUsuario().getIdTipoUsuario();
+        String titulo = "Lista de " + StringUtil.splitCamelCase(tipoUsuario);
+        ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios, titulo);
+
+
+       //ByteArrayInputStream bis = pdfService.generarPdfUsuarios(listaUsuarios,"Lista de " + listaUsuarios.get(0).getTipoUsuario().getIdTipoUsuario());
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String fecha = dateFormatter.format(new Date());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=usuarios.pdf");
+        headers.add("Content-Disposition", "attachment; filename=Reportes_Usuarios_"+ fecha +".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)
