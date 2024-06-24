@@ -34,26 +34,27 @@ public class Usuarios implements Serializable {
 
 
     @Column(name = "nombre",nullable = false,length = 45)
-    @NotBlank
+    //@NotBlank
     @Size(max= 44, message = "El nombre no puede ser muy largo")
     private String nombre;
 
 
 
     @Column(name = "correo",nullable = false,length = 100, unique = true)
-    @NotBlank
+    @Email(message = "Correo inválido")
+    @NotBlank(message = "Complete su correo")
     @Size(max= 99, message = "El correo no puede ser muy largo")
     private String correo;
 
 
     @Column(name = "contrasena",nullable = false,length = 64)
     //@NotBlank
-    @Size(max= 63, message = "La contraseña no valida")
+    @Size(max= 63, message = "La contraseña no es valida")
     private String contrasena;
 
 
     @Column(name = "descripcion",nullable = true,length = 200)
-    @Size(max= 199, message = "Descripcion muy alrga")
+    @Size(max= 199, message = "Descripcion excede el límite de caracteres")
     private String descripcion;
 
     //Verificar tipo de dato para fotos!
@@ -65,15 +66,17 @@ public class Usuarios implements Serializable {
 
 
     @Column(name = "direccion",length = 100)
-    @Size(max= 99, message = "direccion muy larga")
+    @NotBlank(message = "Complete su dirección")
+    @Size(max= 99, message = "La dirección excede los 99 caracteres")
     private String direccion;
 
 
     @Column(name = "distrito_residencia",length = 100)
-    @Size(max= 99, message = "distrito muy largo")
+    @NotBlank(message = "Complete su distrito")
+    @Size(max= 99, message = "El distrito excede los 99 caracteres")
     private String distritoResidencia;
 
-    @Column(name = "codigo_colegio",length = 100)
+    @Column(name = "codigo_colegio",length = 6)
     //@Pattern(regexp = "\\d{6}", message = "El código del colegio debe ser un número entero de 6 digitos")
     private  String codigoColegio;
 
@@ -93,9 +96,9 @@ public class Usuarios implements Serializable {
     private String seguro;
 
     @Column(name = "dni")
-    @Digits(integer = 10, fraction = 0)
-    @Positive
-    @Range(min = 10000000, max = 99999999, message = "El DNI no es valido")
+    @NotNull(message = "Complete su DNI")
+    @Digits(integer = 8, fraction = 0, message = "El DNI debe tener exactamente 8 dígitos")
+    @Positive(message = "El DNI debe ser un número positivo")
     private Integer dni;
 
     //@OneToOne

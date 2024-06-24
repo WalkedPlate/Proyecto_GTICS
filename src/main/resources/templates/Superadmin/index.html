@@ -9,6 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
         <style>
             .page-item.active .page-link {
                 z-index: 3;
@@ -123,33 +124,56 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control"
-                                                           onblur="autocompletarDni()"
-                                                           placeholder="Coloca el N° de DNI" required>
+                                                    <input
+                                                            id="numberInput"
+                                                            minlength="8" maxlength="8"
+                                                            type="text" class="form-control" placeholder="Ingrese el N° de DNI"
+                                                            name="dni" required>
+                                                    <div class="invalid-feedback" id="dniError">
+                                                        El DNI debe tener 8 dígitos.
+                                                    </div>
+                                                    <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
+
                                                 </div>
                                             </div>
 
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-
-                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" type="text" class="form-control"
-                                                           placeholder="Nombre" disabled readonly>
+                                                    <label for="nombre">Nombres:</label>
+                                                    <input pattern="[A-Za-z].+"
+                                                           type="text" class="form-control" placeholder="Nombres"
+                                                           id="nombre" disabled readonly>
                                                 </div>
 
                                                 <div class="col">
-                                                    <label for="correo">Correo:</label>
-                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" name="correo" type="email" class="form-control"
-                                                           placeholder="Coloca su correo" required>
+                                                    <label for="nombre">Apellidos:</label>
+                                                    <input pattern="[A-Za-z].+"
+                                                           type="text" class="form-control" placeholder="Apellidos"
+                                                           id="apellido" disabled readonly>
                                                 </div>
                                             </div>
 
+                                            <div class="row pt-3">
+                                                <div class="col">
+                                                    <label for="correo">Correo:</label>
+                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
+                                                           maxlength="99" id="correo" name="correo"
+                                                           type="email" class="form-control" placeholder="Ingrese el correo electrónico"
+                                                           required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un correo válido (max 99 dígitos).
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row pt-5">
 
                                                 <div class="col">
                                                     <label for="distrito">Distrito de residencia</label>
                                                     <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
-                                                           placeholder="Coloca su distrito" required>
+                                                           placeholder="Ingrese el distrito de residencia" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                    </div>
                                                 </div>
 
                                                 <div class="col">
@@ -158,10 +182,11 @@
                                                         <option selected disabled value="">--Ingresa una sede--</option>
                                                         <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, seleccione una opción.
+                                                    </div>
                                                 </div>
                                             </div>
-
-
 
 
                                         </div>
@@ -429,8 +454,23 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="/js/Superadmin/table.js"></script>
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
         <script>
-            new DataTable('#example');
+            new DataTable('#example', {
+                layout: {
+                    topStart: {
+                        buttons: [
+                           'pdf'
+                        ]
+                    }
+                }
+            });
         </script>
 
         <script>

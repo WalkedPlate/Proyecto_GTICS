@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.net.Authenticator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class LoginController {
@@ -107,9 +109,21 @@ public class LoginController {
     }
 
     @PostMapping(value = {"/guardarPaciente"})
-    public  String guardarPaciente(Usuarios paciente, BindingResult bindingResult, @RequestParam(name = "nombres", required = false) String nombres ,
+    public  String guardarPaciente(@Valid Usuarios paciente, BindingResult bindingResult, @RequestParam(name = "nombres", required = false) String nombres ,
                                    @RequestParam(name = "apellidos", required = false) String apellidos,
                                    HttpServletRequest request, RedirectAttributes attr){
+
+        // Verificar si hay errores de validación: vemos si el campo del dni y correo no esten vacíos, junto con la dirección y distrito de residencia
+        if (bindingResult.hasErrors()) {
+
+            // Si hay errores de validación, los almacenamos en una lista y los añadimos como un mensaje flash
+            List<String> errores = bindingResult.getFieldErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.toList());
+            attr.addFlashAttribute("err", errores);
+            return "redirect:/registro";
+        }
+
 
         //Comprobar si existe el paciente:
         Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
@@ -144,7 +158,7 @@ public class LoginController {
 
             ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
             if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
-                attr.addFlashAttribute("err","DNI inválido");
+                attr.addFlashAttribute("errDNI","El DNI ingresado es inválido");
                 return "redirect:/registro";
             }
 
