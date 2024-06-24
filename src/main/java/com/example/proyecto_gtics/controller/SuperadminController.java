@@ -303,12 +303,6 @@ public class SuperadminController {
                 sedesVista.add(sede);// Llenamos la lista
                 //--------------------------------------------------------------------------
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
-                //ProductosSedes productosSedes = new ProductosSedes();// Me genera duda
-                //ProductosSedesId productosSedesId = new ProductosSedesId();
-                //productosSedesId.setIdProductos(productos.getIdProductos());
-                //productosSedesId.setIdSedes(idSede);
-                //productosSedes.setId(productosSedesId);
-                //productosSedes.setProductos(productos);
                 if(productosSedes == null){
                     ProductosSedes productosSedes1 = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
@@ -345,19 +339,21 @@ public class SuperadminController {
                 String codigo = letras + numero;
                 //------------------------------------------------------------------
 
-                productos.setCodigo(codigo);
-                Categorias categoria = categoriasRepository.findById(idCategoria).get();
-                productos.setCategorias(categoria);
-                productos.setEstadoProducto("Activo");
-                productosRepository.save(productos);
+                productos.setCodigo(codigo); //Seteamos el codigo del producto
+                Categorias categoria = categoriasRepository.findById(idCategoria).get();//Obtenemos la categoria del producto
+                productos.setCategorias(categoria);//Seteamos la categoria
+                productos.setEstadoProducto("Activo");//Seteamos el producto a estado Activo
+                productosRepository.save(productos);//Guardamos el producto en la BD
 
                 Productos productoConsultar = productosRepository.findByCodigo(codigo);
-                for (Integer idSede : idSedes){
-                    Sedes sede = sedesRepository.findByIdSedes(idSede);
+                List<Sedes> listaSedes = sedesRepository.findAll();
+                //for (Integer idSede : idSedes){
+                for (Sedes sede : listaSedes){
+                    //Sedes sede = sedesRepository.findByIdSedes(idSede);
                     ProductosSedes productosSedes = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productoConsultar.getIdProductos());
-                    productosSedesId.setIdSedes(idSede);
+                    productosSedesId.setIdSedes(sede.getIdSedes());
                     productosSedes.setId(productosSedesId);
                     productosSedes.setSedes(sede);
                     productosSedes.setProductos(productoConsultar);
