@@ -10,19 +10,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="/css/Login/registro.css"/>
-        <!--        <style>
-                    /* Estilo para ocultar las flechas en los campos de entrada de tipo número */
-                    input[type=number]::-webkit-inner-spin-button,
-                    input[type=number]::-webkit-outer-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
-
-                    input[type=number] {
-                        -moz-appearance: textfield; /* Firefox */
-                    }
-                </style>-->
     </head>
 
     <body>
@@ -48,17 +37,17 @@
 
                 <div class="row ">
                     <div class="col">
-                        <form class="needs-validation" novalidate method="post" th:action="@{/guardarPaciente}">
+                        <form id="registerForm" class="needs-validation" novalidate method="post" th:action="@{/guardarPaciente}">
                             <div class="row justify-content-center">
                                 <div class="col columna">
                                     <div class="form-floating mb-3">
                                         <input
-                                                id="numberInput" onblur="autocompletarDni()"
+                                                id="numberInput"
                                                 minlength="8" maxlength="8"
                                                 type="text" class="form-control" placeholder="DNI"
                                                 autocomplete="off" name="dni" required/>
                                         <label>DNI</label>
-                                        <div class="invalid-feedback">
+                                        <div class="invalid-feedback" id="dniError">
                                             El DNI debe tener 8 dígitos.
                                         </div>
                                     </div>
@@ -183,25 +172,20 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 422 || data.status === 404) {
-                            //alert(data.message);
+                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+                            document.getElementById("dniError").classList.remove('is-invalid');
+                            document.getElementById("dniError").innerText = 'DNI no válido.';
+                            document.getElementById("dniError").style.display = 'block';
                         } else {
                             document.getElementById("nombre").value = data.data.nombres;
                             document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
+                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+                            document.getElementById("dniError").classList.remove('is-invalid');
                         }
                     })
                     .catch(error => console.error('Error:', error));
             }
 
-            // Añadir el evento keydown para detectar la tecla Enter
-            document.getElementById('dni').addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Evitar que el formulario se envíe
-                    autocompletarDni();
-                }
-            });
-        </script>
-
-        <script>
             // JavaScript para permitir solo la entrada de números
             document.getElementById("numberInput").addEventListener("keydown", function (event) {
                 // Permite las teclas de flecha, retroceso y suprimir
@@ -213,8 +197,35 @@
                     event.preventDefault();
                 }
             });
+
+            // Añadir el evento keydown para detectar la tecla Enter
+            document.getElementById('numberInput').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Evitar que el formulario se envíe
+                    let dniInput = document.getElementById("numberInput");
+                    let dniError = document.getElementById("dniError");
+
+                    // Validar la longitud del DNI
+                    if (dniInput.value.length !== 8) {
+                        dniError.style.display = 'block';
+                        dniInput.classList.add('is-invalid');
+                    } else {
+                        dniError.style.display = 'none';
+                        dniInput.classList.remove('is-invalid');
+                       autocompletarDni();
+                    }
+                }
+            });
         </script>
+
         <script>
+            // Validar el form presionando el botón de Registrar
+            document.getElementById("registerForm").addEventListener("keydown",function (event){
+                if(event.key === "Enter"){
+                    event.preventDefault();
+                }
+            });
+
             (() => {
                 'use strict'
 
