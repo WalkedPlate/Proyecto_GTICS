@@ -66,7 +66,7 @@ public class Usuarios implements Serializable {
 
 
     @Column(name = "direccion",length = 100)
-    @NotBlank(message = "Complete su dirección")
+    //@NotBlank(message = "Complete su dirección")
     @Size(max= 99, message = "La dirección excede los 99 caracteres")
     private String direccion;
 

@@ -297,8 +297,10 @@ public class SuperadminController {
             //--------------------Cambios en el for por probar-----------------------------------------
             List<Sedes> sedesTotales = sedesRepository.findAll();
             List<Sedes> sedesVista =new ArrayList<>();//Sedes mandadas desde la vista
-            for (Integer idSede : idSedes){
-                Sedes sede = sedesRepository.findByIdSedes(idSede);
+
+            //for (Integer idSede : idSedes){
+            for (Sedes sede : sedesTotales){
+                //Sedes sede = sedesRepository.findByIdSedes(idSede);
                 //----------------Codigo añadido-------------------------------------------
                 sedesVista.add(sede);// Llenamos la lista
                 //--------------------------------------------------------------------------
@@ -307,11 +309,16 @@ public class SuperadminController {
                     ProductosSedes productosSedes1 = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productos.getIdProductos());
-                    productosSedesId.setIdSedes(idSede);
+                    productosSedesId.setIdSedes(sede.getIdSedes());
                     productosSedes1.setId(productosSedesId);
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
                     productosSedes1.setCantidad(0);
+                    for (Integer idSede : idSedes){
+                        if(Objects.equals(idSede, sede.getIdSedes())){
+                            productosSedes.setVisibilidad(1);
+                        }
+                    }
                     productosSedeRepository.save(productosSedes1);
                 }else{
                     productosSedeRepository.save(productosSedes);
@@ -358,6 +365,12 @@ public class SuperadminController {
                     productosSedes.setSedes(sede);
                     productosSedes.setProductos(productoConsultar);
                     productosSedes.setCantidad(0);
+                    productosSedes.setVisibilidad(0);// Valor por defecto para visibilidad
+                    for (Integer idSede : idSedes){
+                        if(Objects.equals(idSede, sede.getIdSedes())){
+                            productosSedes.setVisibilidad(1);
+                        }
+                    }
                     productosSedeRepository.save(productosSedes);
                 }
                 attr.addFlashAttribute("msg","Producto creado exitosamente.");

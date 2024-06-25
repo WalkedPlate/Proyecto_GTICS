@@ -26,4 +26,7 @@ public class ProductosSedes implements Serializable {
 
     @Column(name = "cantidad" , nullable = false)
     private Integer cantidad;
+
+    @Column(name = "visibilidad" , nullable = false, columnDefinition = "int default 0")
+    private Integer visibilidad;
 }

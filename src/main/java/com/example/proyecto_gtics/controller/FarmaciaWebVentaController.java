@@ -514,5 +514,35 @@ public class FarmaciaWebVentaController {
         return yaRegistrado;
     }
 
+    @GetMapping(value ={"/clinicarenacer/perfil"})
+    public String perfil(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/editarPerfil";
+    }
+
+    @GetMapping(value ={"/clinicarenacer/editar-perfil"})
+    public String editarPerfil(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/editar";
+    }
+
+    @GetMapping(value ={"/clinicarenacer/cambiar-contra"})
+    public String cambiarContra(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/cambiarContra";
+    }
+
 }
 
