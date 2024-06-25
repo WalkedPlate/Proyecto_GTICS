@@ -222,6 +222,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
             adminSede.setDiasBan(diasBan);
             adminSede.setFechaBan(fechaActual);
+            usuariosRepository.calculAyActualizarFechaDesbaneo(adminSede.getIdUsuario());
             attr.addFlashAttribute("ban","Administrador de sede baneado exitosamente");
             usuariosRepository.save(adminSede);
         }
