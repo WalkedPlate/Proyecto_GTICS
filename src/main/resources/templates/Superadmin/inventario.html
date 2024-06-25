@@ -314,7 +314,7 @@
                                 <th:block th:each="cantidad:${listaCantidadPorProducto}">
                                     <td class="text-center"  th:if="${cantidad.getIdProductos() == medicamento.idProductos}" th:text="${cantidad.getCantidadTotal()}"></td>
                                 </th:block>
-                                <td th:text="${medicamento.precio}" class="text-center"></td>
+                                <td th:text="${medicamento.precio}" class="precio text-center"></td>
                                 <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
                                 <!--                                            <td th:text="${medicamento.fechaVencimiento}" class="text-center"></td>-->
                                 <!--                                            <td class="text-center">
@@ -625,5 +625,25 @@
             document.getElementById('logoutForm').submit();
         }
     </script>
+<script>
+    $(document).ready(function() {
+        // Inicializa DataTables
+        var table = $('#example').DataTable();
+
+        // Función para formatear precios a 2 decimales
+        function formatPrices() {
+            $('.precio').each(function() {
+                var valor = parseFloat($(this).text());
+                $(this).text(valor.toFixed(2));
+            });
+        }
+
+        // Aplica el formateo de precios al inicializar y al cambiar de página
+        formatPrices();
+        table.on('draw', function() {
+            formatPrices();
+        });
+    });
+</script>
 </body>
 </html>
