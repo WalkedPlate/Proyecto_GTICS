@@ -29,8 +29,12 @@ public class CustomErrorController implements ErrorController {
                 return "Error/500";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 model.addAttribute("error", "403");
-                model.addAttribute("message", "Acceso denegado");
+                model.addAttribute("message", "Acceso denegado: No tiene permiso para acceder a este recurso.");
                 return "Error/403";
+            } else if (statusCode == HttpStatus.UNAUTHORIZED.value()) {
+                model.addAttribute("error", "401");
+                model.addAttribute("message", "No autorizado: Debe autenticarse para acceder a este recurso.");
+                return "Error/401";
             }
             else {
                 model.addAttribute("error", "Error desconocido");
