@@ -43,7 +43,7 @@ public class Usuarios implements Serializable {
     @Column(name = "correo",nullable = false,length = 100, unique = true)
     @Email(message = "Correo inválido")
     @NotBlank(message = "Complete su correo")
-    @Size(max= 99, message = "El correo no puede ser muy largo")
+    @Size(max= 99, message = "El correo no puede exceder el límite de 99 caracteres.")
     private String correo;
 
 
@@ -72,7 +72,7 @@ public class Usuarios implements Serializable {
 
 
     @Column(name = "distrito_residencia",length = 100)
-    @NotBlank(message = "Complete su distrito")
+    @NotBlank(message = "Complete su distrito de residencia")
     @Size(max= 99, message = "El distrito excede los 99 caracteres")
     private String distritoResidencia;
 
