@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DniService {
 
-    String token = "sk-07WBcVk5VqAkHlKT2DluCnQ9U2O4kec/Pwdt+putKXw==";
+    String token = "sk-YCklwsjnI5uKnveIVhacV6UHNVRj6TnXDS7gY5wWEZQ==";
 
     public ResultDni obtenerDatosPorDni(String dni) {
 
