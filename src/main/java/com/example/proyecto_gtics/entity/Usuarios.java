@@ -112,6 +112,9 @@ public class Usuarios implements Serializable {
     @Column(name = "fecha_ban")
     private Date fechaBan;
 
+    @Column(name="fechadesbaneo")
+    private String fechaDesbaneo;
+
     @Column(name = "fotonombre",nullable = true)
     private String fotonombre;
 

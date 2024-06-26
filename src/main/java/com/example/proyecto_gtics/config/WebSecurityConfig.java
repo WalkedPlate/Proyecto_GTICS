@@ -50,7 +50,7 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsManager users(DataSource dataSource){
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        String sql1 = "select u.correo, u.contrasena, (u.estado_idestado ='Activo') as 'status' from usuarios u WHERE u.correo = ?; ";
+        String sql1 = "select u.correo, u.contrasena, (u.estado_idestado ='Activo' or u.estado_idestado ='Baneado') as 'status' from usuarios u WHERE u.correo = ?; ";
         String sql2 = "select u.correo, u.tipo_usuario_idtipo_usuario from usuarios u WHERE u.correo = ?; ";
 
         users.setUsersByUsernameQuery(sql1);
