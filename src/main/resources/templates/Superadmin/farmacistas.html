@@ -189,6 +189,7 @@
                                             <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                             <input type="hidden" name="dni" th:value="${farmacista.dni}">
                                             <input type="hidden" name="nombre" th:value="${farmacista.nombre}">
+                                            <input type="hidden" name="codigoColegio" th:value="${farmacista.codigoColegio}">
 
                                             <div class="modal-body row">
                                                 <div class="row pt-3">
@@ -198,9 +199,9 @@
                                                     </div>
                                                     <div class="col">
                                                         <label>Código (colegio médico)</label>
-                                                        <input minlength="6" maxlength="6" id="codigoColegio" type="text"
-                                                               class="form-control" name="codigoColegio"
-                                                               th:value="${farmacista.codigoColegio}" required>
+                                                        <input id="codigoColegio" type="text"
+                                                               class="form-control"
+                                                               th:value="${farmacista.codigoColegio}" disabled readonly>
                                                     </div>
 
                                                 </div>
@@ -318,7 +319,7 @@
 
 <!--        <script src="/js/Superadmin/script.js"></script>-->
 
-        <!-- JS de bootstrap antiguo pero funcional -->
+        <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
         <!-- JQuery -->
@@ -335,20 +336,6 @@
 
         <!-- Script sobre la tabla y sus configuraciones -->
         <script src="/js/Superadmin/tablas.js"></script>
-
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("codigoColegio").addEventListener("keydown", function (event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
 
         <script>
             (() => {

@@ -87,12 +87,12 @@
                                     </div>
                                     <!-- Actions -->
                                     <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
-                                        <form id="pdfForm" method="post" th:action="@{/pdf/usuarios}">
-                                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaAdminSede}" th:value="${usuario.idUsuario}">
-                                            <button type="button" class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center" onclick="descargarPDF()">
-                                                <span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
-                                                <span>Descargar PDF</span></button>
-                                        </form>
+                                        <button id="download-pdf" class="btn btn-danger d-inline-flex btn-sm mx-1">
+                                             <span class=" pe-2">
+                                                 <i class="bi bi-file-earmark-pdf"></i>
+                                             </span>
+                                            <span>Descargar PDF</span>
+                                        </button>
 
                                         <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
                                            data-bs-toggle="modal" data-bs-target="#modalAgregar">
@@ -472,36 +472,26 @@
             </div>
         </div>
 
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!--        <script src="/js/Superadmin/script.js"></script>-->
+<!--        <script src="/js/Superadmin/table.js"></script>-->
+
+        <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/Superadmin/table.js"></script>
-        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
-        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <!-- Datatable -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-        <script>
-            new DataTable('#example', {
-                layout: {
-                    topStart: {
-                        buttons: [
-                           'pdf'
-                        ]
-                    }
-                }
-            });
-        </script>
 
-        <script>
-            function descargarPdf() {
-                window.location.href = '/pdf/usuarios';
-            }
-        </script>
-
+        <!-- Script sobre la tabla y sus configuraciones -->
+        <script src="/js/Superadmin/tablas.js"></script>
 
         <script>
             //Autocompletar Nombre y Apellidos con el DNI
@@ -607,18 +597,6 @@
             }
         </script>
 
-
-        <!--Script para descargar el pdf con datatable-->
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-
-            function descargarPDF() {
-                var form = document.getElementById("pdfForm");
-                form.submit();
-            }
-        </script>
 
     </body>
 </html>

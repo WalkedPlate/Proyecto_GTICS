@@ -2,7 +2,7 @@ let table = new DataTable('#example', {
     pageLength: 5,
     lengthMenu: [5, 10, 25, 50, 100],
     columnDefs: [
-        {orderable: false, target: [2, 4, 5, 6]},
+        {orderable: false, target: [5, 6]},
     ],
     language: {
         "processing": "Procesando...",
