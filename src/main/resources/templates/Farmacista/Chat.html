@@ -345,7 +345,7 @@
                 liElement.classList.add('d-flex', 'justify-content-between', 'mb-4');
 
                 if (isSentByMe) {
-                    // Estilo para mensajes enviados por mi (Farmacista)
+                    // Estilo para mensajes enviados por mi (Paciente)
                     const imgElement = document.createElement('img');
                     imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp';
                     imgElement.alt = 'avatar';
@@ -361,7 +361,7 @@
 
                     const nameElement = document.createElement('p');
                     nameElement.classList.add('fw-bold', 'mb-0');
-                    nameElement.textContent = `${message.chat.usuario1.nombre}`;
+                    nameElement.textContent = `${message.chat.usuario1.nombre}` + ' (Yo) ';
 
                     const timeElement = document.createElement('p');
                     timeElement.classList.add('small', 'mb-0', 'ml-2');
@@ -396,7 +396,7 @@
 
                     const nameElement = document.createElement('p');
                     nameElement.classList.add('fw-bold', 'mb-0');
-                    nameElement.textContent = `${message.chat.usuario2.nombre}`;
+                    nameElement.textContent = `${message.chat.usuario2.nombre}` + ' (Paciente) ';
 
                     const timeElement = document.createElement('p');
                     timeElement.classList.add('small', 'mb-0', 'ml-2');

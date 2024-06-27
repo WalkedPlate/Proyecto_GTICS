@@ -298,10 +298,30 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/chat"})
-    public String chat(HttpSession session, Model model, @RequestParam("chatId") Integer chatId,
+    public String chat(HttpSession session, Model model, @RequestParam(name = "chatId", required = false) Integer chatId,
                        RedirectAttributes attr){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
         model.addAttribute("farmacista",farmacista);
+
+        if(chatId == null){
+            Optional<Chat> opt = chatRepository.findFirstByUsuario1OrderByIdChatDesc(farmacista);
+            if(opt.isPresent()){
+                Chat chat = opt.get();
+                if(messageService.verificarAccesoChat(chat.getIdChat(),farmacista)){
+                    model.addAttribute("chat",chat);
+                    return "Farmacista/Chat";
+                }
+                else {
+                    attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+                    return "redirect:/farmacista";
+                }
+            }
+            else {
+                attr.addFlashAttribute("err","El usuario aún no tiene chats.");
+                return "redirect:/farmacista";
+            }
+
+        }
 
         if(messageService.verificarAccesoChat(chatId,farmacista)){
             Chat chat = chatRepository.findById(chatId).get();

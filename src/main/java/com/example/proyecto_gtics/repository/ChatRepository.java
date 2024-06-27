@@ -19,5 +19,7 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
     Chat findFirstByOrderByIdChatDesc(); // recuperar la última entrada de la tabla
 
+    Optional<Chat> findFirstByUsuario1OrderByIdChatDesc(Usuarios usuarios); // Busca último chat del farmacista
+    Optional<Chat> findFirstByUsuario2OrderByIdChatDesc(Usuarios usuarios); // Busca último chat del paciente
 
 }

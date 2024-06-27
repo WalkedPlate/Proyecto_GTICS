@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.MessageService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +65,14 @@ public class FarmaciaWebVentaController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TipoChatRepository tipoChatRepository;
+    @Autowired
+    private MensajesRepository mensajesRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private MessageService messageService;
 
 
     //Formatear strings a dates
@@ -221,8 +230,45 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/chatfarmacista"})
-    public String chatFarmacista(){
-        return "FarmaciaWebVenta/chat";
+    public String chatFarmacista(HttpSession session, Model model, @RequestParam(name = "chatId", required = false) Integer chatId,
+                                 RedirectAttributes attr){
+
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente logueado
+        model.addAttribute("paciente",paciente);
+
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println(paciente.getCorreo() + paciente.getIdUsuario());
+        if(chatId == null){
+            Optional<Chat> opt = chatRepository.findFirstByUsuario2OrderByIdChatDesc(paciente);
+            if(opt.isPresent()){
+                Chat chat = opt.get();
+                if(messageService.verificarAccesoChat(chat.getIdChat(),paciente)){
+                    model.addAttribute("chat",chat);
+                    return "FarmaciaWebVenta/chat";
+                }
+                else {
+                    attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+                    return "redirect:/clinicarenacer";
+                }
+            }
+            else {
+                attr.addFlashAttribute("err","El paciente aún no tiene chats.");
+                return "redirect:/clinicarenacer";
+            }
+
+        }
+
+        if(messageService.verificarAccesoChat(chatId,paciente)){
+            Chat chat = chatRepository.findById(chatId).get();
+            model.addAttribute("chat",chat);
+            return "FarmaciaWebVenta/chat";
+        }
+        else {
+            attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+            return "redirect:/clinicarenacer";
+        }
+
+
     }
 
     @GetMapping(value ={"/clinicarenacer/producto"})
