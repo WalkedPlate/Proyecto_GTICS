@@ -87,7 +87,7 @@ public class WebSecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true));
 
-        http.csrf(a -> a.disable());
+        //http.csrf(a -> a.disable());
 
         return http.build();
     }
