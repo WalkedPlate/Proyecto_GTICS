@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Farmacias Clínica Renacer</title>
+
+        <!--
+          - favicon
+        -->
+        <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
+
+        <!--
+          - custom css link
+        -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
+        <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
+
+
+
+        <!--
+          - google font link
+        -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    </head>
+
+    <body>
+
+    <div class="overlay" data-overlay></div>
+
+    <!--
+      - MODAL
+    -->
+
+    <div  data-modal>
+
+        <div  data-modal-overlay></div>
+
+        <div >
+
+            <button  data-modal-close>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!--
+      - NOTIFICATION TOAST
+    -->
+
+    <div data-toast>
+
+        <button  data-toast-close>
+
+        </button>
+
+    </div>
+
+    <!--
+      - HEADER
+    -->
+
+    <header th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/cabecera.html :: cabecera}">
+    </header>
+
+    <!--CHATBOT-->
+    <div th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/chatbot.html :: chabot}">
+    </div>
+
+
+    <main class="py-6 bg-surface-secondary ">
+        <div class="container-fluid d-flex justify-content-center align-items-center pb-5">
+            <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
+                 style="width: 35rem">
+                <div class="row row-cols-1 ">
+                    <div class="col text-center pt-1 pb-3">
+                        <h2><strong>Tu perfil</strong></h2>
+                        <hr>
+                    </div>
+                    <div class="row d-flex pb-5">
+
+                        <div class="col text-center d-flex justify-content-center align-items-center">
+                            <img src="/img/Superadmin/profile-3.jpeg" alt="" width="180"
+                                 class="rounded-circle">
+                        </div>
+                        <div class="col mt-4 me-4" style="margin:0px 5px">
+                            <span th:text="'Nombre:  ' + ${paciente.nombre}"></span>
+                            <br>
+                            <span th:text="'DNI:  ' + ${paciente.dni}"></span>
+                            <br>
+                            <span th:text="'Distrito de residencia: ' + ${paciente.direccion}"></span>
+                            <br>
+                            <span th:text="'Correo:  ' + ${paciente.correo}"></span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="col d-flex justify-content-center align-items-center pt-2 pb-3">
+                        <a th:href="@{'/clinicarenacer/cambiar-contra'}" class="btn btn-primary btn-xs"
+                           role="button" style="margin-right: 10px">Cambiar Contraseña</a>
+                        <a th:href="@{'/clinicarenacer/editar-perfil'}" class="btn btn-primary btn-xs"
+                           role="button">Editar Perfil</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+        <!-- Modal de confirmación para cierre de sesión -->
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title" id="confirmLogoutModalLabel">¿Estás seguro de que quieres cerrar sesión?</h3>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>
+        <script src="/js/Superadmin/script.js"></script>
+
+        <!-- Script para confirmación de cierre de sesión -->
+        <script>
+            function confirmLogout(event) {
+                event.preventDefault();
+                var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
+                modal.show();
+            }
+
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
+        </script>
+
+    <!--
+  - FOOTER
+-->
+
+    <footer th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/footer.html :: footer}">
+    </footer>
+
+    <!--
+    - custom js link
+  -->
+    <script src="/js/FarmaciaWebVenta/script.js"></script>
+
+    <!--
+      - ionicon link
+    -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    </body>
+</html>
