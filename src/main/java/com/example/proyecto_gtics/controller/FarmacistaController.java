@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.MessageService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,14 @@ public class FarmacistaController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TipoChatRepository tipoChatRepository;
+    @Autowired
+    private MensajesRepository mensajesRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private MessageService messageService;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -255,12 +264,55 @@ public class FarmacistaController {
     }
 
 
+    @GetMapping(value ={"/farmacista/contactarPaciente"})
+    public String contactarPaciente(HttpSession session, Model model, @RequestParam(name = "idPaciente", required = false) Integer idPaciente){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+        Usuarios paciente = usuariosRepository.findByIdUsuario(idPaciente);
+
+        //Comprobamos si el chat ya existe
+        Optional<Chat> optional1 = chatRepository.findByUsuario1AndAndUsuario2(farmacista,paciente);
+        Optional<Chat> optional2 = chatRepository.findByUsuario1AndAndUsuario2(paciente,farmacista);
+
+        if(optional1.isPresent()){
+            return "redirect:/farmacista/chat?chatId="+optional1.get().getIdChat();
+        }
+        if(optional2.isPresent()){
+            return "redirect:/farmacista/chat?chatId="+optional2.get().getIdChat();
+        }
+        //En el caso de que no exista el chat, creamos este
+
+        //Tipo de chat = 1 : Farmacista - Paciente
+        TipoChat tipoChat = tipoChatRepository.findById(1).get();
+        //Crear el chat
+        Chat chat = new Chat();
+        chat.setTipoChat(tipoChat);
+        chat.setUsuario1(farmacista); // Farmacista
+        chat.setUsuario2(paciente); // paciente
+        chatRepository.save(chat);
+
+        //Recuperar el chat creado:
+        Chat chatRecuperado = chatRepository.findFirstByOrderByIdChatDesc();
+
+        return "redirect:/farmacista/chat?chatId="+chatRecuperado.getIdChat();
+    }
+
     @GetMapping(value ={"/farmacista/chat"})
-    public String chat(HttpSession session, Model model){
+    public String chat(HttpSession session, Model model, @RequestParam("chatId") Integer chatId,
+                       RedirectAttributes attr){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
         model.addAttribute("farmacista",farmacista);
 
-        return "Farmacista/Chat";
+        if(messageService.verificarAccesoChat(chatId,farmacista)){
+            Chat chat = chatRepository.findById(chatId).get();
+            model.addAttribute("chat",chat);
+            return "Farmacista/Chat";
+        }
+        else {
+            attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+            return "redirect:/farmacista";
+        }
+
     }
 
 

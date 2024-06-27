@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="/css/Farmacista/style.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
         <!--DataTable-->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
         <style>
@@ -21,7 +23,7 @@
         </style>
     </head>
 
-    <body class="bg-surface-secondary">
+    <body class="bg-surface-secondary" th:attr="data-chat-id=${chat.idChat}">
         <!-- Dashboard -->
         <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
             <!-- Vertical Navbar -->
@@ -240,70 +242,20 @@
 
                                 </div>
 
-                                <div class="col-md-6 col-lg-7 col-xl-7">
+                                <div class="col-md-6 col-lg-7 col-xl-7" >
 
-                                    <ul class="list-unstyled text-white">
-                                        <li class="d-flex justify-content-between mb-4">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                                            <div class="card mask-custom">
-                                                <div class="card-header d-flex justify-content-between p-3"
-                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                                    <p class="fw-bold mb-0">Brad Pitt</p>
-                                                    <p class=" small mb-0"><i class="far fa-clock"></i> Hace 12 min</p>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="mb-0">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                                                        labore et dolore magna aliqua.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="d-flex justify-content-between mb-4">
-                                            <div class="card mask-custom w-100">
-                                                <div class="card-header d-flex justify-content-between p-3"
-                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                                    <p class="fw-bold mb-0">Lara Croft</p>
-                                                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 10 min</p>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="mb-0">
-                                                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-                                                        laudantium.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                                                 class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                                        </li>
-                                        <li class="d-flex justify-content-between mb-4">
-                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
-                                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                                            <div class="card mask-custom">
-                                                <div class="card-header d-flex justify-content-between p-3"
-                                                     style="border-bottom: 1px solid rgba(255,255,255,.3);">
-                                                    <p class="fw-bold mb-0">Brad Pitt</p>
-                                                    <p class="small mb-0"><i class="far fa-clock"></i>Hace 9 min</p>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p class="mb-0">
-                                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                                                        labore et dolore magna aliqua.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="mb-3">
-                                            <div data-mdb-input-init class="form-outline form-white">
-                                                <textarea class="form-control" id="textAreaExample3" rows="4"></textarea>
-                                                <label class="form-label" for="textAreaExample3">Mensaje</label>
-                                            </div>
-                                        </li>
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-rounded float-end">Enviar</button>
+                                    <ul class="list-unstyled text-white" id="messages">
+
+
                                     </ul>
-
+                                    <div data-mdb-input-init class="form-outline form-white">
+                                        <textarea class="form-control" id="message" rows="4"></textarea>
+                                        <label class="form-label" for="message">Mensaje</label>
+                                    </div>
+                                    <button type="button" data-mdb-button-init data-mdb-ripple-init onclick="sendMessage()"
+                                            class="btn btn-primary btn-lg btn-rounded float-end">Enviar</button>
                                 </div>
+
 
                             </div>
 
@@ -345,6 +297,145 @@
             function submitLogout() {
                 document.getElementById('logoutForm').submit();
             }
+        </script>
+
+        <script>
+            var stompClient = null;
+            const chatId = document.body.getAttribute("data-chat-id");
+
+            function connect() {
+                var socket = new SockJS('/chat-websocket');
+                stompClient = Stomp.over(socket);
+                stompClient.connect({}, function (frame) {
+                    console.log('Connected: ' + frame);
+                    stompClient.subscribe('/topic/messages', function (message) {
+                        showMessage(JSON.parse(message.body));
+                    });
+                });
+            }
+
+            function sendMessage() {
+                var message = {
+                    chatId: chatId, // Set chat ID
+                    contenido: document.getElementById('message').value,
+                    estado: 'ENVIADO',
+                    sender: 1 // Set sender ID
+                };
+                stompClient.send("/app/chatFarmacista", {}, JSON.stringify(message));
+                document.getElementById('message').value = ''; // Limpiar el campo de mensaje
+            }
+
+            function loadPreviousMessages() {
+                fetch('/mensajesPrevios?chatId='+chatId)
+                    .then(response => response.json())
+                    .then(messages => {
+                        messages.forEach(message => showMessage(message));
+                    })
+                    .catch(error => console.error('Error al cargar mensajes pasados:', error));
+            }
+
+            function showMessage(message) {
+                const messagesDiv = document.getElementById('messages');
+
+                // Determinar si el mensaje fue enviado por ti o recibido
+                const isSentByMe = (message.sender === 1); // 1: Farmacista || 2: Paciente
+
+                // Crear elementos HTML
+                const liElement = document.createElement('li');
+                liElement.classList.add('d-flex', 'justify-content-between', 'mb-4');
+
+                if (isSentByMe) {
+                    // Estilo para mensajes enviados por mi (Farmacista)
+                    const imgElement = document.createElement('img');
+                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp';
+                    imgElement.alt = 'avatar';
+                    imgElement.classList.add('rounded-circle', 'd-flex', 'align-self-start', 'me-3', 'shadow-1-strong');
+                    imgElement.width = '60';
+
+                    const cardElement = document.createElement('div');
+                    cardElement.classList.add('card', 'mask-custom');
+
+                    const cardHeader = document.createElement('div');
+                    cardHeader.classList.add('card-header', 'd-flex', 'justify-content-between', 'p-3');
+                    cardHeader.style.borderBottom = '1px solid rgba(255,255,255,.3)';
+
+                    const nameElement = document.createElement('p');
+                    nameElement.classList.add('fw-bold', 'mb-0');
+                    nameElement.textContent = `${message.chat.usuario1.nombre}`;
+
+                    const timeElement = document.createElement('p');
+                    timeElement.classList.add('small', 'mb-0', 'ml-2');
+
+                    timeElement.innerHTML = `  <i class="far fa-clock"></i>${message.fecha}`;
+
+                    cardHeader.appendChild(nameElement);
+                    cardHeader.appendChild(timeElement);
+
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+
+                    const messageParagraph = document.createElement('p');
+                    messageParagraph.classList.add('mb-0');
+                    messageParagraph.textContent = message.contenido;
+
+                    cardBody.appendChild(messageParagraph);
+                    cardElement.appendChild(cardHeader);
+                    cardElement.appendChild(cardBody);
+
+                    liElement.appendChild(imgElement);
+                    liElement.appendChild(cardElement);
+
+                } else {
+                    // Estilo para mensajes recibidos
+                    const cardElement = document.createElement('div');
+                    cardElement.classList.add('card', 'mask-custom', 'w-100');
+
+                    const cardHeader = document.createElement('div');
+                    cardHeader.classList.add('card-header', 'd-flex', 'justify-content-between', 'p-3');
+                    cardHeader.style.borderBottom = '1px solid rgba(255,255,255,.3)';
+
+                    const nameElement = document.createElement('p');
+                    nameElement.classList.add('fw-bold', 'mb-0');
+                    nameElement.textContent = `${message.chat.usuario2.nombre}`;
+
+                    const timeElement = document.createElement('p');
+                    timeElement.classList.add('small', 'mb-0', 'ml-2');
+
+                    timeElement.innerHTML = `  <i class="far fa-clock"> </i> ${message.fecha}`;
+
+                    cardHeader.appendChild(nameElement);
+                    cardHeader.appendChild(timeElement);
+
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+
+                    const messageParagraph = document.createElement('p');
+                    messageParagraph.classList.add('mb-0');
+                    messageParagraph.textContent = message.contenido;
+
+                    cardBody.appendChild(messageParagraph);
+                    cardElement.appendChild(cardHeader);
+                    cardElement.appendChild(cardBody);
+
+                    liElement.appendChild(cardElement);
+
+                    const imgElement = document.createElement('img');
+                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp';
+                    imgElement.alt = 'avatar';
+                    imgElement.classList.add('rounded-circle', 'd-flex', 'align-self-start', 'ms-3', 'shadow-1-strong');
+                    imgElement.width = '60';
+
+                    liElement.appendChild(imgElement);
+                }
+
+                messagesDiv.appendChild(liElement);
+            }
+
+            // Conectar automáticamente cuando se carga la página
+            window.onload = function() {
+                connect();
+                loadPreviousMessages();
+            };
         </script>
     </body>
 

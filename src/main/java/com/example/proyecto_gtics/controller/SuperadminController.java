@@ -630,18 +630,25 @@ public class SuperadminController {
                 return "redirect:/superadmin/doctores";
             }
 
-        doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-        doctor.setContrasena("Temporal_password");
-        doctor.setUsandoContrasenaTemporal(false);
-        doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
+            ResultDni resultDni = dniService.obtenerDatosPorDni(doctor.getDni().toString());
+            if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+                attr.addFlashAttribute("errDNI","El DNI ingresado es inválido");
+                return "redirect:/registro";
+            }
+            doctor.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
 
-        Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
-        doctor.setSedes(sede);//Asignamos la sede
-        usuariosRepository.save(doctor);
-            attr.addFlashAttribute("msg","Doctor creado exitosamente");
+            doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            doctor.setContrasena("Temporal_password");
+            doctor.setUsandoContrasenaTemporal(false);
+            doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
 
-            return "redirect:/superadmin/doctores";
-    }
+            Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
+            doctor.setSedes(sede);//Asignamos la sede
+            usuariosRepository.save(doctor);
+                attr.addFlashAttribute("msg","Doctor creado exitosamente");
+
+                return "redirect:/superadmin/doctores";
+        }
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})

@@ -160,7 +160,7 @@
                                     Aprobar
                                 </button>
                             </th:block>
-                            <a href="Chat.html">
+                            <a th:href="@{'/farmacista/contactarPaciente?idPaciente='+ ${orden.usuarios.idUsuario}}">
                                 <button type="button" class="btn btn-sm btn-danger mx-2">
                                     Contactar Paciente
                                 </button>
