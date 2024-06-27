@@ -54,7 +54,7 @@
                                 <div class="col columna">
                                     <div class="form-floating mb-3">
                                         <input
-                                                id="numberInput"
+                                                id="dni"
                                                 minlength="8" maxlength="8"
                                                 type="text" class="form-control" placeholder="DNI"
                                                 autocomplete="off" name="dni" required/>
@@ -75,7 +75,7 @@
                                         <input
                                                 pattern="[A-Za-z].+"
                                                 type="text" class="form-control" placeholder="Nombre"
-                                                autocomplete="off" name="nombres" id="nombre" disabled readonly/>
+                                                autocomplete="off"  id="nombre" disabled readonly/>
                                         <label>Nombres</label>
 <!--                                        <div class="invalid-feedback">-->
 <!--                                            Por favor, ingrese un nombre.-->
@@ -87,7 +87,7 @@
                                         <input
                                                 pattern="[A-Za-z].+"
                                                 type="text" class="form-control" placeholder="Apellido"
-                                                autocomplete="off" name="apellidos" id="apellido" disabled readonly/>
+                                                autocomplete="off"  id="apellido" disabled readonly/>
                                         <label>Apellidos</label>
 <!--                                        <div class="invalid-feedback">-->
 <!--                                            Por favor ingrese un apellido.-->
@@ -179,7 +179,7 @@
         <script>
             //Autocompletar Nombre y Apellidos con el DNI
             function autocompletarDni() {
-                let dni = document.getElementById("numberInput").value;
+                let dni = document.getElementById("dni").value;
 
                 fetch(`/api/dni?dni=${dni}`)
                     .then(response => response.json())
@@ -200,7 +200,7 @@
 
 
                 // Simulación de respuesta de la API
-                // let dni = document.getElementById("numberInput").value;
+                // let dni = document.getElementById("dni").value;
                 //
                 // let data = {
                 //     status: 40 // Cambia el valor para simular diferentes escenarios (200, 404, etc.)
@@ -221,7 +221,7 @@
             }
 
             // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput").addEventListener("keydown", function (event) {
+            document.getElementById("dni").addEventListener("keydown", function (event) {
                 // Permite las teclas de flecha, retroceso y suprimir
                 if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
                     return;
@@ -233,10 +233,10 @@
             });
 
             // Añadir el evento keydown para detectar la tecla Enter
-            document.getElementById('numberInput').addEventListener('keydown', function (event) {
+            document.getElementById('dni').addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
                     event.preventDefault(); // Evitar que el formulario se envíe
-                    let dniInput = document.getElementById("numberInput");
+                    let dniInput = document.getElementById("dni");
                     let dniError = document.getElementById("dniError");
 
                     // Validar la longitud del DNI

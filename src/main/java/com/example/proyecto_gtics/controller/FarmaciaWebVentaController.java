@@ -220,7 +220,7 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/porSubcategoria";
     }
 
-    @GetMapping(value ={"/clinicarenacer/paciente/chatfarmacista"})
+    @GetMapping(value ={"/clinicarenacer/chatfarmacista"})
     public String chatFarmacista(){
         return "FarmaciaWebVenta/chat";
     }
@@ -461,8 +461,6 @@ public class FarmaciaWebVentaController {
            // }
 
     }
-
-
 
 
 
