@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import javax.sql.DataSource;
 
 @Configuration
-@CrossOrigin
+@EnableWebSecurity
 public class WebSecurityConfig {
 
 
@@ -86,7 +87,7 @@ public class WebSecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true));
 
-        //http.csrf(a -> a.disable());
+        http.csrf(a -> a.disable());
 
         return http.build();
     }
