@@ -299,15 +299,16 @@ public class SuperadminController {
             List<Sedes> sedesTotales = sedesRepository.findAll();
             List<Sedes> sedesVista =new ArrayList<>();//Sedes mandadas desde la vista
 
-            //for (Integer idSede : idSedes){
-            for (Sedes sede : sedesTotales){
-                //Sedes sede = sedesRepository.findByIdSedes(idSede);
+            ProductosSedes productosSedes1 = new ProductosSedes();
+            for (Integer idSede : idSedes){
+            //for (Sedes sede : sedesTotales){
+                Sedes sede = sedesRepository.findByIdSedes(idSede);
                 //----------------Codigo añadido-------------------------------------------
                 sedesVista.add(sede);// Llenamos la lista
                 //--------------------------------------------------------------------------
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
-                if(productosSedes == null){
-                    ProductosSedes productosSedes1 = new ProductosSedes();
+                if(productosSedes != null){
+                    //ProductosSedes productosSedes1 = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productos.getIdProductos());
                     productosSedesId.setIdSedes(sede.getIdSedes());
@@ -315,9 +316,9 @@ public class SuperadminController {
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
                     productosSedes1.setCantidad(0);
-                    for (Integer idSede : idSedes){
-                        if(Objects.equals(idSede, sede.getIdSedes())){
-                            productosSedes.setVisibilidad(1);
+                    for (Sedes sede1 : sedesTotales){
+                        if(Objects.equals(idSede, sede1.getIdSedes())){
+                            productosSedes1.setVisibilidad(1);
                         }
                     }
                     productosSedeRepository.save(productosSedes1);
@@ -329,7 +330,9 @@ public class SuperadminController {
             for (Sedes sede : sedesTotales){
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
                 if (productosSedes != null){
-                    productosSedeRepository.delete(productosSedes);
+                    //productosSedeRepository.delete(productosSedes);
+                    productosSedes.setVisibilidad(0);
+                    productosSedeRepository.save(productosSedes);
                 }
             }
             //------------------Aqui finaliza los cambios de prueba del for-----------------------
