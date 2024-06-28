@@ -19,6 +19,7 @@ import java.util.Optional;
 @Repository
 public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> findByTipoOrdenAndUsuarios(TipoOrden tipoOrden, Usuarios usuarios);
+    List<Ordenes> findByUsuarios(Usuarios usuarios);
     List<Ordenes> findByTipoOrdenAndSedesAndEstadoOrdenNot(TipoOrden tipoOrden, Sedes sedes, EstadoOrden estadoOrden);
 
     Ordenes findFirstByOrderByIdordenesDesc(); // recuperar la última entrada de la tabla

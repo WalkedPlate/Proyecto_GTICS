@@ -3,6 +3,8 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.repository.OrdenesRepository;
 import com.example.proyecto_gtics.service.OpenAIService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,15 +41,9 @@ public class OpenAIController {
 
 }
 
-
+@Getter
+@Setter
 class ChatRequest {
     private String message;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    private String prompt;
 }

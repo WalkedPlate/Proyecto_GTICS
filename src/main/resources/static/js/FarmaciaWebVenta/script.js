@@ -11,6 +11,7 @@ toastCloseBtn.addEventListener('click', function () {
 
 
 // Chatbot
+// Chatbot
 const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 const chatbox = document.querySelector(".chatbox");
@@ -30,35 +31,38 @@ const createChatLi = (message, className) => {
 const generateResponse = async () => {
   const API_URL = "/api/gpt";
 
-  fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: userMessage
-    })
-  })
-      .then(response => response.text())
-      .then(data => {
-        const incomingChatLi = document.querySelector(".chat.incoming p");
-        if (incomingChatLi) {
-          incomingChatLi.textContent = data;
-        }
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: userMessage,
+        prompt: "sin usar"
       })
-      .catch(error => {
-        console.error("Error:", error);
-      });
+    });
+    const data = await response.text();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    return "Lo siento, hubo un error al procesar tu mensaje.";
+  }
 }
 
 const handleChat = async () => {
   userMessage = chatInput.value.trim();
   if (!userMessage) return;
 
+  // Añade el mensaje del usuario al chatbox
   chatbox.appendChild(createChatLi(userMessage, "outgoing"));
   chatInput.value = '';
 
+  // Muestra el mensaje de "Thinking..."
+  const thinkingLi = createChatLi("Thinking...", "incoming");
+  chatbox.appendChild(thinkingLi);
 
+  // Obtiene la respuesta del chatbot
   const responseMessage = await generateResponse();
 
   // Remueve el mensaje "Thinking..." y añade la respuesta del chatbot

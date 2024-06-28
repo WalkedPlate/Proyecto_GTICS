@@ -150,7 +150,7 @@ public class SuperadminController {
             String link = request.getScheme() + "://"+ request.getServerName()
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
-            /*
+
             ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
             if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                 attr.addFlashAttribute("err","DNI inválido");
@@ -158,10 +158,9 @@ public class SuperadminController {
             }
 
 
-             */
 
-            //adminSede.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
-            adminSede.setNombre("testing");
+
+            adminSede.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             //Contraseña
             String temporalPassword = Usuarios.generateTemporaryPassword(10);

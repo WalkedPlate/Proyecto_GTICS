@@ -129,7 +129,7 @@ public class FarmaciaWebVentaController {
 
         TipoOrden web = tipoOrdenRepository.findById(3).get();
 
-        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndUsuarios(web,paciente);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByUsuarios(paciente);
 
         model.addAttribute("listaOrdenes",listaOrdenes);
 

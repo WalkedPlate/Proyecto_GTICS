@@ -125,7 +125,7 @@ public class FarmacistaController {
         if (!usuarioYaRegistrado(paciente.getDni(),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
             paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
-            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
             paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             paciente.setContrasena("Temporal_password");
             paciente.setCorreo(UUID.randomUUID().toString());
@@ -152,6 +152,7 @@ public class FarmacistaController {
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
 
         int index = 0;
+        float monto = 0;
         for(Integer id: listaIdsProductos){
             Productos p = productosRepository.findById(id).get();
             String cantidadStr = listaCantidades.get(index);
@@ -165,6 +166,7 @@ public class FarmacistaController {
                     detallesOrden.setCantidad(cantidad);
                     detallesOrden.setMontoParcial(cantidad*p.getPrecio());
                     detallesOrdenRepository.save(detallesOrden); // Guardrooms los productos y detalles de orden
+                    monto += cantidad*p.getPrecio();
                 }
 
             }
@@ -177,6 +179,7 @@ public class FarmacistaController {
             index++;
         }
         ordenCreada.setTipoOrden(tipoOrdenRepository.findById(1).get()); // Finalmente cambiamos el tipo de orden a orden presencial
+        ordenCreada.setMonto(monto);
         ordenesRepository.save(ordenCreada);
 
         attr.addFlashAttribute("msg","Orden Registrada exitosamente");

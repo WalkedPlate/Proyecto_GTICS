@@ -77,6 +77,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col" class="text-center">Nro de orden</th>
+                                    <th scope="col" class="text-center">Tipo de orden</th>
                                     <th scope="col" class="text-center">Destino</th>
                                     <th scope="col" class="text-center">Estado</th>
                                     <th scope="col" class="text-center">Fecha de Registro</th>
@@ -92,6 +93,7 @@
 
                                         </a>
                                     </td>
+                                    <td class="text-center" th:text="${orden.tipoOrden.nombre}"></td>
                                     <td class="text-center" th:text="${orden.direccion}"></td>
                                     <td class="text-center" th:text="${orden.estadoOrden.nombre}"></td>
                                     <td class="text-center" th:text="${orden.fechaRegistro}"></td>
