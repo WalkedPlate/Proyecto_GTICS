@@ -775,7 +775,7 @@ public class SuperadminController {
     @PostMapping("/impersonate/{userId}")
     public void impersonateUser(@PathVariable int userId, HttpSession session, HttpServletResponse response) throws IOException {
         // Guardar la identidad original del superadmin
-        Usuarios superadmin = (Usuarios) session.getAttribute("currentUser");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
 
         // Obtener el usuario a impersonar
         Usuarios userToImpersonate = usuariosRepository.findByIdUsuario(userId);

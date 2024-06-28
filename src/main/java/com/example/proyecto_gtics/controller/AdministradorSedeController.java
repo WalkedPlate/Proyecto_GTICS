@@ -87,11 +87,15 @@ public class AdministradorSedeController {
     @GetMapping(value = {"/administradorsede"})
     public String paginaPrincipal(Model model, HttpSession session) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         //Creacion de archivo JSON para añadir DATA en el grafico pastel
