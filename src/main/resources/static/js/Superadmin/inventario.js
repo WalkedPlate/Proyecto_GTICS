@@ -255,8 +255,8 @@ let table = new DataTable('#inventario', {
 new DataTable.Buttons(table, {
     buttons: [{
         extend:    'pdfHtml5',
-        messageTop: 'Reporte de la Clínica Renacer',
-        title:     'Lista de medicinas',
+        messageTop: 'Reporte del inventario realizado el 28/06/2024',
+        title:     'Clínica Renacer',
         exportOptions: {
             columns: [0,1,2,3,4] // columnas que se exportarán
         }

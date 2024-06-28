@@ -255,7 +255,7 @@ let table = new DataTable('#example', {
 new DataTable.Buttons(table, {
     buttons: [{
         extend:    'pdfHtml5',
-        messageTop: 'Reporte de la Clínica Renacer',
+        messageTop: 'Reporte realizado el 28/06/2024',
         title:     'Clínica Renacer',
         exportOptions: {
             columns: [0,1,2,3,4,5] // columnas que se exportarán
