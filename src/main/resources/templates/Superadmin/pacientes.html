@@ -83,22 +83,18 @@
                                     </div>
                                     <!-- Actions -->
                                     <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
-
-                                        <form id="pdfForm" method="post" th:action="@{/pdf/usuarios}">
-                                            <input type="hidden" name="listaUsuarios"
-                                                   th:each="usuario : ${listaPacientes}"
-                                                   th:value="${usuario.idUsuario}">
-                                            <button type="button"
-                                                    class="btn btn-primary d-inline-flex btn-sm mx-1 align-items-center" onclick="descargarPDF()">
-                                                <span class="pe-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
-                                                <span>Descargar PDF</span></button>
-                                        </form>
+                                        <button id="download-pdf" class="btn btn-danger d-inline-flex btn-sm mx-1">
+                                             <span class=" pe-2">
+                                                 <i class="bi bi-file-earmark-pdf"></i>
+                                             </span>
+                                            <span>Descargar PDF</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <!--TABLA-->
                             <div class="container table-responsive mb-4">
-                                <table id="example" class="table table-hover" style="width:100%">
+                                <table id="pacientes" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th scope="col" class="text-center">Nombre</th>
@@ -131,10 +127,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <!--                        <form method="post" th:action="@{/pdf/usuarios}">-->
-                                <!--                            <input type="hidden" name="listaUsuarios" th:each="usuario : ${listaPacientes}" th:value="${usuario.idUsuario}">-->
-                                <!--                            <button type="submit" class="btn btn-primary">Descargar PDF</button>-->
-                                <!--                        </form>-->
                             </div>
 
                         </div>
@@ -161,14 +153,25 @@
         </div>
 
 
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <!--        <script src="/js/Superadmin/script.js"></script>-->
+
+        <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/Superadmin/table.js"></script>
-        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-        <script>
-            new DataTable('#example');
-        </script>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <!-- Datatable -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+
+        <!-- Script sobre la tabla y sus configuraciones -->
+        <script src="/js/Superadmin/pacientes.js"></script>
 
         <!-- Script para confirmación de cierre de sesión -->
         <script>
@@ -178,18 +181,6 @@
 
             function submitLogout() {
                 document.getElementById('logoutForm').submit();
-            }
-        </script>
-
-
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-
-            function descargarPDF() {
-                var form = document.getElementById("pdfForm");
-                form.submit();
             }
         </script>
     </body>
