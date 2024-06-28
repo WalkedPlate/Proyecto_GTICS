@@ -11,6 +11,7 @@ import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -727,6 +731,7 @@ public class SuperadminController {
     }
 
 
+
     public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario, boolean registro){ // registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
 
@@ -767,7 +772,38 @@ public class SuperadminController {
         return yaRegistrado;
     }
 
+    @PostMapping("/impersonate/{userId}")
+    public void impersonateUser(@PathVariable int userId, HttpSession session, HttpServletResponse response) throws IOException {
+        // Guardar la identidad original del superadmin
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+
+        // Obtener el usuario a impersonar
+        Usuarios userToImpersonate = usuariosRepository.findByIdUsuario(userId);
+        if (userToImpersonate == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
+            return;
+        }
+
+        // Autenticar como el usuario a impersonar
+        Authentication auth = new UsernamePasswordAuthenticationToken(userToImpersonate.getCorreo(), userToImpersonate.getContrasena());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        // Guardar la identidad del superadmin en la sesión
+        session.setAttribute("originalUser", superadmin);
+        session.setAttribute("usuario", userToImpersonate);
 
 
+        // Redirigir a la página principal del usuario impersonado
+        response.sendRedirect("/administradorsede");
+    }
+    @PostMapping("/stopImpersonation")
+    public ResponseEntity<?> stopImpersonation(HttpSession session) {
+        // Restaurar la identidad original del superadmin
+        Usuarios superadmin = (Usuarios) session.getAttribute("originalUser");
+        session.setAttribute("currentUser", superadmin);
+        Authentication auth = new UsernamePasswordAuthenticationToken(superadmin.getCorreo(), superadmin.getContrasena());
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
+        return ResponseEntity.ok("Se ha detenido la impersonación");
+    }
 }

@@ -28,7 +28,7 @@ public class DetallesOrden implements Serializable {
     private Productos productos;
 
     @Positive
-    @Digits(integer = 10, fraction = 0)
+    @Digits(integer = 10, fraction = 0, message = "La cantidad debe ser un número entero positivo.")
     @Column(name = "cantidad",nullable = false)
     private Integer cantidad;
 

@@ -205,32 +205,49 @@
                                         <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
                                         <div class="row pt-3">
                                             <div class="col">
-                                                <label >Nombre:</label>
-                                                <input  pattern="[A-Za-z].+" maxlength="45" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
-                                            </div>
-
-                                            <div class="col">
-                                                <label >Correo:</label>
-                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
                                                 <label >DNI:</label>
                                                 <input minlength="8" maxlength="8" id="dniEdit" name="dni" type="text" class="form-control"  th:value="${farmacista.dni}" required>
+                                                <div class="invalid-feedback" id="dniError">
+                                                    El DNI debe tener 8 dígitos.
+                                                </div>
                                             </div>
 
                                             <div class="col">
                                                 <label >Código (colegio médico):</label>
                                                 <input  minlength="6" maxlength="6" id="codigoColegioEdit" name="codigoColegio" type="text"  class="form-control"  th:value="${farmacista.codigoColegio}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un correo válido (max 99 dígitos).
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
+                                                <label >Nombre:</label>
+                                                <input  pattern="[A-Za-z].+" maxlength="45" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese su nombre.
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                <label >Correo:</label>
+                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un correo válido (max 99 dígitos).
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="row pt-5">
+                                            <div class="col">
                                                 <label >Distrito de residencia</label>
                                                 <input  maxlength="99" name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                </div>
                                             </div>
                                             <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
                                             <!--<div class="col">
@@ -284,33 +301,50 @@
                                     <div class="modal-body row">
                                         <div class="row pt-3">
                                             <div class="col">
-                                                <label for="nombre">Nombre:</label>
-                                                <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control" required>
-                                            </div>
-
-                                            <div class="col">
-                                                <label for="correo">Correo:</label>
-                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" name="correo" type="email" class="form-control" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
                                                 <label for="dni">DNI:</label>
                                                 <input minlength="8" maxlength="8" id="dni" name="dni" type="text" class="form-control" required>
+                                                <div class="invalid-feedback" id="dniError">
+                                                    El DNI debe tener 8 dígitos.
+                                                </div>
                                             </div>
 
 
                                             <div class="col">
                                                 <label for="codigoColegio">Código (colegio médico)</label>
                                                 <input minlength="6" maxlength="6" id="codigoColegio" name="codigoColegio" type="text" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    El código de colegio debe tener 6 dígitos.
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="row pt-5">
                                             <div class="col">
+                                                <label for="nombre">Nombre:</label>
+                                                <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese su nombre.
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="correo">Correo:</label>
+                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" name="correo" type="email" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un correo válido (max 99 dígitos).
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="row pt-5">
+                                            <div class="col">
                                                 <label for="distritoResidencia">Distrito de residencia</label>
                                                 <input maxlength="99" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                </div>
                                             </div>
                                             <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
                                             <!--<div class="col">
