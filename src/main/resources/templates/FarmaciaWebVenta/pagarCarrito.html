@@ -7,6 +7,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Farmacias Clínica Renacer</title>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formFarmacia = document.getElementById("form-farmacia");
+            const formDelivery = document.getElementById("form-delivery");
+            const radioFarmacia = document.getElementById("flexRadioDefault1");
+            const radioDelivery = document.getElementById("flexRadioDefault2");
+            const btnFinalizarCompra = document.getElementById("finishPurchase");
+            const modalCard = new bootstrap.Modal(document.getElementById('cardModal'));
+            const radioCash = document.getElementById("cash");
+            const radioCard = document.getElementById("card");
+
+            formFarmacia.style.display = "none";
+            formDelivery.style.display = "none";
+
+            radioFarmacia.addEventListener("change", function () {
+                if (this.checked) {
+                    formFarmacia.style.display = "block";
+                    formDelivery.style.display = "none";
+                }
+            });
+
+            radioDelivery.addEventListener("change", function () {
+                if (this.checked) {
+                    formFarmacia.style.display = "none";
+                    formDelivery.style.display = "block";
+                }
+            });
+
+            radioCash.addEventListener("change", function () {
+                if (this.checked) {
+                    btnFinalizarCompra.setAttribute("type", "submit");
+                    btnFinalizarCompra.removeAttribute("data-bs-toggle");
+                    btnFinalizarCompra.removeAttribute("data-bs-target");
+                }
+            });
+
+            radioCard.addEventListener("change", function () {
+                if (this.checked) {
+                    btnFinalizarCompra.setAttribute("type", "button");
+                    btnFinalizarCompra.setAttribute("data-bs-toggle", "modal");
+                    btnFinalizarCompra.setAttribute("data-bs-target", "#cardModal");
+                }
+            });
+
+            //document.getElementById('fecha-vencimiento').addEventListener('input', function (e) {
+                //let input = e.target;
+                //let value = input.value;
+                //if (!/^\d{0,2}\/?\d{0,4}$/.test(value)) {
+                    //input.value = value.slice(0, -1);
+                //}
+            //});
+
+            document.getElementById('numTar').addEventListener('input', function() {
+                formatCardNumber(this);
+            });
+
+            function formatCardNumber(input) {
+                const value = input.value.replace(/\D/g, '').slice(0, 16); // Remove all non-digit characters and limit to 16 digits
+                const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-'); // Add hyphens after every 4 digits
+                input.value = formattedValue;
+            }
+        });
+    </script>
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
 
@@ -193,13 +257,13 @@
                             <h4>Selecciona si será recojo en Farmacia o envío por delivery: </h4>
                             <hr>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="farmacia">
+                                <input class="form-check-input" type="radio" name="tipoEntrega" id="flexRadioDefault1" value="farmacia">
                                 <label class="form-check-label" for="flexRadioDefault1">
                                     Recojo en Farmacia
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="delivery">
+                                <input class="form-check-input" type="radio" name="tipoEntrega" id="flexRadioDefault2" value="delivery">
                                 <label class="form-check-label" for="flexRadioDefault2">
                                     Envío por delivery
                                 </label>
@@ -280,14 +344,14 @@
                             <h5>Selecciona tu método de compra:</h5>
                             <hr>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                                <label class="form-check-label" for="flexRadioDefault3">
+                                <input class="form-check-input" type="radio" id="cash" name="paymentMethod" value="cash">
+                                <label class="form-check-label" for="cash">
                                     Pago en efectivo
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                                <label class="form-check-label" for="flexRadioDefault4">
+                                <input class="form-check-input" type="radio" id="card" name="paymentMethod" value="card">
+                                <label class="form-check-label" for="card">
                                     Pago en tarjeta
                                 </label>
                             </div>
@@ -303,12 +367,12 @@
                             </div>
 
                             <div class="d-flex justify-content-end pt-4">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Finalizar Compra</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cardModal" id="finishPurchase">Finalizar Compra</button>
                             </div>
 
 
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -339,7 +403,8 @@
 
                                                         <div class="col">
                                                             <label for="fecha-vencimiento">Fecha de vencimiento:</label>
-                                                            <input type="text" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" placeholder="MM/YYYY" pattern="(0[1-9]|1[0-2])/[0-9]{4}" required>
+                                                            <input type="date" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" required>
+                                                            <!--<input type="text" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" placeholder="MM/YYYY" pattern="(0[1-9]|1[0-2])/[0-9]{4}" required>-->
                                                         </div>
 
                                                         <div class="col">
@@ -361,7 +426,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-primary">Pagar</button>
+                                            <button type="submit" class="btn btn-primary">Pagar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -425,35 +490,45 @@
 
   </main>
 
-  <script>
-      document.getElementById('flexRadioDefault1').addEventListener('click', function () {
-          document.getElementById('form-farmacia').classList.remove('hidden');
-          document.getElementById('form-delivery').classList.add('hidden');
-      });
+  <!--<script>
+      document.querySelector('form').addEventListener('submit', async function(e) {
+          e.preventDefault();
 
-      document.getElementById('flexRadioDefault2').addEventListener('click', function () {
-          document.getElementById('form-delivery').classList.remove('hidden');
-          document.getElementById('form-farmacia').classList.add('hidden');
-      });
+          const cardNumber = document.getElementById('numTar').value.replace(/-/g, '');
+          const holderName = document.getElementById('nombre1').value;
+          const expirationDate = document.getElementById('fecha-vencimiento').value;
+          const cvv = document.getElementById('ccv').value;
 
-      document.getElementById('fecha-vencimiento').addEventListener('input', function (e) {
-          let input = e.target;
-          let value = input.value;
-          if (!/^\d{0,2}\/?\d{0,4}$/.test(value)) {
-              input.value = value.slice(0, -1);
+          // Datos a enviar a la API
+          const cardData = {
+              cardNumber,
+              holderName,
+              expirationDate,
+              cvv
+          };
+
+          try {
+              const response = await fetch('/test-validate', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(cardData)
+              });
+
+              const result = await response.json();
+
+              if (result.valido) {
+                  alert('Tarjeta válida. Procesando compra...');
+                  e.target.submit(); // Envía el formulario si la tarjeta es válida
+              } else {
+                  alert('Error de validación: ' + result.mensaje);
+              }
+          } catch (error) {
+              alert('Error al comunicarse con la API.');
           }
       });
-
-      document.getElementById('numTar').addEventListener('input', function() {
-          formatCardNumber(this);
-      });
-
-      function formatCardNumber(input) {
-          const value = input.value.replace(/\D/g, '').slice(0, 16); // Remove all non-digit characters and limit to 16 digits
-          const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-'); // Add hyphens after every 4 digits
-          input.value = formattedValue;
-      }
-  </script>
+  </script>-->
 
 
 

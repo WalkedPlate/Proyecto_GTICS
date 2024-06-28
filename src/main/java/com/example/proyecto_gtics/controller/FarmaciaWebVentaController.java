@@ -44,7 +44,8 @@ public class FarmaciaWebVentaController {
                                 OrdenesRepository ordenesRepository, PreferenciasUsuarioRepository preferenciasUsuarioRepository,
                                 ProductosRepository productosRepository, ProductosSedeRepository productosSedeRepository,
                                 SedesRepository sedesRepository, TipoCobroRepository tipoCobroRepository, TipoOrdenRepository tipoOrdenRepository,
-                                TipoUsuarioRepository tipoUsuarioRepository, UsuariosRepository usuariosRepository){
+                                TipoUsuarioRepository tipoUsuarioRepository, UsuariosRepository usuariosRepository
+                                ){
 
         this.categoriasRepository = categoriasRepository;
         this.detallesOrdenRepository = detallesOrdenRepository;
@@ -71,6 +72,8 @@ public class FarmaciaWebVentaController {
     private ChatRepository chatRepository;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private CardService cardService;
 
 
     //Formatear strings a dates
@@ -317,8 +320,14 @@ public class FarmaciaWebVentaController {
     }
 
     @PostMapping(value = {"/clinicarenacer/paciente/guardarDatos"})
-        public String guardarDatos(@RequestParam(name = "nombre") String nombre, @RequestParam(name = "correo") String correo,
-                                   @RequestParam(name = "dni") String dni,  @RequestParam("archivo") MultipartFile file,
+        public String guardarDatos(@RequestParam(name = "paymentMethod") String paymentMethod,
+                                   @RequestParam("archivo") MultipartFile file, @RequestParam(name = "tipoEntrega") String tipoEntrega,
+                                   @RequestParam(name = "direccion", required = false) String direccion,
+                                   @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "numTar", required = false) String cardNumber,
+                                   @RequestParam(name = "nombre", required = false) String holderName,
+                                   @RequestParam(name = "fecha-vencimiento", required = false) String expirationDate,
+                                   @RequestParam(name = "ccv", required = false) String cvv,
                                    RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
         Usuarios pacienteLogueado =(Usuarios)session.getAttribute("usuario");
 
@@ -366,12 +375,39 @@ public class FarmaciaWebVentaController {
             LocalDate fechaEntrega = fechaActual.plusDays(20);
             ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
 
+
+
             ordenPreSave.setUsuarios(pacienteLogueado);
             ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
             ordenPreSave.setCodigo(UUID.randomUUID().toString());
             ordenPreSave.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(1));
-            ordenPreSave.setTipoCobro(tipoCobroRepository.findById(1).get());
+            // Determinar el tipo de cobro
+            if ("cash".equals(paymentMethod)) {
+                ordenPreSave.setTipoCobro(tipoCobroRepository.findById(1).get()); // Pago en efectivo
+            } else if ("card".equals(paymentMethod)) {
+                ordenPreSave.setTipoCobro(tipoCobroRepository.findById(2).get()); // Pago con tarjeta
+            }
+
+            // Guardar dirección de entrega según el tipo de entrega seleccionado
+            if ("delivery".equals(tipoEntrega)) {
+                ordenPreSave.setDireccion(direccion + ", " + distrito);
+            } else {
+                // Si es recojo en farmacia, no se necesita dirección
+                ordenPreSave.setDireccion("Recojo en farmacia");
+            }
             ordenesRepository.save(ordenPreSave);
+
+            //Validacion de pago con tarjeta
+            //boolean tarjetaValida =  cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
+
+            //if(tarjetaValida){
+              //  attr.addFlashAttribute("msg","Datos validados, procesando compra...");
+            //}
+            //else {
+              //  attr.addFlashAttribute("err","No se pudo realizar la compra, error de datos.");
+               // return "redirect:/clinicarenacer/paciente/pagar";
+            //}
+
 
             Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
 
