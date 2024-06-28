@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
-    List<Chat> findByUsuario1(Usuarios usuarios);
-    List<Chat> findByUsuario2(Usuarios usuarios);
+    List<Chat> findByUsuario1OrderByIdChatDesc(Usuarios usuarios);
+    List<Chat> findByUsuario2OrderByIdChatDesc(Usuarios usuarios);
 
     Optional<Chat> findByUsuario1AndAndUsuario2(Usuarios usuario1, Usuarios usuario2);
 

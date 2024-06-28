@@ -128,113 +128,23 @@
                                         <div class="card-body">
 
                                             <ul class="list-unstyled mb-0">
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a  class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">John Doe</p>
-                                                                <p class="small text-black">Hola como estas?</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Ahora</p>
-                                                            <span class="badge bg-primary float-end">1</span>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-1.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Danny Smith</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Hace 5min</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-2.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Alex Steward</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Ayer</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-3.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Ashley Olsen</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Ayer</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-4.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Kate Moss</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Ayer</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
-                                                    <a class="d-flex justify-content-between link-light">
-                                                        <div class="d-flex flex-row">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
-                                                                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                                                            <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Lara Croft</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="pt-1">
-                                                            <p class="small text-black mb-1">Ayer</p>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li class="p-2">
-                                                    <a class="d-flex justify-content-between link-light">
+                                                <li th:each="chat,obj : ${listaChatsFarmacista}" class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                                                    <a  class="d-flex justify-content-between link-light" th:href="@{'/farmacista/chat?chatId='+${chat.idChat}}">
                                                         <div class="d-flex flex-row">
                                                             <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
                                                                  class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
                                                             <div class="pt-1">
-                                                                <p class="fw-bold text-black mb-0">Brad Pitt</p>
-                                                                <p class="small text-black">Lorem ipsum dolor sit.</p>
+                                                                <p class="fw-bold text-black mb-0" ><span th:text="${chat.usuario2.nombre}"></span></p>
+                                                                <p class="small text-black" th:text="${listaUltimosMensajes.get(obj.index).contenido}"></p>
                                                             </div>
                                                         </div>
                                                         <div class="pt-1">
-                                                            <p class="small text-black mb-1">Hace 5min</p>
-                                                            <span class="text-white float-end"><i class="fas fa-check" aria-hidden="true"></i></span>
+                                                            <p class="small text-black mb-1" th:text="${listaUltimosMensajes.get(obj.index).fecha}"></p>
+                                                            <span class="badge bg-primary float-end">1</span>
                                                         </div>
                                                     </a>
                                                 </li>
+
                                             </ul>
 
                                         </div>
@@ -244,10 +154,11 @@
 
                                 <div class="col-md-6 col-lg-7 col-xl-7" >
 
-                                    <ul class="list-unstyled text-white" id="messages">
-
+                                    <ul class="list-unstyled text-white" id="messages" style="max-height: 70vh;
+                                    overflow-y: auto; border: 2px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 10px; background-color: #f9f9f9;">
 
                                     </ul>
+
                                     <div data-mdb-input-init class="form-outline form-white">
                                         <textarea class="form-control" id="message" rows="4"></textarea>
                                         <label class="form-label" for="message">Mensaje</label>
@@ -347,7 +258,7 @@
                 if (isSentByMe) {
                     // Estilo para mensajes enviados por mi (Paciente)
                     const imgElement = document.createElement('img');
-                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp';
+                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp';
                     imgElement.alt = 'avatar';
                     imgElement.classList.add('rounded-circle', 'd-flex', 'align-self-start', 'me-3', 'shadow-1-strong');
                     imgElement.width = '60';
@@ -420,7 +331,7 @@
                     liElement.appendChild(cardElement);
 
                     const imgElement = document.createElement('img');
-                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp';
+                    imgElement.src = 'https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp';
                     imgElement.alt = 'avatar';
                     imgElement.classList.add('rounded-circle', 'd-flex', 'align-self-start', 'ms-3', 'shadow-1-strong');
                     imgElement.width = '60';
@@ -429,6 +340,7 @@
                 }
 
                 messagesDiv.appendChild(liElement);
+                scrollToBottom();
             }
 
             // Conectar automáticamente cuando se carga la página
@@ -436,6 +348,11 @@
                 connect();
                 loadPreviousMessages();
             };
+
+            function scrollToBottom() {
+                const messagesDiv = document.getElementById('messages');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
         </script>
     </body>
 

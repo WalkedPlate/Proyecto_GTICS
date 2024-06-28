@@ -311,6 +311,16 @@ public class FarmacistaController {
             if(opt.isPresent()){
                 Chat chat = opt.get();
                 if(messageService.verificarAccesoChat(chat.getIdChat(),farmacista)){
+                    List<Chat> listaChatsFarmacista = chatRepository.findByUsuario1OrderByIdChatDesc(farmacista);
+                    List<Mensajes> listaUltimosMensajes = new ArrayList<>();
+
+                    for(Chat ch: listaChatsFarmacista){
+                        Mensajes ultimoMensaje = mensajesRepository.findFirstByChatAndSenderOrderByIdMensajesDesc(ch,2);
+                        listaUltimosMensajes.add(ultimoMensaje);
+                    }
+
+                    model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
+                    model.addAttribute("listaChatsFarmacista",listaChatsFarmacista);
                     model.addAttribute("chat",chat);
                     return "Farmacista/Chat";
                 }
@@ -328,6 +338,16 @@ public class FarmacistaController {
 
         if(messageService.verificarAccesoChat(chatId,farmacista)){
             Chat chat = chatRepository.findById(chatId).get();
+            List<Chat> listaChatsFarmacista = chatRepository.findByUsuario1OrderByIdChatDesc(farmacista);
+            List<Mensajes> listaUltimosMensajes = new ArrayList<>();
+
+            for(Chat ch: listaChatsFarmacista){
+                Mensajes ultimoMensaje = mensajesRepository.findFirstByChatAndSenderOrderByIdMensajesDesc(ch,2);
+                listaUltimosMensajes.add(ultimoMensaje);
+            }
+
+            model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
+            model.addAttribute("listaChatsFarmacista",listaChatsFarmacista);
             model.addAttribute("chat",chat);
             return "Farmacista/Chat";
         }

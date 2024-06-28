@@ -55,12 +55,12 @@ public class MessageService {
         Chat chat = chatRepository.findById(chatId).get();
         boolean autorizado = false;
 
-        for(Chat i : chatRepository.findByUsuario1(usuario)){
+        for(Chat i : chatRepository.findByUsuario1OrderByIdChatDesc(usuario)){
             if(Objects.equals(i.getIdChat(), chatId)){
                 autorizado = true;
             }
         }
-        for(Chat i : chatRepository.findByUsuario2(usuario)){
+        for(Chat i : chatRepository.findByUsuario2OrderByIdChatDesc(usuario)){
             if(Objects.equals(i.getIdChat(), chatId)){
                 autorizado = true;
             }

@@ -236,13 +236,22 @@ public class FarmaciaWebVentaController {
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente logueado
         model.addAttribute("paciente",paciente);
 
-        System.out.println("------------------------------------------------------------------------------");
-        System.out.println(paciente.getCorreo() + paciente.getIdUsuario());
+
         if(chatId == null){
             Optional<Chat> opt = chatRepository.findFirstByUsuario2OrderByIdChatDesc(paciente);
             if(opt.isPresent()){
                 Chat chat = opt.get();
                 if(messageService.verificarAccesoChat(chat.getIdChat(),paciente)){
+                    List<Chat> listaChatsPaciente = chatRepository.findByUsuario2OrderByIdChatDesc(paciente);
+                    List<Mensajes> listaUltimosMensajes = new ArrayList<>();
+
+                    for(Chat ch: listaChatsPaciente){
+                        Mensajes ultimoMensaje = mensajesRepository.findFirstByChatAndSenderOrderByIdMensajesDesc(ch,1);
+                        listaUltimosMensajes.add(ultimoMensaje);
+                    }
+
+                    model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
+                    model.addAttribute("listaChatsPaciente",listaChatsPaciente);
                     model.addAttribute("chat",chat);
                     return "FarmaciaWebVenta/chat";
                 }
@@ -260,6 +269,16 @@ public class FarmaciaWebVentaController {
 
         if(messageService.verificarAccesoChat(chatId,paciente)){
             Chat chat = chatRepository.findById(chatId).get();
+            List<Chat> listaChatsPaciente = chatRepository.findByUsuario1OrderByIdChatDesc(paciente);
+            List<Mensajes> listaUltimosMensajes = new ArrayList<>();
+
+            for(Chat ch: listaChatsPaciente){
+                Mensajes ultimoMensaje = mensajesRepository.findFirstByChatAndSenderOrderByIdMensajesDesc(ch,1);
+                listaUltimosMensajes.add(ultimoMensaje);
+            }
+
+            model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
+            model.addAttribute("listaChatsPaciente",listaChatsPaciente);
             model.addAttribute("chat",chat);
             return "FarmaciaWebVenta/chat";
         }

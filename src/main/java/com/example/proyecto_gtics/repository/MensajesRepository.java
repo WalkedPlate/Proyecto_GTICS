@@ -11,4 +11,9 @@ import java.util.List;
 public interface MensajesRepository extends JpaRepository<Mensajes, Integer> {
 
     List<Mensajes> findByChat(Chat chat);
+    //Mensajes findFirstByChatOrderByIdMensajesDesc(Chat chat);
+
+    Mensajes findFirstByChatAndSenderOrderByIdMensajesDesc(Chat chat, Integer sender);
+
+
 }
