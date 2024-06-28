@@ -796,14 +796,14 @@ public class SuperadminController {
         // Redirigir a la página principal del usuario impersonado
         response.sendRedirect("/administradorsede");
     }
-    @PostMapping("/stopImpersonation")
-    public ResponseEntity<?> stopImpersonation(HttpSession session) {
+    @GetMapping("/stopImpersonation")
+    public String stopImpersonation(HttpSession session) {
         // Restaurar la identidad original del superadmin
         Usuarios superadmin = (Usuarios) session.getAttribute("originalUser");
-        session.setAttribute("currentUser", superadmin);
+        session.setAttribute("usuario", superadmin);
         Authentication auth = new UsernamePasswordAuthenticationToken(superadmin.getCorreo(), superadmin.getContrasena());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return ResponseEntity.ok("Se ha detenido la impersonación");
+        return "redirect:/superadmin";
     }
 }
