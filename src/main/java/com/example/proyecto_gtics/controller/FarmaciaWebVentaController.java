@@ -2,18 +2,20 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
-import jakarta.validation.Valid;
-import org.aspectj.weaver.ast.Or;
+import com.example.proyecto_gtics.service.MessageService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -25,7 +27,6 @@ import java.util.*;
 
 @Controller
 public class FarmaciaWebVentaController {
-
     final CategoriasRepository categoriasRepository;
     final DetallesOrdenRepository detallesOrdenRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
@@ -61,8 +62,17 @@ public class FarmaciaWebVentaController {
         this.tipoUsuarioRepository = tipoUsuarioRepository;
         this.usuariosRepository = usuariosRepository;
     }
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TipoChatRepository tipoChatRepository;
+    @Autowired
+    private MensajesRepository mensajesRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private MessageService messageService;
 
 
     //Formatear strings a dates
@@ -70,8 +80,7 @@ public class FarmaciaWebVentaController {
     DateTimeFormatter formatDateToSring = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @GetMapping(value ={"/clinicarenacer"})
-    public String paginaPrincipal(Model model, String nombre, @RequestParam(name = "noprimeraVez", required = false) Integer noprimeraVez,
-                                  @RequestParam(name = "idCarrito", required = false) Integer idCarrito){
+    public String paginaPrincipal(Model model, String nombre, @RequestParam(name = "noprimeraVez", required = false) Integer noprimeraVez,  HttpSession session){
 
         //Optional<Productos> optProductos= productosRepository.findById(idCarrito);
         /*Integer id;
@@ -83,6 +92,8 @@ public class FarmaciaWebVentaController {
         }else{
             id = 0;
         }*/
+
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         List<Productos> listaProductos = productosRepository.findAll();
@@ -106,21 +117,34 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/index";
     }
 
-    @GetMapping(value = "/historialPedidos")
-    public String historialPedidos(Model model){
-        Usuarios paciente = usuariosRepository.findByIdUsuario(1027);
+    @GetMapping(value = "/clinicarenacer/historialPedidos")
+    public String historialPedidos(Model model, String nombre, HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
 
         TipoOrden web = tipoOrdenRepository.findById(3).get();
 
-        List<Ordenes> listaOrdenes = ordenesRepository.findByTipoOrdenAndUsuarios(web,paciente);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByUsuarios(paciente);
 
         model.addAttribute("listaOrdenes",listaOrdenes);
 
         return "FarmaciaWebVenta/historialPedidos";
     }
 
-    @GetMapping(value = "paciente/verPedido")
-    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden){
+    @GetMapping(value = "/clinicarenacer/paciente/verPedido")
+    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden,  HttpSession session, String nombre){
+
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
 
@@ -128,7 +152,9 @@ public class FarmaciaWebVentaController {
             return "redirect:/clinicarenacer";
         }
 
-        List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenes(opt.get());
+
+
+        List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenesIdordenes(idOrden);
 
         model.addAttribute("ordenActual",opt.get());
         model.addAttribute("listaDetalles",listaDetalles);
@@ -137,20 +163,28 @@ public class FarmaciaWebVentaController {
     }
 
 
+    @PostMapping(value = "/clinicarenacer/search")
+    public String searchProducts(Model model,  String nombre,  HttpSession session ) {
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        return "redirect:/clinicarenacer";
+    }
 
 
     @GetMapping(value ={"/header"})
-    public String cabecera(Model model, String nombre){
+    public String cabecera(Model model, String nombre,  HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
-        model.addAttribute("idCarrito",1000);
         return "FarmaciaWebVenta/fragments_clinicaweb/cabecera";
     }
 
     @GetMapping(value ={"/footer"})
-    public String footer(Model model, String nombre){
+    public String footer(Model model, String nombre,  HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -165,8 +199,12 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/categoria"})
-    public String ordenarPorCategoria(Model model,  @RequestParam(name = "idCategoria") int idCategoria){
+    public String ordenarPorCategoria(Model model,  @RequestParam(name = "idCategoria") int idCategoria ,  HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+
         Categorias categorias = categoriasRepository.findById(idCategoria).get();
+
+
 
         List<Productos> listaProductosPorCategoria = productosRepository.findByCategorias(categorias);
         List<Productos> listarProducto = productosRepository.findAll();
@@ -191,13 +229,52 @@ public class FarmaciaWebVentaController {
         return "FarmaciaWebVenta/porSubcategoria";
     }
 
-    @GetMapping(value ={"/clinicarenacer/paciente/chatfarmacista"})
-    public String chatFarmacista(){
-        return "FarmaciaWebVenta/chat";
+    @GetMapping(value ={"/clinicarenacer/chatfarmacista"})
+    public String chatFarmacista(HttpSession session, Model model, @RequestParam(name = "chatId", required = false) Integer chatId,
+                                 RedirectAttributes attr){
+
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente logueado
+        model.addAttribute("paciente",paciente);
+
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println(paciente.getCorreo() + paciente.getIdUsuario());
+        if(chatId == null){
+            Optional<Chat> opt = chatRepository.findFirstByUsuario2OrderByIdChatDesc(paciente);
+            if(opt.isPresent()){
+                Chat chat = opt.get();
+                if(messageService.verificarAccesoChat(chat.getIdChat(),paciente)){
+                    model.addAttribute("chat",chat);
+                    return "FarmaciaWebVenta/chat";
+                }
+                else {
+                    attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+                    return "redirect:/clinicarenacer";
+                }
+            }
+            else {
+                attr.addFlashAttribute("err","El paciente aún no tiene chats.");
+                return "redirect:/clinicarenacer";
+            }
+
+        }
+
+        if(messageService.verificarAccesoChat(chatId,paciente)){
+            Chat chat = chatRepository.findById(chatId).get();
+            model.addAttribute("chat",chat);
+            return "FarmaciaWebVenta/chat";
+        }
+        else {
+            attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+            return "redirect:/clinicarenacer";
+        }
+
+
     }
 
     @GetMapping(value ={"/clinicarenacer/producto"})
-    public String producto(Model model, @RequestParam(name = "idProductos") int idProductos){
+    public String producto(Model model, @RequestParam(name = "idProductos") int idProductos,  HttpSession session){
+
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
         Productos productos = productosRepository.findById(idProductos).get();
         List<Productos> listaProductos = productosRepository.findAll();
@@ -216,25 +293,27 @@ public class FarmaciaWebVentaController {
     }
 
 
-
-
-
     @PostMapping(value = {"/clinicarenacer/paciente/guardardetalles"})
-        public String guardarenCarrito(@RequestParam(name = "idProductos") Integer idProductos, @RequestParam(name = "idCarrito") Integer idCarrito ,RedirectAttributes attr){
+        public String guardarenCarrito(@SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session , @RequestParam(name = "idProductos") Integer idProductos, RedirectAttributes attr){
+
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
         DetallesOrden detallesOrden = new DetallesOrden();
-        detallesOrden.setOrdenes(ordenesRepository.findByIdordenes(idCarrito));
+        //detallesOrden.setOrdenes(ordenesRepository.findByIdordenes(idCarrito));
         Productos p =productosRepository.findById(idProductos).get();
         detallesOrden.setProductos(p);
         detallesOrden.setCantidad(1);
         detallesOrden.setMontoParcial(p.getPrecio()*1);
 
-        if(validarDuplicadoDeProductoEnUnaOrden(detallesOrden, ordenesRepository.findByIdordenes(idCarrito))){
-            attr.addFlashAttribute("err","Ya se agregó al carrito.");
 
+        if(validarDuplicadoDeProductoEnUnaOrden(detallesOrden, carrito)){
+            attr.addFlashAttribute("err","Ya se agregó al carrito.");
             return "redirect:/clinicarenacer";
         }
-        detallesOrdenRepository.save(detallesOrden);
+        carrito.add(detallesOrden);
+        session.setAttribute("carrito",carrito);
+
+        //detallesOrdenRepository.save(detallesOrden);
 
         return "redirect:/clinicarenacer";
     }
@@ -242,7 +321,9 @@ public class FarmaciaWebVentaController {
     @PostMapping(value = {"/clinicarenacer/paciente/guardarDatos"})
         public String guardarDatos(@RequestParam(name = "nombre") String nombre, @RequestParam(name = "correo") String correo,
                                    @RequestParam(name = "dni") String dni,  @RequestParam("archivo") MultipartFile file,
-                                   RedirectAttributes attr, @RequestParam(name = "idCarrito") Integer idCarrito){
+                                   RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
+        Usuarios pacienteLogueado =(Usuarios)session.getAttribute("usuario");
+
         if (file.isEmpty()) {
             attr.addFlashAttribute("err","Debe subir una foto de la receta.");
             return "redirect:/clinicarenacer/paciente/pagar";
@@ -253,7 +334,7 @@ public class FarmaciaWebVentaController {
             return "redirect:/clinicarenacer/paciente/pagar";
         }
         try {
-            Ordenes ordenPreSave = ordenesRepository.findByIdordenes(idCarrito);
+            Ordenes ordenPreSave = new Ordenes();
             ordenPreSave.setFotoReceta(file.getBytes());
             ordenPreSave.setFotonombre(fileName);
             ordenPreSave.setFotocontenttype(file.getContentType());
@@ -266,35 +347,19 @@ public class FarmaciaWebVentaController {
 
         Usuarios paciente = new Usuarios();
 
-        if (!usuarioYaRegistrado(Integer.parseInt(dni))){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
-            paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
-            paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
-            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
-            paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            paciente.setContrasena("Temporal_password");
-            paciente.setCorreo(correo);
-            paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-            paciente.setNombre(nombre);
-            usuariosRepository.save(paciente);
-            paciente = usuariosRepository.findFirstByOrderByIdUsuarioDesc();
-            attr.addFlashAttribute("wrn","Aviso: Se creó un nuevo registro del paciente con el DNI ingresado.");
+        paciente = usuariosRepository.findByDni(paciente.getDni()).get();
+
+        if(paciente.getTipoUsuario().getIdTipoUsuario().equalsIgnoreCase("Paciente")){
+                attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
         }
         else {
-
-            paciente = usuariosRepository.findByDni(paciente.getDni()).get();
-
-            if(paciente.getTipoUsuario().getIdTipoUsuario().equalsIgnoreCase("Paciente")){
-                attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
-            }
-            else {
-                attr.addFlashAttribute("err","Aviso: El DNI  ya se encuentra registrado en el sistema y no pertenece a un usuario con el rol Paciente.");
-                return "redirect:/clinicarenacer/paciente/pagar";
-            }
-
+            attr.addFlashAttribute("err","Aviso: El DNI  ya se encuentra registrado en el sistema y no pertenece a un usuario con el rol Paciente.");
+            return "redirect:/clinicarenacer/paciente/pagar";
         }
 
+
         try {
-            Ordenes ordenPreSave = ordenesRepository.findByIdordenes(idCarrito);
+            Ordenes ordenPreSave = new Ordenes();
             ordenPreSave.setFotoReceta(file.getBytes());
             ordenPreSave.setFotonombre(fileName);
             ordenPreSave.setFotocontenttype(file.getContentType());
@@ -303,11 +368,31 @@ public class FarmaciaWebVentaController {
             LocalDate fechaEntrega = fechaActual.plusDays(20);
             ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
 
-            ordenPreSave.setUsuarios(usuariosRepository.findByIdUsuario(1027));
+            ordenPreSave.setUsuarios(pacienteLogueado);
             ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
+            ordenPreSave.setCodigo(UUID.randomUUID().toString());
+            ordenPreSave.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(1));
+            ordenPreSave.setTipoCobro(tipoCobroRepository.findById(1).get());
             ordenesRepository.save(ordenPreSave);
 
+            Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
+
+            float monto = 0;
+
+            for(DetallesOrden detallesOrden: carrito){
+                monto += detallesOrden.getMontoParcial();
+                detallesOrden.setOrdenes(ordenRecuperada);
+                detallesOrdenRepository.save(detallesOrden);
+            }
+
+            ordenRecuperada.setMonto(monto);
+            ordenesRepository.save(ordenRecuperada);
+
+            carrito.clear();
+            session.setAttribute("carrito",carrito);
+
             attr.addFlashAttribute("msg","Orden generada correctamente");
+
 
             return "redirect:/clinicarenacer";
 
@@ -319,85 +404,110 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
-        public String EliminarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito, RedirectAttributes attr){
-        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
-        if(optionalDetallesOrden.isPresent()){
-            detallesOrdenRepository.delete(optionalDetallesOrden.get());
+        public String EliminarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session, RedirectAttributes attr){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        DetallesOrden detalle = carrito.get(index);
+        if(detalle != null){
+            carrito.remove(detalle);
+            session.setAttribute("carrito",carrito);
             attr.addFlashAttribute("msg","Se eliminó el producto correctamente.");
-            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            return "redirect:/clinicarenacer/paciente/carrito";
         }
         else {
             attr.addFlashAttribute("err","No se pudo eliminar.");
-            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+            return "redirect:/clinicarenacer/paciente/carrito";
         }
     }
 
-    @PostMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
-    public String actualizarDetalleCarrito(@RequestParam(name = "idDetalle") Integer idDetalle, @RequestParam(name = "idCarrito", required = false) Integer idCarrito,
-                                           RedirectAttributes attr, @RequestParam("cantidad") String cantidadStr){
+    @GetMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
+    public String actualizarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @RequestParam(name = "cantidad", required = false) Integer cantidad,
+                                           RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
+            Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+            DetallesOrden detalle = carrito.get(index);
 
-        Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(idDetalle);
-        if(optionalDetallesOrden.isPresent()){
-            DetallesOrden detalle = optionalDetallesOrden.get();
-            try {
-                Integer.parseInt(cantidadStr);
-            }catch (NumberFormatException n){
-                attr.addFlashAttribute("err","La cantidad debe ser un número");
-                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
-            }
-            Integer cantidad = Integer.parseInt(cantidadStr);
             if(cantidad>0){
                 detalle.setCantidad(cantidad);
                 detalle.setMontoParcial(cantidad*detalle.getProductos().getPrecio());
-                detallesOrdenRepository.save(detalle);
+                session.setAttribute("carrito",carrito);
                 attr.addFlashAttribute("msg","La cantidad se actualizó correctamente.");
-                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+                return "redirect:/clinicarenacer/paciente/carrito";
             }
             else {
                 attr.addFlashAttribute("err","La cantidad debe ser positiva.");
-                return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
+                return "redirect:/clinicarenacer/paciente/carrito";
             }
-
-
-        }
-        else {
-            attr.addFlashAttribute("err","Error.");
-            return "redirect:/clinicarenacer/paciente/carrito?idCarrito=" + idCarrito;
-        }
     }
+
+    @GetMapping(value = {"/clinicarenacer/paciente/pagarCarrito"})
+    public String pagarCarrito(Model model, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito,  HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        model.addAttribute("listaDetallesOrden",carrito);
+        TipoUsuario doctores = tipoUsuarioRepository.findById("Doctor").get();
+        EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
+        List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(doctores,estado);
+        model.addAttribute("listaDoctores",listaDoctores);
+
+        Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
+
+        float monto = 0;
+
+        for(DetallesOrden detallesOrden: carrito){
+            monto += detallesOrden.getMontoParcial();
+            detallesOrden.setOrdenes(ordenRecuperada);
+            detallesOrdenRepository.save(detallesOrden);
+        }
+
+        ordenRecuperada.setMonto(monto);
+
+
+        model.addAttribute("carrito",ordenRecuperada);
+
+
+        List<Sedes> listaSedes = sedesRepository.findAll();
+        model.addAttribute("listaSedes",listaSedes);
+        return "FarmaciaWebVenta/pagarCarrito";
+    }
+
 
 
     @GetMapping(value = {"/clinicarenacer/paciente/carrito"})
-        public String carrito(Model model, @RequestParam(name = "idCarrito", required = false) Integer idCarrito){
-        Optional<Ordenes> optOrden = ordenesRepository.findById(idCarrito);
+        public String carrito(Model model, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, String nombre,  HttpSession session){
 
-        if(optOrden.isPresent()){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
-            if(!validarTipoOrden(6,optOrden.get())){
+        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        model.addAttribute("nombre", buscarProductos);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+        //List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
+
+        //model.addAttribute("ordenCarrito",optOrden.get());
+        model.addAttribute("listaDetallesOrden",carrito);
+        return "FarmaciaWebVenta/carrito";
+
+        //Optional<Ordenes> optOrden = ordenesRepository.findById(idCarrito);
+
+        //if(idCarrito == null){
+            //return "FarmaciaWebVenta/carrito";
+        //}
+
+
+
+        //if(optOrden.isPresent()){
+
+            //if(!validarTipoOrden(6,optOrden.get())){
                 //if(!validarTipoOrden(3,optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2){
-                    return "redirect:/clinicarenacer";
+                    //return "redirect:/clinicarenacer";
                 //}
-            }
+            //}
 
-            List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
+        //}
+        //else {
+           // return "redirect:/clinicarenacer";
+           // }
 
-            model.addAttribute("ordenCarrito",optOrden.get());
-            model.addAttribute("listaDetallesOrden",listaDetallesOrden);
-
-            return "FarmaciaWebVenta/carrito";
-        }
-        else {
-            return "redirect:/clinicarenacer";
-            }
-
-        }
-
-    @GetMapping(value ={"/clinicarenacer/paciente/pagar"})
-    public String pagar(@RequestParam("idCarrito") Integer idCarrito){
-
-
-        return "FarmaciaWebVenta/pagarCarrito";
     }
+
 
 
 
@@ -407,10 +517,10 @@ public class FarmaciaWebVentaController {
         return valido;
     }
 
-    public boolean validarDuplicadoDeProductoEnUnaOrden(DetallesOrden detallesOrdenPorComprobar, Ordenes orden) {
+    public boolean validarDuplicadoDeProductoEnUnaOrden(DetallesOrden detallesOrdenPorComprobar, List<DetallesOrden> listaDetalles) {
 
         boolean valido = false;
-        List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenes(orden);
+        //List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenes(orden);
         for(DetallesOrden detalle : listaDetalles){
             if (detalle.getProductos().getIdProductos() == detallesOrdenPorComprobar.getProductos().getIdProductos()){
                 valido = true;
@@ -446,6 +556,36 @@ public class FarmaciaWebVentaController {
         }
 
         return yaRegistrado;
+    }
+
+    @GetMapping(value ={"/clinicarenacer/perfil"})
+    public String perfil(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/editarPerfil";
+    }
+
+    @GetMapping(value ={"/clinicarenacer/editar-perfil"})
+    public String editarPerfil(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/editar";
+    }
+
+    @GetMapping(value ={"/clinicarenacer/cambiar-contra"})
+    public String cambiarContra(Model model,HttpSession session){
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        model.addAttribute("paciente",paciente);
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
+
+        return "FarmaciaWebVenta/cambiarContra";
     }
 
 }

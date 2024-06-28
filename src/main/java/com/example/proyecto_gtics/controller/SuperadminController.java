@@ -1,9 +1,16 @@
 package com.example.proyecto_gtics.controller;
 
 
+import com.example.proyecto_gtics.dto.CantProductPorOrdenClase;
+import com.example.proyecto_gtics.dto.CantidadProductosPorOrden;
 import com.example.proyecto_gtics.dto.CantidadTotalPorProducto;
+import com.example.proyecto_gtics.dto.ResultDni;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.DniService;
+import com.example.proyecto_gtics.service.EmailService;
+import com.example.proyecto_gtics.service.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.Attr;
@@ -67,15 +71,20 @@ public class SuperadminController {
     }
 
     @Autowired
-    CodigoColegioRespository codigoColegioRespository;
+    private CodigoColegioRespository codigoColegioRespository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DniService dniService;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    EmailService emailService;
 
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
-
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -92,25 +101,30 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
-    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,@RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr ){
+    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,
+                                   @RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr,
+                                   HttpSession session, HttpServletRequest request){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
-            System.out.println(adminsede.get().getDni());
+
             String error = bindingResult.getFieldError().getDefaultMessage().toString();
             attr.addFlashAttribute("err",error);
             return "redirect:/superadmin";
         }else {
-            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario())){
-                attr.addFlashAttribute("err","El DNI ya está registrado.");
-                return "redirect:/superadmin/administradores-sede";
-            }
-            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario())){
-                attr.addFlashAttribute("err","El correo ya está registrado.");
-                return "redirect:/superadmin/administradores-sede";
-            }
 
 
         if(adminsede.isPresent()){
+            if(usuarioYaRegistrado(adminSede.getDni(),idAdminSede,false)){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+            if(correoYaRegistrado(adminSede.getCorreo(),idAdminSede,false)){
+                attr.addFlashAttribute("err","El correo ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
 
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());// implementar:agarrar el estado de la base de datos
             adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
@@ -118,23 +132,69 @@ public class SuperadminController {
             adminSede.setSedes(sedes);
             adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
             attr.addFlashAttribute("msg","Datos del administrador de sede actualizados exitosamente");
+            usuariosRepository.save(adminSede);
+            return "redirect:/superadmin/administradores-sede";
         }
         else {
+            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario(),true)){
+                attr.addFlashAttribute("err","El DNI ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario(),true)){
+                attr.addFlashAttribute("err","El correo ya está registrado.");
+                return "redirect:/superadmin/administradores-sede";
+            }
+
+            //Generación de token
+            String token = tokenService.generateToken(adminSede.getCorreo());
+            String link = request.getScheme() + "://"+ request.getServerName()
+                    + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
+
+
+            ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
+            if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+                attr.addFlashAttribute("err","DNI inválido");
+                return "redirect:/superadmin/administradores-sede";
+            }
+
+
+
+
+            adminSede.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-            adminSede.setContrasena("Temporal_password");
+            //Contraseña
+            String temporalPassword = Usuarios.generateTemporaryPassword(10);
+            String passwordEncriptada = passwordEncoder.encode(temporalPassword);
+            adminSede.setContrasena(passwordEncriptada);
+
+            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            adminSede.setUsandoContrasenaTemporal(true);
+            adminSede.setToken(token);
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
-            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
-            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente");
+            usuariosRepository.save(adminSede);
+            attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente. Las credenciales temporales se enviarán" +
+                    " al correo ingresado.");
+
+            //Envío de correo con contraseña temporal
+            String to = adminSede.getCorreo();
+            String subject = "Cambie su contraseña";
+            String pathToImage = "static/img/Login/icono.png";
+            String imageId = "image001";
+            emailService.sendEmail(to, subject, link, temporalPassword,pathToImage,imageId);
+            return "redirect:/superadmin/administradores-sede";
+
         }
 
-            usuariosRepository.save(adminSede);
-        return "redirect:/superadmin/administradores-sede";
     }
     }
 
     @PostMapping("/superadmin/eliminarAdminSede")
-    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id, RedirectAttributes redirectAttributes) {
+    public String eliminarAdminSede(@RequestParam("idAdminSede") Integer id, RedirectAttributes redirectAttributes,
+                                    HttpSession session) {
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Optional<Usuarios> optSede = usuariosRepository.findById(id);
         Usuarios adminSede = usuariosRepository.findByIdUsuario(id);
         if (optSede.isPresent()) {
@@ -147,8 +207,11 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/banearAdminSede"})
-    public String banearAdminSede( @RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede,RedirectAttributes attr){
-        System.out.println(diasBan);
+    public String banearAdminSede( @RequestParam("diasBan") int diasBan,@RequestParam("idAdminSede") int idAdminSede,RedirectAttributes attr,
+                                   HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
         Date fechaActual = new Date();
         Usuarios adminSede = usuariosRepository.findByIdUsuario(idAdminSede);
         Optional<Usuarios> optSede =usuariosRepository.findById(idAdminSede);
@@ -158,6 +221,7 @@ public class SuperadminController {
             adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Baneado").get());
             adminSede.setDiasBan(diasBan);
             adminSede.setFechaBan(fechaActual);
+            usuariosRepository.calculAyActualizarFechaDesbaneo(adminSede.getIdUsuario());
             attr.addFlashAttribute("ban","Administrador de sede baneado exitosamente");
             usuariosRepository.save(adminSede);
         }
@@ -167,12 +231,11 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario"})
     public String inventario(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
         List<Productos> listaMedicamentos = productosRepository.findByEstadoProducto("Activo");
-        //List<Productos> listaMedicamentos = productosRepository.findAll();
         model.addAttribute("listaMedicamentos",listaMedicamentos);
 
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -189,7 +252,9 @@ public class SuperadminController {
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
     public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
-                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes){
+                                  @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes,
+                                  HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
 
         //Sobre la foto de un producto --------------------------------------------------------------------------------
@@ -232,27 +297,29 @@ public class SuperadminController {
             //--------------------Cambios en el for por probar-----------------------------------------
             List<Sedes> sedesTotales = sedesRepository.findAll();
             List<Sedes> sedesVista =new ArrayList<>();//Sedes mandadas desde la vista
+
+            ProductosSedes productosSedes1 = new ProductosSedes();
             for (Integer idSede : idSedes){
+            //for (Sedes sede : sedesTotales){
                 Sedes sede = sedesRepository.findByIdSedes(idSede);
                 //----------------Codigo añadido-------------------------------------------
                 sedesVista.add(sede);// Llenamos la lista
                 //--------------------------------------------------------------------------
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
-                //ProductosSedes productosSedes = new ProductosSedes();// Me genera duda
-                //ProductosSedesId productosSedesId = new ProductosSedesId();
-                //productosSedesId.setIdProductos(productos.getIdProductos());
-                //productosSedesId.setIdSedes(idSede);
-                //productosSedes.setId(productosSedesId);
-                //productosSedes.setProductos(productos);
-                if(productosSedes == null){
-                    ProductosSedes productosSedes1 = new ProductosSedes();
+                if(productosSedes != null){
+                    //ProductosSedes productosSedes1 = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productos.getIdProductos());
-                    productosSedesId.setIdSedes(idSede);
+                    productosSedesId.setIdSedes(sede.getIdSedes());
                     productosSedes1.setId(productosSedesId);
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
-                    productosSedes1.setCantidad(200);
+                    productosSedes1.setCantidad(0);
+                    for (Sedes sede1 : sedesTotales){
+                        if(Objects.equals(idSede, sede1.getIdSedes())){
+                            productosSedes1.setVisibilidad(1);
+                        }
+                    }
                     productosSedeRepository.save(productosSedes1);
                 }else{
                     productosSedeRepository.save(productosSedes);
@@ -262,7 +329,9 @@ public class SuperadminController {
             for (Sedes sede : sedesTotales){
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
                 if (productosSedes != null){
-                    productosSedeRepository.delete(productosSedes);
+                    //productosSedeRepository.delete(productosSedes);
+                    productosSedes.setVisibilidad(0);
+                    productosSedeRepository.save(productosSedes);
                 }
             }
             //------------------Aqui finaliza los cambios de prueba del for-----------------------
@@ -280,23 +349,31 @@ public class SuperadminController {
                 String codigo = letras + numero;
                 //------------------------------------------------------------------
 
-                productos.setCodigo(codigo);
-                Categorias categoria = categoriasRepository.findById(idCategoria).get();
-                productos.setCategorias(categoria);
-                productos.setEstadoProducto("Activo");
-                productosRepository.save(productos);
+                productos.setCodigo(codigo); //Seteamos el codigo del producto
+                Categorias categoria = categoriasRepository.findById(idCategoria).get();//Obtenemos la categoria del producto
+                productos.setCategorias(categoria);//Seteamos la categoria
+                productos.setEstadoProducto("Activo");//Seteamos el producto a estado Activo
+                productosRepository.save(productos);//Guardamos el producto en la BD
 
                 Productos productoConsultar = productosRepository.findByCodigo(codigo);
-                for (Integer idSede : idSedes){
-                    Sedes sede = sedesRepository.findByIdSedes(idSede);
+                List<Sedes> listaSedes = sedesRepository.findAll();
+                //for (Integer idSede : idSedes){
+                for (Sedes sede : listaSedes){
+                    //Sedes sede = sedesRepository.findByIdSedes(idSede);
                     ProductosSedes productosSedes = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productoConsultar.getIdProductos());
-                    productosSedesId.setIdSedes(idSede);
+                    productosSedesId.setIdSedes(sede.getIdSedes());
                     productosSedes.setId(productosSedesId);
                     productosSedes.setSedes(sede);
                     productosSedes.setProductos(productoConsultar);
-                    productosSedes.setCantidad(200);
+                    productosSedes.setCantidad(0);
+                    productosSedes.setVisibilidad(0);// Valor por defecto para visibilidad
+                    for (Integer idSede : idSedes){
+                        if(Objects.equals(idSede, sede.getIdSedes())){
+                            productosSedes.setVisibilidad(1);
+                        }
+                    }
                     productosSedeRepository.save(productosSedes);
                 }
                 attr.addFlashAttribute("msg","Producto creado exitosamente.");
@@ -312,7 +389,9 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/eliminarProducto"})
-    public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr){
+    public String eliminarProducto(@RequestParam("idProducto") int idProducto, RedirectAttributes attr, HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Productos> optProduc =productosRepository.findById(idProducto);
         Productos producto = productosRepository.findById(idProducto).get();
         if(optProduc.isPresent()){
@@ -325,7 +404,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario/estado-reposicion"})
     public String estadoReposiciones(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/estadoReposicion";
@@ -333,7 +412,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/inventario/restricciones"})
     public String restricciones(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/restricciones";
@@ -341,7 +420,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/orden-reposicion"})
     public String ordenReposicion(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -363,7 +442,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/solicitudes-reposicion"})
     public String solicitudesReposicion(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -383,16 +462,32 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/cambiarEstadoOrden"})
-    public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden){
+    public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden,
+                                     HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         orden.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(accion));
         ordenesRepository.save(orden);
+
+        //Verificamos que el estado de la orden sea aceptado -> idEstadoOrden = 4 es ACEPTADO
+        if(accion == 4){
+            List<DetallesOrden> listaCantProductosPorOrden = detallesOrdenRepository.findByOrdenes(orden);
+            listaCantProductosPorOrden.forEach(item -> {
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(), orden.getSedes());
+                Integer resultado = productosSedes.getCantidad() + item.getCantidad();//Puede que no exista la relacion producto con sede y me de error verificar que siempre haya una relacion producto sede aunque sea cantidad igual a 0
+                System.out.println("EL RESULTADO ES :" + resultado);
+                productosSedes.setCantidad(resultado);
+                productosSedeRepository.save(productosSedes);
+            });
+        }
+
         return "redirect:/superadmin/solicitudes-reposicion";
     }
 
     @GetMapping(value ={"/superadmin/farmacistas"})
     public String farmacistas(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -408,7 +503,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/farmacistas/solicitudes"})
     public String soliFarmacistas(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -420,7 +515,10 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarfarmacista"})
-    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr){
+    public String guardarFarmacistas(@Valid Usuarios farmacista,BindingResult bindingResult ,@RequestParam("idSedes") int idSede, RedirectAttributes attr,
+                                     HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
 
         if(bindingResult.hasErrors()){
@@ -434,12 +532,12 @@ public class SuperadminController {
                 attr.addFlashAttribute("err","El código de colegio no es válido.");
                 return "redirect:/superadmin/farmacistas";
             }
-            if(usuarioYaRegistrado(farmacista.getDni(),farmacista.getIdUsuario())){
+            if(usuarioYaRegistrado(farmacista.getDni(),farmacista.getIdUsuario(),false)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
 
-            if(correoYaRegistrado(farmacista.getCorreo(),farmacista.getIdUsuario())){
+            if(correoYaRegistrado(farmacista.getCorreo(),farmacista.getIdUsuario(),false)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/farmacistas";
             }
@@ -457,7 +555,9 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/eliminarfarmacistas"})
-    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id, RedirectAttributes attr){
+    public String eliminarFarmacistas(@RequestParam("idFarmacista") Integer id, RedirectAttributes attr, HttpSession session){
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
         Optional<Usuarios> optSede =usuariosRepository.findById(id);
         Usuarios farmacista = usuariosRepository.findByIdUsuario(id);
         if(optSede.isPresent()){
@@ -469,7 +569,10 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/aceptar-rechazar-farmacista"})
-    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr){
+    public String aceptarRechazarFarmacista(@RequestParam("idFarmacista") int idFarmacista, @RequestParam("valor") int valor, RedirectAttributes attr,
+                                            HttpSession session){
+
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         Usuarios farmacista = usuariosRepository.findByIdUsuario(idFarmacista);
         if(valor == 1){
@@ -488,7 +591,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/doctores"})
     public String doctores(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -503,7 +606,10 @@ public class SuperadminController {
 
     }
     @PostMapping(value = {"/superadmin/guardarDoctor"})
-    public String guardarDoctor(@Valid Usuarios doctor, BindingResult bindingResult, @RequestParam("idSede") @Valid int idSede,BindingResult bindingResultSedes, RedirectAttributes attr){
+    public String guardarDoctor(@Valid Usuarios doctor, BindingResult bindingResult, @RequestParam("idSede") @Valid int idSede,BindingResult bindingResultSedes,
+                                RedirectAttributes attr, HttpSession session){
+
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         if(bindingResult.hasErrors() || idSede<0 ||idSede > 10 ){
            String error = bindingResult.getFieldError().getDefaultMessage().toString();
@@ -516,33 +622,40 @@ public class SuperadminController {
                 return "redirect:/superadmin/doctores";
             }
 
-            if(usuarioYaRegistrado(doctor.getDni(),doctor.getIdUsuario())){
+            if(usuarioYaRegistrado(doctor.getDni(),doctor.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
 
-            if(correoYaRegistrado(doctor.getCorreo(), doctor.getIdUsuario())){
+            if(correoYaRegistrado(doctor.getCorreo(), doctor.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/doctores";
             }
 
+            ResultDni resultDni = dniService.obtenerDatosPorDni(doctor.getDni().toString());
+            if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+                attr.addFlashAttribute("errDNI","El DNI ingresado es inválido");
+                return "redirect:/registro";
+            }
+            doctor.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
 
-        doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-        doctor.setContrasena("Temporal_password");
-        doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
+            doctor.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            doctor.setContrasena("Temporal_password");
+            doctor.setUsandoContrasenaTemporal(false);
+            doctor.setTipoUsuario(tipoUsuarioRepository.findById("Doctor").get());
 
-        Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
-        doctor.setSedes(sede);//Asignamos la sede
-        usuariosRepository.save(doctor);
-            attr.addFlashAttribute("msg","Doctor creado exitosamente");
+            Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
+            doctor.setSedes(sede);//Asignamos la sede
+            usuariosRepository.save(doctor);
+                attr.addFlashAttribute("msg","Doctor creado exitosamente");
 
-            return "redirect:/superadmin/doctores";
-    }
+                return "redirect:/superadmin/doctores";
+        }
     }
 
     @GetMapping(value ={"/superadmin/pacientes"})
     public String pacientes(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
 
@@ -555,7 +668,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/perfil"})
     public String perfil(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editarPerfil";
@@ -563,7 +676,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/editar-perfil"})
     public String editarPerfil(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/editar";
@@ -571,7 +684,7 @@ public class SuperadminController {
 
     @GetMapping(value ={"/superadmin/cambiar-contra"})
     public String cambiarContra(Model model,HttpSession session){
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
 
         return "Superadmin/cambiarContra";
@@ -582,7 +695,8 @@ public class SuperadminController {
                                    @RequestParam("pass2") String pass2,
                                    RedirectAttributes attr, HttpSession session){
 
-        Usuarios superadmin = (Usuarios) session.getAttribute("usuario");
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
 
         if(pass1.equalsIgnoreCase(pass2)){
             superadmin.setContrasena(passwordEncoder.encode(pass1));
@@ -599,6 +713,8 @@ public class SuperadminController {
 
 
 
+
+
     public boolean validarCodigoColegio(String codigo) {
 
         boolean valido = false;
@@ -611,26 +727,40 @@ public class SuperadminController {
     }
 
 
-    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario, boolean registro){ // registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
-        if (opt.isPresent()){
-            if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+        if(registro){
+            if (opt.isPresent()){
                 yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
             }
         }
 
         return yaRegistrado;
     }
 
-    public Boolean correoYaRegistrado(String correo, Integer idUsuario){
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario, boolean registro){// registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Usuarios opt = usuariosRepository.findByCorreo(correo).get();
+        Optional<Usuarios> opt = usuariosRepository.findByCorreo(correo);
 
-        if (opt!=null){
-            if(!Objects.equals(opt.getIdUsuario(), idUsuario)){
+        if(registro){
+            if (opt.isPresent()){
                 yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
             }
         }
 

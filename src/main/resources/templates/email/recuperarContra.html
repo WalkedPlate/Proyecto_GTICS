@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="/img/Login/icono.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reestablecer Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        .password {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="color:#2973e9; font-size: 1.5rem; font-weight: bold"><img
+            src="cid:image001">
+        <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Reestablecer su contraseña</span>
+    </h1>
+    <p>Para recuperar su contraseña por favor ingrese al siguiente enlace: <span th:text="${link}"></span></p>
+    <p>Tenga en cuenta que este enlace es válido por 5 minutos.</p>
+    <p>Si no solicitó recuperar su contraseña, ignore este mensaje.</p>
+</div>
+</body>
+</html>

@@ -89,8 +89,13 @@
                                 <i class="bi bi-people"></i> Perfil
                             </a>
                         </li>-->
+                        <!-- CON MODAL DE CONFIRMACION-->
                         <li class="nav-item">
-                            <a class="nav-link" th:action="@{'/logout'}">
+                            <form id="logoutForm" th:action="@{/logout}" method="post" style="display: none;">
+                                <!-- Incluir token CSRF -->
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            </form>
+                            <a href="" class="nav-link" onclick="confirmLogout(event)">
                                 <i class="bi bi-box-arrow-left"></i> Cerrar sesión
                             </a>
                         </li>
@@ -109,7 +114,7 @@
                                 <!-- Title -->
                                 <h2 class="mb-0 ls-tight">
                                     <img src="/img/AdministradorSede/profile-3.jpeg" width="40"> Bienvenido, <span
-                                        class="text-primary" th:text="'Administrador De Sede ' + ${session.usuario.nombre}"></span>
+                                        class="text-primary" th:text="'Administrador De Sede ' + ${adminSede.nombre}"></span>
                                 </h2>
                             </div>
                             <!-- Actions -->
@@ -243,6 +248,20 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación para cierre de sesión -->
+    <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h3 class="modal-title" id="confirmLogoutModalLabel">¿Estás seguro de que quieres cerrar sesión?</h3>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="/js/AdministradorSede/script.js"></script>
 
@@ -252,6 +271,18 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
     <script>
         new DataTable('#example');
+    </script>
+
+    <script>
+        function confirmLogout(event) {
+            event.preventDefault();
+            var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
+            modal.show();
+        }
+
+        function submitLogout() {
+            document.getElementById('logoutForm').submit();
+        }
     </script>
 </body>
 

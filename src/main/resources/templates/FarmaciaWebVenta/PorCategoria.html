@@ -242,34 +242,35 @@
                 <div class="product-grid">
 
                     <div th:each="producto, obj: ${listaProductos}" class="showcase">
+                        <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
+                            <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
+                            <div class="showcase-banner">
 
-                        <div class="showcase-banner">
+                                <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
+                                <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="..." width="300" class="product-img default">
 
-                            <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                            <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="..." width="300" class="product-img default">
+                                <div class="showcase-actions">
+                                    <button type="submit" class="btn-action">
+                                        <ion-icon name="bag-add-outline"></ion-icon>
+                                    </button>
+                                </div>
 
-                            <div class="showcase-actions">
-                                <button class="btn-action">
-                                    <ion-icon name="bag-add-outline"></ion-icon>
-                                </button>
                             </div>
 
-                        </div>
+                            <div  class="showcase-content">
 
-                        <div  class="showcase-content">
+                                <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
 
-                            <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
+                                <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}">
+                                    <h3 style="width: 250px; margin: 0 0 1em 0; overflow: hidden; display: -webkit-box;-webkit-line-clamp: 3; -webkit-box-orient: vertical;" th:text="${producto.descripcion}" class="showcase-title"></h3>
+                                </a>
 
-                            <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}">
-                                <h3 th:text="${producto.descripcion}" class="showcase-title"></h3>
-                            </a>
+                                <div class="price-box">
+                                    <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                                </div>
 
-                            <div class="price-box">
-                                <p th:text="'S/. ' +${producto.precio}" class="price"></p>
                             </div>
-
-                        </div>
-
+                        </form>
                     </div>
 
 
@@ -277,25 +278,25 @@
 
             </div>
 
-          <div class="pagination-pages">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+            <div class="pagination-pages">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
         </div>
 

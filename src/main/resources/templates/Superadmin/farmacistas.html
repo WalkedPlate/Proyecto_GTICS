@@ -8,7 +8,10 @@
         <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <!-- Datatable -->
+        <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
+
         <style>
             .page-item.active .page-link {
                 z-index: 3;
@@ -35,7 +38,8 @@
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
                                         <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary" th:text="'S.Admin ' + ${session.usuario.nombre}"></span></h2>
+                                            class="text-primary" th:text="'S.Admin ' + ${superadmin.nombre}"></span>
+                                    </h2>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-sm-end">
@@ -81,13 +85,20 @@
                                         <h3 class="mb-0 ls-tight"> Lista de Farmacistas </h3>
                                     </div>
                                     <!-- Actions -->
-                                    <div class="col-sm-6 col-12 text-sm-end">
+                                    <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                                        <button id="download-pdf" class="btn btn-danger d-inline-flex btn-sm mx-1">
+                                             <span class=" pe-2">
+                                                 <i class="bi bi-file-earmark-pdf"></i>
+                                             </span>
+                                            <span>Descargar PDF</span>
+                                        </button>
+
                                         <div class="mx-n1">
                                             <a th:href="@{'/superadmin/farmacistas/solicitudes'}"
                                                class="btn d-inline-flex btn-sm btn-success mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-plus"></i>
-                                    </span>
+                                                <span class=" pe-2">
+                                                    <i class="bi bi-plus"></i>
+                                                </span>
                                                 <span>Solicitudes de registro</span>
                                             </a>
                                         </div>
@@ -100,9 +111,12 @@
                             <div class="container table-responsive mb-4">
                                 <!--Mensajes de eliminado y actualizado -->
                                 <div class="row pt-3">
-                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
-                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger"
+                                         role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success"
+                                         role="alert"></div>
+                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger"
+                                         role="alert"></div>
                                 </div>
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
@@ -121,7 +135,8 @@
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/profile-3.jpeg"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${farmacista.nombre}" class="text-heading font-semibold" href="#">
+                                                <a th:text="${farmacista.nombre}" class="text-heading font-semibold"
+                                                   href="#">
 
                                                 </a>
                                             </td>
@@ -136,17 +151,19 @@
                                             <td class="text-center">
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
+                                                        data-bs-toggle="modal"
+                                                        th:data-bs-target="${'#modaActualizar'+ obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
 
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-danger"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaEliminar'+ obj.index}">
+                                                        data-bs-toggle="modal"
+                                                        th:data-bs-target="${'#modaEliminar'+ obj.index}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                                 <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                                     <i class="bi bi-gear-wide-connected"></i>
+                                                    <i class="bi bi-gear-wide-connected"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -156,179 +173,170 @@
                             </div>
 
                             <!-- Modal Actualizar -->
-                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
+                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}"
+                                 th:id="${'modaActualizar'+ obj.index}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog  modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Actualiza los datos del Farmacista:</h3>
+                                            <h3 class="modal-title fs-5">Actualiza los datos del
+                                                Farmacista:</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" th:action="@{/superadmin/guardarfarmacista}" class="needs-validation" novalidate>
-                                        <div class="modal-body row">
+                                        <form method="post" th:action="@{/superadmin/guardarfarmacista}"
+                                              class="needs-validation" id="editForm" novalidate>
                                             <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" type="text" class="form-control"
-                                                           name="nombre" th:value="${farmacista.nombre}" required>
+                                            <input type="hidden" name="dni" th:value="${farmacista.dni}">
+                                            <input type="hidden" name="nombre" th:value="${farmacista.nombre}">
+                                            <input type="hidden" name="codigoColegio" th:value="${farmacista.codigoColegio}">
+
+                                            <div class="modal-body row">
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>DNI:</label>
+                                                        <input type="text" class="form-control" th:value="${farmacista.dni}" disabled readonly>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label>Código (colegio médico)</label>
+                                                        <input id="codigoColegio" type="text"
+                                                               class="form-control"
+                                                               th:value="${farmacista.codigoColegio}" disabled readonly>
+                                                    </div>
+
                                                 </div>
 
-                                                <div class="col">
-                                                    <label for="correo">Correo:</label>
-                                                    <input maxlength="100"
-                                                            pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"  id="correo" type="email" class="form-control"
-                                                           name="correo" th:value="${farmacista.correo}" required>
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>Nombre:</label>
+                                                        <input type="text" class="form-control" th:value="${farmacista.nombre}" disabled readonly>
+                                                    </div>
                                                 </div>
+
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>Dirección:</label>
+                                                        <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${farmacista.direccion}" required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor, ingrese una dirección (max 99 dígitos).
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label>Distrito de residencia</label>
+                                                        <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${farmacista.distritoResidencia}" required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row pt-5">
+                                                    <div class="col">
+                                                        <label>Correo:</label>
+                                                        <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                                               th:value="${farmacista.correo}" required>
+                                                        <div class="invalid-feedback">
+                                                            Por favor, ingrese un correo válido (max 99 dígitos).
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="sede">Sede:</label>
+                                                        <select id="sede" class="form-select" name="idSedes" required>
+                                                            <option th:value="${farmacista.sedes.idSedes}"
+                                                                    th:text="${farmacista.sedes.nombre}"
+                                                                    th:selected="${true}"
+                                                            ></option>
+                                                            <option th:each="sede : ${listaSedes}"
+                                                                    th:if="${farmacista.sedes.nombre != sede.nombre}"
+                                                                    th:value="${sede.idSedes}"
+                                                                    th:text="${sede.nombre}"
+                                                            ></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput" type="text" class="form-control" name="dni" th:value="${farmacista.dni}" required>
-                                                </div>
-
-
-                                                <div class="col">
-                                                    <label>Código (colegio médico)</label>
-                                                    <input minlength="6" maxlength="6" id="numberInput2" type="text" class="form-control" name="codigoColegio" th:value="${farmacista.codigoColegio}" required>
-                                                </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Actualizar
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="distrito">Distrito de residencia</label>
-                                                    <input maxlength="99" id="distrito" type="text" class="form-control" name="distritoResidencia" th:value="${farmacista.distritoResidencia}" required>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="sede">Sede:</label>
-                                                    <select id="sede" class="form-select" name="idSedes" required>
-                                                        <option th:value="${farmacista.sedes.idSedes}"
-                                                                th:text="${farmacista.sedes.nombre}"
-                                                                th:selected="${true}"
-                                                        ></option>
-                                                        <option th:each="sede : ${listaSedes}"
-                                                                th:if="${farmacista.sedes.nombre != sede.nombre}"
-                                                                th:value="${sede.idSedes}"
-                                                                th:text="${sede.nombre}"
-                                                        ></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Actualizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Modal Eliminar -->
-                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaEliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}"
+                                 th:id="${'modaEliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content text-center">
                                         <div class="modal-header">
-                                        <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al
-                                            farmacista seleccionado?</h3>
+                                            <h3 class="modal-title fs-5">¿Está seguro de eliminar
+                                                al farmacista seleccionado?</h3>
                                         </div>
                                         <form method="post" th:action="@{/superadmin/eliminarfarmacistas}">
-                                        <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Eliminar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
+                                            <input type="hidden" name="idFarmacista" th:value="${farmacista.idUsuario}">
+                                            <div class="modal-footer d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-primary">Eliminar
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <!--Modal actualizar exitaosamente (NO SALE) -->
-<!--                            <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Farmacistas actualizado exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-
-                            <!-- Modal eliminado exitosamente (NO SALE) -->
-<!--                            <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-
-                                        <div class="modal-body">
-                                            <h3 class="text-center">Farmacista eliminado exitosamente.</h3>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary " data-bs-dismiss="modal">Ok
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-
-
                         </div>
                     </div>
                 </main>
             </div>
         </div>
 
+        <!-- Modal de confirmación para cierre de sesión -->
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-labelledby="confirmLogoutModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title">¿Estás seguro de que quieres cerrar
+                            sesión?</h3>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+<!--        <script src="/js/Superadmin/script.js"></script>-->
+
+        <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/Superadmin/table.js"></script>
-        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-        <script>
-            new DataTable('#example');
-        </script>
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput2").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <!-- Datatable -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+
+        <!-- Script sobre la tabla y sus configuraciones -->
+        <script src="/js/Superadmin/tablas.js"></script>
+
         <script>
             (() => {
                 'use strict'
@@ -348,6 +356,17 @@
                     }, false)
                 })
             })()
+        </script>
+
+        <!-- Script para confirmación de cierre de sesión -->
+        <script>
+            function confirmLogout() {
+                $('#confirmLogoutModal').modal('show');
+            }
+
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
         </script>
     </body>
 </html>

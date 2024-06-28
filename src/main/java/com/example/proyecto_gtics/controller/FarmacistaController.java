@@ -2,6 +2,8 @@ package com.example.proyecto_gtics.controller;
 
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.MessageService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,6 +63,14 @@ public class FarmacistaController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private TipoChatRepository tipoChatRepository;
+    @Autowired
+    private MensajesRepository mensajesRepository;
+    @Autowired
+    private ChatRepository chatRepository;
+    @Autowired
+    private MessageService messageService;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -68,8 +78,12 @@ public class FarmacistaController {
 
 
     @GetMapping(value ={"/farmacista"})
-    public String paginaPrincipal(Model model){
-        Sedes sede = sedesRepository.findByIdSedes(2);
+    public String paginaPrincipal(Model model, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        Sedes sede = farmacista.getSedes();
         TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
         EstadoUsuario activo = estadoUsuarioRepository.findById("Activo").get();
 
@@ -83,7 +97,10 @@ public class FarmacistaController {
     public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<String> listaCantidades,
                                /*@RequestParam("checkbox") List<String> listCheckbox,*/ @Valid Usuarios paciente, BindingResult bindingResult,
                                @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
-                               RedirectAttributes attr){
+                               RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
 
         if (bindingResult.hasErrors()) {
             String error = bindingResult.getFieldError().getDefaultMessage();
@@ -105,10 +122,10 @@ public class FarmacistaController {
 
 
 
-        if (!usuarioYaRegistrado(paciente.getDni())){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
+        if (!usuarioYaRegistrado(paciente.getDni(),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
             paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
-            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
             paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             paciente.setContrasena("Temporal_password");
             paciente.setCorreo(UUID.randomUUID().toString());
@@ -135,6 +152,7 @@ public class FarmacistaController {
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
 
         int index = 0;
+        float monto = 0;
         for(Integer id: listaIdsProductos){
             Productos p = productosRepository.findById(id).get();
             String cantidadStr = listaCantidades.get(index);
@@ -147,7 +165,8 @@ public class FarmacistaController {
                     detallesOrden.setProductos(p);
                     detallesOrden.setCantidad(cantidad);
                     detallesOrden.setMontoParcial(cantidad*p.getPrecio());
-                    detallesOrdenRepository.save(detallesOrden); // Guardamos los productos y detalles de orden
+                    detallesOrdenRepository.save(detallesOrden); // Guardrooms los productos y detalles de orden
+                    monto += cantidad*p.getPrecio();
                 }
 
             }
@@ -160,6 +179,7 @@ public class FarmacistaController {
             index++;
         }
         ordenCreada.setTipoOrden(tipoOrdenRepository.findById(1).get()); // Finalmente cambiamos el tipo de orden a orden presencial
+        ordenCreada.setMonto(monto);
         ordenesRepository.save(ordenCreada);
 
         attr.addFlashAttribute("msg","Orden Registrada exitosamente");
@@ -169,7 +189,10 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/ordenes-linea"})
-    public String ordenesLinea(Model model){
+    public String ordenesLinea(Model model, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
 
         Optional<TipoOrden> tipoOrden1 = tipoOrdenRepository.findById(3);
         Optional<TipoOrden> tipoOrden2 = tipoOrdenRepository.findById(4);
@@ -180,23 +203,33 @@ public class FarmacistaController {
     }
 
     @GetMapping(value ={"/farmacista/ordenes-venta"})
-    public String ordenesVenta(Model model){
+    public String ordenesVenta(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
 
     @PostMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
-    public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden){
+    public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
+        model.addAttribute("posible",comprobarStock(listaDetallesOrden,farmacista.getSedes()));
         model.addAttribute("listaDetallesOrden",listaDetallesOrden);
         model.addAttribute("orden",orden);
         return "Farmacista/verOrdenLinea";
     }
 
     @PostMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
-    public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden){
+    public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
         List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(orden);
         model.addAttribute("listaDetallesOrden",listaDetallesOrden);
@@ -205,13 +238,25 @@ public class FarmacistaController {
     }
 
     @PostMapping(value ={"/farmacista/ordenes-linea/aprobar"})
-    public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr){
+    public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
         if(opt.isPresent()){
             Ordenes ordenes = opt.get();
             ordenes.setEstadoOrden(estadoOrdenRepository.findById(4).get());
             ordenesRepository.save(ordenes);
+
+            List<DetallesOrden> listaCantProductosPorOrden = detallesOrdenRepository.findByOrdenes(ordenes);
+            listaCantProductosPorOrden.forEach(item -> {
+                ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(), farmacista.getSedes());
+                Integer resultado = productosSedes.getCantidad()- item.getCantidad();
+                System.out.println("EL RESULTADO ES :" + resultado);
+                productosSedes.setCantidad(resultado);
+                productosSedeRepository.save(productosSedes);
+            });
             return "redirect:/farmacista/ordenes-linea";
         }
         else {
@@ -222,25 +267,100 @@ public class FarmacistaController {
     }
 
 
+    @GetMapping(value ={"/farmacista/contactarPaciente"})
+    public String contactarPaciente(HttpSession session, Model model, @RequestParam(name = "idPaciente", required = false) Integer idPaciente){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+        Usuarios paciente = usuariosRepository.findByIdUsuario(idPaciente);
+
+        //Comprobamos si el chat ya existe
+        Optional<Chat> optional1 = chatRepository.findByUsuario1AndAndUsuario2(farmacista,paciente);
+        Optional<Chat> optional2 = chatRepository.findByUsuario1AndAndUsuario2(paciente,farmacista);
+
+        if(optional1.isPresent()){
+            return "redirect:/farmacista/chat?chatId="+optional1.get().getIdChat();
+        }
+        if(optional2.isPresent()){
+            return "redirect:/farmacista/chat?chatId="+optional2.get().getIdChat();
+        }
+        //En el caso de que no exista el chat, creamos este
+
+        //Tipo de chat = 1 : Farmacista - Paciente
+        TipoChat tipoChat = tipoChatRepository.findById(1).get();
+        //Crear el chat
+        Chat chat = new Chat();
+        chat.setTipoChat(tipoChat);
+        chat.setUsuario1(farmacista); // Farmacista
+        chat.setUsuario2(paciente); // paciente
+        chatRepository.save(chat);
+
+        //Recuperar el chat creado:
+        Chat chatRecuperado = chatRepository.findFirstByOrderByIdChatDesc();
+
+        return "redirect:/farmacista/chat?chatId="+chatRecuperado.getIdChat();
+    }
+
     @GetMapping(value ={"/farmacista/chat"})
-    public String chat(){
-        return "Farmacista/Chat";
+    public String chat(HttpSession session, Model model, @RequestParam(name = "chatId", required = false) Integer chatId,
+                       RedirectAttributes attr){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        if(chatId == null){
+            Optional<Chat> opt = chatRepository.findFirstByUsuario1OrderByIdChatDesc(farmacista);
+            if(opt.isPresent()){
+                Chat chat = opt.get();
+                if(messageService.verificarAccesoChat(chat.getIdChat(),farmacista)){
+                    model.addAttribute("chat",chat);
+                    return "Farmacista/Chat";
+                }
+                else {
+                    attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+                    return "redirect:/farmacista";
+                }
+            }
+            else {
+                attr.addFlashAttribute("err","El usuario aún no tiene chats.");
+                return "redirect:/farmacista";
+            }
+
+        }
+
+        if(messageService.verificarAccesoChat(chatId,farmacista)){
+            Chat chat = chatRepository.findById(chatId).get();
+            model.addAttribute("chat",chat);
+            return "Farmacista/Chat";
+        }
+        else {
+            attr.addFlashAttribute("err","No tienes acceso a ese chat.");
+            return "redirect:/farmacista";
+        }
+
     }
 
 
     @GetMapping(value ={"/farmacista/perfil"})
-    public String perfil(){
+    public String perfil(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
         return "Farmacista/perfil";
     }
 
     @GetMapping(value ={"/farmacista/editar-perfil"})
-    public String editarPerfil(){
-        return "farmacista/editarPerfil";
+    public String editarPerfil(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        return "Farmacista/editarPerfil";
     }
 
     @GetMapping(value ={"/farmacista/cambiar-contra"})
-    public String cambiarContra(){
-        return "farmacista/cambiarContra";
+    public String cambiarContra(Model model, HttpSession session){
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        model.addAttribute("farmacista",farmacista);
+
+        return "Farmacista/cambiarContra";
     }
 
 
@@ -250,11 +370,11 @@ public class FarmacistaController {
         orden.setTipoOrden(tipoOrdenRepository.findById(tipoOrden).get()); // Tipo de orden
         orden.setUsuarios(usuario);
         orden.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-        orden.setSedes(sedesRepository.findById(2).get());
+        orden.setSedes(sedesRepository.findById(usuario.getSedes().getIdSedes()).get());
         orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
 
         orden.setCodigo(UUID.randomUUID().toString());
-        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
         orden.setFechaRegistro(fechaActual.format(formatDateToSring));
         LocalDate fechaEntrega = fechaActual.plusDays(20);
         orden.setFechaEntrega(fechaEntrega.format(formatDateToSring));
@@ -263,15 +383,55 @@ public class FarmacistaController {
 
     }
 
-    public Boolean usuarioYaRegistrado(Integer dni){
+    public Boolean usuarioYaRegistrado(Integer dni, Integer idUsuario, boolean registro){ // registro: true => registro, false => actualizar
         boolean yaRegistrado = false;
-        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
 
-        if (opt.isPresent()){
-            yaRegistrado = Objects.equals(opt.get().getDni(), dni);
+        Optional<Usuarios> opt = usuariosRepository.findByDni(dni);
+        if(registro){
+            if (opt.isPresent()){
+                yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
+            }
         }
 
         return yaRegistrado;
+    }
+
+    public Boolean correoYaRegistrado(String correo, Integer idUsuario, boolean registro){// registro: true => registro, false => actualizar
+        boolean yaRegistrado = false;
+        Optional<Usuarios> opt = usuariosRepository.findByCorreo(correo);
+
+        if(registro){
+            if (opt.isPresent()){
+                yaRegistrado = true;
+            }
+        }
+        else {
+            if (opt.isPresent()){
+                if(!Objects.equals(opt.get().getIdUsuario(), idUsuario)){
+                    yaRegistrado = true;
+                }
+            }
+        }
+
+        return yaRegistrado;
+    }
+
+    public int comprobarStock(List<DetallesOrden> listaDetallesOrden,Sedes sede){
+        int posible=1;
+        for (DetallesOrden item : listaDetallesOrden){
+            ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(item.getProductos(),sede);
+            if(item.getCantidad()>productosSedes.getCantidad()){
+                posible=0;
+            }
+        }
+        return posible;
     }
 
 

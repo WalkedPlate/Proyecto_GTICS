@@ -31,6 +31,15 @@
                             </div>
                             <div th:if="${err != null}" th:text="${err}" style="color: red" role="alert"></div>
                             <div th:if="${msg != null}" th:text="${msg}" style="color: green" role="alert"></div>
+                            <div>
+                                <!-- Mostrar mensaje de logout -->
+                                <script>
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    if (urlParams.has('logout')) {
+                                        document.write('<p style="color: green" role="alert">Has cerrado sesión exitosamente.</p>');
+                                    }
+                                </script>
+                            </div>
                             <div class="actual-form">
                                 <div class="input-wrap">
                                     <input
@@ -66,7 +75,7 @@
                             </div>
                         </form>
 
-                        <form autocomplete="off" class="sign-up-form" id="newpass-form" novalidate>
+                        <form th:action="@{/recuperarCuenta}" method="post" autocomplete="off" class="sign-up-form" id="newpass-form" novalidate>
                             <div class="logo">
                                 <img src="/img/Login/icono.png" alt="renacer"/>
                                 <div>
@@ -92,11 +101,12 @@
                                             type="email"
                                             class="input-field"
                                             autocomplete="off"
+                                            name="email"
                                     />
                                     <label>Email</label>
                                 </div>
                                 <p id="email-error" class="message"></p>
-                                <input type="submit" value="Enviar enlace" class="sign-btn">
+                                <button type="submit"  class="sign-btn">Enviar enlace</button>
 
                                 <!-- hacer que este submit te muestre un modal sobre q se mando un correo -->
                                 <p class="text">

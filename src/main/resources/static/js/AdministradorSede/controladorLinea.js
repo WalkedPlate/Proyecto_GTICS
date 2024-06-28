@@ -1,25 +1,20 @@
 const ctx3 = document.getElementById('myChart3')
+const nombresMedicamentos = window.listaCantProductoSedeFecha.map(item => item.nombre);
+const datosSede = window.listaCantProductoSedeFecha.map(item => item.cantidad);
+const sede = window.listaCantProductoSedeFecha[0].sede;
 const myChart3 = new Chart(ctx3, {
     type: 'line',
     data: {
-        labels: ['Cetirizina', 'Ibuprofeno', 'Paracetamol', 'Omeprazol', 'Loratadina', 'Amoxicilina', 'Diazepam'],
+        labels: nombresMedicamentos,
         datasets: [
             {
-                label: 'San Miguel 1',
-                data: [65, 59, 80, 81, 56, 55, 40],
+                label: sede,
+                data: datosSede,
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 fill: true
             },
-            {
-                label: 'San Miguel 2',
-                data: [20, 90, 100, 70, 10, 50, 30],
-                fill: false,
-                borderColor: 'rgba(255,206,86)',
-                backgroundColor: 'rgba(255,206,86,0.2)',
-                fill: true
-            }
         ]
     },
     options: {

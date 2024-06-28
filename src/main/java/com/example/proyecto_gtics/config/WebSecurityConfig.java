@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,23 +23,23 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import javax.sql.DataSource;
 
 @Configuration
-@CrossOrigin
+@EnableWebSecurity
 public class WebSecurityConfig {
 
 
     final DataSource dataSource;
     final UsuariosRepository usuariosRepository;
     final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    //final CustomPasswordChangeFilter customPasswordChangeFilter;
+    final CustomPasswordChangeFilter customPasswordChangeFilter;
 
 
     public WebSecurityConfig(DataSource dataSource, UsuariosRepository usuariosRepository,
-                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler
-                             /*CustomPasswordChangeFilter customPasswordChangeFilter*/) {
+                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                             CustomPasswordChangeFilter customPasswordChangeFilter) {
         this.dataSource = dataSource;
         this.usuariosRepository = usuariosRepository;
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-        //this.customPasswordChangeFilter = customPasswordChangeFilter;
+        this.customPasswordChangeFilter = customPasswordChangeFilter;
 
     }
 
@@ -50,7 +51,7 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsManager users(DataSource dataSource){
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        String sql1 = "select u.correo, u.contrasena, (u.estado_idestado ='Activo') as 'status' from usuarios u WHERE u.correo = ?; ";
+        String sql1 = "select u.correo, u.contrasena, (u.estado_idestado ='Activo' or u.estado_idestado ='Baneado') as 'status' from usuarios u WHERE u.correo = ?; ";
         String sql2 = "select u.correo, u.tipo_usuario_idtipo_usuario from usuarios u WHERE u.correo = ?; ";
 
         users.setUsersByUsernameQuery(sql1);
@@ -61,7 +62,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        //http.addFilterBefore(customPasswordChangeFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customPasswordChangeFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin ->
                 formLogin
@@ -86,7 +87,8 @@ public class WebSecurityConfig {
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true));
 
-        //http.csrf(a -> a.disable());
+        http.csrf(a -> a
+                .ignoringRequestMatchers("/api/**"));
 
         return http.build();
     }

@@ -9,6 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
         <style>
             .page-item.active .page-link {
                 z-index: 3;
@@ -41,7 +42,7 @@
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
                                         <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary" th:text="'S.Admin. ' + ${session.usuario.nombre}"></span></h2>
+                                            class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span></h2>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-end">
@@ -86,9 +87,15 @@
                                     </div>
                                     <!-- Actions -->
                                     <div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
+                                        <button id="download-pdf" class="btn btn-danger d-inline-flex btn-sm mx-1">
+                                             <span class=" pe-2">
+                                                 <i class="bi bi-file-earmark-pdf"></i>
+                                             </span>
+                                            <span>Descargar PDF</span>
+                                        </button>
 
                                         <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
-                                           data-bs-toggle="modal" data-bs-target="#modaAgregar">
+                                           data-bs-toggle="modal" data-bs-target="#modalAgregar">
                                         <span class="pe-2">
                                             <i class="bi bi-plus"></i>
                                         </span>
@@ -99,59 +106,101 @@
                             </div>
 
                             <!-- Modal agregar -->
-                            <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <form method="post" class="needs-validation" th:action="@{/superadmin/guardarAdminSede}" novalidate>
+                                        <form method="post" class="needs-validation" id="registerForm" th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                             <input type="hidden" name="idUsuario" value="0">
+                                            <input type="hidden" name="nombre" value="valid">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel1">Ingrese los datos del
+                                            <h3 class="modal-title fs-5">Ingrese los datos del
                                                 nuevo <strong style="color:#5C60F5">Administrador de sede</strong></h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body row">
 
-                                            <div class="row pt-3">
-                                                <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="45" id="nombre" name="nombre" type="text" class="form-control"
-                                                           placeholder="Coloca su nombre" required>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="correo">Correo:</label>
-                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" id="correo" name="correo" type="email" class="form-control"
-                                                           placeholder="Coloca su correo" required>
-                                                </div>
-                                            </div>
-
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput" name="dni" type="text" class="form-control"
-                                                           placeholder="Coloca el N° de DNI" required>
-                                                </div>
+                                                    <input
+                                                            id="dni"
+                                                            minlength="8" maxlength="8"
+                                                            type="text" class="form-control" placeholder="Ingrese el N° de DNI"
+                                                            name="dni" required>
+                                                    <div class="invalid-feedback" id="dniError">
+                                                        El DNI debe tener 8 dígitos.
+                                                    </div>
+                                                    <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
 
-
-                                                <div class="col">
-                                                    <label for="distrito">Distrito de residencia</label>
-                                                    <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
-                                                           placeholder="Coloca su distrito" required>
                                                 </div>
                                             </div>
 
+                                            <!-- Nombre y apellidos autocompletados-->
+                                            <div class="row pt-3">
+                                                <div class="col">
+                                                    <label for="nombre">Nombres:</label>
+                                                    <input pattern="[A-Za-z].+"
+                                                           type="text" class="form-control" placeholder="Nombres"
+                                                           id="nombre" disabled readonly>
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="nombre">Apellidos:</label>
+                                                    <input pattern="[A-Za-z].+"
+                                                           type="text" class="form-control" placeholder="Apellidos"
+                                                           id="apellido" disabled readonly>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row pt-3">
+                                                <!-- Agregamos el campo de dirección-->
+                                                <div class="col">
+                                                    <label for="direccion">Dirección:</label>
+                                                    <input id="direccion" name="direccion"
+                                                           maxlength="99" type="text" class="form-control"
+                                                           placeholder="Ingrese la dirección" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese una dirección (max 99 dígitos).
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="distrito">Distrito de residencia:</label>
+                                                    <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
+                                                           placeholder="Ingrese el distrito de residencia" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
                                             <div class="row pt-5">
+                                                <div class="col">
+                                                    <label for="correo">Correo:</label>
+                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
+                                                           maxlength="99" id="correo" name="correo"
+                                                           type="email" class="form-control" placeholder="Ingrese el correo electrónico"
+                                                           required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un correo válido (max 99 dígitos).
+                                                    </div>
+                                                </div>
+
                                                 <div class="col">
                                                     <label for="sedeAdmin">Sede:</label>
                                                     <select id="sedeAdmin" name="idSedes" class="form-select" required>
                                                         <option selected disabled value="">--Ingresa una sede--</option>
                                                         <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, seleccione una opción.
+                                                    </div>
                                                 </div>
                                             </div>
-
 
                                         </div>
                                         <div class="modal-footer mt-3">
@@ -233,49 +282,63 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel2">Actualiza los datos del
+                                            <h3 class="modal-title fs-5">Actualiza los datos del
                                                 Administrador de sede</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" class="needs-validation" th:action="@{/superadmin/guardarAdminSede}" novalidate>
-                                        <div class="modal-body row">
+                                        <form method="post" class="needs-validation" id="editForm" th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                             <input type="hidden" name="idUsuario" th:value="${adminSede.idUsuario}">
+                                            <input type="hidden" name="dni" th:value="${adminSede.dni}">
+                                            <input type="hidden" name="nombre" th:value="${adminSede.nombre}">
+
+                                        <div class="modal-body row">
                                             <div class="row pt-3">
                                                 <div class="col">
-                                                    <label>Nombre:</label>
-                                                    <input pattern="[A-Za-z].+" maxlength="45" name="nombre" type="text" class="form-control"
-                                                            th:value="${adminSede.nombre}" required>
+                                                    <label>DNI:</label>
+                                                    <input type="text" class="form-control" th:value="${adminSede.dni}" disabled readonly>
                                                 </div>
-
                                                 <div class="col">
-                                                    <label>Correo:</label>
-                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="100" name="correo" type="email" class="form-control"
-                                                           th:value="${adminSede.correo}" required>
+                                                    <label>Nombre:</label>
+                                                    <input type="text" class="form-control" th:value="${adminSede.nombre}" disabled readonly>
                                                 </div>
                                             </div>
 
-                                            <div class="row pt-5">
+                                            <div class="row pt-3">
                                                 <div class="col">
-                                                    <label>DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput2"  name="dni" type="text" class="form-control" th:value="${adminSede.dni}" required>
+                                                    <label>Dirección:</label>
+                                                    <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${adminSede.direccion}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese una dirección (max 99 dígitos).
+                                                    </div>
                                                 </div>
-
 
                                                 <div class="col">
                                                     <label>Distrito de residencia</label>
-                                                    <input maxlength="99" name="distritoResidencia" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
+                                                    <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
+                                                <div class="col">
+                                                    <label>Correo:</label>
+                                                    <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                                           th:value="${adminSede.correo}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un correo válido (max 99 dígitos).
+                                                    </div>
+                                                </div>
+
                                                 <div class="col">
                                                     <label>Sede:</label>
                                                     <select class="form-select" name="idSedes" required>
                                                         <option th:value="${adminSede.sedes.idSedes}"
                                                                 th:text="${adminSede.sedes.nombre}"
                                                                 th:selected="${true}"
-                                                                ></option>
+                                                        ></option>
                                                         <option th:each="sede : ${listaSedes}"
                                                                 th:if="${adminSede.sedes.nombre != sede.nombre}"
                                                                 th:value="${sede.idSedes}"
@@ -284,7 +347,6 @@
                                                     </select>
                                                 </div>
                                             </div>
-
 
                                         </div>
                                         <div class="modal-footer mt-3">
@@ -305,25 +367,24 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Estas apunto de banear
-                                                al siguiente Administrador de sede:</h3>
+                                            <h3 class="modal-title fs-5">Estás a punto de realizar un baneo al siguiente Administrador de sede:</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" class="needs-validation" th:action="@{/superadmin/banearAdminSede}" novalidate>
+                                        <form method="post" class="needs-validation" id="baneoForm" th:action="@{/superadmin/banearAdminSede}" novalidate>
                                         <input type="hidden" th:value="${adminSede.idUsuario}" name="idAdminSede">
                                         <div class="modal-body row">
 
                                             <div class="row pt-3">
                                                 <div class="col">
                                                     <label>Nombre:</label>
-                                                    <input name="nombre" type="text" class="form-control"
-                                                           th:value="${adminSede.nombre}" disabled>
+                                                    <input type="text" class="form-control"
+                                                           th:value="${adminSede.nombre}" disabled readonly>
                                                 </div>
 
                                                 <div class="col">
                                                     <label >Sede:</label>
-                                                    <input name="idSedes" type="text" class="form-control" th:value="${adminSede.sedes.idSedes}" th:text="${adminSede.sedes.nombre}" disabled>
+                                                    <input type="text" class="form-control" th:value="${adminSede.sedes.nombre}" disabled readonly>
                                                 </div>
                                             </div>
 
@@ -331,7 +392,7 @@
                                                 <div class="col">
                                                     <label for="diasBan">Días baneados:</label>
                                                     <select id="diasBan" name="diasBan" class="form-select" required>
-                                                        <option selected disabled value="">--Ingresa la cantidad--</option>
+                                                        <option selected disabled value="">--Ingresa la cantidad de días--</option>
                                                         <option>0</option>
                                                         <option>1</option>
                                                         <option>2</option>
@@ -340,6 +401,9 @@
                                                         <option>5</option>
                                                         <option>6</option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Ingrese la cantidad de días de baneo.
+                                                    </div>
                                                 </div>
 
                                                 <div class="col">
@@ -372,7 +436,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header text-center">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro de eliminar al administrador de sede seleccionado?</h3>
+                                            <h3 class="modal-title fs-5">¿Está seguro de eliminar al administrador de sede seleccionado?</h3>
                                         </div>
                                         <form method="post" th:action="@{/superadmin/eliminarAdminSede}">
                                             <input type="hidden" name="idAdminSede" th:value="${adminSede.idUsuario}">
@@ -393,18 +457,89 @@
             </div>
         </div>
 
+        <!-- Modal de confirmación para cierre de sesión -->
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h3 class="modal-title">¿Estás seguro de que quieres cerrar sesión?</h3>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary" onclick="submitLogout()">Cerrar sesión</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!--        <script src="/js/Superadmin/script.js"></script>-->
+<!--        <script src="/js/Superadmin/table.js"></script>-->
+
+        <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/Superadmin/table.js"></script>
-        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+        <!-- Datatable -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+
+        <!-- Script sobre la tabla y sus configuraciones -->
+        <script src="/js/Superadmin/tablas.js"></script>
+
         <script>
-            new DataTable('#example');
+            //Autocompletar Nombre y Apellidos con el DNI
+            function autocompletarDni() {
+                let dni = document.getElementById("dni").value;
+
+                fetch(`/api/dni?dni=${dni}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 422 || data.status === 404) {
+                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+                            document.getElementById("dniError").classList.remove('is-invalid');
+                            document.getElementById("dniError").innerText = 'DNI no válido.';
+                            document.getElementById("dniError").style.display = 'block';
+                        } else {
+                            document.getElementById("nombre").value = data.data.nombres;
+                            document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
+                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+                            document.getElementById("dniError").classList.remove('is-invalid');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // Añadir el evento keydown para detectar la tecla Enter
+            document.getElementById('dni').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Evitar que el formulario se envíe
+                    let dniInput = document.getElementById("dni");
+                    let dniError = document.getElementById("dniError");
+
+                    // Validar la longitud del DNI
+                    if (dniInput.value.length !== 8) {
+                        dniError.style.display = 'block';
+                        dniInput.classList.add('is-invalid');
+                    } else {
+                        dniError.style.display = 'none';
+                        dniInput.classList.remove('is-invalid');
+                        autocompletarDni();
+                    }
+                    autocompletarDni();
+                }
+            });
         </script>
+
         <script>
             // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput").addEventListener("keydown", function(event) {
+            document.getElementById("dni").addEventListener("keydown", function(event) {
                 // Permite las teclas de flecha, retroceso y suprimir
                 if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
                     return;
@@ -415,22 +550,24 @@
                 }
             });
         </script>
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("numberInput2").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
+
         <script>
             (() => {
                 'use strict'
+                // IDs de los formularios que necesitas manejar
+                const formIds = ["registerForm", "editForm", "baneoForm"];
+
+                // Validar el form presionando el botón de Registrar
+                formIds.forEach(id => {
+                    const form = document.getElementById(id);
+                    if (form) {
+                        form.addEventListener("keydown", function (event) {
+                            if (event.key === "Enter") {
+                                event.preventDefault();
+                            }
+                        });
+                    }
+                });
 
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 const forms = document.querySelectorAll('.needs-validation')
@@ -448,5 +585,18 @@
                 })
             })()
         </script>
+
+        <!-- Script para confirmación de cierre de sesión -->
+        <script>
+            function confirmLogout() {
+                $('#confirmLogoutModal').modal('show');
+            }
+
+            function submitLogout() {
+                document.getElementById('logoutForm').submit();
+            }
+        </script>
+
+
     </body>
 </html>

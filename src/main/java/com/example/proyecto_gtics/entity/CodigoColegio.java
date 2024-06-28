@@ -9,11 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "codigo_colegio")
-public class CodigoColegio {
+public class CodigoColegio implements Serializable {
 
     @Id
     @Column(name = "id")

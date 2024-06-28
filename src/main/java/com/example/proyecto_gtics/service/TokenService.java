@@ -22,12 +22,12 @@ public class TokenService {
         if (!tokenStorage.containsKey(token)) {
             return null;
         }
-        if (tokenExpiration.get(token) < System.currentTimeMillis()) {
-            tokenStorage.remove(token);
-            tokenExpiration.remove(token);
-            return null;
-        }
+
         return tokenStorage.get(token);
+    }
+
+    public boolean expiredToken(String token){
+        return tokenExpiration.get(token) < System.currentTimeMillis();
     }
 
     public void removeToken(String token) {
