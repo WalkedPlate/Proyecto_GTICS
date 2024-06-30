@@ -83,6 +83,12 @@
                 </div>
                 <!-- Actions -->
                 <div class="col-sm-4 col-12 text-sm-end">
+                  <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
+                                             <span class=" pe-2">
+                                                 <i class="bi bi-person-up"></i>
+                                             </span>
+                    <span>Volver Superadmin</span>
+                  </a>
                   <div class="mx-n1">
                     <a th:href="@{'/farmacista/perfil'}"
                        class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">

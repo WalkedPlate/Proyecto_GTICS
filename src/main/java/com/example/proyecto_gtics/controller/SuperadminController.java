@@ -794,7 +794,22 @@ public class SuperadminController {
 
 
         // Redirigir a la página principal del usuario impersonado
-        response.sendRedirect("/administradorsede");
+        switch (userToImpersonate.getTipoUsuario().getIdTipoUsuario()){
+            case "AdministradorDeSede":
+                response.sendRedirect("/administradorsede");
+                break;
+            case "Farmacista":
+                response.sendRedirect("/farmacista");
+                break;
+            case "Doctor":
+                response.sendRedirect("/doctor");
+                break;
+            case "Paciente":
+                response.sendRedirect("/clinicarenacer");
+                break;
+
+        }
+
     }
     @GetMapping("/stopImpersonation")
     public String stopImpersonation(HttpSession session) {

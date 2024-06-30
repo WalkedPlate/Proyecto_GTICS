@@ -81,6 +81,15 @@ public class FarmacistaController {
     public String paginaPrincipal(Model model, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         Sedes sede = farmacista.getSedes();
@@ -100,7 +109,11 @@ public class FarmacistaController {
                                RedirectAttributes attr, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
-
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
 
         if (bindingResult.hasErrors()) {
             String error = bindingResult.getFieldError().getDefaultMessage();
@@ -192,6 +205,15 @@ public class FarmacistaController {
     public String ordenesLinea(Model model, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         Optional<TipoOrden> tipoOrden1 = tipoOrdenRepository.findById(3);
@@ -205,6 +227,15 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista/ordenes-venta"})
     public String ordenesVenta(Model model, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
@@ -215,6 +246,11 @@ public class FarmacistaController {
     @PostMapping(value ={"/farmacista/ordenes-linea/ver-orden"})
     public String verOrden(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
         model.addAttribute("farmacista",farmacista);
 
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
@@ -228,6 +264,11 @@ public class FarmacistaController {
     @PostMapping(value ={"/farmacista/ordenes-venta/ver-orden"})
     public String verOrdenVenta(Model model, @RequestParam("idOrden") Integer idOrden, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
         model.addAttribute("farmacista",farmacista);
 
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
@@ -241,6 +282,11 @@ public class FarmacistaController {
     public String aprobarOrdenDeLinea(@RequestParam("idOrden") Integer idOrden, RedirectAttributes attr, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
 
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
@@ -270,6 +316,15 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista/contactarPaciente"})
     public String contactarPaciente(HttpSession session, Model model, @RequestParam(name = "idPaciente", required = false) Integer idPaciente){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
         Usuarios paciente = usuariosRepository.findByIdUsuario(idPaciente);
 
@@ -304,6 +359,15 @@ public class FarmacistaController {
     public String chat(HttpSession session, Model model, @RequestParam(name = "chatId", required = false) Integer chatId,
                        RedirectAttributes attr){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         if(chatId == null){
@@ -362,6 +426,15 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista/perfil"})
     public String perfil(Model model, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         return "Farmacista/perfil";
@@ -370,6 +443,15 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista/editar-perfil"})
     public String editarPerfil(Model model, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         return "Farmacista/editarPerfil";
@@ -378,6 +460,15 @@ public class FarmacistaController {
     @GetMapping(value ={"/farmacista/cambiar-contra"})
     public String cambiarContra(Model model, HttpSession session){
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("farmacista",farmacista);
 
         return "Farmacista/cambiarContra";
