@@ -134,11 +134,15 @@ public class AdministradorSedeController {
     @GetMapping(value = {"/administradorsede/ordenes-reposicion"})
     public String ordenesReposicion(Model model, HttpSession session) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         TipoOrden tipoOrdenRepo = tipoOrdenRepository.findById(2).get(); //Tipo de orden: Orden de reposición
@@ -159,11 +163,15 @@ public class AdministradorSedeController {
     public String verOrden(Model model, @RequestParam("idOrdenRepo") Integer idOrdenRepo, HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(idOrdenRepo);
@@ -190,11 +198,15 @@ public class AdministradorSedeController {
                              HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         if (primeraVez != null) {
@@ -244,11 +256,15 @@ public class AdministradorSedeController {
                               HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(id);
@@ -355,11 +371,15 @@ public class AdministradorSedeController {
                                      HttpSession session, Model model) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
@@ -402,11 +422,15 @@ public class AdministradorSedeController {
     public String borrarOrdenReposicion(@RequestParam("idOrden") Integer id,
                                         HttpSession session, Model model) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         Optional<Ordenes> optOrden = ordenesRepository.findById(id);
@@ -423,11 +447,15 @@ public class AdministradorSedeController {
     public String doctores(Model model, HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         EstadoUsuario estadoUsuario = estadoUsuarioRepository.findById("Activo").get();
@@ -445,11 +473,15 @@ public class AdministradorSedeController {
     public String farmacistas(Model model, HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
 
@@ -536,11 +568,15 @@ public class AdministradorSedeController {
                                    HttpSession session, Model model) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         Optional<Usuarios> optSede = usuariosRepository.findById(id);
@@ -556,11 +592,15 @@ public class AdministradorSedeController {
     public String medicinas(Model model, HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
@@ -573,11 +613,15 @@ public class AdministradorSedeController {
     @GetMapping(value = {"/administradorsede/perfil"})
     public String perfil(HttpSession session, Model model) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         return "AdministradorSede/perfil";
@@ -586,11 +630,15 @@ public class AdministradorSedeController {
     @GetMapping(value = {"/administradorsede/editar-perfil"})
     public String editarPerfil(HttpSession session, Model model) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         return "AdministradorSede/editarPerfil";
@@ -599,11 +647,15 @@ public class AdministradorSedeController {
     @GetMapping(value = {"/administradorsede/cambiar-contra"})
     public String cambiarContra(HttpSession session, Model model) {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
         }
         //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
         model.addAttribute("adminSede", adminSede);
 
         return "AdministradorSede/cambiarContra";
