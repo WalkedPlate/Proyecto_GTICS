@@ -801,13 +801,9 @@ public class SuperadminController {
             case "Farmacista":
                 response.sendRedirect("/farmacista");
                 break;
-            case "Doctor":
-                response.sendRedirect("/doctor");
-                break;
             case "Paciente":
                 response.sendRedirect("/clinicarenacer");
                 break;
-
         }
 
     }
