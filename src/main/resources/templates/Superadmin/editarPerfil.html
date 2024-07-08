@@ -98,29 +98,34 @@
                 <main class="py-6 bg-surface-secondary ">
                     <div class="container-fluid d-flex justify-content-center align-items-center">
                         <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
-                             style="width: 35rem">
+                             style="width: 40rem">
                             <div class="row row-cols-1 ">
-                                <div class="col text-center pt-1 pb-5">
+                                <div class="col text-center pt-1 pb-1">
                                     <h2><strong>Tu perfil</strong></h2>
                                     <hr>
                                 </div>
+
                                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                                 <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                                 <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
-                                <div class="row d-flex pb-5 mt-2" >
+
+                                <div class="row d-flex pb-5 pt-4" >
 
                                     <div class="col text-center d-flex justify-content-center align-items-center">
-                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" alt="" width="180"
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
                                              class="rounded-circle">
                                     </div>
-                                    <div class="col mt-4" style="margin:0px 5px">
-                                        <span th:text="'Nombre:  ' + ${superadmin.nombre}"></span>
-                                        <br>
-                                        <span th:text="'DNI:  ' + ${superadmin.dni}"></span>
-                                        <br>
-                                        <span th:text="'Distrito de residencia: ' + ${superadmin.distritoResidencia}"></span>
-                                        <br>
-                                        <span th:text="'Correo:  ' + ${superadmin.correo}"></span>
+                                    <div class="col d-flex " style="flex-direction: column; justify-content: space-evenly;">
+                                        <span><strong>Nombre:</strong> <span th:text="${superadmin.nombre}"></span></span>
+
+                                        <span><strong>DNI:</strong> <span th:text="${superadmin.dni}"></span></span>
+
+                                        <span><strong>Dirección:</strong> <span th:text="${superadmin.direccion}"></span></span>
+
+                                        <span><strong>Dtto. de residencia:</strong> <span th:text="${superadmin.distritoResidencia}"></span></span>
+
+                                        <span><strong>Correo:</strong> <span th:text="${superadmin.correo}"></span></span>
+
                                     </div>
                                 </div>
 

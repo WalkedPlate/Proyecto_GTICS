@@ -6,6 +6,7 @@
         <title>Clínica Renacer SuperAdmin</title>
         <link rel="icon" href="/img/Superadmin/icono.png"/>
         <link rel="stylesheet" href="/css/Superadmin/style_clinica.css">
+        <link rel="stylesheet" href="/css/Superadmin/editarPerfil.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     </head>
@@ -111,15 +112,16 @@
                                 <form class="needs-validation" id="myForm" novalidate th:action="@{/superadmin/guardar_perfil}"
                                       enctype="multipart/form-data" method="post">
 
-                                    <div class="col d-flex pb-6">
-                                        <div class="col-4 d-flex justify-content-center align-items-center">
-                                            <label for="imageUpload">
-                                                <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="250" class="rounded-circle" id="profileImage" style="cursor: pointer;">
-                                            </label>
-                                            <input type="file" id="imageUpload" name="image" style="display: none;" accept="image/*" />
+                                    <div class="profile-container d-flex pb-6">
+                                        <div class="col-4 d-flex justify-content-center align-items-center upload">
+                                            <img th:src="@{|/imageUser/${superadmin.idUsuario}|}"  id="profileImage">
+                                            <div class="round">
+                                                <input type="file" id="imageUpload" name="image" accept="image/*">
+                                                <i class = "bi bi-camera" style = "color: #fff;"></i>
+                                            </div>
                                         </div>
 
-                                        <div class="col" style="margin:0px 30px">
+                                        <div class="col form-container" style="margin:0px 30px">
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>DNI:</label>
@@ -167,13 +169,6 @@
 <!--                                                    <p id="correoError" class="text-danger"></p>-->
                                                 </div>
                                             </div>
-<!--                                            <div class="row pt-5">-->
-<!--                                                <div class="col">-->
-<!--                                                    <label for="distrito">Distrito de residencia:</label>-->
-<!--                                                    <input type="text" class="form-control" id="distrito" placeholder="Coloca tu distrito de residencia">-->
-<!--                                                    <p id="distritoError" class="text-danger"></p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
                                         </div>
                                     </div>
 
@@ -184,35 +179,6 @@
                                         <a href="/superadmin/perfil" class="btn btn-danger btn-xs" role="button">Cancelar</a>
                                     </div>
                                 </form>
-
-                                <!-- Modal guardar -->
-                                <!--<div class="modal fade" id="modalGuardar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-body">
-                                                <div class="container text-center">
-                                                    <div class="row row-cols-1">
-                                                        <div class="col pt-5 icono">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                                                <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                                            </svg>
-                                                        </div>
-                                                        <div class="col">
-                                                            <h3 class="text-center pt-5">Se han guardado los cambios exitosamente</h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer d-flex justify-content-center">
-                                                <a th:href="@{'/superadmin/perfil'}" >
-                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
 
                             </div>
 
@@ -243,7 +209,7 @@
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
         <script src="/js/Superadmin/script.js"></script>
-        <script src="/js/Superadmin/editProfile.js"></script>
+<!--        <script src="/js/Superadmin/editProfile.js"></script>-->
 
         <!--validaciones front end-->
         <script>
@@ -282,9 +248,16 @@
 
         <!-- Script para subir las imágenes -->
         <script>
-            document.getElementById('profileImage').addEventListener('click', function() {
-                document.getElementById('imageUpload').click();
-            });
+            // document.getElementById('profileImage').addEventListener('click', function() {
+            //     document.getElementById('imageUpload').click();
+            // });
+            let profileImage = document.getElementById("profileImage");
+            let imageUpload = document.getElementById("imageUpload");
+
+            imageUpload.onchange = function (){
+                profileImage.src = URL.createObjectURL(imageUpload.files[0]);
+            }
+
         </script>
 
 
