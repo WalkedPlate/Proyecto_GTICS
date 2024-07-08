@@ -811,6 +811,7 @@ public class SuperadminController {
         superadmin.setDistritoResidencia(distrito);
         usuariosRepository.save(superadmin);
         attr.addFlashAttribute("msg","Perfil actualizado exitosamente.");
+        session.setAttribute("usuario",usuariosRepository.findByIdUsuario(superadmin.getIdUsuario()));
         return "redirect:/superadmin/perfil";
 
     }
