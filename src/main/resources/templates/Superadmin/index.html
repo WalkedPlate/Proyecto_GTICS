@@ -41,7 +41,7 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
-                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40"> Bienvenido, <span
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40" class="avatar"> Bienvenido, <span
                                             class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span></h2>
                                 </div>
                                 <!-- Actions -->
@@ -265,7 +265,7 @@
                                                 <button type="button"  class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal" th:data-bs-target ="${'#eliminar'+ obj.index}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
-                                                <form method="post" th:action="@{/impersonate/{id}(id=${adminSede.idUsuario})}">
+                                                <form method="post" th:action="@{/impersonate/{id}(id=${adminSede.idUsuario})}" style="display: inline;">
                                                     <button type="submit" class="btn btn-sm btn-square btn-secondary">
                                                         <i class="bi bi-gear-wide-connected"></i>
                                                     </button>
