@@ -216,6 +216,10 @@ public class AdministradorSedeController {
                 crearOrdenCarrito(adminSede);
                 Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
                 id = ordenRecuperada.getIdordenes();
+
+                //Creacion del codigo de orden de reposicion:
+                ordenRecuperada.setCodigo(crearCodigo(id));
+                ordenesRepository.save(ordenRecuperada);
             }
         }
 
@@ -228,7 +232,7 @@ public class AdministradorSedeController {
         if (optOrden.isPresent()) {
 
             if (!validarTipoOrden(6, optOrden.get())) {
-                if (!validarTipoOrden(2, optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2) {
+                if (!validarTipoOrden(2, optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2) { //¿Porque distinto de 2?
                     return "redirect:/administradorsede/ordenes-reposicion";
                 }
             }
@@ -722,6 +726,10 @@ public class AdministradorSedeController {
         ordenesRepository.save(ordenCarrito); // creamos la orden de reposición
     }
 
+    public String crearCodigo(Integer idOrden){
+        String codigo = "ORD-REPO-"+idOrden.toString();
+        return codigo;
+    }
 
     public boolean validarCodigoColegio(String codigo) {
 
