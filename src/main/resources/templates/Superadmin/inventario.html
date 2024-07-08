@@ -451,7 +451,7 @@
                                                                     <input class="form-check-input" type="checkbox"
                                                                            name="idSedes" th:value="${sede.idSedes}"
                                                                            th:each="productoSede : ${listaProductoSede}"
-                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes!=sede.idSedes and productoSede.visibilidad==0}">
+                                                                           th:if="${productoSede.productos.idProductos==medicamento.idProductos and productoSede.sedes.idSedes==sede.idSedes and productoSede.visibilidad==0}">
                                                                     <input class="form-check-input" type="checkbox"
                                                                            name="idSedes" th:value="${sede.idSedes}"
                                                                            th:each="productoSede : ${listaProductoSede}"

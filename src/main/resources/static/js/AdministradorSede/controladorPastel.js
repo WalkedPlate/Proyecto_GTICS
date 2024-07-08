@@ -1,6 +1,18 @@
 const ctx2 = document.getElementById('myChart2')
 var labels = Object.keys(window.listaCantidadProductosSede)
 var data = Object.values(window.listaCantidadProductosSede);
+
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return {
+        backgroundColor: `rgba(${r}, ${g}, ${b}, 0.2)`,
+        borderColor: `rgba(${r}, ${g}, ${b}, 1)`
+    };
+}
+const colors = data.map(() => getRandomColor());
+
 const myChart2 = new Chart(ctx2 , {
     type: 'doughnut',
     data: {
@@ -8,16 +20,8 @@ const myChart2 = new Chart(ctx2 , {
         datasets: [{
           label: 'My First Dataset',
           data: data,
-          backgroundColor: [
-            'rgba(255,99,132,0.2)',
-            'rgba(54,162,235,0.2)',
-            'rgba(255,206,86,0.2)'
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54,162,235,1)',
-            'rgba(255,206,86,1)'
-        ],
+          backgroundColor: colors.map(color => color.backgroundColor),
+          borderColor: colors.map(color => color.borderColor),
           hoverOffset: 4
         }]
       },
