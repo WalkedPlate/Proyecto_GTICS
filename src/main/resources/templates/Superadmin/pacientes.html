@@ -34,7 +34,7 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h1 class="h2 mb-0 ls-tight">
-                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40"> Bienvenido, <span
                                             class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span>
                                     </h1>
                                 </div>
@@ -109,7 +109,9 @@
                                     <tbody>
                                         <tr th:each="paciente,obj: ${listaPacientes}">
                                             <td>
-                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                <img th:if="${paciente.fotonombre != null}" alt="..." th:src="@{|/imageUser/${paciente.idUsuario}|}"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <img th:if="${paciente.fotonombre == null}" alt="..." src="/img/Superadmin/user_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${paciente.nombre}" class="text-heading font-semibold"
                                                    href="#"></a>

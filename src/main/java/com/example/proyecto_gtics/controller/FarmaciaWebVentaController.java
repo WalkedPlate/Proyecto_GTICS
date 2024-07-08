@@ -417,15 +417,15 @@ public class FarmaciaWebVentaController {
             ordenesRepository.save(ordenPreSave);
 
             //Validacion de pago con tarjeta
-            //boolean tarjetaValida =  cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
+            boolean tarjetaValida =  cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
 
-            //if(tarjetaValida){
-              //  attr.addFlashAttribute("msg","Datos validados, procesando compra...");
-            //}
-            //else {
-              //  attr.addFlashAttribute("err","No se pudo realizar la compra, error de datos.");
-               // return "redirect:/clinicarenacer/paciente/pagar";
-            //}
+            if(tarjetaValida){
+               attr.addFlashAttribute("msg","Datos validados, procesando compra...");
+            }
+            else {
+                attr.addFlashAttribute("err","No se pudo realizar la compra, error de datos.");
+                return "redirect:/clinicarenacer/paciente/pagar";
+            }
 
 
             Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();

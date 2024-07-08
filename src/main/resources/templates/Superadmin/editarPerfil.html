@@ -74,7 +74,7 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h1 class="h2 mb-0 ls-tight">
-                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Mi perfil, <span
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40"> Mi perfil, <span
                                             class="text-primary" th:text="'SuperAdmin ' + ${session.usuario.nombre}"></span></h1>
                                 </div>
                                 <!-- Actions -->
@@ -104,10 +104,13 @@
                                     <h2><strong>Tu perfil</strong></h2>
                                     <hr>
                                 </div>
-                                <div class="row d-flex pb-5">
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+                                <div class="row d-flex pb-5 mt-2" >
 
                                     <div class="col text-center d-flex justify-content-center align-items-center">
-                                        <img src="/img/Superadmin/profile-3.jpeg" alt="" width="180"
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" alt="" width="180"
                                              class="rounded-circle">
                                     </div>
                                     <div class="col mt-4" style="margin:0px 5px">
@@ -170,5 +173,7 @@
                 document.getElementById('logoutForm').submit();
             }
         </script>
+
+
     </body>
 </html>

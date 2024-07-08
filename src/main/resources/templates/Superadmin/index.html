@@ -41,7 +41,7 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h2 class="mb-0 ls-tight">
-                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Bienvenido, <span
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40"> Bienvenido, <span
                                             class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span></h2>
                                 </div>
                                 <!-- Actions -->
@@ -241,7 +241,7 @@
                                     <tbody>
                                         <tr th:each="adminSede,obj : ${listaAdminSede}" th:class="${adminSede.estadoUsuario.idEstadoUsuario == 'Baneado'} ? 'bg-red' : ''">
                                             <td>
-                                                <img alt="..." src="/img/Superadmin/profile-3.jpeg"
+                                                <img alt="..." src="/img/Superadmin/administrador_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${adminSede.nombre}" class="text-heading font-semibold"></a>
                                             </td>

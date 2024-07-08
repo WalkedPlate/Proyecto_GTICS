@@ -73,7 +73,7 @@
                                 <div class="col-sm-8 col-12 mb-4 mb-sm-0">
                                     <!-- Title -->
                                     <h1 class="h2 mb-0 ls-tight">
-                                        <img src="/img/Superadmin/profile-3.jpeg" width="40"> Mi perfil, <span
+                                        <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40"> Mi perfil, <span
                                             class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span></h1>
                                 </div>
                                 <!-- Actions -->
@@ -103,17 +103,22 @@
                                     <h2><strong>Edita tu perfil</strong></h2>
                                     <hr>
                                 </div>
+                                <!--Mensajes-->
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                                 <!--Form para editar perfil con validaciones en js-->
-                                <form class="needs-validation" id="myForm" novalidate>
-                                    <input type="hidden" name="idUsuario" th:value="${superadmin.idUsuario}">
-                                    <input type="hidden" name="dni" th:value="${superadmin.dni}">
-                                    <input type="hidden" name="nombre" th:value="${superadmin.nombre}">
-
+                                <form class="needs-validation" id="myForm" novalidate th:action="@{/superadmin/guardar_perfil}"
+                                      enctype="multipart/form-data" method="post">
 
                                     <div class="col d-flex pb-6">
                                         <div class="col-4 d-flex justify-content-center align-items-center">
-                                            <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250" class="rounded-circle">
+                                            <label for="imageUpload">
+                                                <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="250" class="rounded-circle" id="profileImage" style="cursor: pointer;">
+                                            </label>
+                                            <input type="file" id="imageUpload" name="image" style="display: none;" accept="image/*" />
                                         </div>
+
                                         <div class="col" style="margin:0px 30px">
                                             <div class="row pt-5">
                                                 <div class="col">
@@ -133,18 +138,18 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>Dirección:</label>
-                                                    <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${superadmin.direccion}" required>
+                                                    <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" th:value="${superadmin.direccion}" required>
                                                     <div class="invalid-feedback">
-                                                        Por favor, ingrese una dirección (max 99 dígitos).
+                                                        Por favor, ingrese una dirección (max 99 caracteres).
                                                     </div>
                                                 </div>
 
                                                 <div class="col">
                                                     <label>Distrito de residencia</label>
-                                                    <input id="distrito"  name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${superadmin.distritoResidencia}" required>
+                                                    <input id="distrito"  name="distrito" maxlength="99" type="text" class="form-control" th:value="${superadmin.distritoResidencia}" required>
 <!--                                                    <p id="distritoError" class="text-danger"></p>-->
                                                     <div class="invalid-feedback">
-                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                        Por favor, ingrese un distrito de residencia (max 99 caracteres).
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,10 +159,10 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>Correo electrónico:</label>
-                                                    <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                                    <input id="correo" name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
                                                            th:value="${superadmin.correo}" required>
                                                     <div class="invalid-feedback">
-                                                        Por favor, ingrese un correo válido (max 99 dígitos).
+                                                        Por favor, ingrese un correo válido (max 99 caracteres).
                                                     </div>
 <!--                                                    <p id="correoError" class="text-danger"></p>-->
                                                 </div>
@@ -274,5 +279,14 @@
                 document.getElementById('logoutForm').submit();
             }
         </script>
+
+        <!-- Script para subir las imágenes -->
+        <script>
+            document.getElementById('profileImage').addEventListener('click', function() {
+                document.getElementById('imageUpload').click();
+            });
+        </script>
+
+
     </body>
 </html>

@@ -34,6 +34,7 @@ import org.w3c.dom.Attr;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class SuperadminController {
@@ -114,8 +115,10 @@ public class SuperadminController {
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
 
-            String error = bindingResult.getFieldError().getDefaultMessage().toString();
-            attr.addFlashAttribute("err",error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return "redirect:/superadmin";
         }else {
 
@@ -255,45 +258,53 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarProducto"})
-    public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") int idCategoria, @RequestParam("IDProducto") int idProducto,
+        public String guardarProducto(@Valid Productos productos, BindingResult bindingResult, @RequestParam("idCategoria") Integer idCategoria, @RequestParam("IDProducto") Integer idProducto,
                                   @RequestParam("archivo") MultipartFile file, RedirectAttributes attr, @RequestParam("idSedes") List<Integer> idSedes,
                                   HttpSession session){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
 
-        //Sobre la foto de un producto --------------------------------------------------------------------------------
-        if (file.isEmpty()) {
-            attr.addFlashAttribute("err","Debe subir una foto.");
-            return "redirect:/superadmin/inventario";
-        }
-        String fileName = file.getOriginalFilename();
-        if (fileName.contains("..")) {
-            attr.addFlashAttribute("err","No se permiten '..' en el archivo");
-            return "redirect:/superadmin/inventario";
-        }
-        try {
-            productos.setFoto(file.getBytes());
-            productos.setFotonombre(fileName);
-            productos.setFotocontenttype(file.getContentType());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            attr.addFlashAttribute("err","No se permiten '..' en el archivo");
-            return "redirect:/superadmin/inventario";
-        }
-        //-----------------------------------------------------------------------------------------------------------
-
-
-
         Optional<Productos> optProducto =productosRepository.findById(idProducto);
 
         if(bindingResult.hasErrors()){
-            String error = bindingResult.getFieldError().getDefaultMessage().toString();
-            attr.addFlashAttribute("err",error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return "redirect:/superadmin/inventario";
         }else {
 
         if(optProducto.isPresent()){
+
+            //Sobre la foto de un producto --------------------------------------------------------------------------------
+            if (!file.isEmpty()) {
+                System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                String fileName = file.getOriginalFilename();
+                if (fileName.contains("..")) {
+                    attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                    return "redirect:/superadmin/inventario";
+                }
+                try {
+                    productos.setFoto(file.getBytes());
+                    productos.setFotonombre(fileName);
+                    productos.setFotocontenttype(file.getContentType());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                    return "redirect:/superadmin/inventario";
+                }
+            }
+            else {
+                System.out.println("---------------------------------------------------------------------------------------------------");
+                productos.setFoto(optProducto.get().getFoto());
+                productos.setFotonombre(optProducto.get().getFotonombre());
+                productos.setFotocontenttype(optProducto.get().getFotocontenttype());
+            }
+
+            //-----------------------------------------------------------------------------------------------------------
+
+
             Categorias categoria = categoriasRepository.findById(idCategoria).get();
             productos.setCategorias(categoria);
             productos.setEstadoProducto("Activo");
@@ -310,7 +321,7 @@ public class SuperadminController {
                 sedesVista.add(sede);// Llenamos la lista
                 //--------------------------------------------------------------------------
                 ProductosSedes productosSedes = productosSedeRepository.findByProductosAndSedes(productos,sede);
-                if(productosSedes != null){
+                if(productosSedes == null){
                     //ProductosSedes productosSedes1 = new ProductosSedes();
                     ProductosSedesId productosSedesId = new ProductosSedesId();
                     productosSedesId.setIdProductos(productos.getIdProductos());
@@ -319,13 +330,14 @@ public class SuperadminController {
                     productosSedes1.setProductos(productos);
                     productosSedes1.setSedes(sede);
                     productosSedes1.setCantidad(0);
-                    for (Sedes sede1 : sedesTotales){
-                        if(Objects.equals(idSede, sede1.getIdSedes())){
-                            productosSedes1.setVisibilidad(1);
-                        }
-                    }
+                    productosSedes1.setVisibilidad(1);
                     productosSedeRepository.save(productosSedes1);
                 }else{
+                    for (Sedes sede1 : sedesTotales){
+                        if(Objects.equals(idSede, sede1.getIdSedes())){
+                            productosSedes.setVisibilidad(1);
+                        }
+                    }
                     productosSedeRepository.save(productosSedes);
                 }
             }
@@ -344,6 +356,30 @@ public class SuperadminController {
             productosRepository.save(productos);
             return "redirect:/superadmin/inventario";
         }else{
+
+            //Sobre la foto de un producto --------------------------------------------------------------------------------
+            if (file.isEmpty()) {
+                attr.addFlashAttribute("err","Debe subir una foto.");
+                return "redirect:/superadmin/inventario";
+            }
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/superadmin/inventario";
+            }
+            try {
+                productos.setFoto(file.getBytes());
+                productos.setFotonombre(fileName);
+                productos.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/superadmin/inventario";
+            }
+            //-----------------------------------------------------------------------------------------------------------
+
+
             Productos pruebaProducto = productosRepository.findByNombre(productos.getNombre());
             if (pruebaProducto == null){
                 //-----------Procesamiento de creacion de codigo de producto--------
@@ -526,8 +562,10 @@ public class SuperadminController {
         Optional<Usuarios> farma = usuariosRepository.findById(farmacista.getIdUsuario());
 
         if(bindingResult.hasErrors()){
-            String error = bindingResult.getFieldError().getDefaultMessage().toString();
-            attr.addFlashAttribute("err",error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return "redirect:/superadmin/farmacistas";
         }else {
 
@@ -616,8 +654,10 @@ public class SuperadminController {
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         if(bindingResult.hasErrors() || idSede<0 ||idSede > 10 ){
-           String error = bindingResult.getFieldError().getDefaultMessage().toString();
-           attr.addFlashAttribute("err",error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return "redirect:/superadmin/doctores";
         }else {
 
@@ -695,11 +735,21 @@ public class SuperadminController {
     }
 
     @PostMapping(value = "/superadmin/actualizar-contra")
-    public String actualizarContra(@RequestParam("pass1") String pass1,
-                                   @RequestParam("pass2") String pass2,
+    public String actualizarContra(@RequestParam(name = "pass1", required = false) String pass1,
+                                   @RequestParam(name = "pass2", required = false) String pass2,
                                    RedirectAttributes attr, HttpSession session){
 
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+
+        if(pass1 == null || pass2 == null){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/superadmin/cambiar-contra";
+        }
+        if(pass1.isEmpty() || pass2.isEmpty()){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/superadmin/cambiar-contra";
+        }
 
 
         if(pass1.equalsIgnoreCase(pass2)){
@@ -714,6 +764,57 @@ public class SuperadminController {
         }
 
     }
+
+
+    @PostMapping(value = "/superadmin/guardar_perfil")
+    public String actualizarPerfil(@RequestParam(name = "direccion", required = false) String direccion,
+                                   @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "correo",required = false) String correo,
+                                   @RequestParam("image") MultipartFile file,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+        if(direccion == null || distrito == null || correo == null){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/superadmin/editar-perfil";
+        }
+        if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/superadmin/editar-perfil";
+        }
+
+
+        //Sobre la foto de un producto --------------------------------------------------------------------------------
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/superadmin/editar-perfil";
+            }
+            try {
+                superadmin.setFoto(file.getBytes());
+                superadmin.setFotonombre(fileName);
+                superadmin.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/superadmin/editar-perfil";
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------
+
+
+        superadmin.setCorreo(correo);
+        superadmin.setDireccion(direccion);
+        superadmin.setDistritoResidencia(distrito);
+        usuariosRepository.save(superadmin);
+        attr.addFlashAttribute("msg","Perfil actualizado exitosamente.");
+        return "redirect:/superadmin/perfil";
+
+    }
+
 
 
 

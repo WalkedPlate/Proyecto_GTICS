@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Integration</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=TU_CLAVE_DE_API&callback=initMap" async defer></script>
+    <script>
+        let map;
+
+        function initMap() {
+            const defaultLocation = { lat: -12.078, lng: -77.079 }; // Coordenadas predeterminadas
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: defaultLocation
+            });
+
+            fetchCoordinates("Av La Marina n° 1500, San Miguel, Lima, Perú");
+        }
+
+        function fetchCoordinates(address) {
+            fetch(`/geocode?address=${encodeURIComponent(address)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const location = data.results[0].geometry.location;
+                    const marker = new google.maps.Marker({
+                        position: location,
+                        map: map
+                    });
+                    map.setCenter(location);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+<h1>Google Maps Integration</h1>
+<div id="map"></div>
+</body>
+</html>

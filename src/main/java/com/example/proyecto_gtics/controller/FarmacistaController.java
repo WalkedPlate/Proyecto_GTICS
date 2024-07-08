@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class FarmacistaController {
@@ -116,9 +117,10 @@ public class FarmacistaController {
         //-------------------------------------------------------------------------------------
 
         if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldError().getDefaultMessage();
-
-            attr.addFlashAttribute("err",error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
 
             return "redirect:/farmacista";
         }

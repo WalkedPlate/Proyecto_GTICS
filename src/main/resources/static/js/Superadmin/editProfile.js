@@ -5,22 +5,15 @@ form.addEventListener('submit', function(event) {
     let isValid = true;
 
     // Reset previous error messages
-    document.getElementById('nombreError').textContent = '';
-    document.getElementById('apellidoError').textContent = '';
-    document.getElementById('correoError').textContent = '';
-    document.getElementById('distritoError').textContent = '';
+    //document.getElementById('apellidoError').textContent = '';
+    //document.getElementById('correoError').textContent = '';
+    //document.getElementById('distritoError').textContent = '';
 
-    // Validate nombre
-    const nombreInput = document.getElementById('nombre');
-    if (!nombreInput.value.trim()) {
-        document.getElementById('nombreError').textContent = 'Por favor, ingresa tu nombre.';
-        isValid = false;
-    }
 
-    // Validate apellido
-    const apellidoInput = document.getElementById('apellido');
-    if (!apellidoInput.value.trim()) {
-        document.getElementById('apellidoError').textContent = 'Por favor, ingresa tu apellido.';
+    // Validate direccion
+    const direccionInput = document.getElementById('direccion');
+    if (!direccionInput.value.trim()) {
+        document.getElementById('direccionError').textContent = 'Por favor, ingresa tu dirección.';
         isValid = false;
     }
 
@@ -40,6 +33,7 @@ form.addEventListener('submit', function(event) {
     }
 
     if (isValid) {
-        successMessage.textContent = 'Se guardaron los cambios exitosamente';
+        form.submit();
+        //successMessage.textContent = 'Se guardaron los cambios exitosamente';
     }
 });

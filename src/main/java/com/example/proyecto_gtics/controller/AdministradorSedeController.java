@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdministradorSedeController {
@@ -509,8 +510,10 @@ public class AdministradorSedeController {
         //-------------------------------------------------------------------------------------
 
         if (bindingResult.hasErrors()) {
-            String error = bindingResult.getFieldError().getDefaultMessage().toString();
-            attr.addFlashAttribute("err", error);
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return "redirect:/administradorsede/farmacistas";
         } else {
 
