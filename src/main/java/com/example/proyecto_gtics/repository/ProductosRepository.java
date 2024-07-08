@@ -28,8 +28,8 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
 
     Productos findByNombre(String nombre);
 
-    @Query(value="select productos.idproductos,productos.nombre, sum(productos_has_sedes.cantidad) as cantidadTotal from productos inner join productos_has_sedes on productos.idproductos = productos_has_sedes.productos_idproductos group by productos.idproductos , productos.nombre having cantidadTotal < 200;",nativeQuery = true)
-    List<CantProductoMenosPorSede> obtenerProductosPocoInventariado();
+    @Query(value="select productos.idproductos,productos.nombre, sum(productos_has_sedes.cantidad) as cantidadTotal from productos inner join productos_has_sedes on productos.idproductos = productos_has_sedes.productos_idproductos where productos_has_sedes.sedes_idsedes=?1 and productos_has_sedes.visibilidad=1 group by productos.idproductos , productos.nombre having cantidadTotal < 25;",nativeQuery = true)
+    List<CantProductoMenosPorSede> obtenerProductosPocoInventariado(Integer idSede);
 
     Productos findByIdProductos(Integer idProducto);
 

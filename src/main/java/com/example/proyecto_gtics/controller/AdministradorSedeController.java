@@ -99,7 +99,7 @@ public class AdministradorSedeController {
         model.addAttribute("adminSede", adminSede);
 
         //Creacion de archivo JSON para añadir DATA en el grafico pastel
-        List<CantProductoMenosPorSede> listCantProductoMenosPorSede = productosRepository.obtenerProductosPocoInventariado();
+        List<CantProductoMenosPorSede> listCantProductoMenosPorSede = productosRepository.obtenerProductosPocoInventariado(adminSede.getSedes().getIdSedes());
         JSONObject jsonObject = new JSONObject();
         for (CantProductoMenosPorSede cantProductoMenosPorSede : listCantProductoMenosPorSede) {
             jsonObject.put(cantProductoMenosPorSede.getNombre(), cantProductoMenosPorSede.getCantidadTotal());
@@ -603,7 +603,8 @@ public class AdministradorSedeController {
         }
         model.addAttribute("adminSede", adminSede);
 
-        List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
+        //List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedes(adminSede.getSedes());
+        List<ProductosSedes> listMedicinas = productosSedeRepository.findBySedesAndVisibilidad(adminSede.getSedes(), 1);
         model.addAttribute("listaMedicinas", listMedicinas);
 
         return "AdministradorSede/medicinas";
