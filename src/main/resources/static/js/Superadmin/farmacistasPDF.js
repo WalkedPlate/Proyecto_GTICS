@@ -1,8 +1,8 @@
-let table = new DataTable('#doctores', {
+let table = new DataTable('#example', {
     pageLength: 5,
     lengthMenu: [5, 10, 25, 50, 100],
     columnDefs: [
-        {orderable: false, target: [5]},
+        {orderable: false, target: [5, 6]},
     ],
     language: {
         "processing": "Procesando...",
@@ -257,7 +257,7 @@ let currentDate = new Date().toLocaleDateString();
 new DataTable.Buttons(table, {
     buttons: [{
         extend:    'pdfHtml5',
-        title:     'Lista de Doctores',
+        title:     'Lista de Farmacistas',
         orientation: 'landscape',
 
         customize: function(doc) {
@@ -278,11 +278,12 @@ new DataTable.Buttons(table, {
                 alignment: 'center',
             };
 
+            //doc.content[2].margin = [ 100, 20, 100, 0 ] //left, top, right, bottom
             doc.content[2].table.widths = [ '25%',  '10%', '10%', '20%',
                 '10%', '25%'];
 
             // Configurar alineación específica para las columnas
-            var columnsToCenter = [1, 2, 3 ,4];
+            var columnsToCenter = [1, 2, 4]; // Índices de las columnas que se centrarán
 
             // Aplicar estilos específicos a las celdas de las columnas centradas
             doc.content[2].table.body.forEach(function(row) {
@@ -302,6 +303,7 @@ new DataTable.Buttons(table, {
             };
 
 
+
             // Agregar mensaje de reporte realizado en la parte inferior
             doc.content.push({
                 text: 'Reporte realizado el ' + currentDate,
@@ -310,7 +312,6 @@ new DataTable.Buttons(table, {
             });
 
         },
-
         exportOptions: {
             columns: [0,1,2,3,4,5] // columnas que se exportarán
         }
