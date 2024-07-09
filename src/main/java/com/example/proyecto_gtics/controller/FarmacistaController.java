@@ -97,7 +97,8 @@ public class FarmacistaController {
         TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
         EstadoUsuario activo = estadoUsuarioRepository.findById("Activo").get();
 
-        List<ProductosSedes> listaProductos = productosSedeRepository.findBySedes(sede);
+        //List<ProductosSedes> listaProductos = productosSedeRepository.findBySedes(sede);
+        List<ProductosSedes> listaProductos = productosSedeRepository.findBySedesAndVisibilidad(sede,1);
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listaDoctores",usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,sede,activo));
         return "Farmacista/index";

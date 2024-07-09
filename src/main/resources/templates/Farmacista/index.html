@@ -170,20 +170,12 @@
                                         </td>
                                         <td th:text="${producto.productos.nombre}"></td>
                                         <td th:text="${producto.cantidad}"></td>
-                                        <td th:text="${producto.productos.precio}"></td>
+                                        <td class="precio" th:text="${producto.productos.precio}"></td>
                                         <td>
-                                            <input
-                                                    type="number" placeholder="0" name="listaCantidades" value="0" min="0">
+                                            <input class="cantidad"
+                                                    type="number" placeholder="0" name="listaCantidades" value="0" min="0" step="1">
                                         </td>
-                                        <td>
-                                            100
-                                        </td>
-                                        <!-- <td class="text-end">
-                                            <input class="form-check-input" type="checkbox" id="miCheckbox" name="checkbox" >
-                                            <label class="form-check-label" for="miCheckbox">
-                                                Selecciona esto
-                                            </label> -->
-                                        </td>
+                                        <td class="precio-total">0.00</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -464,6 +456,47 @@
             document.getElementById('logoutForm').submit();
         }
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('#example tbody tr');
+
+            rows.forEach(row => {
+                const cantidadInput = row.querySelector('.cantidad');
+                const precioElement = row.querySelector('.precio');
+                const precioTotalElement = row.querySelector('.precio-total');
+
+                cantidadInput.addEventListener('input', function() {
+                    const cantidad = parseFloat(cantidadInput.value) || 0;
+                    const precio = parseFloat(precioElement.textContent) || 0;
+                    const precioTotal = cantidad * precio;
+
+                    precioTotalElement.textContent = precioTotal.toFixed(2);
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Inicializa DataTables
+            var table = $('#example').DataTable();
+
+            // Función para formatear precios a 2 decimales
+            function formatPrices() {
+                $('.precio').each(function() {
+                    var valor = parseFloat($(this).text());
+                    $(this).text(valor.toFixed(2));
+                });
+            }
+
+            // Aplica el formateo de precios al inicializar y al cambiar de página
+            formatPrices();
+            table.on('draw', function() {
+                formatPrices();
+            });
+        });
+    </script>
+
 </body>
 
 </html>
