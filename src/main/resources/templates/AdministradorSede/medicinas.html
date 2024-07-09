@@ -168,7 +168,7 @@
                                     <td class="text-center" th:text="${medicinasede.cantidad}">
 
                                     </td>
-                                    <td th:text="${medicinasede.productos.precio}" class="text-center"></td>
+                                    <td th:text="${medicinasede.productos.precio}" class="precio text-center"></td>
                                     <td th:text="${medicinasede.productos.categorias.nombre}" class="text-center"></td>
                                     <td th:text="${medicinasede.productos.fechaVencimiento}" class="text-center"></td>
                                 </tr>
@@ -222,5 +222,26 @@
             document.getElementById('logoutForm').submit();
         }
     </script>
+
+<script>
+    $(document).ready(function() {
+        // Inicializa DataTables
+        var table = $('#example').DataTable();
+
+        // Función para formatear precios a 2 decimales
+        function formatPrices() {
+            $('.precio').each(function() {
+                var valor = parseFloat($(this).text());
+                $(this).text(valor.toFixed(2));
+            });
+        }
+
+        // Aplica el formateo de precios al inicializar y al cambiar de página
+        formatPrices();
+        table.on('draw', function() {
+            formatPrices();
+        });
+    });
+</script>
 </body>
 </html>
