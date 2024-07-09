@@ -13,7 +13,7 @@
             if (validatePassword()) {
 
                 // Show success message
-                document.getElementById('successMessage').innerText = 'Contraseña cambiada correctamente';
+                // document.getElementById('successMessage').innerText = 'Contraseña cambiada correctamente';
                 form.classList.remove('was-validated');
                 form.submit();
 

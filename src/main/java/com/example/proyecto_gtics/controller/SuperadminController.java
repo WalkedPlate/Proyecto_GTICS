@@ -743,11 +743,11 @@ public class SuperadminController {
 
 
         if(pass1 == null || pass2 == null){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/superadmin/cambiar-contra";
         }
         if(pass1.isEmpty() || pass2.isEmpty()){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/superadmin/cambiar-contra";
         }
 
@@ -759,7 +759,7 @@ public class SuperadminController {
             return "redirect:/superadmin/cambiar-contra";
         }
         else {
-            attr.addFlashAttribute("err","Las contraseñas no coinciden.");
+            attr.addFlashAttribute("wrn","Las contraseñas no coinciden.");
             return "redirect:/superadmin/cambiar-contra";
         }
 

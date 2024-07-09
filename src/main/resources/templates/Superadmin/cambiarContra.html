@@ -110,14 +110,14 @@
                                 <!-- Parrafo de error -->
                                 <p id="passwordError" class="text-danger"></p>
                                 <!-- Parrafo de éxito -->
-                                <p id="successMessage" class="text-success"></p>
+<!--                                <p id="successMessage" class="text-success"></p>-->
                                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                                 <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                                 <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
 
                                 <div class="col">
-                                    <form id="passwordForm" class="needs-validation" th:action="@{'/superadmin/actualizar-contra'}" novalidate method="post">
+                                    <form id="passwordForm"  th:action="@{'/superadmin/actualizar-contra'}" novalidate method="post">
                                         <div class="mb-3">
                                             <label for="newPassword" class="form-label">Nueva contraseña</label>
                                             <input
