@@ -17,9 +17,11 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     // Expresión regular para validar el formato de correo electrónico
     if (email.trim() === '') {
         // Mostrar un mensaje de error de campo vacío para el correo electrónico
-        emailError.textContent = 'Complete el campo de correo electrónico';
+        emailError.textContent = 'Ingrese su correo electrónico';
         emailError.style.color = 'red';
         emailError.style.fontSize = '0.8em';
+        emailError.style.marginBottom= '1em';
+
     } else if (!emailPattern.test(email)) {
         // Mostrar un mensaje de error si el correo electrónico no cumple con el formato válido
         emailError.textContent = 'El formato del correo electrónico no es válido';
@@ -33,7 +35,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     // Validar si el campo de contraseña está vacío
     if (password.trim() === '') {
         // Mostrar un mensaje de error de campo vacío para la contraseña
-        passwordError.textContent = 'Complete el campo de contraseña';
+        passwordError.textContent = 'Ingrese su contraseña';
         passwordError.style.color = 'red';
         passwordError.style.fontSize = '0.8em';
     } else {
@@ -75,7 +77,7 @@ document.getElementById('newpass-form').addEventListener('submit', function(even
     // Validar si el correo electrónico no cumple con el formato
     if (!emailPattern.test(email)) {
         // Mostrar un mensaje de error de formato de correo electrónico
-        emailError.textContent = 'El correo electrónico no es válido.';
+        emailError.textContent = 'El formato del correo electrónico no es válido.';
         emailError.style.color = 'red';
         emailError.style.fontSize = '0.8em';
         return; // Detener la ejecución de la función

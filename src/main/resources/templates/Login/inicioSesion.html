@@ -52,6 +52,9 @@
                                     <label>Correo electrónico</label>
 
                                 </div>
+                                <div>
+                                    <p id="signinemail-error" class="error-message"></p>
+                                </div>
 
                                 <div class="input-wrap">
                                     <input
@@ -64,11 +67,13 @@
                                     <label>Contraseña</label>
 
                                 </div>
-                                <p id="signinemail-error" class="error-message"></p>
-                                <p id="password-error" class="error-message"></p>
+                                <div>
+                                    <p id="password-error" class="error-message"></p>
+                                </div>
+
                                 <input type="submit" value="Ingresar" class="sign-btn">
 
-                                <h4 th:if="${param.error}" class="form-signin-heading" style="color:red">Acceso denegado</h4>
+                                <h4 th:if="${param.error}" style="color:red">Credenciales incorrectas</h4>
                                 <p class="text">
                                     <a href="#" class="toggle">¿No recuerdas tu contraseña?</a>
                                 </p>

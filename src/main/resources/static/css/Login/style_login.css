@@ -134,7 +134,7 @@ form.sign-up-form {
 .input-wrap {
   position: relative;
   height: 37px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .input-field {
@@ -186,6 +186,7 @@ label {
   cursor: pointer;
   border-radius: 0.8rem;
   font-size: 0.8rem;
+  margin-top: 1.5rem;
   margin-bottom: 2rem;
   transition: 0.3s;
 }

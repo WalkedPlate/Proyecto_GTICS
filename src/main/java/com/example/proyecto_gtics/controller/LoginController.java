@@ -354,7 +354,7 @@ public class LoginController {
 
             }
             else {
-                attr.addFlashAttribute("err","Correo inválido");
+                attr.addFlashAttribute("err","El correo ingresado no es válido");
                 return "redirect:/login";
             }
 
