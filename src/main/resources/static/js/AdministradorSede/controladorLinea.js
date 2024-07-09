@@ -1,8 +1,8 @@
-const ctx3 = document.getElementById('myChart3')
-const nombresMedicamentos = window.listaCantProductoSedeFecha.map(item => item.nombre);
-const datosSede = window.listaCantProductoSedeFecha.map(item => item.cantidad);
-const sede = window.listaCantProductoSedeFecha[0].sede;
-const myChart3 = new Chart(ctx3, {
+const ctx5 = document.getElementById('myChart5')
+const nombresMedicamentos = window.listaCantProductoSedeFechaPor3Meses.map(item => item.nombre);
+const datosSede = window.listaCantProductoSedeFechaPor3Meses.map(item => item.cantidad);
+const sede = window.listaCantProductoSedeFechaPor3Meses[0].sede;
+const myChart5 = new Chart(ctx5, {
     type: 'line',
     data: {
         labels: nombresMedicamentos,
@@ -26,7 +26,7 @@ const myChart3 = new Chart(ctx3, {
             },
             title: {
                 display: true,
-                text: 'Medicamentos más solicitados en los ultimos 7 dias'
+                text: 'Medicamentos más solicitados en los ultimos 3 meses'
             }
         }
     }

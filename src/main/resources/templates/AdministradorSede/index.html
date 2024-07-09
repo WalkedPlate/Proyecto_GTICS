@@ -391,20 +391,36 @@
         <script th:inline="javascript">
             document.addEventListener("DOMContentLoaded", function() {
 
-                var listCantProductoSedeFecha = /*[[${listaCantProductoSedeFecha}]]*/ 'default';
+                var listCantProductoSedeFechaPor3Meses = /*[[${listaCantProductoSedeFechaPor3Meses}]]*/ 'default';
+                var listCantProductoSedeFechaPor7Dias = /*[[${listaCantProductoSedeFechaPor7Dias}]]*/ 'default';
+                var listCantProductoSedeFechaPor15Dias = /*[[${listaCantProductoSedeFechaPor15Dias}]]*/ 'default';
 
                 // Parsear el JSON
-                listCantProductoSedeFecha = JSON.parse(listCantProductoSedeFecha);
+                listCantProductoSedeFechaPor3Meses = JSON.parse(listCantProductoSedeFechaPor3Meses);
+                listCantProductoSedeFechaPor7Dias = JSON.parse(listCantProductoSedeFechaPor7Dias);
+                listCantProductoSedeFechaPor15Dias = JSON.parse(listCantProductoSedeFechaPor15Dias);
 
-                window.listaCantProductoSedeFecha = listCantProductoSedeFecha
+                window.listaCantProductoSedeFechaPor3Meses = listCantProductoSedeFechaPor3Meses
+                window.listaCantProductoSedeFechaPor7Dias = listCantProductoSedeFechaPor7Dias
+                window.listaCantProductoSedeFechaPor15Dias = listCantProductoSedeFechaPor15Dias
 
                 // Mostrar los datos en la consola
-                console.log(listCantProductoSedeFecha);
+                console.log(listCantProductoSedeFechaPor3Meses);
+                console.log(listCantProductoSedeFechaPor7Dias);
+                console.log(listCantProductoSedeFechaPor15Dias);
 
                 // Cargar el script después de definir window.listCantProductoSedeFecha
                 var script = document.createElement('script');
                 script.src = '/js/AdministradorSede/controladorLinea.js';
                 document.body.appendChild(script);
+
+                var script2 = document.createElement('script');
+                script2.src = '/js/AdministradorSede/controladorLinea2.js';
+                document.body.appendChild(script2);
+
+                var script3 = document.createElement('script');
+                script3.src = '/js/AdministradorSede/controladorLinea3.js';
+                document.body.appendChild(script3);
 
             });
 

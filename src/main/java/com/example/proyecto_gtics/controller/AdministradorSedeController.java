@@ -116,18 +116,44 @@ public class AdministradorSedeController {
         model.addAttribute("listaNroTransaccionPorSede", jsonObject1.toString());
 
         //Creacion de archivo JSON para añadir DATA en el grafico de linea
-        List<CantidadPorProductoSedeFecha> listCantProductoSedeFecha = ordenesRepository.cantidadPorSedePorProductoPorFecha(adminSede.getSedes().getIdSedes());
+        List<CantidadPorProductoSedeFecha> listCantProductoSedeFechaPorTresMeses = ordenesRepository.cantidadPorSedePorProductoPorFechaMes(adminSede.getSedes().getIdSedes());
+        List<CantidadPorProductoSedeFecha> listCantProductoSedeFechaPor15Dias = ordenesRepository.cantidadPorSedePorProductoPorFechaDia(adminSede.getSedes().getIdSedes(),15);
+        List<CantidadPorProductoSedeFecha> listCantProductoSedeFechaPor7Dias = ordenesRepository.cantidadPorSedePorProductoPorFechaDia(adminSede.getSedes().getIdSedes(),7);
 
+        //Grafico 3 meses
         JSONArray jsonArray = new JSONArray();
-        for (CantidadPorProductoSedeFecha cantidadPorProductoSedeFecha : listCantProductoSedeFecha){
+        for (CantidadPorProductoSedeFecha cantidadPorProductoSedeFecha : listCantProductoSedeFechaPorTresMeses){
             JSONObject jsonObject2 = new JSONObject();
             jsonObject2.put("nombre",cantidadPorProductoSedeFecha.getMedicamento());
             jsonObject2.put("cantidad",cantidadPorProductoSedeFecha.getCantidad());
             jsonObject2.put("sede",cantidadPorProductoSedeFecha.getNombreSede());
             jsonArray.put(jsonObject2);
         }
+
+        //Grafico 15 dias
+        JSONArray jsonArray2 = new JSONArray();
+        for (CantidadPorProductoSedeFecha cantidadPorProductoSedeFecha : listCantProductoSedeFechaPor15Dias){
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("nombre",cantidadPorProductoSedeFecha.getMedicamento());
+            jsonObject2.put("cantidad",cantidadPorProductoSedeFecha.getCantidad());
+            jsonObject2.put("sede",cantidadPorProductoSedeFecha.getNombreSede());
+            jsonArray2.put(jsonObject2);
+        }
+
+        //Grafico 7 dias
+        JSONArray jsonArray3 = new JSONArray();
+        for (CantidadPorProductoSedeFecha cantidadPorProductoSedeFecha : listCantProductoSedeFechaPor7Dias){
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("nombre",cantidadPorProductoSedeFecha.getMedicamento());
+            jsonObject2.put("cantidad",cantidadPorProductoSedeFecha.getCantidad());
+            jsonObject2.put("sede",cantidadPorProductoSedeFecha.getNombreSede());
+            jsonArray3.put(jsonObject2);
+        }
         System.out.println(jsonArray);
-        model.addAttribute("listaCantProductoSedeFecha",jsonArray.toString());
+
+        model.addAttribute("listaCantProductoSedeFechaPor3Meses",jsonArray.toString());
+        model.addAttribute("listaCantProductoSedeFechaPor15Dias",jsonArray2.toString());
+        model.addAttribute("listaCantProductoSedeFechaPor7Dias",jsonArray3.toString());
         return "AdministradorSede/index";
     }
 
