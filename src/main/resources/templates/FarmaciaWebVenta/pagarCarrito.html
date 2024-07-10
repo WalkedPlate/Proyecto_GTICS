@@ -71,6 +71,14 @@
         });
     </script>
 
+    <style>
+        /* Estilo para campos de solo lectura */
+        .readonly {
+            background-color: #8299bd; /* Color de fondo más claro */
+            cursor: not-allowed; /* Cambiar el cursor para indicar que no se puede editar */
+        }
+    </style>
+
   <!-- Favicon -->
   <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
 
@@ -205,7 +213,7 @@
             <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
             <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
-            <form th:action="@{/clinicarenacer/paciente/guardarDatos}" method="post" enctype="multipart/form-data">
+            <form id="mainForm" th:action="@{/clinicarenacer/paciente/guardarDatos}" method="post" enctype="multipart/form-data">
                 <div class="product-featured">
                     <div class="showcase-wrapper has-scrollbar">
                         <div class="showcase-container">
@@ -215,7 +223,7 @@
                                 <div class="col">
                                     <label for="nombre">Nombre:</label>
                                     <input id="nombre" name="nombre" type="text" class="form-control"
-                                           placeholder="Coloca su nombre">
+                                           th:value="${paciente.nombre}" placeholder="Coloca su nombre" readonly style="background-color: #c9d4e8;">
                                 </div>
                             </div>
 
@@ -224,13 +232,13 @@
                                 <div class="col">
                                     <label for="correo">Correo:</label>
                                     <input id="correo" name="correo" type="email" class="form-control"
-                                           placeholder="Coloca su correo">
+                                           th:value="${paciente.correo}" placeholder="Coloca su correo" readonly style="background-color: #c9d4e8;">
                                 </div>
 
                                 <div class="col">
                                     <label for="dni">DNI:</label>
                                     <input id="dni" name="dni" type="number" class="form-control" minlength="8" maxlength="8"
-                                           placeholder="Coloca el N° de DNI">
+                                           th:value="${paciente.dni}" placeholder="Coloca el N° de DNI" readonly style="background-color: #c9d4e8;">
                                 </div>
                             </div>
                             <div class="row pt-3">
@@ -374,61 +382,64 @@
                             <!-- Modal -->
                             <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">PAGO CON TARJETA</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="showcase-wrapper has-scrollbar">
-                                                <div class="showcase-container">
-                                                    <h5>Coloca los datos de tu tarjeta:</h5>
-                                                    <hr>
-                                                    <div class="row pt-3">
-                                                        <div class="col">
-                                                            <label for="nombre1">Nombre del titular:</label>
-                                                            <input id="nombre1" name="nombre" type="text" class="form-control"
-                                                                   placeholder="Colocar el nombre">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row pt-3">
-                                                        <div class="col">
-                                                            <label for="numTar">Número de la tarjeta:</label>
-                                                            <input id="numTar" name="numTar" type="text" class="form-control"
-                                                                   placeholder="YYYY-YYYY-YYYY-YYYY" maxlength="19" oninput="formatCardNumber(this)">
-                                                        </div>
-                                                    </div>
+                                    <form id="paymentForm">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">PAGO CON TARJETA</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
 
-                                                    <div class="row pt-2">
-
-                                                        <div class="col">
-                                                            <label for="fecha-vencimiento">Fecha de vencimiento:</label>
-                                                            <input type="date" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" required>
-                                                            <!--<input type="text" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" placeholder="MM/YYYY" pattern="(0[1-9]|1[0-2])/[0-9]{4}" required>-->
+                                                <div class="showcase-wrapper has-scrollbar">
+                                                    <div class="showcase-container">
+                                                        <h5>Coloca los datos de tu tarjeta:</h5>
+                                                        <hr>
+                                                        <div class="row pt-3">
+                                                            <div class="col">
+                                                                <label for="nombre1">Nombre del titular:</label>
+                                                                <input id="nombre1" name="nombre" type="text" class="form-control"
+                                                                       placeholder="Colocar el nombre">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row pt-3">
+                                                            <div class="col">
+                                                                <label for="numTar">Número de la tarjeta:</label>
+                                                                <input id="numTar" name="numTar" type="text" class="form-control"
+                                                                       placeholder="YYYY-YYYY-YYYY-YYYY" maxlength="19" oninput="formatCardNumber(this)">
+                                                            </div>
                                                         </div>
 
-                                                        <div class="col">
-                                                            <label for="ccv">Código de seguridad:</label>
-                                                            <input type="text" id="ccv" name="ccv" class="form-control" maxlength="3" pattern="\d{3}" placeholder="CCV" required>
-                                                        </div>
-                                                    </div>
+                                                        <div class="row pt-2">
 
-                                                    <div class="row pt-2">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
-                                                            <label class="form-check-label" for="flexCheckDefault4">
-                                                                He leído y acepto el uso de mis datos.
-                                                            </label>
+                                                            <div class="col">
+                                                                <label for="fecha-vencimiento">Fecha de vencimiento:</label>
+                                                                <input type="date" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" required>
+                                                                <!--<input type="text" id="fecha-vencimiento" class="form-control" name="fecha-vencimiento" placeholder="MM/YYYY" pattern="(0[1-9]|1[0-2])/[0-9]{4}" required>-->
+                                                            </div>
+
+                                                            <div class="col">
+                                                                <label for="ccv">Código de seguridad:</label>
+                                                                <input type="text" id="ccv" name="ccv" class="form-control" maxlength="3" pattern="\d{3}" placeholder="CCV" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row pt-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
+                                                                <label class="form-check-label" for="flexCheckDefault4">
+                                                                    He leído y acepto el uso de mis datos.
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Pagar</button>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Pagar</button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -490,45 +501,45 @@
 
   </main>
 
-  <!--<script>
-      document.querySelector('form').addEventListener('submit', async function(e) {
-          e.preventDefault();
 
-          const cardNumber = document.getElementById('numTar').value.replace(/-/g, '');
+
+  <script>
+      document.getElementById('paymentForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+
           const holderName = document.getElementById('nombre1').value;
+          const cardNumber = document.getElementById('numTar').value.replace(/-/g, ''); // Remove dashes if any
           const expirationDate = document.getElementById('fecha-vencimiento').value;
           const cvv = document.getElementById('ccv').value;
 
-          // Datos a enviar a la API
-          const cardData = {
-              cardNumber,
-              holderName,
-              expirationDate,
-              cvv
+          const data = {
+              holderName: holderName,
+              cardNumber: cardNumber,
+              expirationDate: expirationDate,
+              cvv: cvv
           };
 
-          try {
-              const response = await fetch('/test-validate', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(cardData)
-              });
-
-              const result = await response.json();
-
-              if (result.valido) {
-                  alert('Tarjeta válida. Procesando compra...');
-                  e.target.submit(); // Envía el formulario si la tarjeta es válida
-              } else {
-                  alert('Error de validación: ' + result.mensaje);
-              }
-          } catch (error) {
-              alert('Error al comunicarse con la API.');
-          }
+          fetch('/api/validate-card', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.valid) {
+                      alert('Tarjeta validada exitosamente');
+                      // Enviar el formulario principal
+                      document.getElementById('mainForm').submit();
+                  } else {
+                      alert('Datos de la tarjeta no válidos');
+                  }
+              })
+              .catch(error => console.error('Error:', error));
       });
-  </script>-->
+
+  </script>
 
 
 

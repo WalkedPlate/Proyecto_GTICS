@@ -33,6 +33,7 @@
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
+
     </head>
 
     <body>
@@ -46,73 +47,160 @@
         <main>
 
             <br>
+
             <!--
-              - PRODUCT
-            -->
-
-            <div class="product-container">
-
-                <div class="container">
-
-                    <div class="product-box">
-                        <!--
-                          - Carrito de compras
+                        - Carrito de compras
                         -->
 
-                        <div class="product-featured">
+            <div class="product-featured invoice-box pb">
 
-                            <div class="col-12 mb-4 mb-sm-0" style="display: flex">
-                                <h5 class="mb-0 ls-tight" style="padding-right: 8px">
-                                    <a th:href="@{'/clinicarenacer/historialPedidos'}">
-                                        Historial de pedidos</a>
-                                </h5>
-                                <h5 th:text="'< Orden N° ' +${ordenActual.codigo}" class="text-success"> </h5>
-                            </div>
+                <div class="col-12 mb-4 mb-sm-0" style="display: flex">
+                    <h5 class="mb-0 ls-tight" style="padding-right: 8px">
+                        <a th:href="@{'/clinicarenacer/historialPedidos'}">
+                            Historial de pedidos</a>
+                    </h5>
+                    <h5 th:text="'< Orden N° ' +${ordenActual.codigo}" class="text-success"> </h5>
+                </div>
 
-                            <div class="showcase-wrapper has-scrollbar">
-                                <div class="showcase-container">
-                                    <div class="card-header text-center" style="background: #373a93">
-                                        <h4 class="mb-0 p-2 ls-tight" style="color: white">Medicamentos
-                                            solicitados</h4>
-
-                                    </div>
-                                    <hr>
-                                    <div class="container">
-                                        <div class="table-responsive">
-                                            <form action="" class="form-cart">
-                                                <div class="item">
-                                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
-                                                    <table class="table table-bordered" id="cart-table">
-                                                        <thead class="table-primary">
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Imagen</th>
-                                                            <th>Nombre Producto</th>
-                                                            <th>Cantidad</th>
-                                                            <th>Monto Parcial (S/.)</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:each="detalle, obj : ${listaDetalles}">
-                                                            <td class="text-center" th:text="${obj.index + 1}"></td>
-                                                            <td class="text-center" >
-                                                                <div class="d-flex justify-content-center">
-                                                                    <img alt="..." class="avatar avatar-sm rounded-circle " width="60" th:src="@{|/imageProduct/${detalle.productos.idProductos}|}">
-                                                                </div>
-                                                            </td>
-                                                            <td class="text-center" th:text="${detalle.productos.nombre}"></td>
-                                                            <td class="text-center" th:text="${detalle.cantidad}"></td>
-                                                            <td class="text-center" th:text="${detalle.montoParcial}"></td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+                <div class="invoice-box mb-3" >
+                    <table cellpadding="0" cellspacing="0">
+                        <tr class="top">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td class="title">
+                                            <div style="display: flex;
+            align-items: center;">
+                                                <img src="/img/FarmaciaWebVenta/logo/icono.png" style="width: 50px;
+              margin-right: 0.3rem;" alt="renacer">
+                                                <div>
+                                                    <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold">
+                                                        <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
+                                                    </h3>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>Factura: #100</div>
+                                            <div th:text="'Fecha de registro: ' + ${ordenActual.fechaRegistro}"></div>
+                                            <div th:text="'Fecha de entrega: ' + ${ordenActual.fechaEntrega}"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr class="information">
+                            <td colspan="2">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            Sistema Web S.A. de C.V.<br>
+                                            234/90, New York Street<br>
+                                            United States
+                                        </td>
+
+                                        <td>
+                                            [Nombre cliente]<br>
+                                            [Nombre empresa]<br>
+                                            [Dirección empresa]
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr class="heading">
+                            <td>
+                                Vendedor
+                            </td>
+
+                            <td>
+                                Orden de compra
+                            </td>
+                        </tr>
+
+                        <tr class="details">
+                            <td>
+                                John Doe
+                            </td>
+
+                            <td>
+                                #PO-2020
+                            </td>
+                        </tr>
+
+                        <tr class="heading">
+                            <td>
+                                Código
+                            </td>
+
+                            <td>
+                                Precio
+                            </td>
+                        </tr>
+
+                        <tr class="item">
+                            <td>
+                                12345
+                            </td>
+
+                            <td>
+                                $99.00
+                            </td>
+                        </tr>
+
+                        <tr class="total">
+                            <td></td>
+
+                            <td>
+                                Total: $99.00
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="showcase-wrapper has-scrollbar">
+                    <div class="showcase-container">
+                        <div class="card-header text-center" style="background: #373a93">
+                            <h4 class="mb-0 p-2 ls-tight" style="color: white">Medicamentos
+                                solicitados</h4>
+
+                        </div>
+                        <hr>
+                        <div class="container">
+                            <div class="table-responsive">
+                                <form action="" class="form-cart">
+                                    <div class="item">
+                                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                        <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+                                        <table class="table table-bordered" id="cart-table">
+                                            <thead class="table-primary">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Imagen</th>
+                                                <th>Nombre Producto</th>
+                                                <th>Cantidad</th>
+                                                <th>Monto Parcial (S/.)</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="detalle, obj : ${listaDetalles}">
+                                                <td class="text-center" th:text="${obj.index + 1}"></td>
+                                                <td class="text-center" >
+                                                    <div class="d-flex justify-content-center">
+                                                        <img alt="..." class="avatar avatar-sm rounded-circle " width="60" th:src="@{|/imageProduct/${detalle.productos.idProductos}|}">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center" th:text="${detalle.productos.nombre}"></td>
+                                                <td class="text-center" th:text="${detalle.cantidad}"></td>
+                                                <td class="text-center" th:text="${detalle.montoParcial}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

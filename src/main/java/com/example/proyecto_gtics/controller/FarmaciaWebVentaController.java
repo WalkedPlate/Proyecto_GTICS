@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.dto.ProductosTendencia;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.CardService;
@@ -101,6 +102,7 @@ public class FarmaciaWebVentaController {
         List<Productos> listarProducto = productosRepository.findAll();
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         List<Long> listaCantidades = new ArrayList<>();
+        List<ProductosTendencia> listarProductosTendencia = productosRepository.obtenerProductosMasComprados();
         for (Categorias categorias: listaCategorias){
             listaCantidades.add(productosRepository.countByCategorias(categorias));
         }
@@ -110,6 +112,7 @@ public class FarmaciaWebVentaController {
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listarProducto",listarProducto);
         model.addAttribute("listaCategorias", listaCategorias);
+        model.addAttribute("listaTendencia",listarProductosTendencia);
         /*if (id==0){
             model.addAttribute("idCarrito",idCarrito);
         }else{
@@ -146,6 +149,9 @@ public class FarmaciaWebVentaController {
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
+        List<Ordenes> listaOrdenes = ordenesRepository.findByUsuarios(paciente);
+
+        model.addAttribute("listaOrdenes",listaOrdenes);
 
         Optional<Ordenes> opt = ordenesRepository.findById(idOrden);
 
@@ -416,7 +422,7 @@ public class FarmaciaWebVentaController {
             }
             ordenesRepository.save(ordenPreSave);
 
-            //Validacion de pago con tarjeta
+            /*//Validacion de pago con tarjeta
             boolean tarjetaValida =  cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
 
             if(tarjetaValida){
@@ -425,7 +431,7 @@ public class FarmaciaWebVentaController {
             else {
                 attr.addFlashAttribute("err","No se pudo realizar la compra, error de datos.");
                 return "redirect:/clinicarenacer/paciente/pagar";
-            }
+            }*/
 
 
             Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
@@ -499,6 +505,7 @@ public class FarmaciaWebVentaController {
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(doctores,estado);
         model.addAttribute("listaDoctores",listaDoctores);
+        model.addAttribute("paciente",paciente);
 
         Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
 
