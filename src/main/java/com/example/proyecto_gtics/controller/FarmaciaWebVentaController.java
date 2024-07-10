@@ -436,6 +436,10 @@ public class FarmaciaWebVentaController {
 
             Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
 
+            //Seteamos el codigo en base al ID de la orden
+            ordenRecuperada.setCodigo("ORD-WEB-"+ordenRecuperada.getIdordenes());
+            ordenesRepository.save(ordenRecuperada);
+
             float monto = 0;
 
             for(DetallesOrden detallesOrden: carrito){
