@@ -72,7 +72,7 @@ public class Usuarios implements Serializable {
 
 
     @Column(name = "distrito_residencia",length = 100)
-    @NotBlank(message = "Complete su distrito de residencia")
+    //@NotBlank(message = "Complete su distrito de residencia")
     @Size(max= 99, message = "El distrito excede los 99 caracteres")
     private String distritoResidencia;
 

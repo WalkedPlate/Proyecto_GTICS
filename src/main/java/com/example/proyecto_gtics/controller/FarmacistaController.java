@@ -139,12 +139,12 @@ public class FarmacistaController {
 
 
         if (!usuarioYaRegistrado(paciente.getDni(),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
-            paciente.setSedes(sedesRepository.findById(2).get()); // asignamos la sede actual
+            paciente.setSedes(farmacista.getSedes()); // asignamos la sede actual
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
             paciente.setFechaRegistro(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             paciente.setContrasena("Temporal_password");
-            paciente.setCorreo(UUID.randomUUID().toString());
+            paciente.setCorreo(paciente.getDni() + "@renacer.pe");
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             usuariosRepository.save(paciente);
             paciente = usuariosRepository.findFirstByOrderByIdUsuarioDesc();
@@ -166,6 +166,9 @@ public class FarmacistaController {
 
         crearOrden(paciente,6,8,idDoctor); // creamos la orden (tipo carrito)
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
+        //Creacion del codigo de orden de reposicion:
+        ordenCreada.setCodigo(crearCodigo(ordenCreada.getIdordenes()));
+        ordenesRepository.save(ordenCreada);
 
         int index = 0;
         float monto = 0;
@@ -240,8 +243,8 @@ public class FarmacistaController {
             model.addAttribute("superAdmin",superAdmin);
         }
         model.addAttribute("farmacista",farmacista);
-
-        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
+        //List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
+        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1,farmacista.getSedes().getIdSedes());
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
@@ -296,6 +299,7 @@ public class FarmacistaController {
         if(opt.isPresent()){
             Ordenes ordenes = opt.get();
             ordenes.setEstadoOrden(estadoOrdenRepository.findById(4).get());
+            ordenes.setSedes(farmacista.getSedes());
             ordenesRepository.save(ordenes);
 
             List<DetallesOrden> listaCantProductosPorOrden = detallesOrdenRepository.findByOrdenes(ordenes);
@@ -546,6 +550,10 @@ public class FarmacistaController {
             }
         }
         return posible;
+    }
+
+    public String crearCodigo(Integer idOrden){
+        return "ORD-PRESEC-"+idOrden.toString();
     }
 
 

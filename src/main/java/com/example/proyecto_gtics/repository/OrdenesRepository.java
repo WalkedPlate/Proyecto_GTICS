@@ -35,7 +35,7 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
 
     List<Ordenes> findByTipoOrdenAndEstadoOrden(Optional<TipoOrden> tipoOrden , Optional<EstadoOrden> estadoOrden);
 
-    @Query(value = "SELECT * FROM proyecto_gtics.ordenes where estado_orden_idestado_orden between ?1 and ?2 and tipo_orden_idtipo_orden = ?3",nativeQuery = true)
+    @Query(value = "SELECT * FROM proyecto_gtics.ordenes where estado_orden_idestado_orden between ?1 and ?2 and tipo_orden_idtipo_orden = ?3 ",nativeQuery = true)
     List<Ordenes> encuentraOrdenesPorEstadoOrden(Integer ranMin, Integer ranMax,Integer idTipoOrden);
 
     Ordenes findByIdordenes(int idOrden);
@@ -43,8 +43,8 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
     List<Ordenes> findByEstadoOrdenAndTipoOrdenOrTipoOrden(Optional<EstadoOrden> estadoOrden, Optional<TipoOrden> tipoOrden1 , Optional<TipoOrden> tipoOrden2);
 
     @Query(value = "SELECT * FROM proyecto_gtics.ordenes where estado_orden_idestado_orden between ?1 and ?2 \n" +
-            "and (tipo_orden_idtipo_orden = ?3 or tipo_orden_idtipo_orden = ?4 or tipo_orden_idtipo_orden = ?5);",nativeQuery = true)
-    List<Ordenes> encuentraOrdenesPorEstadosOrdenes(Integer ranMin, Integer ranMax,Integer idTipoOrden1 , Integer idTipoOrden2 , Integer idTipoOrden3 );
+            "and (tipo_orden_idtipo_orden = ?3 or tipo_orden_idtipo_orden = ?4 or tipo_orden_idtipo_orden = ?5) and sedes_idsedes= ?6 ;",nativeQuery = true)
+    List<Ordenes> encuentraOrdenesPorEstadosOrdenes(Integer ranMin, Integer ranMax,Integer idTipoOrden1 , Integer idTipoOrden2 , Integer idTipoOrden3, Integer idSede );
 
     @Query(value = "select coalesce(count(ordenes.sedes_idsedes),0) as nroTransacciones, sedes.nombre from sedes left join proyecto_gtics.ordenes on ordenes.sedes_idsedes= sedes.idsedes where (ordenes.tipo_orden_idtipo_orden between 1 and 4 or ordenes.tipo_orden_idtipo_orden is null) and (ordenes.estado_orden_idestado_orden between 4 and 10 or ordenes.estado_orden_idestado_orden is null) group by sedes.nombre;",nativeQuery = true)
     List<NroTransaccionesPorSede> encuentraNroTransaccinesPorSede();
