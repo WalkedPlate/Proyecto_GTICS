@@ -574,7 +574,7 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
-                ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
+                ResultDni resultDni = dniService.obtenerDatosPorDni(usuarios.getDni().toString());
                 if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                     attr.addFlashAttribute("err","DNI inválido");
                     return "redirect:/administradorsede/farmacistas";
