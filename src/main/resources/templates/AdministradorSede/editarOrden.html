@@ -186,7 +186,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col" class="text-center">ID</th>
+                                            <th scope="col" class="text-center">#</th>
                                             <th scope="col" class="text-center">Imagen</th>
                                             <th scope="col" class="text-center">Medicina</th>
                                             <th scope="col" class="text-center">Cantidad</th>
@@ -196,7 +196,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="detalle, obj :  ${listaDetallesOrden}">
-                                            <td class="text-center" th:text="${detalle.productos.idProductos}"></td>
+                                            <td class="text-center" th:text="${obj.index + 1}"></td>
                                             <td class="text-center">
                                                 <img alt="..." th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
@@ -240,31 +240,7 @@
 
                             </div>
                         </div>
-                        <!--Modal editar orden exitaosamente-->
-<!--                        <div class="modal fade" id="editarOrden" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="container text-center">
-                                        <div class="row row-cols-1">
-                                            <div class="col pt-5 icono">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                                    <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                                </svg>
-                                            </div>
-                                            <div class="col">
-                                                <h3 class="text-center pt-5 pb-5">La orden de reposición se ha editado exitosamente</h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-primary "
-                                                data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
+
                         <!--Modal agregar medicinas -->
                         <div class="modal fade" id="inventario" tabindex="-1" aria-labelledby="exampleModalLabelToggleLabel"
                              aria-hidden="true">
@@ -280,7 +256,7 @@
                                             <table id="example" class="table table-hover" style="width:100%">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col" class="text-center">Id</th>
+                                                        <th scope="col" class="text-center">#</th>
                                                         <th scope="col" class="text-center">Medicina</th>
                                                         <th scope="col" class="text-center">Categoría</th>
                                                         <th scope="col" class="text-center">Agregar</th>
@@ -288,7 +264,8 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr th:each="producto,obj : ${listaProductos}" class="medicine-row">
-                                                        <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>
+                                                        <td class="text-center medicine-id"  th:text="${obj.index + 1}"></td>
+<!--                                                        <td class="text-center medicine-id" th:text="${producto.idProductos}"></td>-->
                                                         <td class="text-center medicine-name">
                                                             <img alt="..." th:src="@{|/imageProduct/${producto.idProductos}|}"
                                                                  class="avatar avatar-sm rounded-circle me-2">

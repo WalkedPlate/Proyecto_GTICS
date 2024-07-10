@@ -220,7 +220,7 @@
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center">ID</th>
+                                                            <th class="text-center">#</th>
                                                             <th class="text-center">Imagen</th>
                                                             <th class="text-center">Nombre Producto</th>
                                                             <th class="text-center">Cantidad</th>
@@ -229,8 +229,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr th:each="detalle, obj :${listaDetallesOrden}">
-                                                            <td th:text="${detalle.productos.idProductos}"
-                                                                class="text-center"></td>
+                                                            <td class="text-center"  th:text="${obj.index + 1}"></td>
                                                             <td class="text-center">
                                                                 <img alt="..."
                                                                      th:src="@{|/imageProduct/${detalle.productos.idProductos}|}"

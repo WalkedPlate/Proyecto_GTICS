@@ -4,8 +4,10 @@ package com.example.proyecto_gtics.controller;
 import com.example.proyecto_gtics.dto.CantProductoMenosPorSede;
 import com.example.proyecto_gtics.dto.CantidadPorProductoSedeFecha;
 import com.example.proyecto_gtics.dto.NroTransaccionesPorSede;
+import com.example.proyecto_gtics.dto.ResultDni;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.DniService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.json.JSONArray;
@@ -79,6 +81,8 @@ public class AdministradorSedeController {
     CodigoColegioRespository codigoColegioRespository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DniService dniService;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -570,6 +574,13 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
+                ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
+                if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+                    attr.addFlashAttribute("err","DNI inválido");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
+                usuarios.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
 
                 usuarios.setSedes(sedesOpt.get());
                 usuarios.setContrasena("Temporal_password");

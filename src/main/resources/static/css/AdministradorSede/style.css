@@ -30,7 +30,7 @@ textarea {
     margin-left: 15%;
     margin-right: 15%;
     display: block;
-    
+
 }
 #myChart3 {
     max-width: 80%;
@@ -67,7 +67,7 @@ textarea {
 .steps .step {
     display: block;
     width: 100%;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
     text-align: center
 }
 
@@ -75,7 +75,7 @@ textarea {
     display: block;
     position: relative;
     width: 100%;
-    height: 80px;
+    /*height: 80px;*/
     text-align: center
 }
 
@@ -103,22 +103,22 @@ textarea {
 .steps .step .step-icon {
     display: inline-block;
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border: 1px solid #e1e7ec;
     border-radius: 50%;
     background-color: #f5f5f5;
     color: #374250;
-    font-size: 38px;
-    line-height: 81px;
+    font-size: 30px;
+    line-height: 60px;
     z-index: 5
 }
 
 .steps .step .step-title {
-    margin-top: 16px;
+    margin-top: 8px;
     margin-bottom: 0;
     color: #606975;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500
 }
 

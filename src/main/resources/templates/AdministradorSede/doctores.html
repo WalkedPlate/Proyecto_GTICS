@@ -170,28 +170,26 @@
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Sede</th>
-                                        <th scope="col">DNI</th>
-                                        <th scope="col">Distrito de residencia</th>
-                                        <th scope="col">Código</th>
-                                        <th scope="col">Correo</th>
+                                        <th scope="col" class="text-center">Nombre</th>
+                                        <th scope="col" class="text-center">DNI</th>
+                                        <th scope="col" class="text-center">Sede</th>
+                                        <th scope="col" class="text-center">Dtto. de residencia</th>
+                                        <th scope="col" class="text-center">Código</th>
+                                        <th scope="col" class="text-center">Correo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="doctor,obj: ${listaDoctores}">
-                                        <!--<td th:text="${obj.index+1}"></td>-->
                                         <td>
-                                            <img alt="..." src="/img/AdministradorSede/profile-3.jpeg"
-                                                class="avatar avatar-sm rounded-circle me-2">
+                                            <img alt="..." src="/img/Superadmin/doctor_icon.png" class="avatar avatar-sm rounded-circle me-2">
                                             <a th:text="${doctor.nombre}" class="text-heading font-semibold" href="#">
                                             </a>
                                         </td>
-                                        <td th:text="${doctor.sedes.nombre}"></td>
-                                        <td th:text="${doctor.dni}"></td>
-                                        <td th:text="${doctor.distritoResidencia}"></td>
-                                        <td th:text="${doctor.codigoColegio}"></td>
-                                        <td th:text="${doctor.correo}"></td>
+                                        <td th:text="${doctor.dni}" class="text-center"></td>
+                                        <td th:text="${doctor.sedes.nombre}" class="text-center"></td>
+                                        <td th:text="${doctor.distritoResidencia}" class="text-center"></td>
+                                        <td th:text="${doctor.codigoColegio}" class="text-center"></td>
+                                        <td th:text="${doctor.correo}" class="text-center"></td>
 
                                     </tr>
 
