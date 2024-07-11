@@ -10,7 +10,9 @@ import com.example.proyecto_gtics.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -27,7 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.net.Authenticator;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -172,6 +178,15 @@ public class LoginController {
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             paciente.setUsandoContrasenaTemporal(true);
             paciente.setToken(token);
+            Path path = Paths.get("src/main/resources/static/img/Superadmin/user_icon.png");
+            try {
+                byte[] defaultPhoto = Files.readAllBytes(path);
+                paciente.setFoto(defaultPhoto);
+                paciente.setFotonombre("user_icon.png");
+                paciente.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             usuariosRepository.save(paciente);
             attr.addFlashAttribute("msg","Registro exitoso, se le enviarán sus credenciales por correo.");
 
