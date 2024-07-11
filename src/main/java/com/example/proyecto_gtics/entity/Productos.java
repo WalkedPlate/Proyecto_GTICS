@@ -6,7 +6,7 @@ import jdk.jfr.ContentType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import java.util.regex.Pattern;
 import java.io.InputStream;
 import java.io.Serializable;
 
@@ -50,9 +50,10 @@ public class Productos implements Serializable {
     private String fechaVencimiento;
 
     @Column(name = "precio",nullable = false)
-    @NotNull @DecimalMin(value = "0.1")
+    @NotNull(message = "El precio no puede ser nulo")
+    @DecimalMin(value = "0.10", message = "El precio debe ser mayor que 0.00")
     //@Digits(integer = 10,fraction = 2,message = "Precio No valido")
-    @Positive
+    @Positive(message = "El precio debe ser positivo")
     private float precio;
 
 
