@@ -398,51 +398,51 @@
             <div class="showcase-wrapper has-scrollbar">
 
               <div class="showcase-container">
+                <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
+                  <div class="showcase" th:each="producto, obj: ${productoMejorVendido}">
+                    <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
 
-                <div class="showcase">
-
-                  <div class="showcase-banner">
-                    <img src="/img/FarmaciaWebVenta/products/oferta1.jpg" alt="shampoo, conditioner & facewash packs" class="showcase-img">
-                  </div>
-
-                  <div class="showcase-content">
-
-
-                    <a th:href="@{'/clinicarenacer/producto'}">
-                      <h3 class="showcase-title">Gel Limpiador Espumoso CeraVe Foaming Cleanser</h3>
-                    </a>
-
-                    <p class="showcase-desc">
-                      Lorem ipsum dolor sit amet consectetur Lorem ipsum
-                      dolor dolor sit amet consectetur Lorem ipsum dolor
-                    </p>
-
-                    <div class="price-box">
-                      <p class="price">S/ 63.70</p>
-
-                      <del>S/ 94.40</del>
+                    <div class="showcase-banner">
+                      <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="shampoo, conditioner & facewash packs" class="showcase-img">
                     </div>
 
-                    <button class="add-cart-btn">añadir al carrito</button>
+                    <div class="showcase-content">
 
-                    <div class="showcase-status">
-                      <div class="wrapper">
-                        <p>
-                          Vendidos: <b>20</b>
-                        </p>
 
-                        <p>
-                          Disponibles: <b>40</b>
-                        </p>
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}">
+                        <h3 th:text="${producto.nombre}" class="showcase-title"></h3>
+                      </a>
+
+                      <p th:text="${producto.descripcion}" class="showcase-desc">
+                      </p>
+
+                      <div class="price-box">
+                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
                       </div>
 
-                      <div class="showcase-status-bar"></div>
+                      <button type="submit" class="add-cart-btn">añadir al carrito</button>
+
+                      <div class="showcase-status">
+                        <div class="wrapper">
+                          <p>
+                            Vendidos: <b>20</b>
+                          </p>
+
+                          <p>
+                            Disponibles: <b>40</b>
+                          </p>
+                        </div>
+
+                        <div class="showcase-status-bar"></div>
+                      </div>
+
+
                     </div>
 
-
                   </div>
+                </form>
 
-                </div>
+
 
               </div>
 

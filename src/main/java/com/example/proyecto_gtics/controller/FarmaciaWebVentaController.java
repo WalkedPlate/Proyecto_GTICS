@@ -1,5 +1,6 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.dto.ProductoMejorVendido;
 import com.example.proyecto_gtics.dto.ProductosAnadidosRecientemente;
 import com.example.proyecto_gtics.dto.ProductosMejorValorados;
 import com.example.proyecto_gtics.dto.ProductosTendencia;
@@ -108,6 +109,7 @@ public class FarmaciaWebVentaController {
         List<ProductosTendencia> listarProductosTendencia = productosRepository.obtenerProductosMasComprados();
         List<ProductosMejorValorados> listarProductosMejorValorados = productosRepository.obtenerProductosMejorValorados();
         List<ProductosAnadidosRecientemente> listarProductosRecientes = productosRepository.obtenerProductosRecientes();
+        List<ProductoMejorVendido> productoMejorVendido = productosRepository.obtenerProductoMejorVendido();
         for (Categorias categorias: listaCategorias){
             listaCantidades.add(productosRepository.countByCategorias(categorias));
         }
@@ -120,6 +122,7 @@ public class FarmaciaWebVentaController {
         model.addAttribute("listaTendencia",listarProductosTendencia);
         model.addAttribute("listarProductosMejorValorados",listarProductosMejorValorados);
         model.addAttribute("listarProductosRecientes",listarProductosRecientes);
+        model.addAttribute("productoMejorVendido",productoMejorVendido);
         /*if (id==0){
             model.addAttribute("idCarrito",idCarrito);
         }else{
