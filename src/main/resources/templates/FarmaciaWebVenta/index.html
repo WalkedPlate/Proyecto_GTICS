@@ -278,52 +278,27 @@
 
                 <div class="showcase-container">
 
-                  <div class="showcase">
+                  <div class="showcase" th:each="producto, obj: ${listarProductosRecientes}">
 
-                    <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals1.jpg" alt="Protector Solar Niños Eucerin Sensitive" width="70" class="showcase-img">
+                    <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}" class="showcase-img-box">
+                      <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Protector Solar Niños Eucerin Sensitive" width="70" class="showcase-img">
                     </a>
 
                     <div class="showcase-content">
 
-                      <a th:href="@{'/clinicarenacer/producto'}">
-                        <h4 class="showcase-title">Protector Solar Niños Eucerin Sensitive</h4>
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}">
+                        <h4 th:text="${producto.nombre}"  class="showcase-title"></h4>
                       </a>
 
-                      <a th:href="@{'/clinicarenacer/categoria'}" class="showcase-category">Cuidado Dermatológico</a>
+                      <a th:text="${producto.categoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
-                        <p class="price">S/ 98.90</p>
-                        <del>S/ 168.00</del>
+                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
                       </div>
 
                     </div>
 
                   </div>
-
-                  <div class="showcase">
-                  
-                    <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-                  
-                    <div class="showcase-content">
-                  
-                      <a th:href="@{'/clinicarenacer/producto'}">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-                  
-                      <a th:href="@{'/clinicarenacer/categoria'}" class="showcase-category">Oftalmológicos</a>
-                  
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
-                      </div>
-                  
-                    </div>
-                  
-                  </div>
-
 
                 </div>
 
@@ -342,17 +317,17 @@
 
                   <div class="showcase" th:each="producto, obj: ${listaTendencia}">
 
-                    <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
+                    <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}" class="showcase-img-box">
                       <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Protector Solar Niños Eucerin Sensitive" width="70" class="showcase-img">
                     </a>
 
 
                     <div class="showcase-content">
-                      <a >
-                        <h4  class="showcase-title">adasdad</h4>
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}">
+                        <h4 th:text="${producto.nombre}"  class="showcase-title"></h4>
                       </a>
 
-                      <a th:href="@{'/clinicarenacer/categoria'}" class="showcase-category">Categoria</a>
+                      <a th:text="${producto.nombreCategoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
                         <p th:text="'S/. ' +${producto.precio}" class="price"></p>
@@ -379,46 +354,22 @@
 
                 <div class="showcase-container">
 
-                  <div class="showcase">
+                  <div class="showcase" th:each="producto, obj: ${listarProductosMejorValorados}">
 
-                    <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals1.jpg" alt="Protector Solar Niños Eucerin Sensitive" width="70" class="showcase-img">
+                    <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}" class="showcase-img-box">
+                      <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Protector Solar Niños Eucerin Sensitive" width="70" class="showcase-img">
                     </a>
 
                     <div class="showcase-content">
 
-                      <a th:href="@{'/clinicarenacer/producto'}">
-                        <h4 class="showcase-title">Protector Solar Niños Eucerin Sensitive</h4>
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}">
+                        <h4 th:text="${producto.nombre}" class="showcase-title"></h4>
                       </a>
 
-                      <a th:href="@{'/clinicarenacer/categoria'}" class="showcase-category">Cuidado Dermatológico</a>
+                      <a th:text="${producto.categoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
-                        <p class="price">S/ 98.90</p>
-                        <del>S/ 168.00</del>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                  <div class="showcase">
-
-                    <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
-                      <img src="/img/FarmaciaWebVenta/products/newarrivals2.jpg" alt="krytan Tek Solución Oftálmica - Frasco 5 ML" class="showcase-img" width="70">
-                    </a>
-
-                    <div class="showcase-content">
-
-                      <a th:href="@{'/clinicarenacer/producto'}">
-                        <h4 class="showcase-title">krytan Tek Solución Oftálmica - Frasco 5 ML</h4>
-                      </a>
-
-                      <a th:href="@{'/clinicarenacer/categoria'}" class="showcase-category">Oftalmológicos</a>
-
-                      <div class="price-box">
-                        <p class="price">S/ 106.00</p>
-                        <del>S/ 136.40</del>
+                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
                       </div>
 
                     </div>
