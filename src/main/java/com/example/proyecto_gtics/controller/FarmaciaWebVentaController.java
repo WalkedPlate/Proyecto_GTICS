@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.CardService;
 import com.example.proyecto_gtics.service.MessageService;
+import com.example.proyecto_gtics.service.ProductoBuscarServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,8 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -75,6 +74,8 @@ public class FarmaciaWebVentaController {
     private MessageService messageService;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private ProductoBuscarServicio productoBuscarServicio;
 
 
     //Formatear strings a dates
@@ -97,7 +98,7 @@ public class FarmaciaWebVentaController {
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
-        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
         List<Productos> listaProductos = productosRepository.findAll();
         List<Productos> listarProducto = productosRepository.findAll();
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -171,9 +172,9 @@ public class FarmaciaWebVentaController {
 
 
     @PostMapping(value = "/clinicarenacer/search")
-    public String searchProducts(Model model,  String nombre,  HttpSession session ) {
+    public String searchProducts(Model model, String nombre,  HttpSession session ) {
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
-        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
         model.addAttribute("nombre", buscarProductos);
         return "redirect:/clinicarenacer";
     }
@@ -182,7 +183,7 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/header"})
     public String cabecera(Model model, String nombre,  HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
-        List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+        List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
@@ -629,7 +630,7 @@ public class FarmaciaWebVentaController {
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
-        return "FarmaciaWebVenta/editarPerfil";
+        return "FarmaciaWebVenta/perfil";
     }
 
     @GetMapping(value ={"/clinicarenacer/editar-perfil"})
@@ -639,7 +640,7 @@ public class FarmaciaWebVentaController {
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
-        return "FarmaciaWebVenta/editar";
+        return "FarmaciaWebVenta/editarPerfil";
     }
 
     @GetMapping(value ={"/clinicarenacer/cambiar-contra"})

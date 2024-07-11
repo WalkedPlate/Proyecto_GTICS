@@ -57,17 +57,15 @@
         </div>
       </a>
 
-      <form th:fragment="buscador" class="form-inline" th:action="@{/clinicarenacer/search}" >
         <div class="header-search-container">
 
           <input type="search" name="search" class="search-field" placeholder="¿Qué productos de salud estas buscando?">
 
-          <button type="submit" class="search-btn">
+          <button type="button" class="search-btn" id="searchButton">
             <ion-icon name="search-outline"></ion-icon>
           </button>
-
         </div>
-      </form>
+
 
       <div class="header-user-actions">
   <!--      <button class="action-btn main-links">
@@ -224,6 +222,7 @@
   </nav>
 
 </header>
+
 <!--
     - custom js link
   -->

@@ -37,4 +37,7 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
 
     Productos findByIdProductos(Integer idProducto);
 
+    @Query(value = "SELECT p.* FROM productos p JOIN categorias c ON p.categorias_idcategorias = c.idcategorias WHERE p.nombre LIKE '%:nombre%' OR c.nombre LIKE '%:nombre%' LIMIT 0, 1000;", nativeQuery = true)
+    List<Productos> searchByKeyword(String nombre);
+
 }

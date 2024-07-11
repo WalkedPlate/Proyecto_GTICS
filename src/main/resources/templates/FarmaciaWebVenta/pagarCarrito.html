@@ -438,6 +438,43 @@
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                 <button type="submit" class="btn btn-primary">Pagar</button>
                                             </div>
+
+                                            <!-- Modal para pago exitoso -->
+                                            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="successModalLabel">Pago Exitoso</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Tu pago se ha realizado con éxito.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal para datos inválidos -->
+                                            <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="errorModalLabel">Error en el Pago</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Los datos de la tarjeta no son válidos. Por favor, inténtalo nuevamente.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </form>
                                 </div>
@@ -544,17 +581,66 @@
 
 
 
+  <!--<script>
+      // Function to format the card number as the user types
+      function formatCardNumber(input) {
+          const value = input.value.replace(/\D/g, ''); // Remove all non-digit characters
+          const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-'); // Insert dashes every 4 digits
+          input.value = formattedValue;
+      }
+
+      $(document).ready(function() {
+          $('#paymentForm').on('submit', function(event) {
+              event.preventDefault();
+
+              const holderName = $('#nombre1').val();
+              const cardNumber = $('#numTar').val().replace(/-/g, ''); // Remove dashes if any
+              const expirationDate = $('#fecha-vencimiento').val();
+              const cvv = $('#ccv').val();
+
+              const data = {
+                  holderName: holderName,
+                  cardNumber: cardNumber,
+                  expirationDate: expirationDate,
+                  cvv: cvv
+              };
+
+              fetch('/api/validate-card', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.valid) {
+                          // Mostrar modal de éxito y hacer submit del formulario principal
+                          $('#successModal').modal('show');
+                          $('#successModal').on('hidden.bs.modal', function () {
+                              $('#mainForm').submit();
+                          });
+                      } else {
+                          // Mostrar modal de error
+                          $('#errorModal').modal('show');
+                      }
+                  })
+                  .catch(error => console.error('Error:', error));
+          });
+      });
+  </script>-->
 
 
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <!--
-    - custom js link
-  -->
+
+  <!-- Custom JS -->
   <script src="/js/FarmaciaWebVenta/script.js"></script>
 
-  <!--
-    - ionicon link
-  -->
+  <!-- Ionicons -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
