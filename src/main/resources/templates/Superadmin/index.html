@@ -241,7 +241,7 @@
                                     <tbody>
                                         <tr th:each="adminSede,obj : ${listaAdminSede}" th:class="${adminSede.estadoUsuario.idEstadoUsuario == 'Baneado'} ? 'bg-red' : ''">
                                             <td>
-                                                <img alt="..." src="/img/Superadmin/administrador_icon.png"
+                                                <img alt="..." th:src="@{|/imageUser/${adminSede.idUsuario}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${adminSede.nombre}" class="text-heading font-semibold"></a>
                                             </td>

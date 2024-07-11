@@ -33,6 +33,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.Attr;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -179,6 +182,15 @@ public class SuperadminController {
             adminSede.setToken(token);
             Sedes sedes = sedesRepository.findById(id).get();
             adminSede.setSedes(sedes);
+            Path path = Paths.get("src/main/resources/static/img/Superadmin/administrador_icon.png");
+            try {
+                byte[] defaultPhoto = Files.readAllBytes(path);
+                adminSede.setFoto(defaultPhoto);
+                adminSede.setFotonombre("administrador_icon.png");
+                adminSede.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             usuariosRepository.save(adminSede);
             attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente. Las credenciales temporales se enviarán" +
                     " al correo ingresado.");
