@@ -130,12 +130,10 @@
                                         <button class="btn btn-sm btn-primary notification-button dropdown-toggle-split" type="button" id="notificationDropdown"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="bi bi-bell"></i>
-                                            <span class="notification-count">3</span>
+                                            <span class="notification-count">0</span>
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                            <li><a class="dropdown-item" href="#">Notificación 1</a></li>
-                                            <li><a class="dropdown-item" href="#">Notificación 2</a></li>
-                                            <li><a class="dropdown-item" href="#">Notificación 3</a></li>
+                                        <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+
                                         </ul>
                                     </div>
 
@@ -489,6 +487,35 @@
             function submitLogout() {
                 document.getElementById('logoutForm').submit();
             }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                function loadNotification() {
+                    $.ajax({
+                        url: "/administradorSede/notificaciones",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $("#notificationList").empty();
+                            if (data.length === 0) {
+                                $("#notificationList").append("<li><a class='dropdown-item' href='#'>No hay notificaciones pendientes.</a></li>");
+                            } else {
+                                data.forEach(function(notification) {
+                                    $("#notificationList").append("<li><a class='dropdown-item' href='#'>" + notification + "</a></li>");
+                                });
+                            }
+                            $(".notification-count").text(data.length);
+                        }
+                    });
+                };
+
+                loadNotification();
+
+                setInterval(function (){
+                    loadNotification();
+                },10000);
+            });
         </script>
 
 

@@ -1,10 +1,7 @@
 package com.example.proyecto_gtics.controller;
 
 
-import com.example.proyecto_gtics.dto.CantProductoMenosPorSede;
-import com.example.proyecto_gtics.dto.CantidadPorProductoSedeFecha;
-import com.example.proyecto_gtics.dto.NroTransaccionesPorSede;
-import com.example.proyecto_gtics.dto.ResultDni;
+import com.example.proyecto_gtics.dto.*;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
@@ -18,10 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.thymeleaf.model.IModel;
@@ -704,6 +698,23 @@ public class AdministradorSedeController {
         model.addAttribute("adminSede", adminSede);
 
         return "AdministradorSede/cambiarContra";
+    }
+
+    @GetMapping("/administradorSede/notificaciones")
+    @ResponseBody
+    public List<String> obtenerNotificaciones(HttpSession session){
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+        List<String> notificacionesPendientes = new ArrayList<>();
+        List<CantProductoMenosPorSede> listCantProductoMenosPorSede = productosRepository.obtenerProductosPocoInventariado(adminSede.getSedes().getIdSedes());
+        //notificacionesPendientes.clear();
+        if(listCantProductoMenosPorSede == null){
+            notificacionesPendientes.add("No hay notificaciones");
+        }else {
+            for(CantProductoMenosPorSede item : listCantProductoMenosPorSede){
+                notificacionesPendientes.add("El producto "+item.getNombre() + " presenta "+item.getCantidadTotal()+ " unidades!!");
+            }
+        }
+        return notificacionesPendientes;
     }
 
 
