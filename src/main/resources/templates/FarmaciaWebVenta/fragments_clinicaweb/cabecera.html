@@ -112,6 +112,18 @@
             </button></li>
             <li><hr class="dropdown-divider"></li>
 
+            <li>
+              <button class="action-btn main-links">
+                <a class="nav-link" style="font-size: 0.5em" th:href="@{'/stopImpersonation'}" >
+                 <span class="material-symbols-outlined">
+              person
+              </span>
+                  Superadmin
+                </a>
+              </button>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+
             <li><form th:action="@{/logout}" method="post">
               <button class="action-btn main-links" type="submit">
               <a class="nav-link" style="font-size: 0.5em" > <span class="material-symbols-outlined">
