@@ -359,10 +359,6 @@ public class FarmaciaWebVentaController {
                                    @RequestParam("archivo") MultipartFile file, @RequestParam(name = "tipoEntrega") String tipoEntrega,
                                    @RequestParam(name = "direccion", required = false) String direccion,
                                    @RequestParam(name = "distrito", required = false) String distrito,
-                                   @RequestParam(name = "numTar", required = false) String cardNumber,
-                                   @RequestParam(name = "nombre", required = false) String holderName,
-                                   @RequestParam(name = "fecha-vencimiento", required = false) String expirationDate,
-                                   @RequestParam(name = "ccv", required = false) String cvv,
                                    RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
         Usuarios pacienteLogueado =(Usuarios)session.getAttribute("usuario");
 
