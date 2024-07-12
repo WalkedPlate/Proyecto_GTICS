@@ -21,6 +21,7 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
         <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
 
 
         <!--
@@ -33,6 +34,45 @@
         <link rel="stylesheet"
               href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
 
+        <style>
+            .table-responsive {
+                border-radius: 15px;
+                overflow: hidden;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border-radius: 15px;
+                overflow: hidden;
+            }
+
+            th, td {
+                text-align: center;
+                vertical-align: middle;
+                padding: 8px;
+                border: 1px solid #dee2e6; /* Asegura que las líneas del borde sean visibles */
+            }
+
+            th {
+                font-size: 14px;
+            }
+
+            .table-primary th {
+                background-color: #cfe2ff;
+                border-bottom: 2px solid #dee2e6;
+            }
+
+            .card-header {
+                border-radius: 15px 15px 0 0;
+            }
+
+            img.avatar-sm {
+                width: 40px;
+                height: 40px;
+                object-fit: cover;
+            }
+        </style>
 
     </head>
 
@@ -44,7 +84,7 @@
 
         <!-- MAIN -->
 
-        <main>
+        <main class="pb-5">
 
             <br>
 
@@ -52,7 +92,7 @@
                         - Carrito de compras
                         -->
 
-            <div class="product-featured invoice-box pb">
+            <div class="product-featured invoice-box pb-3">
 
                 <div class="col-12 mb-4 mb-sm-0" style="display: flex">
                     <h5 class="mb-0 ls-tight" style="padding-right: 8px">
@@ -70,9 +110,9 @@
                                     <tr>
                                         <td class="title">
                                             <div style="display: flex;
-            align-items: center;">
+                                                align-items: center;">
                                                 <img src="/img/FarmaciaWebVenta/logo/icono.png" style="width: 50px;
-              margin-right: 0.3rem;" alt="renacer">
+                                                    margin-right: 0.3rem;" alt="renacer">
                                                 <div>
                                                     <h3 style="color:#2973e9; font-size: 1.5rem; font-weight: bold">
                                                         <span class="text-dark" style="padding-left: 5px; padding-right: 5px">Clínica</span>Renacer
@@ -172,9 +212,6 @@
                             <div class="table-responsive">
                                 <form action="" class="form-cart">
                                     <div class="item">
-                                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                        <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                                         <table class="table table-bordered" id="cart-table">
                                             <thead class="table-primary">
                                             <tr>
@@ -202,6 +239,49 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow border-0 mt-2 mb-2">
+                    <div class="card-header text-center" style="background: #272b31">
+                        <h4 class="mb-0 ls-tight" style="color: white">Estado de envío</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                            <div class="step completed">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="pe-7s-cart"></i></div>
+                                </div>
+                                <h4 class="step-title">Solicitado</h4>
+                            </div>
+                            <div class="step completed">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="pe-7s-config"></i></div>
+                                </div>
+                                <h4 class="step-title">En Proceso</h4>
+                            </div>
+                            <div class="step completed">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="pe-7s-medal"></i></div>
+                                </div>
+                                <h4 class="step-title">Empaquetado</h4>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="pe-7s-car"></i></div>
+                                </div>
+                                <h4 class="step-title">En ruta</h4>
+                            </div>
+                            <div class="step">
+                                <div class="step-icon-wrap">
+                                    <div class="step-icon"><i class="pe-7s-home"></i></div>
+                                </div>
+                                <h4 class="step-title">Entregado</h4>
+                            </div>
+                        </div>
+                        <div class="map-container">
+                            <img src="/img/FarmaciaWebVenta/google-maps.jpg" width="100%">
                         </div>
                     </div>
                 </div>
