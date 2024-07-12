@@ -13,8 +13,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -462,6 +464,56 @@ public class FarmacistaController {
         model.addAttribute("farmacista",farmacista);
 
         return "Farmacista/editarPerfil";
+    }
+
+    @PostMapping(value = "/farmacista/guardar_perfil")
+    public String actualizarPerfil(@RequestParam(name = "direccion", required = false) String direccion,
+                                   @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "correo",required = false) String correo,
+                                   @RequestParam("image") MultipartFile file,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
+        if(direccion == null || distrito == null || correo == null){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/farmacista/editar-perfil";
+        }
+        if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/farmacista/editar-perfil";
+        }
+
+
+        //Sobre la foto de un producto --------------------------------------------------------------------------------
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/farmacista/editar-perfil";
+            }
+            try {
+                farmacista.setFoto(file.getBytes());
+                farmacista.setFotonombre(fileName);
+                farmacista.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/farmacista/editar-perfil";
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------
+
+
+        farmacista.setCorreo(correo);
+        farmacista.setDireccion(direccion);
+        farmacista.setDistritoResidencia(distrito);
+        usuariosRepository.save(farmacista);
+        attr.addFlashAttribute("msg","Perfil actualizado exitosamente.");
+        session.setAttribute("usuario",usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()));
+        return "redirect:/farmacista/perfil";
+
     }
 
     @GetMapping(value ={"/farmacista/cambiar-contra"})

@@ -134,11 +134,12 @@
                                      role="alert"></div>
 
                                 <!--Form para editar perfil-->
-                                <form class="needs-validation" enctype="multipart/form-data" method="post" novalidate>
+                                <form class="needs-validation" id="myForm" novalidate th:action="@{/farmacista/guardar_perfil}"
+                                      enctype="multipart/form-data" method="post">
 
                                     <div class="profile-container d-flex pb-6">
                                         <div class="col-4 d-flex justify-content-center align-items-center upload">
-                                            <img src="/img/Superadmin/farmacista_icon.png" id="profileImage">
+                                            <img th:src="@{|/imageUser/${farmacista.idUsuario}|}" id="profileImage">
                                             <div class="round">
                                                 <input type="file" id="imageUpload" name="image" accept="image/*">
                                                 <i class="bi bi-camera" style="color: #fff;"></i>
