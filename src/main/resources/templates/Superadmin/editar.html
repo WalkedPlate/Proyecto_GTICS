@@ -110,7 +110,8 @@
                                 <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                                 <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                                 <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
-                                <!--Form para editar perfil con validaciones en js-->
+
+                                <!--Form para editar perfil-->
                                 <form class="needs-validation" id="myForm" novalidate th:action="@{/superadmin/guardar_perfil}"
                                       enctype="multipart/form-data" method="post">
 

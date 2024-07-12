@@ -159,38 +159,64 @@
                                     <hr>
                                 </div>
 
-                                <!--Form para editar perfil con validaciones en js-->
-                                <form id="myForm">
-                                    <div class="col d-flex pb-6">
-                                        <div class="col-4 d-flex justify-content-center align-items-center">
-                                            <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250" class="rounded-circle">
+                                <!--Mensajes-->
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+
+                                <!--Form para editar perfil-->
+                                <form  class="needs-validation"  enctype="multipart/form-data" method="post" novalidate>
+
+                                    <div class="profile-container d-flex pb-6">
+                                        <div class="col-4 d-flex justify-content-center align-items-center upload">
+                                            <img th:src="@{|/imageUser/${adminSede.idUsuario}|}" id="profileImage">
+                                            <div class="round">
+                                                <input type="file" id="imageUpload" name="image" accept="image/*">
+                                                <i class = "bi bi-camera" style = "color: #fff;"></i>
+                                            </div>
                                         </div>
-                                        <div class="col" style="margin:0px 30px">
+
+                                        <div class="col form-container" style="margin:0px 30px">
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control" id="nombre" placeholder="Coloca tu nombre">
-                                                    <p id="nombreError" class="text-danger"></p>
+                                                    <label>DNI:</label>
+                                                    <input type="text" class="form-control" th:value="${adminSede.dni}" disabled readonly>
                                                 </div>
+
+
                                                 <div class="col">
-                                                    <label for="apellido">Apellido:</label>
-                                                    <input type="text" class="form-control" id="apellido" placeholder="Coloca tu apellido">
-                                                    <p id="apellidoError" class="text-danger"></p>
+                                                    <label>Nombre:</label>
+                                                    <input type="text" class="form-control" th:value="${adminSede.nombre}" disabled readonly>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row pt-5">
+                                                <div class="col">
+                                                    <label>Dirección:</label>
+                                                    <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" th:value="${adminSede.direccion}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese una dirección (max 99 caracteres).
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <label>Distrito de residencia</label>
+                                                    <input id="distrito"  name="distrito" maxlength="99" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un distrito de residencia (max 99 caracteres).
+                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="row pt-5">
                                                 <div class="col">
-                                                    <label for="correo">Correo electrónico:</label>
-                                                    <input type="email" class="form-control" id="correo" placeholder="correo@correo.com">
-                                                    <p id="correoError" class="text-danger"></p>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="distrito">Distrito de residencia:</label>
-                                                    <input type="text" class="form-control" id="distrito" placeholder="Coloca tu distrito de residencia">
-                                                    <p id="distritoError" class="text-danger"></p>
+                                                    <label>Correo electrónico:</label>
+                                                    <input id="correo" name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                                           th:value="${adminSede.correo}" required>
+                                                    <div class="invalid-feedback">
+                                                        Por favor, ingrese un correo válido (max 99 caracteres).
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -233,8 +259,42 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
-        <script src="/js/Superadmin/script.js"></script>
-        <script src="/js/Superadmin/editProfile.js"></script>
+
+        <!--validaciones front end-->
+        <script>
+            (() => {
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })()
+        </script>
+
+        <!-- Script para subir las imágenes -->
+        <script>
+            // document.getElementById('profileImage').addEventListener('click', function() {
+            //     document.getElementById('imageUpload').click();
+            // });
+            let profileImage = document.getElementById("profileImage");
+            let imageUpload = document.getElementById("imageUpload");
+
+            imageUpload.onchange = function (){
+                profileImage.src = URL.createObjectURL(imageUpload.files[0]);
+            }
+
+        </script>
 
         <!-- Script para confirmación de cierre de sesión -->
         <script src="/js/AdministradorSede/script.js"> </script>
