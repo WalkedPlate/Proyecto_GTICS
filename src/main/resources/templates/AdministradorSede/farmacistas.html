@@ -228,57 +228,61 @@
                                 <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
                                     <div class="modal-body row">
                                         <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
+                                        <input type="hidden" name="dni" th:value="${farmacista.dni}">
+                                        <input type="hidden" name="nombre" th:value="${farmacista.nombre}">
+                                        <input type="hidden" name="codigoColegio" th:value="${farmacista.codigoColegio}">
                                         <input type="hidden" name="contrasena" th:value="${farmacista.contrasena}">
+                                        <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
+
                                         <div class="row pt-3">
                                             <div class="col">
-                                                <label >DNI:</label>
-                                                <input minlength="8" maxlength="8" id="dniEdit" name="dni" type="text" class="form-control"  th:value="${farmacista.dni}" required>
-                                                <div class="invalid-feedback" id="dniError">
-                                                    El DNI debe tener 8 dígitos.
-                                                </div>
+                                                <label>DNI:</label>
+                                                <input type="text" class="form-control" th:value="${farmacista.dni}" disabled readonly>
+                                            </div>
+                                            <div class="col">
+                                                <label>Código (colegio médico)</label>
+                                                <input id="codigoColegio" type="text"
+                                                       class="form-control"
+                                                       th:value="${farmacista.codigoColegio}" disabled readonly>
                                             </div>
 
-                                            <div class="col">
-                                                <label >Código (colegio médico):</label>
-                                                <input  minlength="6" maxlength="6" id="codigoColegioEdit" name="codigoColegio" type="text"  class="form-control"  th:value="${farmacista.codigoColegio}" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese un correo válido (max 99 dígitos).
-                                                </div>
-                                            </div>
                                         </div>
 
-                                        <div class="row pt-5">
+                                        <div class="row pt-3">
                                             <div class="col">
                                                 <label >Nombre:</label>
-                                                <input  pattern="[A-Za-z].+" maxlength="45" name= "nombre" type="text" class="form-control"  th:value="${farmacista.nombre}" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese su nombre.
-                                                </div>
-                                            </div>
-
-                                            <div class="col">
-                                                <label >Correo:</label>
-                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" name= "correo" type="email" class="form-control"  th:value="${farmacista.correo}" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese un correo válido (max 99 dígitos).
-                                                </div>
+                                                <input type="text" class="form-control" th:value="${farmacista.nombre}" disabled readonly>
                                             </div>
                                         </div>
 
-
-
-                                        <div class="row pt-5">
+                                        <div class="row pt-3">
                                             <div class="col">
-                                                <label >Distrito de residencia</label>
-                                                <input  maxlength="99" name= "distritoResidencia" type="text" class="form-control"  th:value="${farmacista.distritoResidencia}" required>
+                                                <label>Dirección:</label>
+                                                <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${farmacista.direccion}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese una dirección (max 99 dígitos).
+                                                </div>
+                                            </div>
+
+                                            <div class="col">
+                                                <label>Dtto. de residencia</label>
+                                                <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${farmacista.distritoResidencia}" required>
                                                 <div class="invalid-feedback">
                                                     Por favor, ingrese un distrito de residencia (max 99 dígitos).
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
-
                                         </div>
 
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                <label>Correo:</label>
+                                                <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                                       th:value="${farmacista.correo}" required>
+                                                <div class="invalid-feedback">
+                                                    Por favor, ingrese un correo válido (max 99 dígitos).
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </div>
 
@@ -438,58 +442,32 @@
             }
         });
     </script>
+
     <script>
         // JavaScript para permitir solo la entrada de números
+        function allowOnlyNumbersAndDecimal(event, element) {
+            // Permite las teclas de flecha, retroceso y suprimir
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                return;
+            }
+            // Permite los dígitos numéricos
+            if (event.key < "0" || event.key > "9") {
+                event.preventDefault();
+            }
+
+        }
+
+        // Asignar el evento a los elementos correspondientes
         document.getElementById("dni").addEventListener("keydown", function(event) {
-            // Permite las teclas de flecha, retroceso y suprimir
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                return;
-            }
-            // Permite los dígitos numéricos
-            if (event.key < "0" || event.key > "9") {
-                event.preventDefault();
-            }
+            allowOnlyNumbersAndDecimal(event, this);
         });
-    </script>
-    <script>
-        // JavaScript para permitir solo la entrada de números
+
         document.getElementById("codigoColegio").addEventListener("keydown", function(event) {
-            // Permite las teclas de flecha, retroceso y suprimir
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                return;
-            }
-            // Permite los dígitos numéricos
-            if (event.key < "0" || event.key > "9") {
-                event.preventDefault();
-            }
+            allowOnlyNumbersAndDecimal(event, this);
         });
+
     </script>
-    <script>
-        // JavaScript para permitir solo la entrada de números
-        document.getElementById("dniEdit").addEventListener("keydown", function(event) {
-            // Permite las teclas de flecha, retroceso y suprimir
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                return;
-            }
-            // Permite los dígitos numéricos
-            if (event.key < "0" || event.key > "9") {
-                event.preventDefault();
-            }
-        });
-    </script>
-    <script>
-        // JavaScript para permitir solo la entrada de números
-        document.getElementById("codigoColegioEdit").addEventListener("keydown", function(event) {
-            // Permite las teclas de flecha, retroceso y suprimir
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                return;
-            }
-            // Permite los dígitos numéricos
-            if (event.key < "0" || event.key > "9") {
-                event.preventDefault();
-            }
-        });
-    </script>
+
     <script>
         (() => {
             'use strict'
