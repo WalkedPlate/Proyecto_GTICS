@@ -533,6 +533,37 @@ public class FarmacistaController {
         return "Farmacista/cambiarContra";
     }
 
+    @PostMapping(value = "/farmacista/actualizar-contra")
+    public String actualizarContra(@RequestParam(name = "pass1", required = false) String pass1,
+                                   @RequestParam(name = "pass2", required = false) String pass2,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
+
+        if(pass1 == null || pass2 == null){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/farmacista/cambiar-contra";
+        }
+        if(pass1.isEmpty() || pass2.isEmpty()){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/farmacista/cambiar-contra";
+        }
+
+
+        if(pass1.equalsIgnoreCase(pass2)){
+            farmacista.setContrasena(passwordEncoder.encode(pass1));
+            usuariosRepository.save(farmacista);
+            attr.addFlashAttribute("msg","Contraseña actualizada exitosamente.");
+            return "redirect:/farmacista/cambiar-contra";
+        }
+        else {
+            attr.addFlashAttribute("wrn","Las contraseñas no coinciden.");
+            return "redirect:/farmacista/cambiar-contra";
+        }
+
+    }
+
 
     public void crearOrden(Usuarios usuario, Integer tipoOrden, Integer estadoOrden, Integer idDoctor) {
         Ordenes orden = new Ordenes();

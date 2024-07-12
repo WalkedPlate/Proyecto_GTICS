@@ -136,13 +136,13 @@
 
                                 <div class="col">
                                     <form method="post" id="passwordForm" class="needs-validation"
-                                          th:href="@{'/farmacista/cambiar-contra'}" novalidate>
+                                          th:action="@{'/farmacista/actualizar-contra'}" novalidate>
                                         <div class="mb-3">
                                             <label for="newPassword" class="form-label">Nueva contraseña</label>
                                             <input
                                                     pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_-]).{8,}$"
                                                     type="password" class="form-control" id="newPassword"
-                                                    placeholder="Ingresa la nueva contraseña" required>
+                                                    placeholder="Ingresa la nueva contraseña" required name="pass1">
                                         </div>
                                         <div class="mb-3">
                                             <label for="confirmPassword" class="form-label">Confirma la
@@ -150,7 +150,7 @@
                                             <input
                                                     pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_-]).{8,}$"
                                                     type="password" class="form-control" id="confirmPassword"
-                                                    placeholder="Confirma contraseña" required>
+                                                    placeholder="Confirma contraseña" required name="pass2">
                                         </div>
                                         <div class="pt-3 d-flex justify-content-center">
                                             <button type="submit" class="btn btn-primary" style="margin-right: 5px">
