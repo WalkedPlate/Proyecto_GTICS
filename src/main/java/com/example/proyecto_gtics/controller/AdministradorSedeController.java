@@ -154,6 +154,20 @@ public class AdministradorSedeController {
         model.addAttribute("listaCantProductoSedeFechaPor3Meses",jsonArray.toString());
         model.addAttribute("listaCantProductoSedeFechaPor15Dias",jsonArray2.toString());
         model.addAttribute("listaCantProductoSedeFechaPor7Dias",jsonArray3.toString());
+
+        //Dos últimas ordenes de reposición
+
+        TipoOrden ordenRepo = tipoOrdenRepository.findById(2).get();
+        List<EstadoOrden> listEstadosNoListados = new ArrayList<>();
+        for(int i = 1; i<= 3; i++){
+            EstadoOrden e = estadoOrdenRepository.findById(i).get();
+            listEstadosNoListados.add(e);
+        }
+
+        List<Ordenes> listaOrdenesRepo = ordenesRepository.findTop2ByTipoOrdenAndSedesAndEstadoOrdenNotInOrderByIdordenesDesc(ordenRepo, adminSede.getSedes(), listEstadosNoListados);
+        model.addAttribute("listaOrdenesRepo",listaOrdenesRepo);
+
+
         return "AdministradorSede/index";
     }
 
