@@ -711,7 +711,7 @@ public class AdministradorSedeController {
             notificacionesPendientes.add("No hay notificaciones");
         }else {
             for(CantProductoMenosPorSede item : listCantProductoMenosPorSede){
-                notificacionesPendientes.add("El producto "+item.getNombre() + " presenta "+item.getCantidadTotal()+ " unidades!!");
+                notificacionesPendientes.add("Quedan "+item.getCantidadTotal()+ " unidades de "+item.getNombre());
             }
         }
         return notificacionesPendientes;

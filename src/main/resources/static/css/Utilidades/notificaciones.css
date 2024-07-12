@@ -1,0 +1,28 @@
+.notification{
+    margin-top: 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.dropdown-menu{
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 3px;
+    box-shadow: inherit;
+}
+
+.notification-content {
+    max-height: 200px; /* Ajusta según tus necesidades */
+    overflow-y: auto;
+    scrollbar-width: thin; /* Hace que la barra de desplazamiento sea más delgada */
+
+}
+.notification-content {
+    cursor: default;
+}
+
+.fixed-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgb(245, 246, 248); /* Ajusta según el estilo de tu dropdown */
+    border-top: 1px solid #e9ecef;
+}

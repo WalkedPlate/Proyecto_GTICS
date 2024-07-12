@@ -7,6 +7,7 @@
     <title>Clínica Renacer Admin Sede</title>
     <link rel="icon" href="/img/Superadmin/icono.png"/>
     <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+    <link rel="stylesheet" href="/css/Utilidades/notificaciones.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
@@ -121,10 +122,11 @@
                                         <i class="bi bi-bell"></i>
                                         <span class="notification-count">3</span>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                        <li><a class="dropdown-item" href="#">Notificación 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Notificación 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Notificación 3</a></li>
+                                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+                                        <div class="notification-content"></div>
+                                        <div class="fixed-footer">
+                                            <li><a class='dropdown-item text-center' href='/administradorsede/ordenes-reposicion'>Ir a Orden de reposición</a></li>
+                                        </div>
                                     </ul>
                                 </div>
                                 <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
@@ -205,7 +207,7 @@
                                         <td class="text-center" th:text="${adminSede.sedes.nombre}"></td>
                                         <td class="text-center" th:text="${ordenRepo.estadoOrden.nombre}"></td>
                                         <td class="text-center" th:text="${ordenRepo.fechaEntrega}"></td>
-                                        <td class="text-center" th:text="${ordenRepo.monto}"></td>
+                                        <td class="text-center" th:text="${#numbers.formatDecimal(ordenRepo.monto, 0, 2, 'POINT')}"></td>
                                         <td class="text-center">
                                             <a th:href="@{'/administradorsede/verOrden?idOrdenRepo=' + ${ordenRepo.idordenes}}">
                                                 <button type="button" class="btn btn-sm btn-square btn-primary" >
@@ -244,23 +246,6 @@
                         </div>
 
 
-                        <!--Modal eliminado exitaosamente (se debería borrar)-->
-<!--                        <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <h3 class="text-center">Se eliminó la orden exitosamente.</h3>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-
-                                        <button type="button" class="btn btn-primary"
-                                            data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-
                     </div>
                 </div>
             </main>
@@ -292,17 +277,11 @@
         new DataTable('#example');
     </script>
 
-    <script>
-        function confirmLogout(event) {
-            event.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-            modal.show();
-        }
+    <!-- Script para confirmación de cierre de sesión -->
+    <script src="/js/AdministradorSede/script.js"> </script>
 
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
+    <!-- Script para Notificaciones -->
+    <script src="/js/AdministradorSede/controladorNotificaciones.js"></script>
 </body>
 
 </html>

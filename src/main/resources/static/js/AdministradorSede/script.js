@@ -1,8 +1,10 @@
+// Script para confirmación de cierre de sesión
+function confirmLogout(event) {
+  event.preventDefault();
+  var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
+  modal.show();
+}
 
-const table = document.getElementById('table')
-const exampleModal = document.getElementById('modal')
-
-table.addEventListener('click',(e)=>{
-  e.stopPropagation();
-  console.log(e.target.parent);
-})
+function submitLogout() {
+  document.getElementById('logoutForm').submit();
+}

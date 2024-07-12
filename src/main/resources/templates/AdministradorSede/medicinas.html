@@ -6,6 +6,7 @@
   <title>Clínica Renacer Admin Sede</title>
     <link rel="icon" href="/img/Superadmin/icono.png"/>
   <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+    <link rel="stylesheet" href="/css/Utilidades/notificaciones.css">
   <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <!--DataTable-->
@@ -121,10 +122,11 @@
                                     <i class="bi bi-bell"></i>
                                     <span class="notification-count">3</span>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                    <li><a class="dropdown-item" href="#">Notificación 1</a></li>
-                                    <li><a class="dropdown-item" href="#">Notificación 2</a></li>
-                                    <li><a class="dropdown-item" href="#">Notificación 3</a></li>
+                                <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+                                    <div class="notification-content"></div>
+                                    <div class="fixed-footer">
+                                        <li><a class='dropdown-item text-center' href='/administradorsede/ordenes-reposicion'>Ir a Orden de reposición</a></li>
+                                    </div>
                                 </ul>
                             </div>
 
@@ -187,7 +189,7 @@
                                     <td class="text-center" th:text="${medicinasede.cantidad}">
 
                                     </td>
-                                    <td th:text="${medicinasede.productos.precio}" class="precio text-center"></td>
+                                    <td th:text="${#numbers.formatDecimal(medicinasede.productos.precio, 0, 2, 'POINT')}" class="text-center" ></td>
                                     <td th:text="${medicinasede.productos.categorias.nombre}" class="text-center"></td>
                                     <td th:text="${medicinasede.productos.fechaVencimiento}" class="text-center"></td>
                                 </tr>
@@ -227,40 +229,13 @@
     <script>
         new DataTable('#example'); /*cambiar de acuerdo al id de la tabla*/
     </script>
-<!---->
-<!--<script src="/js/AdministradorSede/controladorTablaMedi.js"></script>-->
 
-    <script>
-        function confirmLogout(event) {
-            event.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-            modal.show();
-        }
 
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
+    <!-- Script para confirmación de cierre de sesión -->
+    <script src="/js/AdministradorSede/script.js"> </script>
 
-<script>
-    $(document).ready(function() {
-        // Inicializa DataTables
-        var table = $('#example').DataTable();
+    <!-- Script para Notificaciones -->
+    <script src="/js/AdministradorSede/controladorNotificaciones.js"></script>
 
-        // Función para formatear precios a 2 decimales
-        function formatPrices() {
-            $('.precio').each(function() {
-                var valor = parseFloat($(this).text());
-                $(this).text(valor.toFixed(2));
-            });
-        }
-
-        // Aplica el formateo de precios al inicializar y al cambiar de página
-        formatPrices();
-        table.on('draw', function() {
-            formatPrices();
-        });
-    });
-</script>
 </body>
 </html>

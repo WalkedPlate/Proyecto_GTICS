@@ -7,6 +7,7 @@
         <title>Clínica Renacer Admin Sede</title>
         <link rel="icon" href="/img/Superadmin/icono.png"/>
         <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+        <link rel="stylesheet" href="/css/Utilidades/notificaciones.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
@@ -126,10 +127,11 @@
                                             <i class="bi bi-bell"></i>
                                             <span class="notification-count">3</span>
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                            <li><a class="dropdown-item" href="#">Notificación 1</a></li>
-                                            <li><a class="dropdown-item" href="#">Notificación 2</a></li>
-                                            <li><a class="dropdown-item" href="#">Notificación 3</a></li>
+                                        <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+                                            <div class="notification-content"></div>
+                                            <div class="fixed-footer">
+                                                <li><a class='dropdown-item text-center' href='/administradorsede/ordenes-reposicion'>Ir a Orden de reposición</a></li>
+                                            </div>
                                         </ul>
                                     </div>
                                     <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
@@ -204,7 +206,7 @@
 
                                             <td class="text-center" th:text="${detalle.productos.nombre}"></td>
                                             <td class="text-center" th:text="${detalle.cantidad}"></td>
-                                            <td class="text-center" th:text="${detalle.montoParcial}"></td>
+                                            <td th:text="${#numbers.formatDecimal(detalle.montoParcial, 0, 2, 'POINT')}" class="text-center" ></td>
                                             <td class="text-center">
                                                 <button type="submit" class="btn btn-sm btn-primary btn-square"
                                                         data-bs-toggle="modal"
@@ -369,9 +371,6 @@
             </div>
         </div>
 
-
-        <script src="/js/AdministradorSede/script.js"></script>
-
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="/js/Superadmin/table.js"></script>
@@ -380,6 +379,7 @@
         <script>
             new DataTable('#example');
         </script>
+
         <script>
             (() => {
                 'use strict'
@@ -401,17 +401,11 @@
             })()
         </script>
 
-        <script>
-            function confirmLogout(event) {
-                event.preventDefault();
-                var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-                modal.show();
-            }
+        <!-- Script para confirmación de cierre de sesión -->
+        <script src="/js/AdministradorSede/script.js"> </script>
 
-            function submitLogout() {
-                document.getElementById('logoutForm').submit();
-            }
-        </script>
+        <!-- Script para Notificaciones -->
+        <script src="/js/AdministradorSede/controladorNotificaciones.js"></script>
     </body>
 
 </html>

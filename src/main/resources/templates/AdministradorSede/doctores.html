@@ -7,6 +7,7 @@
     <title>Clínica Renacer Admin Sede</title>
     <link rel="icon" href="/img/Superadmin/icono.png"/>
     <link rel="stylesheet" href="/css/AdministradorSede/style.css">
+    <link rel="stylesheet" href="/css/Utilidades/notificaciones.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <!--DataTable-->
@@ -124,10 +125,11 @@
                                         <i class="bi bi-bell"></i>
                                         <span class="notification-count">3</span>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                        <li><a class="dropdown-item" href="#">Notificación 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Notificación 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Notificación 3</a></li>
+                                    <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
+                                        <div class="notification-content"></div>
+                                        <div class="fixed-footer">
+                                            <li><a class='dropdown-item text-center' href='/administradorsede/ordenes-reposicion'>Ir a Orden de reposición</a></li>
+                                        </div>
                                     </ul>
                                 </div>
                                 <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
@@ -236,17 +238,11 @@
     <!---->
     <!--<script src="/js/AdministradorSede/controladorTablaDoc.js"></script>-->
 
-    <script>
-        function confirmLogout(event) {
-            event.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-            modal.show();
-        }
+    <!-- Script para confirmación de cierre de sesión -->
+    <script src="/js/AdministradorSede/script.js"> </script>
 
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
+    <!-- Script para Notificaciones -->
+    <script src="/js/AdministradorSede/controladorNotificaciones.js"></script>
 </body>
 
 </html>
