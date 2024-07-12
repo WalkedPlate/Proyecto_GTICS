@@ -6,6 +6,7 @@
         <title>Clínica Renacer Farmacista</title>
         <link rel="icon" href="/img/Login/icono.png"/>
         <link rel="stylesheet" href="/css/Farmacista/style.css">
+        <link rel="stylesheet" href="/css/Utilidades/editarPerfil.css">
         <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     </head>
@@ -75,27 +76,33 @@
                     <div class="container-fluid">
                         <div class="mb-npx">
                             <div class="row align-items-center mb-5">
-                                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                                <div class="col-md-6 col-xl-7 col-xxl-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
                                     <!-- Title -->
-                                    <h2 class="mb-0 ls-tight">
-                                        <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
-                                            class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h2>
+                                    <img src="/img/Superadmin/farmacista_icon.png" width="40">
+                                    <h3 class="mb-0 ls-tight mx-1">
+                                            Mi Perfil, <span
+                                            class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h3>
                                 </div>
                                 <!-- Actions -->
-                                <div class="col-sm-4 col-12 text-sm-end d-flex align-items-center justify-content-end">
+                                <div class="col-md-6 col-xl-5 col-xxl-4 col-12 text-end d-flex align-items-center justify-content-end">
                                     <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
                                              <span class=" pe-2">
                                                  <i class="bi bi-person-up"></i>
                                              </span>
-                                        <span>Volver Superadmin</span>
+                                        <span>Superadmin</span>
                                     </a>
                                     <div class="mx-n1">
                                         <a th:href="@{'/farmacista/perfil'}"
                                            class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-person-gear"></i>
-                                    </span>
+                                            <!-- Ícono solo para pantallas pequeñas -->
+                                            <span class="d-inline d-sm-none">
+                                                <i class="bi bi-person-gear"></i>
+                                            </span>
+                                            <!-- Ícono y texto para pantallas medianas y más grandes -->
+                                            <span class="d-none d-sm-inline-flex align-items-center">
+                                                <i class="bi bi-person-gear pe-2"></i>
                                             <span>Mi perfil</span>
+                                            </span>
                                         </a>
                                     </div>
                                 </div>
@@ -108,27 +115,40 @@
                 <main class="py-6 bg-surface-secondary ">
                     <div class="container-fluid d-flex justify-content-center align-items-center">
                         <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
-                             style="width: 35rem">
+                             style="width: 40rem">
                             <div class="row row-cols-1 ">
                                 <div class="col text-center pt-1 pb-5">
-                                    <h2><strong>Tu perfil</strong></h2>
+                                    <h2><strong>Mis datos</strong></h2>
                                     <hr>
                                 </div>
-                                <div class="row d-flex pb-5">
 
+
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+
+                                <div class="profile-container  d-flex pb-5 pt-4" >
+
+                                    <!-- Foto de perfil: hacer que jale la imagen de la base de datos -->
                                     <div class="col text-center d-flex justify-content-center align-items-center">
-                                        <img src="/img/farmacista/profile-3.jpeg" alt="" width="180"
+                                        <img src="/img/Superadmin/farmacista_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
                                              class="rounded-circle">
                                     </div>
-                                    <div class="col mt-4" style="margin:0px 5px">
-                                        <span th:text="'Nombre:  ' + ${farmacista.nombre}"></span>
-                                        <br>
-                                        <span th:text="'DNI:  ' + ${farmacista.dni}"></span>
-                                        <br>
-                                        <span th:text="'Distrito de residencia: ' + ${farmacista.distritoResidencia}"></span>
-                                        <br>
-                                        <span th:text="'Correo:  ' + ${farmacista.correo}"></span>
+
+                                    <!-- Datos del usuario -->
+                                    <div class="col pt-2 pb-2 d-flex" style="flex-direction: column; justify-content: space-evenly;">
+                                        <span><strong>Nombre:</strong> <span th:text="${farmacista.nombre}"></span></span>
+
+                                        <span><strong>DNI:</strong> <span th:text="${farmacista.dni}"></span></span>
+
+                                        <span><strong>Dirección:</strong> <span th:text="${farmacista.direccion}"></span></span>
+
+                                        <span><strong>Dtto. de residencia:</strong> <span th:text="${farmacista.distritoResidencia}"></span></span>
+
+                                        <span><strong>Correo:</strong> <span th:text="${farmacista.correo}"></span></span>
+
                                     </div>
+
                                 </div>
 
                                 <hr>
@@ -166,17 +186,9 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
-        <script src="/js/Farmacista/script.js"></script>
-        <script>
-            function confirmLogout(event) {
-                event.preventDefault();
-                var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-                modal.show();
-            }
 
-            function submitLogout() {
-                document.getElementById('logoutForm').submit();
-            }
-        </script>
+        <!-- Script para confirmación de cierre de sesión -->
+        <script src="/js/Farmacista/script.js"></script>
+
     </body>
 </html>
