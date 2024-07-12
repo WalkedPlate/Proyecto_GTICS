@@ -91,27 +91,34 @@
                 <div class="container-fluid">
                     <div class="mb-npx">
                         <div class="row align-items-center mb-5">
-                            <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                            <div class="col-md-6 col-xl-7 col-xxl-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
                                 <!-- Title -->
-                                <h2 class="mb-0 ls-tight">
-                                    <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
-                                        class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h2>
+                                <img src="/img/Superadmin/farmacista_icon.png" width="40" class="avatar">
+                                <h3 class="mb-0 ls-tight mx-1">
+                                     Bienvenido, <span
+                                        class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span>
+                                </h3>
                             </div>
                             <!-- Actions -->
-                            <div class="col-sm-4 col-12 text-sm-end d-flex align-items-center justify-content-end">
+                            <div class="col-md-6 col-xl-5 col-xxl-4 col-12 text-end d-flex align-items-center justify-content-end">
                                 <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
                                              <span class=" pe-2">
                                                  <i class="bi bi-person-up"></i>
                                              </span>
-                                    <span>Volver Superadmin</span>
+                                    <span>Superadmin</span>
                                 </a>
                                 <div class="mx-n1">
                                     <a th:href="@{'/farmacista/perfil'}"
                                        class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-person-gear"></i>
-                                    </span>
-                                        <span>Mi perfil</span>
+                                        <!-- Ícono solo para pantallas pequeñas -->
+                                        <span class="d-inline d-sm-none">
+                                                <i class="bi bi-person-gear"></i>
+                                            </span>
+                                        <!-- Ícono y texto para pantallas medianas y más grandes -->
+                                        <span class="d-none d-sm-inline-flex align-items-center">
+                                                <i class="bi bi-person-gear pe-2"></i>
+                                            <span>Mi perfil</span>
+                                            </span>
                                     </a>
                                 </div>
                             </div>
@@ -130,55 +137,48 @@
                                 <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                     <h3 class="mb-0 ls-tight"> Lista de medicinas </h3>
                                 </div>
-                                <!-- Actions -->
-                                <!--<div class="col-sm-6 col-12 d-flex align-items-center justify-content-end">
-
-                                    <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1 align-items-center"
-                                       data-bs-toggle="modal" data-bs-target="#modalGenerarCompra">
-                                        <span class="pe-2">
-                                            <i class="bi bi-plus"></i>
-                                        </span>
-                                        <span>Generar compra</span>
-                                    </a>
-                                </div>-->
                             </div>
                         </div>
                         <!--TABLA-->
-                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                        <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
                         <div class="container table-responsive mb-4">
+
+                            <!--Mensajes de guardado, eliminado y actualizado -->
+                            <div class="row pt-3">
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+                            </div>
+
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Imagen</th>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Cantidad disponible</th>
-                                        <th scope="col">Precio x unid (S/.)</th>
-                                        <th scope="col">Cantidad solicitada</th>
-                                        <th scope="col">Precio Total</th>
+                                        <th scope="col" class="text-center">Imagen</th>
+                                        <th scope="col" class="text-center">Nombre</th>
+                                        <th scope="col" class="text-center">Cantidad disponible</th>
+                                        <th scope="col" class="text-center">Precio x unid (S/.)</th>
+                                        <th scope="col" class="text-center">Cantidad solicitada</th>
+                                        <th scope="col" class="text-center">Precio Total (S/.)</th>
                                         <!--<th scope="col">Anadir</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="producto,obj : ${listaProductos}">
                                         <input type="hidden" name="listaIdsProductos" th:value="${producto.productos.idProductos}">
-                                        <td>
-                                            <a class="text-heading font-semibold" href="#">
-                                                <img th:src="@{|/imageProduct/${producto.productos.idProductos}|}" alt="medicina1" class="avatar avatar-sm rounded-circle me-2">
-                                            </a>
+                                        <td class="text-center">
+                                            <img th:src="@{|/imageProduct/${producto.productos.idProductos}|}" alt="medicina1" class="avatar avatar-sm rounded-circle me-2">
                                         </td>
-                                        <td th:text="${producto.productos.nombre}"></td>
-                                        <td th:text="${producto.cantidad}"></td>
-                                        <td class="precio" th:text="${producto.productos.precio}"></td>
+                                        <td th:text="${producto.productos.nombre}" class="text-heading font-semibold text-uppercase text-center"></td>
+                                        <td th:text="${producto.cantidad}" class="text-center"></td>
+                                        <td th:text="${#numbers.formatDecimal(producto.productos.precio, 0, 2, 'POINT')}" class="text-center precio"></td>
                                         <td>
                                             <input class="cantidad"
                                                     type="number" placeholder="0" name="listaCantidades" value="0" min="0" step="1">
                                         </td>
-                                        <td class="precio-total">0.00</td>
+                                        <td class="precio-total text-center">0.00</td>
                                     </tr>
                                 </tbody>
                             </table>
+
                             <div class="card-footer border-0 py-5 mx-auto text-center">
                                 <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal"
                                    data-bs-target="#modalGenerarCompra">
@@ -194,8 +194,7 @@
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Ingresa los datos del
-                                                paciente que comprará los medicamentos seleccionados</h3>
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">Ingrese los datos del paciente</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -346,23 +345,7 @@
                                     </div>
                                 </div>
                             </div>-->
-                            <!--Modal generar orden de venta exitosamente-->
-<!--                            <div class="modal fade" id="generarOrdenVenta" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="text-center">Se ha generado la orden 123</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary"
-                                                data-bs-dismiss="modal">Ok</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
+
                         </div>
 
                     </div>
@@ -390,17 +373,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>-->
-    <script src="/js/Farmacista/script.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="/js/Superadmin/table.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
     <script>
         new DataTable('#example');
     </script>
-    <!---->
-    <!--<script src="/js/Farmacista/controladorTabla.js"></script>-->
+
     <script>
         // JavaScript para permitir solo la entrada de números
         document.getElementById("numberInput").addEventListener("keydown", function(event) {
@@ -414,6 +396,7 @@
             }
         });
     </script>
+
     <script>
         // Obtener el elemento de entrada de fecha
         var fechaVencimientoInput = document.getElementById('fechaEntregaStr');
@@ -424,14 +407,13 @@
         // Establecer la fecha mínima en el campo de entrada de fecha
         fechaVencimientoInput.setAttribute('min', fechaActual);
     </script>
+
     <script>
+        // validaciones con bootstrap
         (() => {
             'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             const forms = document.querySelectorAll('.needs-validation')
 
-            // Loop over them and prevent submission
             Array.from(forms).forEach(form => {
                 form.addEventListener('submit', event => {
                     if (!form.checkValidity()) {
@@ -445,19 +427,9 @@
         })()
     </script>
 
-    <script>
-        function confirmLogout(event) {
-            event.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-            modal.show();
-        }
-
-        function submitLogout() {
-            document.getElementById('logoutForm').submit();
-        }
-    </script>
 
     <script>
+        // Función para calcular el precio total
         document.addEventListener('DOMContentLoaded', function() {
             const rows = document.querySelectorAll('#example tbody tr');
 
@@ -476,26 +448,9 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            // Inicializa DataTables
-            var table = $('#example').DataTable();
 
-            // Función para formatear precios a 2 decimales
-            function formatPrices() {
-                $('.precio').each(function() {
-                    var valor = parseFloat($(this).text());
-                    $(this).text(valor.toFixed(2));
-                });
-            }
-
-            // Aplica el formateo de precios al inicializar y al cambiar de página
-            formatPrices();
-            table.on('draw', function() {
-                formatPrices();
-            });
-        });
-    </script>
+    <!-- Script para confirmación de cierre de sesión -->
+    <script src="/js/Farmacista/script.js"></script>
 
 </body>
 
