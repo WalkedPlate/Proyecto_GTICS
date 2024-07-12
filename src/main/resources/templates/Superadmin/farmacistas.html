@@ -133,7 +133,9 @@
                                     <tbody>
                                         <tr th:each="farmacista,obj : ${listaFarmacistas}">
                                             <td>
-                                                <img alt="..." src="/img/Superadmin/farmacista_icon.png"
+                                                <img th:if="${farmacista.fotonombre != null}" alt="..." th:src="@{|/imageUser/${farmacista.idUsuario}|}"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <img th:if="${farmacista.fotonombre == null}" alt="..." src="/img/Superadmin/farmacista_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <a th:text="${farmacista.nombre}" class="text-heading font-semibold"
                                                    href="#">
