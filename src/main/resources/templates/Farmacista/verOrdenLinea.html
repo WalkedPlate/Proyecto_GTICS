@@ -86,27 +86,33 @@
                 <div class="container-fluid">
                     <div class="mb-npx">
                         <div class="row align-items-center mb-5">
-                            <div class="col-sm-8 col-12 mb-4 mb-sm-0">
-                                <!-- Title -->
-                                <h2 class="mb-0 ls-tight">
-                                    <img src="/img/Farmacista/profile-3.jpeg" width="40"> Bienvenido, <span
-                                        class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h2>
+                            <div class="col-md-6 col-xl-7 col-xxl-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
+                            <!-- Title -->
+                                <img th:src="@{|/imageUser/${farmacista.idUsuario}|}"  width="40" class="avatar">
+                                <h3 class="mb-0 ls-tight mx-1">
+                                     Bienvenido, <span
+                                        class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span></h3>
                             </div>
                             <!-- Actions -->
-                            <div class="col-sm-4 col-12 text-sm-end d-flex align-items-center justify-content-end">
+                            <div class="col-md-6 col-xl-5 col-xxl-4 col-12 text-end d-flex align-items-center justify-content-end">
                                 <a class="btn btn-danger d-inline-flex btn-sm mx-1" th:if="${superAdmin != null}" th:href="@{'/stopImpersonation'}" >
                                              <span class=" pe-2">
                                                  <i class="bi bi-person-up"></i>
                                              </span>
-                                    <span>Volver Superadmin</span>
+                                    <span>Superadmin</span>
                                 </a>
                                 <div class="mx-n1">
                                     <a th:href="@{'/farmacista/perfil'}"
                                        class="btn d-inline-flex btn-sm btn-neutral border-base mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-person-gear"></i>
-                                    </span>
-                                        <span>Mi perfil</span>
+                                        <!-- Ícono solo para pantallas pequeñas -->
+                                        <span class="d-inline d-sm-none">
+                                                <i class="bi bi-person-gear"></i>
+                                            </span>
+                                        <!-- Ícono y texto para pantallas medianas y más grandes -->
+                                        <span class="d-none d-sm-inline-flex align-items-center">
+                                                <i class="bi bi-person-gear pe-2"></i>
+                                            <span>Mi perfil</span>
+                                            </span>
                                     </a>
                                 </div>
                             </div>

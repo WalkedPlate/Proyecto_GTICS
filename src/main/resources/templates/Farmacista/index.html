@@ -21,6 +21,12 @@
         .form-control, .form-select {
             color: #525F7F;
         }
+
+        .cantidad{
+            border: 1px solid #94a6b3;
+            border-radius: 3px;
+            height: 35px;
+        }
     </style>
 </head>
 
@@ -93,7 +99,7 @@
                         <div class="row align-items-center mb-5">
                             <div class="col-md-6 col-xl-7 col-xxl-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
                                 <!-- Title -->
-                                <img src="/img/Superadmin/farmacista_icon.png" width="40" class="avatar">
+                                <img th:src="@{|/imageUser/${farmacista.idUsuario}|}" width="40" class="avatar">
                                 <h3 class="mb-0 ls-tight mx-1">
                                      Bienvenido, <span
                                         class="text-primary" th:text="'Farmacista ' + ${farmacista.nombre}"></span>
@@ -170,8 +176,8 @@
                                         <td th:text="${producto.productos.nombre}" class="text-heading font-semibold text-uppercase text-center"></td>
                                         <td th:text="${producto.cantidad}" class="text-center"></td>
                                         <td th:text="${#numbers.formatDecimal(producto.productos.precio, 0, 2, 'POINT')}" class="text-center precio"></td>
-                                        <td>
-                                            <input class="cantidad"
+                                        <td class="text-center">
+                                            <input class="cantidad text-center" id="cantidad"
                                                     type="number" placeholder="0" name="listaCantidades" value="0" min="0" step="1">
                                         </td>
                                         <td class="precio-total text-center">0.00</td>
@@ -211,7 +217,7 @@
 
                                                 <div class="col">
                                                     <label >DNI:</label>
-                                                    <input minlength="8" maxlength="8" id="numberInput" type="text" class="form-control" placeholder="DNI del paciente" name="dni"  required>
+                                                    <input minlength="8" maxlength="8" id="dni" type="text" class="form-control" placeholder="DNI del paciente" name="dni"  required>
                                                 </div>
                                             </div>
 
@@ -385,7 +391,7 @@
 
     <script>
         // JavaScript para permitir solo la entrada de números
-        document.getElementById("numberInput").addEventListener("keydown", function(event) {
+        function allowOnlyNumbersAndDecimal(event, element) {
             // Permite las teclas de flecha, retroceso y suprimir
             if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
                 return;
@@ -394,6 +400,16 @@
             if (event.key < "0" || event.key > "9") {
                 event.preventDefault();
             }
+
+        }
+
+        // Asignar el evento a los elementos correspondientes
+        document.getElementById("cantidad").addEventListener("keydown", function(event) {
+            allowOnlyNumbersAndDecimal(event, this);
+        });
+
+        document.getElementById("dni").addEventListener("keydown", function(event) {
+            allowOnlyNumbersAndDecimal(event, this);
         });
     </script>
 
