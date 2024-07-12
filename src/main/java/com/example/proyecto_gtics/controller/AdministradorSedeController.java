@@ -16,11 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.thymeleaf.model.IModel;
 
 import javax.naming.Binding;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -681,6 +683,56 @@ public class AdministradorSedeController {
         model.addAttribute("adminSede", adminSede);
 
         return "AdministradorSede/editarPerfil";
+    }
+
+    @PostMapping(value = "/administradorsede/guardar_perfil")
+    public String actualizarPerfil(@RequestParam(name = "direccion", required = false) String direccion,
+                                   @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "correo",required = false) String correo,
+                                   @RequestParam("image") MultipartFile file,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+
+        if(direccion == null || distrito == null || correo == null){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/administradorsede/editar-perfil";
+        }
+        if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/administradorsede/editar-perfil";
+        }
+
+
+        //Sobre la foto de un producto --------------------------------------------------------------------------------
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/administradorsede/editar-perfil";
+            }
+            try {
+                adminSede.setFoto(file.getBytes());
+                adminSede.setFotonombre(fileName);
+                adminSede.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/administradorsede/editar-perfil";
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------
+
+
+        adminSede.setCorreo(correo);
+        adminSede.setDireccion(direccion);
+        adminSede.setDistritoResidencia(distrito);
+        usuariosRepository.save(adminSede);
+        attr.addFlashAttribute("msg","Perfil actualizado exitosamente.");
+        session.setAttribute("usuario",usuariosRepository.findByIdUsuario(adminSede.getIdUsuario()));
+        return "redirect:/administradorsede/perfil";
+
     }
 
     @GetMapping(value = {"/administradorsede/cambiar-contra"})

@@ -103,7 +103,7 @@
                             <div class="row align-items-center mb-5">
                                 <div class="col-md-6 col-xl-7 col-xxl-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
                                     <!-- Title -->
-                                    <img src="/img/AdministradorSede/profile-3.jpeg" width="40" class="avatar">
+                                    <img th:src="@{|/imageUser/${adminSede.idUsuario}|}" width="40" class="avatar">
                                     <h3 class="mb-0 ls-tight mx-1">
                                         Mi perfil, <span
                                             class="text-primary" th:text="'Admin. ' + ${adminSede.nombre}"></span>
@@ -176,7 +176,7 @@
 
                                     <!-- Foto de perfil: hacer que jale la imagen de la base de datos -->
                                     <div class="col text-center d-flex justify-content-center align-items-center">
-                                        <img src="/img/Superadmin/administrador_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
+                                        <img th:src="@{|/imageUser/${adminSede.idUsuario}|}" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
                                              class="rounded-circle">
                                     </div>
 
