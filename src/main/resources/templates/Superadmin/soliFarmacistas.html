@@ -79,10 +79,12 @@
           <div class="container-fluid">
             <div class="mb-npx">
               <div class="row align-items-center">
-                <div class="col-sm-8 col-12 mb-4 mb-sm-0">
+                <div class="col-sm-8 col-12 mb-4 mb-sm-0 d-flex align-items-center">
                   <!-- Title -->
-                  <h1 class="h2 mb-0 ls-tight">
-                    <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40" class="avatar"> Bienvenido, <span class="text-primary" th:text="'SuperAdmin ' + ${superadmin.nombre}"></span></h1>
+                  <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40" class="avatar">
+                  <h3 class="mb-0 ls-tight mx-1">
+                    Bienvenido, <span
+                          class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span></h3>
                 </div>
                 <!-- Actions -->
                 <div class="col-sm-4 col-12 text-sm-end">
