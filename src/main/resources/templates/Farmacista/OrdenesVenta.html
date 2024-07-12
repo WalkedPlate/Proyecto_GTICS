@@ -141,23 +141,23 @@
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Código de Orden</th>
-                                        <th scope="col">Nombre del Paciente</th>
-                                        <th scope="col">DNI</th>
-                                        <th scope="col">Orden Generada en:</th>
-                                        <th scope="col">Estado de envío</th>
-                                        <th scope="col">Monto Total</th>
-                                        <th scope="col">Acciones</th>
+                                        <th scope="col" class="text-center">Código de Orden</th>
+                                        <th scope="col" class="text-center">Nombre del Paciente</th>
+                                        <th scope="col" class="text-center">DNI</th>
+                                        <th scope="col" class="text-center">Orden Generada en:</th>
+                                        <th scope="col" class="text-center">Estado de envío</th>
+                                        <th scope="col" class="text-center">Monto Total (S/.)</th>
+                                        <th scope="col" class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="orden,obj : ${listaOrdenes}">
                                         <td th:text="${orden.codigo}"></td>
                                         <td th:text="${orden.usuarios.nombre}"></td>
-                                        <td th:text="${orden.usuarios.dni}"></td>
-                                        <td th:text="${orden.tipoOrden.nombre}"></td>
-                                        <td th:text="${orden.estadoOrden.nombre}"></td>
-                                        <td th:text="${orden.monto}"></td>
+                                        <td th:text="${orden.usuarios.dni}" class="text-center"></td>
+                                        <td th:text="${orden.tipoOrden.nombre}" class="text-center"></td>
+                                        <td th:text="${orden.estadoOrden.nombre}" class="text-center"></td>
+                                        <td th:text="${#numbers.formatDecimal(orden.monto, 0, 2, 'POINT')}" class="text-center"></td>
                                         <td class="text-center d-flex justify-content align-center">
                                             <form method="post" th:action="@{'/farmacista/ordenes-venta/ver-orden'}">
                                                 <input type="hidden" name="idOrden" th:value="${orden.idordenes}">
