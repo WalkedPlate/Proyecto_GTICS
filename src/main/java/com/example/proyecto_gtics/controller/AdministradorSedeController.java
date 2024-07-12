@@ -700,6 +700,37 @@ public class AdministradorSedeController {
         return "AdministradorSede/cambiarContra";
     }
 
+    @PostMapping(value = "/administradorsede/actualizar-contra")
+    public String actualizarContra(@RequestParam(name = "pass1", required = false) String pass1,
+                                   @RequestParam(name = "pass2", required = false) String pass2,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+
+
+        if(pass1 == null || pass2 == null){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/administradorsede/cambiar-contra";
+        }
+        if(pass1.isEmpty() || pass2.isEmpty()){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/administradorsede/cambiar-contra";
+        }
+
+
+        if(pass1.equalsIgnoreCase(pass2)){
+            adminSede.setContrasena(passwordEncoder.encode(pass1));
+            usuariosRepository.save(adminSede);
+            attr.addFlashAttribute("msg","Contraseña actualizada exitosamente.");
+            return "redirect:/administradorsede/cambiar-contra";
+        }
+        else {
+            attr.addFlashAttribute("wrn","Las contraseñas no coinciden.");
+            return "redirect:/administradorsede/cambiar-contra";
+        }
+
+    }
+
     @GetMapping("/administradorSede/notificaciones")
     @ResponseBody
     public List<String> obtenerNotificaciones(HttpSession session){
