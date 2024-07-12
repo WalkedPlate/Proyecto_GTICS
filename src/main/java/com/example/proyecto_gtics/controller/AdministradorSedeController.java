@@ -299,7 +299,7 @@ public class AdministradorSedeController {
         Optional<Ordenes> optOrden = ordenesRepository.findById(id);
         if (optOrden.isPresent()) {
 
-            if (!validarTipoOrden(2, optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2) {
+            if (!validarTipoOrden(2, optOrden.get()) || !Objects.equals(optOrden.get().getSedes().getIdSedes(), adminSede.getSedes().getIdSedes())) {
                 return "redirect:/administradorsede/ordenes-reposicion";
             }
 
@@ -771,7 +771,10 @@ public class AdministradorSedeController {
 
     public boolean validarTipoOrden(Integer tipo_orden_idtipo_orden, Ordenes orden) {
         // Valida si una orden es de un tipo dado
-        boolean valido = orden.getTipoOrden().getIdTipoOrden() == tipo_orden_idtipo_orden;
+        boolean valido = Objects.equals(orden.getTipoOrden().getIdTipoOrden(), tipo_orden_idtipo_orden);
+        if(orden.getTipoOrden().getIdTipoOrden()==6){
+            valido = true;
+        }
         return valido;
     }
 
