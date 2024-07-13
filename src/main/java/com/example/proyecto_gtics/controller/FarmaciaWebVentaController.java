@@ -6,11 +6,15 @@ import com.example.proyecto_gtics.dto.ProductosMejorValorados;
 import com.example.proyecto_gtics.dto.ProductosTendencia;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.BuscarProductosService;
 import com.example.proyecto_gtics.service.CardService;
 import com.example.proyecto_gtics.service.MessageService;
 import com.example.proyecto_gtics.service.ProductoBuscarServicio;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class FarmaciaWebVentaController {
@@ -79,6 +85,8 @@ public class FarmaciaWebVentaController {
     private CardService cardService;
     @Autowired
     private ProductoBuscarServicio productoBuscarServicio;
+    @Autowired
+    private BuscarProductosService buscarProductosService;
 
 
     //Formatear strings a dates
@@ -186,11 +194,20 @@ public class FarmaciaWebVentaController {
 
 
     @PostMapping(value = "/clinicarenacer/search")
-    public String searchProducts(Model model, String nombre,  HttpSession session ) {
-        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
-        List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
-        model.addAttribute("nombre", buscarProductos);
-        return "redirect:/clinicarenacer";
+    public String searchProducts(Model model, @RequestParam("nombre") String nombre,  HttpSession session ) {
+        try {
+            Usuarios paciente = (Usuarios) session.getAttribute("usuario");
+            List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
+            List<Categorias> listaCategorias = categoriasRepository.findAll();
+            model.addAttribute("productosEncontrados", buscarProductos);
+            model.addAttribute("listacategorias",listaCategorias);
+            return "FarmaciaWebVenta/productosBusqueda";  // Vista para mostrar los resultados
+        } catch (Exception e) {
+            // Log error
+            System.err.println("Error durante la búsqueda de productos: " + e.getMessage());
+            model.addAttribute("errorMessage", "Hubo un error durante la búsqueda de productos.");
+            return "FarmaciaWebVenta/Error";  // Ajusta esta vista según tus necesidades
+        }
     }
 
 
@@ -221,12 +238,19 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/categoria"})
-    public String ordenarPorCategoria(Model model,  @RequestParam(name = "idCategoria") int idCategoria ,  HttpSession session){
+    public String ordenarPorCategoria(Model model,  @RequestParam(name = "idCategoria") int idCategoria ,
+                                      @RequestParam("page") Optional<Integer> page,
+                                      @RequestParam("size") Optional<Integer> size,
+                                      @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
+                                      HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
         Categorias categorias = categoriasRepository.findById(idCategoria).get();
 
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
 
+        Page<Productos> productosPage = buscarProductosService.findPaginated(PageRequest.of(currentPage - 1, pageSize));;
 
         List<Productos> listaProductosPorCategoria = productosRepository.findByCategorias(categorias);
         List<Productos> listarProducto = productosRepository.findAll();
@@ -235,13 +259,28 @@ public class FarmaciaWebVentaController {
         for (Categorias categoria: listaCategorias){
             listaCantidades.add(productosRepository.countByCategorias(categoria));
         }
-        model.addAttribute("listaCantCategorias",listaCantidades);
-
-
         model.addAttribute("categoriaActual",categorias);
         model.addAttribute("listaProductos",listaProductosPorCategoria);
         model.addAttribute("listarProducto",listarProducto);
         model.addAttribute("listaCategorias", listaCategorias);
+        model.addAttribute("listaCantCategorias",listaCantidades);
+        model.addAttribute("productoPage", productosPage);
+
+        int totalPages = productosPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        if ("XMLHttpRequest".equals(requestedWith)) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("listaProductos", listaProductosPorCategoria);
+            response.put("productoPage", productosPage);
+            response.put("pageNumbers", model.getAttribute("pageNumbers"));
+        }
+
         return "FarmaciaWebVenta/PorCategoria";
 
     }
@@ -361,9 +400,12 @@ public class FarmaciaWebVentaController {
 
     @PostMapping(value = {"/clinicarenacer/paciente/guardarDatos"})
         public String guardarDatos(@RequestParam(name = "paymentMethod") String paymentMethod,
-                                   @RequestParam("archivo") MultipartFile file, @RequestParam(name = "tipoEntrega") String tipoEntrega,
+                                   @RequestParam("archivo") MultipartFile file,
+                                   @RequestParam(name = "tipoEntrega") String tipoEntrega,
                                    @RequestParam(name = "direccion", required = false) String direccion,
                                    @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "iddoctor") Integer iddoctor,
+                                   @RequestParam(name = "idSede") Integer idSede,
                                    RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
         Usuarios pacienteLogueado =(Usuarios)session.getAttribute("usuario");
 
@@ -410,9 +452,6 @@ public class FarmaciaWebVentaController {
             ordenPreSave.setFechaRegistro(fechaActual.format(formatDateToSring));
             LocalDate fechaEntrega = fechaActual.plusDays(20);
             ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
-
-
-
             ordenPreSave.setUsuarios(pacienteLogueado);
             ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
             ordenPreSave.setCodigo(UUID.randomUUID().toString());
@@ -424,12 +463,17 @@ public class FarmaciaWebVentaController {
                 ordenPreSave.setTipoCobro(tipoCobroRepository.findById(2).get()); // Pago con tarjeta
             }
 
+            Usuarios doctor = usuariosRepository.findById(iddoctor).orElse(null);
+            Sedes sede = sedesRepository.findById(idSede).orElse(null);
+
             // Guardar dirección de entrega según el tipo de entrega seleccionado
             if ("delivery".equals(tipoEntrega)) {
-                ordenPreSave.setDireccion(direccion + ", " + distrito);
+                ordenPreSave.setDireccion(direccion);
             } else {
                 // Si es recojo en farmacia, no se necesita dirección
                 ordenPreSave.setDireccion("Recojo en farmacia");
+                ordenPreSave.setDoctor(doctor);
+                ordenPreSave.setSedes(sede);
             }
             ordenesRepository.save(ordenPreSave);
 
