@@ -351,7 +351,7 @@ public class AdministradorSedeController {
             } else {
 
                 Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(detallesOrdenToSave.getOrdenes().getIdordenes());
-                if (esNuevaOrden == 0 && cantidadDetallesOrden >= 1 && cantidadDetallesOrden <= 10) {
+                if (esNuevaOrden == 0 && cantidadDetallesOrden >= 1 && cantidadDetallesOrden < 10) {
                     detallesOrdenRepository.save(detallesOrdenToSave);
 
                     Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
@@ -360,7 +360,7 @@ public class AdministradorSedeController {
 
                     attr.addFlashAttribute("msg", "Orden actualizada exitosamente");
                     return (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=") + detallesOrdenToSave.getOrdenes().getIdordenes();
-                } else if (esNuevaOrden == 1 && cantidadDetallesOrden <= 10) {
+                } else if (esNuevaOrden == 1 && cantidadDetallesOrden < 10) {
                     detallesOrdenRepository.save(detallesOrdenToSave);
 
                     Ordenes ordenReposicionRecuperada = ordenesRepository.findById(detallesOrdenToSave.getOrdenes().getIdordenes()).get(); // Recuperamos la orden
@@ -398,7 +398,7 @@ public class AdministradorSedeController {
 
 
     @GetMapping(value = {"/administradorsede/borrarDetalleOrden"})
-    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id, RedirectAttributes attr,
+    public String borrarDetalleOrden(@RequestParam("idDetalleOrden") Integer id, @RequestParam("esNuevaOrden") Integer esNuevaOrden ,RedirectAttributes attr,
                                      HttpSession session, Model model) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
@@ -414,14 +414,20 @@ public class AdministradorSedeController {
         model.addAttribute("adminSede", adminSede);
 
         Optional<DetallesOrden> optionalDetallesOrden = detallesOrdenRepository.findById(id);
-        Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(optionalDetallesOrden.get().getOrdenes().getIdordenes());
+
+        //CODIGO COMENTANDO YA QUE NO DEJA ELIMINAR CUANDO TENGO UN PRODCUTO EN LA ORDEN DE REPO.
+        /*Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(optionalDetallesOrden.get().getOrdenes().getIdordenes());
         if (cantidadDetallesOrden <= 1) {
             attr.addFlashAttribute("err", "Solo puede haber de 1 a 10 medicamentos por orden de reposición.");
             return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
         } else {
             optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
             return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
-        }
+        }*/
+
+        optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
+        attr.addFlashAttribute("msg", "Se elimino el producto con exito");
+        return (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes());
 
 
     }
@@ -439,13 +445,19 @@ public class AdministradorSedeController {
 
 
         Ordenes ordenCarrito = ordenesRepository.findById(idOrdenCarrito).get();
-        ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(2).get());
-        LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
-        ordenCarrito.setFechaRegistro(fechaActual.format(formatDateToSring));
-        ordenCarrito.setEstadoOrden(estadoOrdenRepository.findById(1).get()); // Seteamos el estado de orden como Pendiente
-        ordenesRepository.save(ordenCarrito);
-        attr.addFlashAttribute("msg", "Se ha generado una nueva orden de reposición.");
-        return "redirect:/administradorsede/ordenes-reposicion";
+        Integer cantidadDetallesOrden = detallesOrdenRepository.calcularCantidadDeDetallesPorOrden(ordenCarrito.getIdordenes());
+        if(cantidadDetallesOrden==0){
+            attr.addFlashAttribute("err", "La orden no presenta productos porfavor seleccione por lo menos un producto");
+            return "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + ordenCarrito.getIdordenes();
+        }else{
+            ordenCarrito.setTipoOrden(tipoOrdenRepository.findById(2).get());
+            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+            ordenCarrito.setFechaRegistro(fechaActual.format(formatDateToSring));
+            ordenCarrito.setEstadoOrden(estadoOrdenRepository.findById(1).get()); // Seteamos el estado de orden como Pendiente
+            ordenesRepository.save(ordenCarrito);
+            attr.addFlashAttribute("msg", "Se ha generado una nueva orden de reposición.");
+            return "redirect:/administradorsede/ordenes-reposicion";
+        }
     }
 
 
