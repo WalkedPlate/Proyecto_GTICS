@@ -26,7 +26,8 @@
 }
 
 .notification-content {
-    max-height: 200px; /* Ajusta según tus necesidades */
+    min-height: 150px;
+    max-height: 200px;
     overflow-y: auto;
     scrollbar-width: thin; /* Hace que la barra de desplazamiento sea más delgada */
 
@@ -39,6 +40,6 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: rgb(245, 246, 248); /* Ajusta según el estilo de tu dropdown */
+    background: rgb(245, 246, 248);
     border-top: 1px solid #e9ecef;
 }

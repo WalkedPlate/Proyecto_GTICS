@@ -19,6 +19,7 @@ document.getElementById('passwordForm').addEventListener('submit', function(even
         newPasswordError.textContent = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un carácter especial';
         newPasswordError.style.color = 'red';
         newPasswordError.style.fontSize = '0.8em';
+        newPasswordError.style.marginBottom = '1em';
     } else {
         // Limpiar el mensaje de error si la contraseña cumple con los requisitos
         newPasswordError.textContent = '';

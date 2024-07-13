@@ -39,7 +39,7 @@
                                 <input type="submit" value="Generar nuevo token" class="sign-btn">
                             </form>
 
-                            <form th:action="'/cambiarContrasena'" method="post" th:if="${generar}==0">
+                            <form th:action="'/cambiarContrasena'" method="post" th:if="${generar}==0" id="passwordForm">
                                 <input type="hidden" name="token" th:value="${token}">
                                 <div class="heading">
                                     <h3>Cambie su contraseña</h3>
@@ -57,6 +57,10 @@
                                         <label>Nueva contraseña</label>
                                     </div>
 
+                                    <div>
+                                        <p id="newPasswordError" class="error-message"></p>
+                                    </div>
+
                                     <div class="input-wrap">
                                         <input
                                                 id="confirmPassword"
@@ -68,8 +72,10 @@
                                         <label>Confirme contraseña</label>
                                     </div>
 
-                                    <p id="newPasswordError" class="error-message"></p>
-                                    <p id="confirmPasswordError" class="error-message"></p>
+                                    <div>
+                                        <p id="confirmPasswordError" class="error-message"></p>
+                                    </div>
+
                                     <input type="submit" value="Guardar cambios" class="sign-btn">
 
 
