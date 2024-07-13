@@ -165,8 +165,16 @@ public class AdministradorSedeController {
         }
 
         List<Ordenes> listaOrdenesRepo = ordenesRepository.findTop2ByTipoOrdenAndSedesAndEstadoOrdenNotInOrderByIdordenesDesc(ordenRepo, adminSede.getSedes(), listEstadosNoListados);
-        model.addAttribute("listaOrdenesRepo",listaOrdenesRepo);
+        int cantOrdenes = listaOrdenesRepo.size();
+        if (cantOrdenes == 0){
+            listaOrdenesRepo.add(ordenesRepository.findById(1).get());
+            listaOrdenesRepo.add(ordenesRepository.findById(1).get());
+        }
+        if (cantOrdenes == 1){
+            listaOrdenesRepo.add(ordenesRepository.findById(1).get());
+        }
 
+        model.addAttribute("listaOrdenesRepo",listaOrdenesRepo);
 
         return "AdministradorSede/index";
     }

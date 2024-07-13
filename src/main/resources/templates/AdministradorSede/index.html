@@ -224,14 +224,14 @@
                                         <div class="col text-center">
                                             <h3>Órdenes de reposición</h3>
                                             <hr>
-                                            <div class="card mt-2" th:each="ordenReposicion,obj: ${listaOrdenesRepo}">
+                                            <div class="card mt-2" th:each="ordenReposicion,obj: ${listaOrdenesRepo}" th:attr="style=${ordenReposicion.idordenes == 1} ? 'display:none;' : 'display:block;'">
                                                     <div class="card-header">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <p class="text-uppercase text-medium" th:text="'tracking Orden N° ' + ${ordenReposicion.codigo}"><strong th:text="${ordenReposicion.estadoOrden.nombre}"></strong></p>
                                                             <button id="toggleButton" class="btn btn-dark btn-round" data-toggle="collapse" th:data-target="'#orderDetails'+${obj.index}" aria-expanded="false" aria-controls="orderDetails"><i class="bi bi-chevron-down"></i></button>
                                                         </div>
                                                     </div>
-                                                    <div th:id="'orderDetails'+${obj.index}" class="collapse">
+                                                    <div th:id="'orderDetails'+${obj.index}" class="collapse" >
                                                         <div class="card-body">
                                                             <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
                                                                 <div class="step completed">
