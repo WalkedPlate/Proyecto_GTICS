@@ -213,7 +213,10 @@
                                                         th:data-bs-target="${'#modalEditar' + obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
-                                                <a type="submit" class="btn btn-sm btn-danger btn-square" th:href="@{'/administradorsede/borrarDetalleOrden?idDetalleOrden=' + ${detalle.idDetallesOrden}}">
+                                                <a type="submit" class="btn btn-sm btn-danger btn-square" th:if="${esNuevaOrden == 1}" th:href="@{'/administradorsede/borrarDetalleOrden?idDetalleOrden=' + ${detalle.idDetallesOrden} + '&esNuevaOrden=' + ${esNuevaOrden}}">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                                <a type="submit" class="btn btn-sm btn-danger btn-square" th:if="${esNuevaOrden == 0}" th:href="@{'/administradorsede/borrarDetalleOrden?idDetalleOrden=' + ${detalle.idDetallesOrden} + '&esNuevaOrden=' + ${esNuevaOrden}}">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
                                             </td>

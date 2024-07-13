@@ -156,7 +156,7 @@
                                         </td>
                                         <td th:text="${detalleOrden.productos.nombre}" class="text-center"></td>
                                         <td th:text="${detalleOrden.cantidad}" class="text-center"></td>
-                                        <td th:text="${detalleOrden.montoParcial}" class="text-center"></td>
+                                        <td th:text="${#numbers.formatDecimal(detalleOrden.montoParcial, 0, 2, 'POINT')}" class="text-center"></td>
                                     </tr>
 
                                 </tbody>
