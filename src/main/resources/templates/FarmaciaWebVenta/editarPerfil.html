@@ -93,38 +93,69 @@
                         <hr>
                     </div>
 
+                    <!--Mensajes-->
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+
                     <!--Form para editar perfil con validaciones en js-->
-                    <form id="myForm">
+                    <form class="needs-validation" id="myForm" novalidate th:action="@{/clinicarenacer/guardar_perfil}"
+                          enctype="multipart/form-data" method="post">
                         <div class="col d-flex pb-6">
-                            <div class="col-4 d-flex justify-content-center align-items-center">
-                                <img src="/img/Superadmin/profile-3.jpeg" alt="" width="250" class="rounded-circle">
+                            <div class="col-4 d-flex justify-content-center align-items-center upload">
+                                <img th:if="${paciente.fotonombre != null}" th:src="@{|/imageUser/${paciente.idUsuario}|}"  alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
+                                <img th:if="${paciente.fotonombre == null}"  src="/img/Superadmin/user_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
+                                <div class="round">
+                                    <input type="file" id="imageUpload" name="image" accept="image/*">
+                                    <i class = "bi bi-camera" style = "color: #fff;"></i>
+                                </div>
                             </div>
                             <div class="col" style="margin:0px 30px">
-                                <div class="row pt-3">
+                                <div class="row pt-5">
                                     <div class="col">
-                                        <label for="nombre">Nombre:</label>
-                                        <input type="text" class="form-control" id="nombre" placeholder="Coloca tu nombre">
-                                        <p id="nombreError" class="text-danger"></p>
+                                        <label>DNI:</label>
+                                        <input type="text" class="form-control" th:value="${paciente.dni}" disabled readonly>
                                     </div>
+
+
                                     <div class="col">
-                                        <label for="apellido">Apellido:</label>
-                                        <input type="text" class="form-control" id="apellido" placeholder="Coloca tu apellido">
-                                        <p id="apellidoError" class="text-danger"></p>
+                                        <label>Nombre:</label>
+                                        <input type="text" class="form-control" th:value="${paciente.nombre}" disabled readonly>
+                                        <!--                                                    <p id="nombreError" class="text-danger"></p>-->
+                                    </div>
+
+                                </div>
+
+                                <div class="row pt-5">
+                                    <div class="col">
+                                        <label>Dirección:</label>
+                                        <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" th:value="${paciente.direccion}" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese una dirección (max 99 caracteres).
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <label>Distrito de residencia</label>
+                                        <input id="distrito"  name="distrito" maxlength="99" type="text" class="form-control" th:value="${paciente.distritoResidencia}" required>
+                                        <!--                                                    <p id="distritoError" class="text-danger"></p>-->
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese un distrito de residencia (max 99 caracteres).
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="row pt-3">
+
+
+                                <div class="row pt-5">
                                     <div class="col">
-                                        <label for="correo">Correo electrónico:</label>
-                                        <input type="email" class="form-control" id="correo" placeholder="correo@correo.com">
-                                        <p id="correoError" class="text-danger"></p>
-                                    </div>
-                                </div>
-                                <div class="row pt-3">
-                                    <div class="col">
-                                        <label for="distrito">Distrito de residencia:</label>
-                                        <input type="text" class="form-control" id="distrito" placeholder="Coloca tu distrito de residencia">
-                                        <p id="distritoError" class="text-danger"></p>
+                                        <label>Correo electrónico:</label>
+                                        <input id="correo" name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                               th:value="${paciente.correo}" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese un correo válido (max 99 caracteres).
+                                        </div>
+                                        <!--                                                    <p id="correoError" class="text-danger"></p>-->
                                     </div>
                                 </div>
                             </div>

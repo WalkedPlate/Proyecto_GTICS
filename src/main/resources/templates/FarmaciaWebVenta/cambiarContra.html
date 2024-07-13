@@ -98,22 +98,27 @@
                     <!-- Parrafo de éxito -->
                     <p id="successMessage" class="text-success"></p>
 
+                    <!-- Avisos -->
+                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+
 
                     <div class="col">
-                        <form id="passwordForm" class="needs-validation" th:href="@{'/clinicarenacer/cambiar-contra'}" novalidate>
+                        <form id="passwordForm" class="needs-validation" th:action="@{'/clinicarenacer/actualizar-contra'}" method="post" novalidate>
                             <div class="mb-3 px-5">
                                 <label for="newPassword" class="form-label">Nueva contraseña</label>
                                 <input
                                         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_-]).{8,}$"
                                         type="password" class="form-control" id="newPassword"
-                                        placeholder="Ingresa la nueva contraseña" required>
+                                        placeholder="Ingresa la nueva contraseña" required name="pass1">
                             </div>
                             <div class="mb-3 px-5">
                                 <label for="confirmPassword" class="form-label">Confirma la contraseña</label>
                                 <input
                                         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*_-]).{8,}$"
                                         type="password" class="form-control" id="confirmPassword"
-                                        placeholder="Confirma contraseña" required>
+                                        placeholder="Confirma contraseña" required name="pass2">
                             </div>
                             <div class="pt-3 d-flex justify-content-center px-5">
                                 <button type="submit" class="btn btn-primary" style="margin-right: 5px">Guardar</button>

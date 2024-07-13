@@ -244,44 +244,57 @@
                 </div>
 
                 <div class="card shadow border-0 mt-2 mb-2">
-                    <div class="card-header text-center" style="background: #272b31">
-                        <h4 class="mb-0 ls-tight" style="color: white">Estado de envío</h4>
+                    <div
+                            class="card-header text-center" style="background: #272b31">
+                        <h4 th:if="${ordenActual.estadoOrden.idEstadoOrden == 1}" class="mb-0 ls-tight" style="color: white">Esta orden aún no ha sido aprobada </h4>
+                        <h4 th:if="${ordenActual.estadoOrden.idEstadoOrden == 2}" class="mb-0 ls-tight" style="color: white">Esta orden ha sido eliminada</h4>
+                        <h4 th:if="${ordenActual.estadoOrden.idEstadoOrden == 3}" class="mb-0 ls-tight" style="color: white">Esta orden ha sido rechazada por un superadmin</h4>
+                        <h4 th:if="${ordenActual.estadoOrden.idEstadoOrden != 3 and
+                                                  ordenActual.estadoOrden.idEstadoOrden != 2 and
+                                                  ordenActual.estadoOrden.idEstadoOrden != 1}"
+                            class="mb-0 ls-tight" style="color: white">Estado de envío</h4>
                     </div>
-                    <div class="card-body">
+                    <div th:if="${ordenActual.estadoOrden.idEstadoOrden != 3 and
+                                                  ordenActual.estadoOrden.idEstadoOrden != 2 and
+                                                  ordenActual.estadoOrden.idEstadoOrden != 1}" class="card-body">
                         <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+
+
                             <div class="step completed">
                                 <div class="step-icon-wrap">
                                     <div class="step-icon"><i class="pe-7s-cart"></i></div>
                                 </div>
-                                <h4 class="step-title">Solicitado</h4>
+                                <h4 class="step-title" >Recibido</h4>
                             </div>
-                            <div class="step completed">
+                            <div th:class="'step' + (${ordenActual.estadoOrden.idEstadoOrden == 7 or ordenActual.estadoOrden.idEstadoOrden == 6 or
+                                                                        ordenActual.estadoOrden.idEstadoOrden == 5 or ordenActual.estadoOrden.idEstadoOrden == 10} ? ' completed' : '')">
                                 <div class="step-icon-wrap">
                                     <div class="step-icon"><i class="pe-7s-config"></i></div>
                                 </div>
                                 <h4 class="step-title">En Proceso</h4>
                             </div>
-                            <div class="step completed">
+                            <div th:class="'step' + (${ordenActual.estadoOrden.idEstadoOrden == 6 or
+                                                                        ordenActual.estadoOrden.idEstadoOrden == 5 or ordenActual.estadoOrden.idEstadoOrden == 10} ? ' completed' : '')">
                                 <div class="step-icon-wrap">
                                     <div class="step-icon"><i class="pe-7s-medal"></i></div>
                                 </div>
                                 <h4 class="step-title">Empaquetado</h4>
                             </div>
-                            <div class="step">
+                            <div th:class="'step' + (${ordenActual.estadoOrden.idEstadoOrden == 5 or ordenActual.estadoOrden.idEstadoOrden == 10} ? ' completed' : '')">
                                 <div class="step-icon-wrap">
                                     <div class="step-icon"><i class="pe-7s-car"></i></div>
                                 </div>
                                 <h4 class="step-title">En ruta</h4>
                             </div>
-                            <div class="step">
+                            <div th:class="'step' + (${ordenActual.estadoOrden.idEstadoOrden == 10} ? ' completed' : '')">
                                 <div class="step-icon-wrap">
                                     <div class="step-icon"><i class="pe-7s-home"></i></div>
                                 </div>
                                 <h4 class="step-title">Entregado</h4>
                             </div>
                         </div>
-                        <div class="map-container">
-                            <img src="/img/FarmaciaWebVenta/google-maps.jpg" width="100%">
+                        <div id="map" class="map-container" style="width: 100%; height: 400px;">
+
                         </div>
                     </div>
                 </div>
@@ -302,6 +315,130 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
         <script src="/js/Superadmin/table.js"></script>
         <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
+        <!-- Mapa -->
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXl59fxmrrijMF3f6ActbwkX4qLwOzdnE&callback=initMap" async defer></script>
+        <script th:inline="javascript">
+            let map, marker, deliveryMarker, directionsService, directionsRenderer;
+            let ordenId = [[${ordenActual.idordenes}]];
+            let estadoOrden = [[${ordenActual.estadoOrden.idEstadoOrden}]];
+            //let ubicacionEntrega = [[${ordenActual.direccion}]];
+            estadoOrden = parseInt(estadoOrden);
+            //if(ubicacionEntrega === 'Recojo en farmacia'){
+                //ubicacionEntrega = 'PUCP, Lima, Perú';
+            //}
+
+            function initMap() {
+                const defaultLocation = { lat: -12.04529, lng: -77.03051 }; //
+                const entregaIcon = {
+                    url: '/img/Maps/place.webp',
+                    scaledSize: new google.maps.Size(40, 40) // Tamaño ajustado del ícono
+                };
+                let pedidoIcon = {
+                    url: '/img/Maps/preparando.png',
+                    scaledSize: new google.maps.Size(40, 40) // Tamaño ajustado del ícono
+                };
+
+                if(estadoOrden === 5 || estadoOrden === 10){
+                    pedidoIcon = {
+                        url: '/img/Maps/delivery.png',
+                        scaledSize: new google.maps.Size(40, 40) // Tamaño ajustado del ícono
+                    };
+                }
+
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: defaultLocation
+                });
+
+                marker = new google.maps.Marker({
+                    position: defaultLocation,
+                    map: map,
+                    title: 'Ubicación actual del pedido',
+                    icon: pedidoIcon
+                });
+
+                deliveryMarker = new google.maps.Marker({
+                    map: map,
+                    title: 'Ubicación de la entrega',
+                    icon: entregaIcon
+                });
+
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({
+                    map: map,
+                    suppressMarkers: true // Usaremos nuestros propios marcadores
+                });
+
+                // Llamada inicial para obtener las coordenadas de la ubicación de entrega
+                fetchCoordinates('PUCP, Lima, Perú');
+
+                // Llamada inicial para obtener la ubicación del pedido
+                fetchUbicacion(true);
+            }
+
+            function fetchCoordinates(address) {
+                fetch(`/maps/geocode?address=${encodeURIComponent(address)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const location = data.results[0].geometry.location;
+                        deliveryMarker.setPosition(location);
+                        deliveryMarker.setTitle('Ubicación de la entrega');
+                        calculateAndDisplayRoute(location);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function fetchUbicacion(isInitial = false) {
+                fetch(`/maps/ubicacion/${ordenId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.latitud && data.longitud) {
+                            const newPos = { lat: data.latitud, lng: data.longitud };
+                            marker.setPosition(newPos);
+                            marker.setTitle('Ubicación actual del pedido');
+                            calculateAndDisplayRoute(deliveryMarker.getPosition());
+                        } else if (isInitial) {
+                            const defaultPos = { lat: -12.04529, lng: -77.03051 }; // Ubicación predeterminada
+                            marker.setPosition(defaultPos);
+                            marker.setTitle('Ubicación predeterminada del pedido');
+                            calculateAndDisplayRoute(deliveryMarker.getPosition());
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching location:', error);
+                        if (isInitial) {
+                            const defaultPos = { lat: -12.04529, lng: -77.03051 }; // Ubicación predeterminada
+                            marker.setPosition(defaultPos);
+                            marker.setTitle('Ubicación predeterminada del pedido');
+                            calculateAndDisplayRoute(deliveryMarker.getPosition());
+                        }
+                    });
+
+                setTimeout(fetchUbicacion, 10000); // Actualizar cada 10 segundos
+            }
+
+            function calculateAndDisplayRoute(destination) {
+                const request = {
+                    origin: marker.getPosition(),
+                    destination: destination,
+                    travelMode: 'DRIVING'
+                };
+
+                directionsService.route(request, (result, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(result);
+                        const bounds = new google.maps.LatLngBounds();
+                        bounds.extend(marker.getPosition());
+                        bounds.extend(deliveryMarker.getPosition());
+                        map.fitBounds(bounds);
+                    } else {
+                        console.error('Directions request failed due to ' + status);
+                    }
+                });
+            }
+        </script>
 
 
     </body>

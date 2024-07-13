@@ -151,9 +151,14 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value = "/clinicarenacer/paciente/verPedido")
-    public String verPedido(Model model, @RequestParam("idOrden") Integer idOrden,  HttpSession session, String nombre){
+    public String verPedido(Model model, @RequestParam(value = "idOrden", required = false) Integer idOrden,  HttpSession session, String nombre){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+
+        //Si se intenta ingresar sin un id
+        if (idOrden == null){
+            return "redirect:/clinicarenacer";
+        }
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
@@ -286,7 +291,7 @@ public class FarmaciaWebVentaController {
 
         if(messageService.verificarAccesoChat(chatId,paciente)){
             Chat chat = chatRepository.findById(chatId).get();
-            List<Chat> listaChatsPaciente = chatRepository.findByUsuario1OrderByIdChatDesc(paciente);
+            List<Chat> listaChatsPaciente = chatRepository.findByUsuario2OrderByIdChatDesc(paciente);
             List<Mensajes> listaUltimosMensajes = new ArrayList<>();
 
             for(Chat ch: listaChatsPaciente){
@@ -630,7 +635,7 @@ public class FarmaciaWebVentaController {
 
     @GetMapping(value ={"/clinicarenacer/perfil"})
     public String perfil(Model model,HttpSession session){
-        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
         model.addAttribute("paciente",paciente);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
@@ -640,7 +645,7 @@ public class FarmaciaWebVentaController {
 
     @GetMapping(value ={"/clinicarenacer/editar-perfil"})
     public String editarPerfil(Model model,HttpSession session){
-        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
         model.addAttribute("paciente",paciente);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
@@ -650,12 +655,95 @@ public class FarmaciaWebVentaController {
 
     @GetMapping(value ={"/clinicarenacer/cambiar-contra"})
     public String cambiarContra(Model model,HttpSession session){
-        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
         model.addAttribute("paciente",paciente);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
         return "FarmaciaWebVenta/cambiarContra";
+    }
+
+
+    @PostMapping(value = "/clinicarenacer/actualizar-contra")
+    public String actualizarContra(@RequestParam(name = "pass1", required = false) String pass1,
+                                   @RequestParam(name = "pass2", required = false) String pass2,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
+
+
+        if(pass1 == null || pass2 == null){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/clinicarenacer/cambiar-contra";
+        }
+        if(pass1.isEmpty() || pass2.isEmpty()){
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
+            return "redirect:/clinicarenacer/cambiar-contra";
+        }
+
+
+        if(pass1.equalsIgnoreCase(pass2)){
+            paciente.setContrasena(passwordEncoder.encode(pass1));
+            usuariosRepository.save(paciente);
+            attr.addFlashAttribute("msg","Contraseña actualizada exitosamente.");
+            return "redirect:/clinicarenacer/cambiar-contra";
+        }
+        else {
+            attr.addFlashAttribute("wrn","Las contraseñas no coinciden.");
+            return "redirect:/clinicarenacer/cambiar-contra";
+        }
+
+    }
+
+
+    @PostMapping(value = "/clinicarenacer/guardar_perfil")
+    public String actualizarPerfil(@RequestParam(name = "direccion", required = false) String direccion,
+                                   @RequestParam(name = "distrito", required = false) String distrito,
+                                   @RequestParam(name = "correo",required = false) String correo,
+                                   @RequestParam("image") MultipartFile file,
+                                   RedirectAttributes attr, HttpSession session){
+
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
+
+        if(direccion == null || distrito == null || correo == null){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/clinicarenacer/editar-perfil";
+        }
+        if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
+            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            return "redirect:/clinicarenacer/editar-perfil";
+        }
+
+
+        //Sobre la foto de un producto --------------------------------------------------------------------------------
+        if (!file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/clinicarenacer/editar-perfil";
+            }
+            try {
+                paciente.setFoto(file.getBytes());
+                paciente.setFotonombre(fileName);
+                paciente.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/clinicarenacer/editar-perfil";
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------
+
+
+        paciente.setCorreo(correo);
+        paciente.setDireccion(direccion);
+        paciente.setDistritoResidencia(distrito);
+        usuariosRepository.save(paciente);
+        attr.addFlashAttribute("msg","Perfil actualizado exitosamente.");
+        session.setAttribute("usuario",usuariosRepository.findByIdUsuario(paciente.getIdUsuario()));
+        return "redirect:/clinicarenacer/perfil";
+
     }
 
 

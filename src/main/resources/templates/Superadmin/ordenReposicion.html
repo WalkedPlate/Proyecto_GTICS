@@ -143,9 +143,13 @@
                                         <tr th:each="orden,obj : ${listaOrdenes}">
 
                                             <td>
-                                                <img alt="..." src="/img/Superadmin/administrador_icon.png" class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${orden.usuarios.nombre}" class="text-heading font-semibold" href="#"></a>
+                                                <img th:if="${orden.usuarios.fotonombre != null}" alt="..." th:src="@{|/imageUser/${orden.usuarios.idUsuario}|}"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <img th:if="${orden.usuarios.fotonombre == null}" alt="..." src="/img/Superadmin/administrador_icon.png"
+                                                     class="avatar avatar-sm rounded-circle me-2">
+                                                <a th:text="${orden.usuarios.nombre}" class="text-heading font-semibold"></a>
                                             </td>
+
                                             <td th:text="${orden.codigo}" class="text-center"></td>
                                             <td class="text-center" th:text="${orden.usuarios.sedes.nombre}"></td>
                                             <td class="text-center" th:text="${orden.estadoOrden.nombre}"></td>

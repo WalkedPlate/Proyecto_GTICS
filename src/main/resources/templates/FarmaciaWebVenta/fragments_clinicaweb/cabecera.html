@@ -102,7 +102,8 @@
         <div class="btn-group">
           <button type="button" class="btn btn-outline-primary dropdown-toggle" style="display: flex;
       align-items: center;" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/img/Superadmin/profile-3.jpeg" class="rounded-circle" alt="perfil" width="40" height="40" style="margin-right: 10px;">
+            <img th:if="${session.usuario.fotonombre != null}" th:src="@{|/imageUser/${session.usuario.idUsuario}|}" class="rounded-circle" alt="perfil" width="40" height="40" style="margin-right: 10px;">
+            <img th:if="${session.usuario.fotonombre == null}" src="/img/Superadmin/user_icon.png" class="rounded-circle" alt="perfil" width="40" height="40" style="margin-right: 10px;">
             <span th:text="${session.usuario.nombre}"></span>
           </button>
           <ul class="dropdown-menu">
