@@ -79,6 +79,8 @@ public class AdministradorSedeController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private DniService dniService;
+    @Autowired
+    private DistritosRepository distritosRepository;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -553,9 +555,11 @@ public class AdministradorSedeController {
         EstadoUsuario estado = estadoUsuarioRepository.findById("activo").get();
         TipoUsuario farmacista = tipoUsuarioRepository.findById("Farmacista").get(); //Tipo de usuario: Farmacista
         List<Usuarios> listaFarmacistas = usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(farmacista, adminSede.getSedes(), estado);
+        List<Distritos> listaDistritos = distritosRepository.findAll();
 
         model.addAttribute("listaFarmacistas", listaFarmacistas);
         model.addAttribute("adminSede", adminSede);
+        model.addAttribute("listaDistritos",listaDistritos);
 
 
         return "AdministradorSede/farmacistas";
@@ -607,6 +611,12 @@ public class AdministradorSedeController {
                 ResultDni resultDni = dniService.obtenerDatosPorDni(usuarios.getDni().toString());
                 if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                     attr.addFlashAttribute("err","DNI inválido");
+                    return "redirect:/administradorsede/farmacistas";
+                }
+
+
+                if(distritosRepository.findByNombre(usuarios.getDistritoResidencia()) == null){
+                    attr.addFlashAttribute("err","Distrito invalido");
                     return "redirect:/administradorsede/farmacistas";
                 }
 

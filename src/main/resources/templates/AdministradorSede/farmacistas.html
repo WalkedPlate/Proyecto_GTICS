@@ -370,11 +370,16 @@
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <label for="distritoResidencia">Dtto. de residencia</label>
+                                                <!--<label for="distritoResidencia">Dtto. de residencia</label>
                                                 <input maxlength="99" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
                                                 <div class="invalid-feedback">
                                                     Por favor, ingrese un dtto. de residencia (max 99 dígitos).
-                                                </div>
+                                                </div>-->
+                                                <label for="distritoResidencia">Seleccione un distrito:</label>
+                                                <select id="distritoResidencia" name="distritoResidencia" class="form-select" required>
+                                                    <option disabled selected>--Seleccione--</option>
+                                                    <option th:each="distrito:${listaDistritos}" th:value="${distrito.nombre}" th:text="${distrito.nombre}"></option>
+                                                </select>
                                             </div>
                                             <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
 
