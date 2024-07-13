@@ -610,6 +610,11 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
+                Integer cantFarmacistasPorSede = usuariosRepository.cuentaUsuariosFarmacistasPorSedeActivos(adminSede.getSedes().getIdSedes());
+                if(cantFarmacistasPorSede >= 3){
+                    attr.addFlashAttribute("err","Solo se puede agregar maximo 3 farmacistas por sede");
+                    return "redirect:/administradorsede/farmacistas";
+                }
                 usuarios.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
 
                 usuarios.setSedes(sedesOpt.get());

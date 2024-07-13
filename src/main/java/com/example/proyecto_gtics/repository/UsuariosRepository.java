@@ -35,4 +35,7 @@ public interface UsuariosRepository extends JpaRepository<Usuarios,Integer> {
     @Transactional
     @Query(value = "UPDATE proyecto_gtics.usuarios SET proyecto_gtics.usuarios.fechaDesbaneo = DATE_ADD(fecha_ban,INTERVAL dias_ban DAY) where id_usuario=?1 ;", nativeQuery = true)
     void calculAyActualizarFechaDesbaneo(Integer idUsuario);
+
+    @Query(value = "select count(usuarios.id_usuario) as cantidadUsuarios from proyecto_gtics.usuarios where usuarios.sedes_idsedes=?1 and usuarios.tipo_usuario_idtipo_usuario=\"Farmacista\" and usuarios.estado_idestado=\"Activo\";", nativeQuery = true)
+    Integer cuentaUsuariosFarmacistasPorSedeActivos(Integer idSede);
 }
