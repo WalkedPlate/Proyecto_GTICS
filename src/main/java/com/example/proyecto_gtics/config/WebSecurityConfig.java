@@ -89,6 +89,8 @@ public class WebSecurityConfig {
 
         http.csrf(a -> a
                 .ignoringRequestMatchers("/api/**"));
+        http.csrf(a -> a
+                .ignoringRequestMatchers("/maps/**"));
 
         return http.build();
     }

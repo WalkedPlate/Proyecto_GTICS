@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +60,7 @@ public interface OrdenesRepository extends JpaRepository<Ordenes,Integer> {
             "from proyecto_gtics.ordenes inner join detalles_orden on ordenes.idordenes = detalles_orden.ordenes_idordenes \n" +
             "where ordenes.tipo_orden_idtipo_orden = ?1 and ordenes.sedes_idsedes = ?2 and ordenes.idordenes = ?3 ;",nativeQuery = true)
     List<CantidadProductosPorOrden> obtenerCantidadPorTipoOrdenSedeOrden(Integer tipoOrden, Integer idSede, Integer idOrden);
+
+    List<Ordenes> findTop2ByTipoOrdenAndSedesAndEstadoOrdenNotInOrderByIdordenesDesc(TipoOrden tipoOrden, Sedes sedes, List<EstadoOrden> list);
 
 }

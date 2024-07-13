@@ -1,7 +1,9 @@
 package com.example.proyecto_gtics.controller;
 
+import com.example.proyecto_gtics.dto.ResultDni;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.MessageService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -74,6 +76,8 @@ public class FarmacistaController {
     private ChatRepository chatRepository;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private DniService dniService;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -138,9 +142,17 @@ public class FarmacistaController {
             }
         }
 
-
+        ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
+        if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
+            attr.addFlashAttribute("err","DNI inválido");
+            return "redirect:/farmacista";
+        }
 
         if (!usuarioYaRegistrado(paciente.getDni(),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
+
+            paciente.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
+
+
             paciente.setSedes(farmacista.getSedes()); // asignamos la sede actual
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
