@@ -12,6 +12,28 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="/css/Login/registro.css"/>
+
+        <style>
+            .dropdown-menu {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .dropdown-item {
+                cursor: pointer;
+            }
+
+            .dttobtn {
+                width: 100%;
+                height: 58px;
+                border-color: #dee2e6 !important;
+            }
+
+            .is-invalid-container {
+                border-color: #dc3545 !important;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -25,7 +47,6 @@
                             <h1>Renacer</h1>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row text-center mb-3">
@@ -40,83 +61,72 @@
                             </ul>
                         </div>
 
-                        <div th:if="${msg != null}" th:text="${msg}" style="color: green" role="alert" class="mb-3"></div>
+                        <div th:if="${msg != null}" th:text="${msg}" style="color: green" role="alert"
+                             class="mb-3"></div>
                     </div>
-
                 </div>
-
 
                 <div class="row ">
                     <div class="col">
-                        <!-- Para ver las validaciones del backend quitar class="nedds-validation-->
-                        <form id="registerForm" class="needs-validation" novalidate method="post" th:action="@{/guardarPaciente}">
+                        <form id="registerForm" novalidate method="post" th:action="@{/guardarPaciente}">
                             <div class="row justify-content-center">
                                 <div class="col columna">
                                     <div class="form-floating mb-3">
-                                        <input
-                                                id="dni"
-                                                minlength="8" maxlength="8"
-                                                type="text" class="form-control" placeholder="DNI"
-                                                autocomplete="off" name="dni" required/>
+                                        <input id="dni" minlength="8" maxlength="8" type="text" class="form-control"
+                                               placeholder="DNI" autocomplete="off" name="dni"/>
                                         <label>DNI</label>
                                         <div class="invalid-feedback" id="dniError">
-                                            El DNI debe tener 8 dígitos.
+                                            Por favor, ingrese su DNI de 8 dígitos.
                                         </div>
                                         <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
                                     </div>
                                 </div>
                             </div>
 
-
                             <!-- Nombre y apellidos autocompletados-->
                             <div class="row justify-content-center">
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
-                                        <input
-                                                pattern="[A-Za-z].+"
-                                                type="text" class="form-control" placeholder="Nombre"
-                                                autocomplete="off"  id="nombre" disabled readonly/>
+                                        <input type="text" class="form-control" placeholder="Nombre" autocomplete="off"
+                                               id="nombre" disabled readonly/>
                                         <label>Nombres</label>
-<!--                                        <div class="invalid-feedback">-->
-<!--                                            Por favor, ingrese un nombre.-->
-<!--                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
-                                        <input
-                                                pattern="[A-Za-z].+"
-                                                type="text" class="form-control" placeholder="Apellido"
-                                                autocomplete="off"  id="apellido" disabled readonly/>
+                                        <input type="text" class="form-control" placeholder="Apellido"
+                                               autocomplete="off" id="apellido" disabled readonly/>
                                         <label>Apellidos</label>
-<!--                                        <div class="invalid-feedback">-->
-<!--                                            Por favor ingrese un apellido.-->
-<!--                                        </div>-->
                                     </div>
-
                                 </div>
                             </div>
 
                             <div class="row justify-content-center">
                                 <div class="col-md-6 columna">
                                     <div class="form-floating mb-3">
-                                        <input maxlength="99" type="text" class="form-control"
-                                               placeholder="Dirección"
-                                               autocomplete="off" name="direccion" required/>
+                                        <input maxlength="99" type="text" class="form-control" placeholder="Dirección"
+                                               autocomplete="off" name="direccion"/>
                                         <label>Dirección</label>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese una dirección (max 99 dígitos).
-                                        </div>
+                                        <div class="invalid-feedback" id="direccionError"></div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 columna">
-                                    <div class="form-floating mb-3">
-                                        <input maxlength="99" type="text" class="form-control"
-                                               placeholder="Distrito"
-                                               autocomplete="off" name="distritoResidencia" required/>
-                                        <label>Distrito de residencia</label>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                    <div class="mb-3">
+                                        <div class="dropdown-center">
+                                            <button class="btn dropdown-toggle dttobtn" type="button"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                Dtto. de residencia
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" th:each="distrito:${listaDistritos}"
+                                                       th:value="${distrito.nombre}" th:text="${distrito.nombre}"></a>
+                                                </li>
+                                            </ul>
+                                            <!-- Hidden input para enviar el valor seleccionado -->
+                                            <input type="hidden" class="form-control" id="distritoResidencia"
+                                                   name="distritoResidencia">
+                                            <div class="invalid-feedback" id="distritoError"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -125,37 +135,27 @@
                             <div class="row justify-content-center">
                                 <div class="col columna">
                                     <div class="form-floating mb-3">
-                                        <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
-                                               maxlength="99"
-                                               type="email" class="form-control" placeholder="Correo electrónico"
+                                        <input type="email" class="form-control" placeholder="Correo electrónico"
                                                autocomplete="off" name="correo" required/>
                                         <label>Correo electrónico</label>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese un correo válido (max 99 dígitos).
-                                        </div>
+                                        <div class="invalid-feedback" id="correoError"></div>
                                     </div>
                                 </div>
                             </div>
 
-
                             <div class="row justify-content-center">
-                                <div class="col columna ">
-                                    <div class="form-control mb-3">
+                                <div class="col columna">
+                                    <div class="form-control mb-3 seguro-container">
                                         <p>¿Cuenta con seguro en la clínica Renacer?</p>
                                         <div>
-
                                             <input class="form-check-input" type="radio" name="seguro" value="si"
                                                    required>
                                             <label class="form-check-label">Sí</label>
-
                                             <input class="form-check-input" type="radio" name="seguro" value="no"
                                                    required>
                                             <label class="form-check-label"> No</label>
-                                            <div class="invalid-feedback">
-                                                Por favor, seleccione una opción.
-                                            </div>
                                         </div>
-
+                                        <div class="invalid-feedback" id="seguroError"></div>
                                     </div>
                                 </div>
                             </div>
@@ -167,119 +167,17 @@
                                 <h6>¿Ya tienes una cuenta?</h6>
                                 <a th:href="@{'/login'}">Entrar</a>
                             </div>
-
                         </form>
                     </div>
                 </div>
-
             </div>
         </main>
 
+        <script src="/js/Login/registro.js"></script>
 
-        <script>
-            //Autocompletar Nombre y Apellidos con el DNI
-            function autocompletarDni() {
-                let dni = document.getElementById("dni").value;
-
-                fetch(`/api/dni?dni=${dni}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 422 || data.status === 404) {
-                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                            document.getElementById("dniError").classList.remove('is-invalid');
-                            document.getElementById("dniError").innerText = 'DNI no válido.';
-                            document.getElementById("dniError").style.display = 'block';
-                        } else {
-                            document.getElementById("nombre").value = data.data.nombres;
-                            document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
-                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                            document.getElementById("dniError").classList.remove('is-invalid');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-
-
-                // Simulación de respuesta de la API
-                // let dni = document.getElementById("dni").value;
-                //
-                // let data = {
-                //     status: 40 // Cambia el valor para simular diferentes escenarios (200, 404, etc.)
-                // };
-                //
-                // if (data.status === 422 || data.status === 404) {
-                //     document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                //     document.getElementById("dniError").classList.remove('is-invalid');
-                //     document.getElementById("dniError").innerText = 'DNI no válido.';
-                //     document.getElementById("dniError").style.display = 'block';
-                // } else {
-                //     // Simulación de datos
-                //     document.getElementById("nombre").value = "Nombre Simulado";
-                //     document.getElementById("apellido").value = "Apellido Simulado";
-                //     document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                //     document.getElementById("dniError").classList.remove('is-invalid');
-                // }
-            }
-
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("dni").addEventListener("keydown", function (event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-
-            // Añadir el evento keydown para detectar la tecla Enter
-            document.getElementById('dni').addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Evitar que el formulario se envíe
-                    let dniInput = document.getElementById("dni");
-                    let dniError = document.getElementById("dniError");
-
-                    // Validar la longitud del DNI
-                    if (dniInput.value.length !== 8) {
-                        dniError.style.display = 'block';
-                        dniInput.classList.add('is-invalid');
-                    } else {
-                        dniError.style.display = 'none';
-                        dniInput.classList.remove('is-invalid');
-                        autocompletarDni();
-                    }
-                }
-            });
-        </script>
-
-        <script>
-            // Validar el form presionando el botón de Registrar
-            document.getElementById("registerForm").addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                }
-            });
-
-            (() => {
-                'use strict'
-
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                const forms = document.querySelectorAll('.needs-validation')
-
-                // Loop over them and prevent submission
-                Array.from(forms).forEach(form => {
-                    form.addEventListener('submit', event => {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-            })()
-        </script>
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>
     </body>
 
 </html>

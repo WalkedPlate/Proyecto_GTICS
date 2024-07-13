@@ -2,6 +2,7 @@ package com.example.proyecto_gtics.controller;
 
 
 import com.example.proyecto_gtics.dto.ResultDni;
+import com.example.proyecto_gtics.entity.Distritos;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
@@ -85,6 +86,8 @@ public class LoginController {
     private TokenService tokenService;
     @Autowired
     private DniService dniService;
+    @Autowired
+    private DistritosRepository distritosRepository;
 
 
     @GetMapping(value ={"","/","/login"})
@@ -110,7 +113,9 @@ public class LoginController {
 
 
     @GetMapping(value ={"/registro"})
-    public String registro(){
+    public String registro(Model model){
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "Login/registro";
     }
 

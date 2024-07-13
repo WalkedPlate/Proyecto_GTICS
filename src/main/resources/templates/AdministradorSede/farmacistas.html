@@ -375,9 +375,9 @@
                                                 <div class="invalid-feedback">
                                                     Por favor, ingrese un dtto. de residencia (max 99 dígitos).
                                                 </div>-->
-                                                <label for="distritoResidencia">Seleccione un distrito:</label>
+                                                <label for="distritoResidencia">Dtto. de residencia:</label>
                                                 <select id="distritoResidencia" name="distritoResidencia" class="form-select" required>
-                                                    <option disabled selected>--Seleccione--</option>
+                                                    <option disabled selected>--Seleccione un distrito--</option>
                                                     <option th:each="distrito:${listaDistritos}" th:value="${distrito.nombre}" th:text="${distrito.nombre}"></option>
                                                 </select>
                                             </div>
