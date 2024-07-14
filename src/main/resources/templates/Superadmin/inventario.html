@@ -363,17 +363,16 @@
                                                      class="avatar avatar-sm rounded-circle me-2">
 
                                             </td>
-                                            <td>
-                                                <p th:text="${medicamento.nombre}"
-                                                   class="text-heading font-semibold text-uppercase text-center"></p>
+                                            <td th:text="${medicamento.nombre}"
+                                                class="text-heading font-semibold text-uppercase text-center puntero">
                                             </td>
                                             <th:block th:each="cantidad:${listaCantidadPorProducto}">
-                                                <td class="text-center"
+                                                <td class="text-center puntero"
                                                     th:if="${cantidad.getIdProductos() == medicamento.idProductos}"
                                                     th:text="${cantidad.getCantidadTotal()}"></td>
                                             </th:block>
-                                            <td th:text="${#numbers.formatDecimal(medicamento.precio, 0, 2, 'POINT')}" class="text-center"></td>
-                                            <td th:text="${medicamento.categorias.nombre}" class="text-center"></td>
+                                            <td th:text="${#numbers.formatDecimal(medicamento.precio, 0, 2, 'POINT')}" class="text-center puntero"></td>
+                                            <td th:text="${medicamento.categorias.nombre}" class="text-center puntero"></td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-primary btn-square"
                                                         data-bs-toggle="modal"

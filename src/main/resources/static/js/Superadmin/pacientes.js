@@ -2,8 +2,30 @@ let table = new DataTable('#pacientes', {
     pageLength: 5,
     lengthMenu: [5, 10, 25, 50, 100],
     columnDefs: [
-        {orderable: false, target: [6]},
+        {orderable: false, target: [0,8]},
+        {
+            target: [6],
+            visible: false,
+            searchable: false
+        },
+        {
+            target: [7],
+            visible: false,
+        },
+        {
+            "targets": [5], // Índice de la columna Dirección (empezando desde 0)
+            "render": function(data, type, row, meta) {
+                // Este render se encarga de mostrar el contenido en la fila expandida
+                return '<b>Dirección:</b> ' + row[6] + '<br>' +
+                    '<b>Distrito:</b> ' + row[7]; // Índice de la columna Distrito
+            },
+            "className": 'details-control',
+            "orderable": false,
+            "data": null,
+            "defaultContent": ''
+        },
     ],
+    order: [[1, 'asc']],
     language: {
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -312,7 +334,7 @@ new DataTable.Buttons(table, {
         },
 
         exportOptions: {
-            columns: [0,1,2,3,4,5] // columnas que se exportarán
+            columns: [1,2,3,4,6,7] // columnas que se exportarán
         }
     }]
 });

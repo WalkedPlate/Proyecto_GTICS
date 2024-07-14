@@ -129,4 +129,8 @@ public class Usuarios implements Serializable {
         return RandomStringUtils.randomAlphanumeric(length); // Genera una cadena alfanumérica de longitud especificada
     }
 
+    public String getFormattedDni() {
+        return String.format("%08d", dni);
+    }
+
 }

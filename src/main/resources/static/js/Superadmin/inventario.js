@@ -4,6 +4,7 @@ let table = new DataTable('#inventario', {
     columnDefs: [
         {orderable: false, target: [0, 5]},
     ],
+    order: [[1, 'asc']],
     language: {
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -276,8 +277,8 @@ new DataTable.Buttons(table, {
                 alignment: 'center',
             };
 
-            doc.content[2].table.widths = ['30%', '20%', '20%',
-                '30%'];
+            doc.content[2].table.widths = ['25%', '25%', '25%',
+                '25%'];
 
             // Configurar alineación específica para las columnas
             var columnsToCenter = [1, 2, 3]; // Índices de las columnas que se centrarán

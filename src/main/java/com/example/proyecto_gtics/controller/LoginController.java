@@ -8,6 +8,7 @@ import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
+import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -124,7 +125,7 @@ public class LoginController {
                                    @RequestParam(name = "apellidos", required = false) String apellidos,
                                    HttpServletRequest request, RedirectAttributes attr){
 
-        // Verificar si hay errores de validación: vemos si el campo del dni y correo no esten vacíos, junto con la dirección y distrito de residencia
+        // Verificar si hay errores de validación: vemos si el campo del dni y correo no esten vacíos
         if (bindingResult.hasErrors()) {
 
             // Si hay errores de validación, los almacenamos en una lista y los añadimos como un mensaje flash
@@ -135,6 +136,8 @@ public class LoginController {
             return "redirect:/registro";
         }
 
+        // Convertir DNI a String para procesamiento
+        String dniStr = DniUtils.formatDni(paciente.getDni());
 
         //Comprobar si existe el paciente:
         Optional<Usuarios> consultaPaciente = usuariosRepository.findByDni(paciente.getDni());
@@ -167,7 +170,7 @@ public class LoginController {
             String link = request.getScheme() + "://"+ request.getServerName()
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
-            ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
+            ResultDni resultDni = dniService.obtenerDatosPorDni(dniStr);
             if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                 attr.addFlashAttribute("errDNI","El DNI ingresado es inválido");
                 return "redirect:/registro";

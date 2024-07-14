@@ -97,10 +97,12 @@
                                 <table id="pacientes" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th scope="col" class="text-center">Imagen</th>
                                             <th scope="col" class="text-center">Nombre</th>
                                             <th scope="col" class="text-center">DNI</th>
                                             <th scope="col" class="text-center">Correo</th>
                                             <th scope="col" class="text-center">Seguro</th>
+                                            <th scope="col" class="text-center">Datos</th>
                                             <th scope="col" class="text-center">Dirección</th>
                                             <th scope="col" class="text-center">Distrito</th>
                                             <th class="text-center">Acciones</th>
@@ -108,19 +110,19 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="paciente,obj: ${listaPacientes}">
-                                            <td>
+                                            <td class="puntero">
                                                 <img th:if="${paciente.fotonombre != null}" alt="..." th:src="@{|/imageUser/${paciente.idUsuario}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <img th:if="${paciente.fotonombre == null}" alt="..." src="/img/Superadmin/user_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${paciente.nombre}" class="text-heading font-semibold"
-                                                   href="#"></a>
                                             </td>
-                                            <td th:text="${paciente.dni}" class="text-center"></td>
-                                            <td th:text="${paciente.correo}" class="text-center"></td>
-                                            <td th:text="${paciente.seguro}" class="text-center"></td>
-                                            <td th:text="${paciente.direccion}" class="text-center"></td>
-                                            <td th:text="${paciente.distritoResidencia}" class="text-center"></td>
+                                            <td th:text="${paciente.nombre}" class="text-heading font-semibold puntero text-uppercase"></td>
+                                            <td th:text="${paciente.getFormattedDni()}" class="text-center puntero"></td>
+                                            <td th:text="${paciente.correo}" class="puntero"></td>
+                                            <td th:text="${paciente.seguro}" class="text-center puntero"></td>
+                                            <td class="puntero"></td>
+                                            <td th:text="${paciente.direccion}" class="text-center puntero"></td>
+                                            <td th:text="${paciente.distritoResidencia}" class="text-center puntero"></td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm btn-square btn-secondary">
                                                     <i class="bi bi-gear-wide-connected"></i>

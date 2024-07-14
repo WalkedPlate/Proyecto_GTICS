@@ -16,6 +16,25 @@ function autocompletarDni() {
         })
         .catch(error => console.error('Error:', error));
 
+    // Simulación de respuesta de la API
+    // let dni = document.getElementById("dni").value;
+    //
+    // let data = {
+    //     status: 40 // Cambia el valor para simular diferentes escenarios (200, 404, etc.)
+    // };
+    //
+    // if (data.status === 422 || data.status === 404) {
+    //     document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+    //     document.getElementById("dniError").classList.remove('is-invalid');
+    //     document.getElementById("dniError").innerText = 'DNI no válido.';
+    //     document.getElementById("dniError").style.display = 'block';
+    // } else {
+    //     // Simulación de datos
+    //     document.getElementById("nombre").value = "Nombre Simulado";
+    //     document.getElementById("apellido").value = "Apellido Simulado";
+    //     document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
+    //     document.getElementById("dniError").classList.remove('is-invalid');
+    // }
 }
 
 // JavaScript para permitir solo la entrada de números
