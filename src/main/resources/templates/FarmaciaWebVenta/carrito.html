@@ -181,14 +181,14 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p th:text="'S/. ' + ${detalle.productos.precio}"></p>
+                                                    <p th:text="'S/. ' + ${#numbers.formatDecimal(detalle.productos.precio, 0,2,'POINT')}"></p>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
                                                         <input type="number" class="form-control text-center" th:value="${detalle.cantidad}" min="1" name="cantidad" th:id="'cantidad-'+${obj.index}">
                                                     </div>
                                                 </td>
-                                                <td  th:text="${detalle.montoParcial}"></td>
+                                                <td  th:text="${#numbers.formatDecimal(detalle.montoParcial, 0,2,'POINT')}"></td>
                                                 <td class="text-end">
                                                     <a type="button" class="btn btn-primary" th:onclick="'updateCantidad('+${obj.index}+')'">Actualizar</a>
                                                 </td>

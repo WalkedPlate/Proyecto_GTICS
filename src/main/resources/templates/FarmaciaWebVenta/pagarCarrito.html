@@ -181,7 +181,7 @@
                             <div class="row pt-3">
                                 <h6>Por favor, adjunta una imagen de tu receta</h6>
                                 <div class="col">
-                                    <label for="direccion">Adjunta la receta:</label>
+                                    <label>Adjunta la receta:</label>
                                     <input type="file" class="form-control" name="archivo" accept="image/*" required>
                                 </div>
                             </div>
@@ -232,8 +232,8 @@
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="distrito">Sede:</label>
-                                            <select id="distrito" name="idSede" class="form-select" required>
+                                            <label for="sede">Sede:</label>
+                                            <select id="sede" name="idSede" class="form-select" required>
                                                 <option selected disabled value="">--Ingresa una sede--</option>
                                                 <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
                                             </select>
@@ -250,8 +250,6 @@
                             <div class="showcase-container">
                                 <h4>¿En dónde recibirás tu pedido?</h4>
                                 <hr>
-
-                                <form action="">
                                     <h6>Recibe tu pedido donde estés</h6>
                                     <div class="row pt-3">
                                         <div class="col">
@@ -260,13 +258,13 @@
                                                    placeholder="Coloca tu dirección actual">
                                         </div>
                                         <div class="col">
-                                            <label for="distrito2">Distrito:</label>
-                                            <input id="distrito2" name="distrito" type="text" class="form-control"
-                                                   placeholder="Coloca tu distrito">
+                                            <label for="distrito">Distrito:</label>
+                                            <select id="distrito" name="distrito" class="form-select" required>
+                                                <option selected disabled value="">--Selecciona un distrito--</option>
+                                                <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
+                                            </select>
                                         </div>
                                     </div>
-
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -456,7 +454,7 @@
                                 </td>
                                 <td class="mg">
                                     <div class="d-flex justify-content-center">
-                                        <p class="d-flex align-items-center" th:text="${detalle.montoParcial}"></p>
+                                        <p class="d-flex align-items-center" th:text="${#numbers.formatDecimal(detalle.montoParcial, 0,2,'POINT')}"></p>
                                     </div>
                                 </td>
                             </tr>
@@ -465,7 +463,7 @@
                     </div>
                 </form>
                 <h6 id="cantidadTotal" th:text="'Productos('+${listaDetallesOrden.size()}+')'" ></h6>
-                <h6 id="costoTotal" th:text="'Total a pagar: S/.'+ ${carrito.monto}"></h6>
+                <h6 id="costoTotal" th:text="'Total a pagar: S/.'+ ${carrito}"></h6>
             </div>
         </div>
 

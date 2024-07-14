@@ -476,17 +476,6 @@ public class FarmaciaWebVentaController {
             }
             ordenesRepository.save(ordenPreSave);
 
-            /*//Validacion de pago con tarjeta
-            boolean tarjetaValida =  cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
-
-            if(tarjetaValida){
-               attr.addFlashAttribute("msg","Datos validados, procesando compra...");
-            }
-            else {
-                attr.addFlashAttribute("err","No se pudo realizar la compra, error de datos.");
-                return "redirect:/clinicarenacer/paciente/pagar";
-            }*/
-
 
             Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
 
@@ -565,21 +554,13 @@ public class FarmaciaWebVentaController {
         model.addAttribute("listaDoctores",listaDoctores);
         model.addAttribute("paciente",paciente);
 
-        Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
 
         float monto = 0;
 
         for(DetallesOrden detallesOrden: carrito){
             monto += detallesOrden.getMontoParcial();
-            detallesOrden.setOrdenes(ordenRecuperada);
-            detallesOrdenRepository.save(detallesOrden);
         }
-
-        ordenRecuperada.setMonto(monto);
-
-
-        model.addAttribute("carrito",ordenRecuperada);
-
+        model.addAttribute("carrito",monto);
 
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
@@ -602,27 +583,6 @@ public class FarmaciaWebVentaController {
         //model.addAttribute("ordenCarrito",optOrden.get());
         model.addAttribute("listaDetallesOrden",carrito);
         return "FarmaciaWebVenta/carrito";
-
-        //Optional<Ordenes> optOrden = ordenesRepository.findById(idCarrito);
-
-        //if(idCarrito == null){
-            //return "FarmaciaWebVenta/carrito";
-        //}
-
-
-
-        //if(optOrden.isPresent()){
-
-            //if(!validarTipoOrden(6,optOrden.get())){
-                //if(!validarTipoOrden(3,optOrden.get()) || optOrden.get().getSedes().getIdSedes() != 2){
-                    //return "redirect:/clinicarenacer";
-                //}
-            //}
-
-        //}
-        //else {
-           // return "redirect:/clinicarenacer";
-           // }
 
     }
 
