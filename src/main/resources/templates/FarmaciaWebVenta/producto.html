@@ -276,39 +276,37 @@
 
             <div class="product-grid">
 
-              <div class="showcase">
-
-                <div class="showcase-banner">
+              <div class="showcase" th:each="producto, obj:${mejoresProductos}">
+                <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
+                  <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
+                  <div class="showcase-banner">
 
                     <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
-                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
-                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos2.jpg" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                    <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                    <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
 
-
-                  <div class="showcase-actions">
-
-                    <button class="btn-action">
-                      <ion-icon name="bag-add-outline"></ion-icon>
-                    </button>
+                    <div class="showcase-actions">
+                      <button type="submit" class="btn-action">
+                        <ion-icon name="bag-add-outline"></ion-icon>
+                      </button>
+                    </div>
 
                   </div>
 
-                </div>
+                  <div  class="showcase-content">
 
-                <div  class="showcase-content">
+                    <a th:text="${producto.nombre}" th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}" class="showcase-category"></a>
 
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-category"></a>
+                    <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.categorias.idCategorias}}">
+                      <h3 style="width: 250px; margin: 0 0 1em 0; overflow: hidden; display: -webkit-box;-webkit-line-clamp: 3; -webkit-box-orient: vertical;" th:text="${producto.descripcion}" class="showcase-title"></h3>
+                    </a>
 
-                  <a th:href="@{'/clinicarenacer/producto'}">
-                    <h3 class="showcase-title">Mezcla de polvo a base de maca roja y más cosas...</h3>
-                  </a>
+                    <div class="price-box">
+                      <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                    </div>
 
-                  <div class="price-box">
-                    <p class="price">S/ 52.40</p>
                   </div>
-
-                </div>
-
+                </form>
               </div>
 
 

@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -199,8 +200,8 @@ public class FarmaciaWebVentaController {
             Usuarios paciente = (Usuarios) session.getAttribute("usuario");
             List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
             List<Categorias> listaCategorias = categoriasRepository.findAll();
+            model.addAttribute("listaCategorias", listaCategorias);
             model.addAttribute("productosEncontrados", buscarProductos);
-            model.addAttribute("listacategorias",listaCategorias);
             return "FarmaciaWebVenta/productosBusqueda";  // Vista para mostrar los resultados
         } catch (Exception e) {
             // Log error
@@ -248,9 +249,9 @@ public class FarmaciaWebVentaController {
         Categorias categorias = categoriasRepository.findById(idCategoria).get();
 
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(10);
+        int pageSize = size.orElse(8);
 
-        Page<Productos> productosPage = buscarProductosService.findPaginated(PageRequest.of(currentPage - 1, pageSize));;
+        Page<Productos> productosPage = productosRepository.findByCategorias(categorias, PageRequest.of(currentPage - 1, pageSize));
 
         List<Productos> listaProductosPorCategoria = productosRepository.findByCategorias(categorias);
         List<Productos> listarProducto = productosRepository.findAll();
@@ -260,7 +261,7 @@ public class FarmaciaWebVentaController {
             listaCantidades.add(productosRepository.countByCategorias(categoria));
         }
         model.addAttribute("categoriaActual",categorias);
-        model.addAttribute("listaProductos",listaProductosPorCategoria);
+        model.addAttribute("listaProductos",productosPage.getContent());
         model.addAttribute("listarProducto",listarProducto);
         model.addAttribute("listaCategorias", listaCategorias);
         model.addAttribute("listaCantCategorias",listaCantidades);
@@ -272,13 +273,6 @@ public class FarmaciaWebVentaController {
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
-        }
-
-        if ("XMLHttpRequest".equals(requestedWith)) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("listaProductos", listaProductosPorCategoria);
-            response.put("productoPage", productosPage);
-            response.put("pageNumbers", model.getAttribute("pageNumbers"));
         }
 
         return "FarmaciaWebVenta/PorCategoria";
@@ -352,24 +346,37 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/producto"})
-    public String producto(Model model, @RequestParam(name = "idProductos") int idProductos,  HttpSession session){
+    public String producto(Model model,
+                           @RequestParam(name = "idProductos") int idProductos,
+                           HttpSession session){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Optional<Productos> optionalProducto = productosRepository.findById(idProductos);
 
-        Productos productos = productosRepository.findById(idProductos).get();
-        List<Productos> listaProductos = productosRepository.findAll();
-        List<Categorias> listaCategorias = categoriasRepository.findAll();
-        List<Long> listaCantidades = new ArrayList<>();
-        for (Categorias categoria: listaCategorias){
-            listaCantidades.add(productosRepository.countByCategorias(categoria));
+        if (optionalProducto.isPresent()) {
+            Productos productos = optionalProducto.get();
+
+            Pageable pageable = PageRequest.of(0, 4); // Limitar a los 4 primeros productos
+            List<Productos> mejoresProductos = productosRepository.findTop4ProductosByCategoria(productos.getCategorias().getIdCategorias(), pageable);
+
+            List<Productos> listaProductos = productosRepository.findAll();
+            List<Categorias> listaCategorias = categoriasRepository.findAll();
+            List<Long> listaCantidades = new ArrayList<>();
+            for (Categorias categoria : listaCategorias) {
+                listaCantidades.add(productosRepository.countByCategorias(categoria));
+            }
+
+            model.addAttribute("productoActual", productos);
+            model.addAttribute("mejoresProductos", mejoresProductos);
+            model.addAttribute("listaCantCategorias", listaCantidades);
+            model.addAttribute("listaProductos", listaProductos);
+            model.addAttribute("listaCategorias", listaCategorias);
+            return "FarmaciaWebVenta/producto";
+        } else {
+            // Manejar el caso donde el producto no fue encontrado
+            return "redirect:/error";
         }
 
-        model.addAttribute("productoActual",productos);
-
-        model.addAttribute("listaCantCategorias",listaCantidades);
-        model.addAttribute("listaProductos",listaProductos);
-        model.addAttribute("listaCategorias", listaCategorias);
-        return "FarmaciaWebVenta/producto";
     }
 
 

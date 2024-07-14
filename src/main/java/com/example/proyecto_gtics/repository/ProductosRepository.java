@@ -3,6 +3,8 @@ package com.example.proyecto_gtics.repository;
 import com.example.proyecto_gtics.dto.*;
 import com.example.proyecto_gtics.entity.Categorias;
 import com.example.proyecto_gtics.entity.Productos;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -48,5 +50,21 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
 
     @Query(value = "SELECT p.* FROM productos p JOIN categorias c ON p.categorias_idcategorias = c.idcategorias WHERE p.nombre LIKE '%:nombre%' OR c.nombre LIKE '%:nombre%' LIMIT 0, 1000;", nativeQuery = true)
     List<Productos> searchByKeyword(@Param("nombre") String nombre);
+
+    Page<Productos> findByCategorias(Categorias categorias, Pageable pageable);
+
+    @Query(value = "SELECT p.* FROM productos p " +
+            "JOIN categorias c ON p.categorias_idcategorias = c.idcategorias " +
+            "JOIN (SELECT idproducto, AVG(preferencia) AS promedio_preferencia " +
+            "FROM preferencias_usuario " +
+            "GROUP BY idproducto) pu ON p.idProductos = pu.idproducto " +
+            "WHERE p.categorias_idcategorias = :idCategoria " +
+            "ORDER BY pu.promedio_preferencia DESC, RAND() " +
+            "LIMIT 4", nativeQuery = true)
+    List<Productos> findTop4ProductosByCategoria2(@Param("idCategoria") int idCategoria);
+
+    @Query("SELECT p FROM Productos p WHERE p.categorias.idCategorias = :idCategorias ORDER BY FUNCTION('RAND')")
+    List<Productos> findTop4ProductosByCategoria(@Param("idCategorias") int idCategorias, Pageable pageable);
+
 
 }
