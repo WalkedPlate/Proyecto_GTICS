@@ -307,7 +307,7 @@ public class AdministradorSedeController {
     }
 
     @GetMapping(value = {"/administradorsede/editarOrden"})
-    public String editarOrden(Model model, @RequestParam("idOrdenRepo") Integer id,
+    public String editarOrden(Model model, @RequestParam("idOrdenRepo") Integer id, RedirectAttributes attr,
                               HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
@@ -327,6 +327,11 @@ public class AdministradorSedeController {
 
             if (!validarTipoOrden(2, optOrden.get()) || !Objects.equals(optOrden.get().getSedes().getIdSedes(), adminSede.getSedes().getIdSedes())) {
                 return "redirect:/administradorsede/ordenes-reposicion";
+            }
+
+            if (optOrden.get().getEstadoOrden().getIdEstadoOrden() >= 4){
+                attr.addFlashAttribute("err", "No es posible editar la orden");
+                return "redirect:/administradorsede/verOrden?idOrdenRepo="+optOrden.get().getIdordenes();
             }
 
             List<DetallesOrden> listaDetallesOrden = detallesOrdenRepository.findByOrdenes(optOrden.get());
