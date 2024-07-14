@@ -95,48 +95,40 @@ public class FarmaciaWebVentaController {
     DateTimeFormatter formatDateToSring = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @GetMapping(value ={"/clinicarenacer"})
-    public String paginaPrincipal(Model model, String nombre, @RequestParam(name = "noprimeraVez", required = false) Integer noprimeraVez,  HttpSession session){
-
-        //Optional<Productos> optProductos= productosRepository.findById(idCarrito);
-        /*Integer id;
-        if(noprimeraVez != null){
-            //Creamos una orden tipo carrito
-            crearOrdenCarrito(usuariosRepository.findByIdUsuario(1019));
-            Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
-            id = ordenRecuperada.getIdordenes();
-        }else{
-            id = 0;
-        }*/
+    public String paginaPrincipal(Model model,  HttpSession session){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
-        List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
+        // Obtener todos los productos
         List<Productos> listaProductos = productosRepository.findAll();
-        List<Productos> listarProducto = productosRepository.findAll();
-        List<Categorias> listaCategorias = categoriasRepository.findAll();
-        List<Long> listaCantidades = new ArrayList<>();
+
+        // Barajar la lista de productos de forma aleatoria
+        Collections.shuffle(listaProductos, new Random());
+
+        // Tomar los primeros 20 productos de la lista barajada
+        List<Productos> productosAleatorios = listaProductos.stream()
+                .limit(20)
+                .collect(Collectors.toList());
+
         List<ProductosTendencia> listarProductosTendencia = productosRepository.obtenerProductosMasComprados();
         List<ProductosMejorValorados> listarProductosMejorValorados = productosRepository.obtenerProductosMejorValorados();
         List<ProductosAnadidosRecientemente> listarProductosRecientes = productosRepository.obtenerProductosRecientes();
-        List<ProductoMejorVendido> productoMejorVendido = productosRepository.obtenerProductoMejorVendido();
+        ProductoMejorVendido productoMejorVendido = productosRepository.obtenerProductoMejorVendido();
+
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        List<Long> listaCantidades = new ArrayList<>();
         for (Categorias categorias: listaCategorias){
             listaCantidades.add(productosRepository.countByCategorias(categorias));
         }
 
-        model.addAttribute("nombre", buscarProductos);
         model.addAttribute("listaCantCategorias",listaCantidades);
-        model.addAttribute("listaProductos",listaProductos);
-        model.addAttribute("listarProducto",listarProducto);
+        model.addAttribute("listaProductos",productosAleatorios);
         model.addAttribute("listaCategorias", listaCategorias);
         model.addAttribute("listaTendencia",listarProductosTendencia);
         model.addAttribute("listarProductosMejorValorados",listarProductosMejorValorados);
         model.addAttribute("listarProductosRecientes",listarProductosRecientes);
         model.addAttribute("productoMejorVendido",productoMejorVendido);
-        /*if (id==0){
-            model.addAttribute("idCarrito",idCarrito);
-        }else{
-            model.addAttribute("idCarrito",id);
-        }*/
+
         return "FarmaciaWebVenta/index";
     }
 

@@ -219,7 +219,7 @@
                   </a>
 
                   <div class="price-box">
-                    <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                    <p th:text="'S/. ' +${#numbers.formatDecimal(producto.precio, 0,2,'POINT')}" class="price"></p>
                   </div>
 
                 </div>

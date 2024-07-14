@@ -214,49 +214,6 @@
 
           </div>
 
-          <div class="product-showcase">
-
-            <h3 class="showcase-heading">Mejores Ventas</h3>
-
-            <div class="showcase-wrapper">
-
-              <div class="showcase-container">
-
-                <div class="showcase">
-
-                  <a th:href="@{'/clinicarenacer/producto'}" class="showcase-img-box">
-                    <img src="/img/FarmaciaWebVenta/products/mejoresVendidos1.jpg" alt="Andro Pross Cápsulas" width="75" height="75"
-                      class="showcase-img">
-                  </a>
-
-                  <div class="showcase-content">
-
-                    <a th:href="@{'/clinicarenacer/producto'}">
-                      <h4 class="showcase-title">Andro Pross Cápsulas</h4>
-                    </a>
-
-                    <div class="showcase-rating">
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                      <ion-icon name="star"></ion-icon>
-                    </div>
-
-                    <div class="price-box">
-                      <del>S/ 69.90</del>
-                      <p class="price">S/ 52.40 </p>
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
 
         </div>
 
@@ -293,7 +250,7 @@
                       <a th:text="${producto.categoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
-                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                        <p th:text="'S/. ' +${#numbers.formatDecimal(producto.precio, 0,2,'POINT')}" class="price"></p>
                       </div>
 
                     </div>
@@ -330,7 +287,7 @@
                       <a th:text="${producto.nombreCategoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
-                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                        <p th:text="'S/. ' +${#numbers.formatDecimal(producto.precio, 0,2,'POINT')}" class="price"></p>
                       </div>
 
                     </div>
@@ -369,7 +326,7 @@
                       <a th:text="${producto.categoria}" th:href="@{'/clinicarenacer/categoria?idCategoria='+ ${producto.idCategorias}}" class="showcase-category"></a>
 
                       <div class="price-box">
-                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                        <p th:text="'S/. ' +${#numbers.formatDecimal(producto.precio, 0,2,'POINT')}" class="price"></p>
                       </div>
 
                     </div>
@@ -399,25 +356,32 @@
 
               <div class="showcase-container">
                 <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
-                  <div class="showcase" th:each="producto, obj: ${productoMejorVendido}">
-                    <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
+                  <div class="showcase">
+                    <input type="hidden" th:value="${productoMejorVendido.idProductos}" name="idProductos">
 
                     <div class="showcase-banner">
-                      <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="shampoo, conditioner & facewash packs" class="showcase-img">
+                      <img th:src="@{|/imageProduct/${productoMejorVendido.idProductos}|}" alt="shampoo, conditioner & facewash packs" class="showcase-img">
                     </div>
 
                     <div class="showcase-content">
 
+                      <div class="showcase-rating">
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                        <ion-icon name="star"></ion-icon>
+                      </div>
 
-                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${producto.idProductos} + '&idCategorias=' + ${producto.idCategorias}}">
-                        <h3 th:text="${producto.nombre}" class="showcase-title"></h3>
+                      <a th:href="@{'/clinicarenacer/producto?idProductos='+${productoMejorVendido.idProductos} + '&idCategorias=' + ${productoMejorVendido.idCategorias}}">
+                        <h3 th:text="${productoMejorVendido.nombre}" class="showcase-title"></h3>
                       </a>
 
-                      <p th:text="${producto.descripcion}" class="showcase-desc">
+                      <p th:text="${productoMejorVendido.descripcion}" class="showcase-desc">
                       </p>
 
                       <div class="price-box">
-                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                        <p th:text="'S/. ' +${#numbers.formatDecimal(productoMejorVendido.precio, 0,2,'POINT')}" class="price"></p>
                       </div>
 
                       <button type="submit" class="add-cart-btn">añadir al carrito</button>
@@ -491,7 +455,7 @@
                       </a>
 
                       <div class="price-box">
-                        <p th:text="'S/. ' +${producto.precio}" class="price"></p>
+                        <p th:text="'S/. ' +${#numbers.formatDecimal(producto.precio, 0,2,'POINT')}" class="price"></p>
                       </div>
 
                     </div>

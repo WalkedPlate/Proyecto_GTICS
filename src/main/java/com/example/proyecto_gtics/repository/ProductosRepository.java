@@ -43,8 +43,16 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
     @Query(value="SELECT p.idproductos,p.nombre,p.precio,p.foto, c.nombre AS categoria, c.idcategorias FROM productos p JOIN categorias c ON p.categorias_idcategorias = c.idcategorias ORDER BY p.idproductos DESC LIMIT 5;",nativeQuery = true)
     List<ProductosAnadidosRecientemente> obtenerProductosRecientes();
 
-    @Query(value="SELECT p.nombre, p.descripcion, p.precio, p.foto, COUNT(do.iddetalles_orden) AS total_ordenes FROM productos p JOIN detalles_orden do ON p.idproductos = do.productos_idproductos JOIN preferencias_usuario pu ON p.preferencias_usuario_idpreferencias_usuario = pu.idpreferencias_usuario WHERE pu.descripcion = 'Bueno' GROUP BY p.idproductos, p.nombre ORDER BY total_ordenes DESC, MAX(do.iddetalles_orden) DESC LIMIT 1;",nativeQuery = true)
-    List<ProductoMejorVendido> obtenerProductoMejorVendido();
+    @Query(value = "SELECT p.nombre, p.descripcion, p.idproductos, p.precio, p.foto, c.nombre AS categoria, c.idcategorias, COUNT(do.iddetalles_orden) AS total_ordenes " +
+            "FROM productos p " +
+            "JOIN categorias c ON p.categorias_idcategorias = c.idcategorias " +
+            "JOIN detalles_orden do ON p.idproductos = do.productos_idproductos " +
+            "JOIN preferencias_usuario pu ON p.preferencias_usuario_idpreferencias_usuario = pu.idpreferencias_usuario " +
+            "WHERE pu.descripcion = 'Bueno' " +
+            "GROUP BY p.idproductos, p.nombre " +
+            "ORDER BY total_ordenes DESC, MAX(do.iddetalles_orden) DESC " +
+            "LIMIT 1", nativeQuery = true)
+    ProductoMejorVendido obtenerProductoMejorVendido();
 
     Productos findByIdProductos(Integer idProducto);
 
