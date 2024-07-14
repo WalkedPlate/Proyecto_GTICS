@@ -129,9 +129,11 @@
 
                                 <div class="profile-container  d-flex pb-5 pt-4" >
 
-                                    <!-- Foto de perfil: hacer que jale la imagen de la base de datos -->
+                                    <!-- Foto de perfil -->
                                     <div class="col text-center d-flex justify-content-center align-items-center">
-                                        <img th:src="@{|/imageUser/${farmacista.idUsuario}|}" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
+                                        <img th:if="${farmacista.fotonombre != null}"  th:src="@{|/imageUser/${farmacista.idUsuario}|}" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
+                                             class="rounded-circle">
+                                        <img th:if="${farmacista.fotonombre == null}"  src="/img/Superadmin/farmacista_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;"
                                              class="rounded-circle">
                                     </div>
 
@@ -139,7 +141,7 @@
                                     <div class="col pt-2 pb-2 d-flex" style="flex-direction: column; justify-content: space-evenly;">
                                         <span><strong>Nombre:</strong> <span th:text="${farmacista.nombre}"></span></span>
 
-                                        <span><strong>DNI:</strong> <span th:text="${farmacista.dni}"></span></span>
+                                        <span><strong>DNI:</strong> <span th:text="${farmacista.getFormattedDni()}"></span></span>
 
                                         <span><strong>Dirección:</strong> <span th:text="${farmacista.direccion}"></span></span>
 

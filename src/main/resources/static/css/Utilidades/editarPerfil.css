@@ -85,3 +85,40 @@ input[type=file]::-webkit-file-upload-button{
     }
 
 }
+
+.dropdown-menu{
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #dee2e6  ;
+}
+
+
+.dttobtn{
+    width: 100%;
+    border-color: #dee2e6 !important;
+}
+
+.sedebtn{
+    width: 100%;
+    border-color: #dee2e6 !important;
+}
+
+
+.is-invalid-container {
+    border-color: #dc3545 !important;
+}
+
+.is-valid {
+    border-color: #00cc88 !important;
+}
+
+.is-valid-container {
+    border: 1px solid #00cc88 !important;
+}

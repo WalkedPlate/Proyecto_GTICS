@@ -78,6 +78,8 @@ public class FarmacistaController {
     private MessageService messageService;
     @Autowired
     private DniService dniService;
+    @Autowired
+    private DistritosRepository distritosRepository;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -474,7 +476,8 @@ public class FarmacistaController {
             model.addAttribute("superAdmin",superAdmin);
         }
         model.addAttribute("farmacista",farmacista);
-
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "Farmacista/editarPerfil";
     }
 
@@ -488,11 +491,11 @@ public class FarmacistaController {
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
 
         if(direccion == null || distrito == null || correo == null){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/farmacista/editar-perfil";
         }
         if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/farmacista/editar-perfil";
         }
 
