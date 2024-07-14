@@ -134,8 +134,8 @@
                                      role="alert"></div>
 
                                 <!--Form para editar perfil-->
-                                <form  novalidate th:action="@{/farmacista/guardar_perfil}"
-                                      enctype="multipart/form-data" method="post">
+                                <form  th:action="@{/farmacista/guardar_perfil}" class="needs-validation" id="editProfile"
+                                      enctype="multipart/form-data" method="post"  novalidate>
 
                                     <div class="profile-container d-flex pb-6">
                                         <div class="col-4 d-flex justify-content-center align-items-center upload">
