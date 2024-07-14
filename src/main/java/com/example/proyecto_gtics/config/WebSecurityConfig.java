@@ -76,7 +76,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/farmacista","/farmacista/**").hasAnyAuthority("Farmacista","SuperAdmin")
                 .requestMatchers("/superadmin","/superadmin/**").hasAnyAuthority("SuperAdmin")
                 .requestMatchers("/administradorsede","/administradorsede/**").hasAnyAuthority("AdministradorDeSede","SuperAdmin")
-                .requestMatchers("/clinicarenacer","/clinicarenacer/paciente","/clinicarenacer/paciente/**").hasAnyAuthority("Paciente")
+                .requestMatchers("/clinicarenacer","/clinicarenacer/paciente","/clinicarenacer/paciente/**").hasAnyAuthority("Paciente","SuperAdmin")
                 .anyRequest().permitAll()
         )
         ;

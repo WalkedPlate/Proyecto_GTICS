@@ -10,6 +10,7 @@ import com.example.proyecto_gtics.service.BuscarProductosService;
 import com.example.proyecto_gtics.service.CardService;
 import com.example.proyecto_gtics.service.MessageService;
 import com.example.proyecto_gtics.service.ProductoBuscarServicio;
+import com.itextpdf.text.pdf.qrcode.Mode;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -98,6 +99,16 @@ public class FarmaciaWebVentaController {
     public String paginaPrincipal(Model model,  HttpSession session){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         // Obtener todos los productos
         List<Productos> listaProductos = productosRepository.findAll();
@@ -135,6 +146,16 @@ public class FarmaciaWebVentaController {
     @GetMapping(value = "/clinicarenacer/historialPedidos")
     public String historialPedidos(Model model, String nombre, HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
@@ -155,6 +176,16 @@ public class FarmaciaWebVentaController {
     public String verPedido(Model model, @RequestParam(value = "idOrden", required = false) Integer idOrden,  HttpSession session, String nombre){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         //Si se intenta ingresar sin un id
         if (idOrden == null){
@@ -207,6 +238,17 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/header"})
     public String cabecera(Model model, String nombre,  HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
+
         List<Productos> buscarProductos = productoBuscarServicio.searchProductos(nombre);
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -217,6 +259,17 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/footer"})
     public String footer(Model model, String nombre,  HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
+
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
         List<Categorias> listaCategorias = categoriasRepository.findAll();
@@ -225,7 +278,18 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/paciente"})
-    public String paginaPrincipalConLogin(){
+    public String paginaPrincipalConLogin(HttpSession session,Model model){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         return "FarmaciaWebVenta/user";
     }
@@ -237,6 +301,16 @@ public class FarmaciaWebVentaController {
                                       @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
                                       HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         Categorias categorias = categoriasRepository.findById(idCategoria).get();
 
@@ -272,7 +346,18 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value ={"/clinicarenacer/categoria/subcategoria"})
-    public String ordenarPorSubcategoria(){
+    public String ordenarPorSubcategoria(Model model,HttpSession session){
+        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
         return "FarmaciaWebVenta/porSubcategoria";
     }
 
@@ -281,7 +366,16 @@ public class FarmaciaWebVentaController {
                                  RedirectAttributes attr){
 
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente logueado
-        model.addAttribute("paciente",paciente);
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
 
         if(chatId == null){
@@ -343,6 +437,16 @@ public class FarmaciaWebVentaController {
                            HttpSession session){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
         Optional<Productos> optionalProducto = productosRepository.findById(idProductos);
 
         if (optionalProducto.isPresent()) {
@@ -507,8 +611,18 @@ public class FarmaciaWebVentaController {
     }
 
     @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
-        public String EliminarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session, RedirectAttributes attr){
+        public String EliminarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session, RedirectAttributes attr,Model model){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
         DetallesOrden detalle = carrito.get(index);
         if(detalle != null){
             carrito.remove(detalle);
@@ -524,8 +638,18 @@ public class FarmaciaWebVentaController {
 
     @GetMapping(value = {"/clinicarenacer/paciente/actualizardetalles"})
     public String actualizarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @RequestParam(name = "cantidad", required = false) Integer cantidad,
-                                           RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
+                                           RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session,Model model){
             Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
             DetallesOrden detalle = carrito.get(index);
 
             if(cantidad>0){
@@ -544,12 +668,21 @@ public class FarmaciaWebVentaController {
     @GetMapping(value = {"/clinicarenacer/paciente/pagarCarrito"})
     public String pagarCarrito(Model model, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito,  HttpSession session){
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
         model.addAttribute("listaDetallesOrden",carrito);
         TipoUsuario doctores = tipoUsuarioRepository.findById("Doctor").get();
         EstadoUsuario estado = estadoUsuarioRepository.findById("Activo").get();
         List<Usuarios> listaDoctores = usuariosRepository.findByTipoUsuarioAndEstadoUsuario(doctores,estado);
         model.addAttribute("listaDoctores",listaDoctores);
-        model.addAttribute("paciente",paciente);
 
 
         float monto = 0;
@@ -570,6 +703,16 @@ public class FarmaciaWebVentaController {
         public String carrito(Model model, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, String nombre,  HttpSession session){
 
         Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
@@ -636,7 +779,17 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/clinicarenacer/perfil"})
     public String perfil(Model model,HttpSession session){
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
-        model.addAttribute("paciente",paciente);
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
+
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
@@ -646,7 +799,17 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/clinicarenacer/editar-perfil"})
     public String editarPerfil(Model model,HttpSession session){
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
-        model.addAttribute("paciente",paciente);
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
+
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
@@ -656,7 +819,17 @@ public class FarmaciaWebVentaController {
     @GetMapping(value ={"/clinicarenacer/cambiar-contra"})
     public String cambiarContra(Model model,HttpSession session){
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
-        model.addAttribute("paciente",paciente);
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
+
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
 
@@ -667,9 +840,19 @@ public class FarmaciaWebVentaController {
     @PostMapping(value = "/clinicarenacer/actualizar-contra")
     public String actualizarContra(@RequestParam(name = "pass1", required = false) String pass1,
                                    @RequestParam(name = "pass2", required = false) String pass2,
-                                   RedirectAttributes attr, HttpSession session){
+                                   RedirectAttributes attr, HttpSession session, Model model){
 
         Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Paciente Logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
+        if(Objects.equals(paciente.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("paciente", paciente);
 
 
         if(pass1 == null || pass2 == null){

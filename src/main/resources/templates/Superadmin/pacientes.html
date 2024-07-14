@@ -124,9 +124,13 @@
                                             <td th:text="${paciente.direccion}" class="text-center puntero"></td>
                                             <td th:text="${paciente.distritoResidencia}" class="text-center puntero"></td>
                                             <td class="text-center">
-                                                <a href="#" class="btn btn-sm btn-square btn-secondary">
-                                                    <i class="bi bi-gear-wide-connected"></i>
-                                                </a>
+                                                <form method="post"
+                                                      th:action="@{/impersonate/{id}(id=${paciente.idUsuario})}"
+                                                      style="display: inline;">
+                                                    <button type="submit" class="btn btn-sm btn-square btn-secondary">
+                                                        <i class="bi bi-gear-wide-connected"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     </tbody>
