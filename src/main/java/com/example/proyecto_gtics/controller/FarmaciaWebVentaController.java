@@ -401,12 +401,12 @@ public class FarmaciaWebVentaController {
         public String guardarDatos(@RequestParam(name = "paymentMethod") String paymentMethod,
                                    @RequestParam("archivo") MultipartFile file,
                                    @RequestParam(name = "tipoEntrega") String tipoEntrega,
-                                   @RequestParam(name = "direccion", required = false) String direccion,
-                                   @RequestParam(name = "distrito", required = false) String distrito,
-                                   @RequestParam(name = "iddoctor") Integer iddoctor,
-                                   @RequestParam(name = "idSede") Integer idSede,
+                                   @RequestParam(name = "direccion", required = false, defaultValue = "") String direccion,
+                                   @RequestParam(name = "distrito", required = false, defaultValue = "") String distrito,
+                                   @RequestParam(name = "iddoctor", required = false) Integer iddoctor,
+                                   @RequestParam(name = "idSede", required = false) Integer idSede,
                                    RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
-        Usuarios pacienteLogueado =(Usuarios)session.getAttribute("usuario");
+        Usuarios pacienteLogueado =(Usuarios) session.getAttribute("usuario");
 
         if (file.isEmpty()) {
             attr.addFlashAttribute("err","Debe subir una foto de la receta.");
@@ -426,18 +426,6 @@ public class FarmaciaWebVentaController {
         } catch (IOException e) {
             e.printStackTrace();
             attr.addFlashAttribute("err","Error al subir la foto");
-            return "redirect:/clinicarenacer/paciente/pagar";
-        }
-
-        Usuarios paciente = new Usuarios();
-
-        paciente = usuariosRepository.findByDni(paciente.getDni()).get();
-
-        if(paciente.getTipoUsuario().getIdTipoUsuario().equalsIgnoreCase("Paciente")){
-                attr.addFlashAttribute("wrn","Aviso: El DNI del paciente ya se encuentra registrado en el sistema. Se usarán los datos del paciente registrado en el sistema");
-        }
-        else {
-            attr.addFlashAttribute("err","Aviso: El DNI  ya se encuentra registrado en el sistema y no pertenece a un usuario con el rol Paciente.");
             return "redirect:/clinicarenacer/paciente/pagar";
         }
 
@@ -462,8 +450,17 @@ public class FarmaciaWebVentaController {
                 ordenPreSave.setTipoCobro(tipoCobroRepository.findById(2).get()); // Pago con tarjeta
             }
 
-            Usuarios doctor = usuariosRepository.findById(iddoctor).orElse(null);
-            Sedes sede = sedesRepository.findById(idSede).orElse(null);
+            Usuarios doctor = null;
+            Sedes sede = null;
+            if(iddoctor != null){
+                doctor = usuariosRepository.findById(iddoctor).orElse(null);
+            }
+
+            if(idSede != null){
+                sede = sedesRepository.findById(idSede).orElse(null);
+            }
+
+
 
             // Guardar dirección de entrega según el tipo de entrega seleccionado
             if ("delivery".equals(tipoEntrega)) {
@@ -477,7 +474,7 @@ public class FarmaciaWebVentaController {
             ordenesRepository.save(ordenPreSave);
 
 
-            Ordenes ordenRecuperada = ordenesRepository.findFirstByOrderByIdordenesDesc();
+            Ordenes ordenRecuperada =  ordenesRepository.save(ordenPreSave);;
 
             //Seteamos el codigo en base al ID de la orden
             ordenRecuperada.setCodigo("ORD-WEB-"+ordenRecuperada.getIdordenes());
