@@ -230,6 +230,7 @@
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th scope="col" class="text-center">Imagen</th>
                                             <th scope="col" class="text-center">Nombre</th>
                                             <th scope="col" class="text-center">Estado</th>
                                             <th scope="col" class="text-center">Sede</th>
@@ -246,8 +247,8 @@
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <img th:if="${adminSede.fotonombre == null}" alt="..." src="/img/Superadmin/administrador_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${adminSede.nombre}" class="text-heading font-semibold"></a>
                                             </td>
+                                            <td  th:text="${adminSede.nombre}" class="text-heading font-semibold puntero text-uppercase"></td>
                                             <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}" class="text-center"></td>
                                             <td th:text="${adminSede.sedes.nombre}" class="text-center"></td>
                                             <td th:text="${adminSede.dni}" class="text-center"></td>

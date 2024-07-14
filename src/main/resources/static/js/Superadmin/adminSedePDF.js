@@ -2,8 +2,9 @@ let table = new DataTable('#example', {
     pageLength: 5,
     lengthMenu: [5, 10, 25, 50, 100],
     columnDefs: [
-        {orderable: false, target: [5, 6]},
+        {orderable: false, target: [0, 6, 7]},
     ],
+    order: [[1, 'asc']],
     language: {
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -313,7 +314,7 @@ new DataTable.Buttons(table, {
 
         },
         exportOptions: {
-            columns: [0,1,2,3,4,5] // columnas que se exportarán
+            columns: [1,2,3,4,5,6] // columnas que se exportarán
         }
     }]
 });
