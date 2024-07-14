@@ -17,6 +17,7 @@
                 background-color: #94a6b3;
                 border-color: #94a6b3;
             }
+
             table.dataTable tbody tr.bg-red {
                 background-color: #ffebf0 !important;
                 border-color: #ffd6e0 !important;
@@ -42,8 +43,9 @@
                                     <!-- Title -->
                                     <img th:src="@{|/imageUser/${superadmin.idUsuario}|}" width="40" class="avatar">
                                     <h3 class="mb-0 ls-tight mx-1">
-                                         Bienvenido, <span
-                                            class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span></h3>
+                                        Bienvenido, <span
+                                            class="text-primary" th:text="'S.Admin. ' + ${superadmin.nombre}"></span>
+                                    </h3>
                                 </div>
                                 <!-- Actions -->
                                 <div class="col-sm-4 col-12 text-end">
@@ -111,106 +113,135 @@
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <form method="post" class="needs-validation" id="registerForm" th:action="@{/superadmin/guardarAdminSede}" novalidate>
+                                        <form method="post" id="registerForm"
+                                              th:action="@{/superadmin/guardarAdminSede}" novalidate>
                                             <input type="hidden" name="idUsuario" value="0">
                                             <input type="hidden" name="nombre" value="valid">
-                                        <div class="modal-header">
-                                            <h3 class="modal-title fs-5">Ingrese los datos del
-                                                nuevo <strong style="color:#5C60F5">Administrador de sede</strong></h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body row">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title fs-5">Ingrese los datos del
+                                                    nuevo <strong style="color:#5C60F5">Administrador de sede</strong>
+                                                </h3>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body row">
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>DNI:</label>
-                                                    <input
-                                                            id="dni"
-                                                            minlength="8" maxlength="8"
-                                                            type="text" class="form-control" placeholder="Ingrese el N° de DNI"
-                                                            name="dni" required>
-                                                    <div class="invalid-feedback" id="dniError">
-                                                        El DNI debe tener 8 dígitos.
+                                                <div class="row pt-5">
+                                                    <div class="col">
+                                                        <label>DNI:</label>
+                                                        <input
+                                                                id="dni"
+                                                                minlength="8" maxlength="8"
+                                                                type="text" class="form-control"
+                                                                placeholder="Ingrese el N° de DNI"
+                                                                name="dni" autocomplete="off">
+                                                        <div class="invalid-feedback" id="dniError">
+                                                            Por favor, ingrese su DNI de 8 dígitos.
+                                                        </div>
+                                                        <div th:if="${errDNI != null}" th:text="${errDNI}"
+                                                             style="color: red" role="alert"></div>
+
                                                     </div>
-                                                    <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
+                                                </div>
+
+                                                <!-- Nombre y apellidos autocompletados-->
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label for="nombre">Nombres:</label>
+                                                        <input
+                                                                type="text" class="form-control" placeholder="Nombres"
+                                                                autocomplete="off"
+                                                                id="nombre" disabled readonly>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="nombre">Apellidos:</label>
+                                                        <input
+                                                                type="text" class="form-control" placeholder="Apellidos"
+                                                                autocomplete="off"
+                                                                id="apellido" disabled readonly>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label for="direccion">Dirección:</label>
+                                                        <input id="direccion" name="direccion"
+                                                               maxlength="99" type="text" class="form-control"
+                                                               placeholder="Ingrese la dirección">
+                                                        <div class="invalid-feedback" id="direccionError"></div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="distritoResidencia">Distrito de residencia:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle dttobtn"
+                                                                        type="button"
+                                                                        id="dropdownMenuButton"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false">
+                                                                    Seleccione un dtto.
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-distrito">
+                                                                    <li><a class="dropdown-item item-distrito"
+                                                                           th:each="distrito:${listaDistritos}"
+                                                                           th:value="${distrito.nombre}"
+                                                                           th:text="${distrito.nombre}"></a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar el valor seleccionado -->
+                                                                <input type="hidden" class="form-control"
+                                                                       id="distritoResidencia"
+                                                                       name="distritoResidencia">
+                                                                <div class="invalid-feedback" id="distritoError"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label for="correo">Correo electrónico:</label>
+                                                        <input type="email" class="form-control"
+                                                               placeholder="Ingrese el correo electrónico"
+                                                               maxlength="99" id="correo" name="correo">
+                                                        <div class="invalid-feedback" id="correoError"></div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="sedeAdmin">Sede:</label>
+                                                        <div class="dropdown-center">
+                                                            <button class="btn dropdown-toggle sedebtn" type="button"
+                                                                    id="sedeAdmin" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                Seleccione una sede
+                                                            </button>
+                                                            <ul class="dropdown-menu menu-sede">
+                                                                <li><a class="dropdown-item item-sede"
+                                                                       th:each="sede : ${listaSedes}"
+                                                                       th:text="${sede.nombre}"
+                                                                       th:value="${sede.idSedes}"></a>
+                                                                </li>
+                                                            </ul>
+                                                            <!-- Hidden input para enviar el valor seleccionado -->
+                                                            <input type="hidden" class="form-control" id="sede"
+                                                                   name="idSedes">
+                                                            <div class="invalid-feedback" id="sedeError"></div>
+                                                        </div>
+                                                    </div>
 
                                                 </div>
                                             </div>
-
-                                            <!-- Nombre y apellidos autocompletados-->
-                                            <div class="row pt-3">
-                                                <div class="col">
-                                                    <label for="nombre">Nombres:</label>
-                                                    <input pattern="[A-Za-z].+"
-                                                           type="text" class="form-control" placeholder="Nombres"
-                                                           id="nombre" disabled readonly>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="nombre">Apellidos:</label>
-                                                    <input pattern="[A-Za-z].+"
-                                                           type="text" class="form-control" placeholder="Apellidos"
-                                                           id="apellido" disabled readonly>
-                                                </div>
+                                            <div class="modal-footer mt-3">
+                                                <button type="submit" class="btn btn-primary">Agregar
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
                                             </div>
-
-
-                                            <div class="row pt-3">
-                                                <!-- Agregamos el campo de dirección-->
-                                                <div class="col">
-                                                    <label for="direccion">Dirección:</label>
-                                                    <input id="direccion" name="direccion"
-                                                           maxlength="99" type="text" class="form-control"
-                                                           placeholder="Ingrese la dirección" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese una dirección (max 99 dígitos).
-                                                    </div>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="distrito">Distrito de residencia:</label>
-                                                    <input maxlength="99" id="distrito" name="distritoResidencia" type="text" class="form-control"
-                                                           placeholder="Ingrese el distrito de residencia" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="correo">Correo:</label>
-                                                    <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
-                                                           maxlength="99" id="correo" name="correo"
-                                                           type="email" class="form-control" placeholder="Ingrese el correo electrónico"
-                                                           required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un correo válido (max 99 dígitos).
-                                                    </div>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="sedeAdmin">Sede:</label>
-                                                    <select id="sedeAdmin" name="idSedes" class="form-select" required>
-                                                        <option selected disabled value="">--Ingresa una sede--</option>
-                                                        <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, seleccione una opción.
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary">Agregar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
                                         </form>
                                     </div>
                                 </div>
@@ -221,11 +252,16 @@
                             <div class="container table-responsive mb-4">
                                 <!--Mensajes de guardado, eliminado y actualizado -->
                                 <div class="row pt-3">
-                                    <div th:if="${ban != null}" th:text="${ban}" class="alert alert-warning" role="alert"></div>
-                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
-                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+                                    <div th:if="${ban != null}" th:text="${ban}" class="alert alert-warning"
+                                         role="alert"></div>
+                                    <div th:if="${del != null}" th:text="${del}" class="alert alert-danger"
+                                         role="alert"></div>
+                                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success"
+                                         role="alert"></div>
+                                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger"
+                                         role="alert"></div>
+                                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning"
+                                         role="alert"></div>
                                 </div>
                                 <table id="example" class="table table-hover" style="width:100%">
                                     <thead>
@@ -241,35 +277,46 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="adminSede,obj : ${listaAdminSede}" th:class="${adminSede.estadoUsuario.idEstadoUsuario == 'Baneado'} ? 'bg-red' : ''">
+                                        <tr th:each="adminSede,obj : ${listaAdminSede}"
+                                            th:class="${adminSede.estadoUsuario.idEstadoUsuario == 'Baneado'} ? 'bg-red' : ''">
                                             <td>
-                                                <img th:if="${adminSede.fotonombre != null}" alt="..." th:src="@{|/imageUser/${adminSede.idUsuario}|}"
+                                                <img th:if="${adminSede.fotonombre != null}" alt="..."
+                                                     th:src="@{|/imageUser/${adminSede.idUsuario}|}"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <img th:if="${adminSede.fotonombre == null}" alt="..." src="/img/Superadmin/administrador_icon.png"
+                                                <img th:if="${adminSede.fotonombre == null}" alt="..."
+                                                     src="/img/Superadmin/administrador_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
                                             </td>
-                                            <td  th:text="${adminSede.nombre}" class="text-heading font-semibold puntero text-uppercase"></td>
-                                            <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}" class="text-center"></td>
-                                            <td th:text="${adminSede.sedes.nombre}" class="text-center"></td>
-                                            <td th:text="${adminSede.dni}" class="text-center"></td>
-                                            <td th:text="${adminSede.distritoResidencia}" class="text-center"></td>
-                                            <td th:text="${adminSede.correo}" class="text-center"></td>
+                                            <td th:text="${adminSede.nombre}"
+                                                class="text-heading font-semibold puntero text-uppercase"></td>
+                                            <td th:text="${adminSede.estadoUsuario.idEstadoUsuario}"
+                                                class="text-center puntero"></td>
+                                            <td th:text="${adminSede.sedes.nombre}" class="text-center puntero"></td>
+                                            <td th:text="${adminSede.getFormattedDni()}" class="text-center puntero"></td>
+                                            <td th:text="${adminSede.distritoResidencia}" class="text-center puntero"></td>
+                                            <td th:text="${adminSede.correo}" class="text-center puntero"></td>
                                             <td class="text-center">
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-primary"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaActualizar'+ obj.index}">
+                                                        data-bs-toggle="modal"
+                                                        th:data-bs-target="${'#modaActualizar'+ obj.index}">
                                                     <i class="bi bi-pencil"></i>
                                                 </button>
 
                                                 <button type="button"
                                                         class="btn btn-sm btn-square btn-warning"
-                                                        data-bs-toggle="modal" th:data-bs-target ="${'#modaBanear'+ obj.index}">
+                                                        data-bs-toggle="modal"
+                                                        th:data-bs-target="${'#modaBanear'+ obj.index}">
                                                     <i class="bi bi-person-fill-slash"></i>
                                                 </button>
-                                                <button type="button"  class="btn btn-sm btn-square btn-danger" data-bs-toggle="modal" th:data-bs-target ="${'#eliminar'+ obj.index}">
+                                                <button type="button" class="btn btn-sm btn-square btn-danger"
+                                                        data-bs-toggle="modal"
+                                                        th:data-bs-target="${'#eliminar'+ obj.index}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
-                                                <form method="post" th:action="@{/impersonate/{id}(id=${adminSede.idUsuario})}" style="display: inline;">
+                                                <form method="post"
+                                                      th:action="@{/impersonate/{id}(id=${adminSede.idUsuario})}"
+                                                      style="display: inline;">
                                                     <button type="submit" class="btn btn-sm btn-square btn-secondary">
                                                         <i class="bi bi-gear-wide-connected"></i>
                                                     </button>
@@ -281,9 +328,9 @@
                             </div>
 
 
-
                             <!-- Modal Actualizar -->
-                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1"
+                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}"
+                                 th:id="${'modaActualizar'+ obj.index}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -298,159 +345,198 @@
                                             <input type="hidden" name="dni" th:value="${adminSede.dni}">
                                             <input type="hidden" name="nombre" th:value="${adminSede.nombre}">
 
-                                        <div class="modal-body row">
-                                            <div class="row pt-3">
-                                                <div class="col">
-                                                    <label>DNI:</label>
-                                                    <input type="text" class="form-control" th:value="${adminSede.dni}" disabled readonly>
-                                                </div>
-                                                <div class="col">
-                                                    <label>Nombre:</label>
-                                                    <input type="text" class="form-control" th:value="${adminSede.nombre}" disabled readonly>
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-3">
-                                                <div class="col">
-                                                    <label>Dirección:</label>
-                                                    <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${adminSede.direccion}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese una dirección (max 99 dígitos).
+                                            <div class="modal-body row">
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>DNI:</label>
+                                                        <input type="text" class="form-control" th:value="${adminSede.getFormattedDni()}" disabled readonly>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label>Nombre:</label>
+                                                        <input type="text" class="form-control" th:value="${adminSede.nombre}" disabled readonly>
                                                     </div>
                                                 </div>
 
-                                                <div class="col">
-                                                    <label>Distrito de residencia</label>
-                                                    <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label for="direccionEdit">Dirección:</label>
+                                                        <input id="direccionEdit" name="direccion" maxlength="99" type="text"
+                                                               class="form-control" th:value="${adminSede.direccion}" required>
+                                                        <div class="invalid-feedback" id="direccionEditError"></div>
                                                     </div>
+
+                                                    <div class="col">
+                                                        <label>Distrito de residencia:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle dttobtn"
+                                                                        type="button"
+                                                                        id="dropdownMenuButtonEdit"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"
+                                                                        th:text="${adminSede.distritoResidencia}"
+                                                                >
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-distrito-edit">
+                                                                    <li>
+                                                                        <a class="dropdown-item item-distrito-edit"
+                                                                           th:each="distrito : ${listaDistritos}"
+                                                                           th:value="${distrito.nombre}"
+                                                                           th:text="${distrito.nombre}">
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar el valor seleccionado -->
+                                                                <input type="hidden" class="form-control" id="distritoResidenciaEdit" name="distritoResidencia" th:value="${adminSede.distritoResidencia}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>Correo:</label>
+                                                        <input name="correo" type="email" maxlength="99" class="form-control"
+                                                               th:value="${adminSede.correo}" required>
+                                                        <div class="invalid-feedback" id="correoEditError"></div>
+                                                    </div>
+
+
+                                                    <div class="col">
+                                                        <label>Sede:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle sedebtn"
+                                                                        type="button"
+                                                                        id="sedeAdminEdit"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"
+                                                                        th:text="${adminSede.sedes.nombre}">
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-sede-edit">
+                                                                    <li>
+                                                                        <a class="dropdown-item item-sede-edit"
+                                                                           th:each="sede : ${listaSedes}"
+                                                                           th:value="${sede.idSedes}"
+                                                                           th:text="${sede.nombre}">
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar o valor selecionado -->
+                                                                <input type="hidden" class="form-control" id="sedeEdit" name="idSedes" th:value="${adminSede.sedes.idSedes}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
 
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label>Correo:</label>
-                                                    <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
-                                                           th:value="${adminSede.correo}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un correo válido (max 99 dígitos).
-                                                    </div>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label>Sede:</label>
-                                                    <select class="form-select" name="idSedes" required>
-                                                        <option th:value="${adminSede.sedes.idSedes}"
-                                                                th:text="${adminSede.sedes.nombre}"
-                                                                th:selected="${true}"
-                                                        ></option>
-                                                        <option th:each="sede : ${listaSedes}"
-                                                                th:if="${adminSede.sedes.nombre != sede.nombre}"
-                                                                th:value="${sede.idSedes}"
-                                                                th:text="${sede.nombre}"
-                                                        ></option>
-                                                    </select>
-                                                </div>
+                                            <div class="modal-footer mt-3">
+                                                <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                             </div>
-
-                                        </div>
-                                        <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary">Actualizar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Modal banear -->
-                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}" th:id ="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}"
+                                 th:id="${'modaBanear'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h3 class="modal-title fs-5">Estás a punto de realizar un baneo al siguiente Administrador de sede:</h3>
+                                            <h3 class="modal-title fs-5">Estás a punto de realizar un baneo al siguiente
+                                                Administrador de sede:</h3>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
-                                        <form method="post" class="needs-validation" id="baneoForm" th:action="@{/superadmin/banearAdminSede}" novalidate>
-                                        <input type="hidden" th:value="${adminSede.idUsuario}" name="idAdminSede">
-                                        <div class="modal-body row">
+                                        <form method="post" class="needs-validation" id="baneoForm"
+                                              th:action="@{/superadmin/banearAdminSede}" novalidate>
+                                            <input type="hidden" th:value="${adminSede.idUsuario}" name="idAdminSede">
+                                            <div class="modal-body row">
 
-                                            <div class="row pt-3">
-                                                <div class="col">
-                                                    <label>Nombre:</label>
-                                                    <input type="text" class="form-control"
-                                                           th:value="${adminSede.nombre}" disabled readonly>
-                                                </div>
+                                                <div class="row pt-3">
+                                                    <div class="col">
+                                                        <label>Nombre:</label>
+                                                        <input type="text" class="form-control"
+                                                               th:value="${adminSede.nombre}" disabled readonly>
+                                                    </div>
 
-                                                <div class="col">
-                                                    <label >Sede:</label>
-                                                    <input type="text" class="form-control" th:value="${adminSede.sedes.nombre}" disabled readonly>
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="diasBan">Días baneados:</label>
-                                                    <select id="diasBan" name="diasBan" class="form-select" required>
-                                                        <option selected disabled value="">--Ingresa la cantidad de días--</option>
-                                                        <option>0</option>
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
-                                                        <option>6</option>
-                                                    </select>
-                                                    <div class="invalid-feedback">
-                                                        Ingrese la cantidad de días de baneo.
+                                                    <div class="col">
+                                                        <label>Sede:</label>
+                                                        <input type="text" class="form-control"
+                                                               th:value="${adminSede.sedes.nombre}" disabled readonly>
                                                     </div>
                                                 </div>
 
-                                                <div class="col">
-                                                    <label for="razon">Razón:</label>
-                                                    <textarea minlength="10" maxlength="200" class="form-control" id="razon" required></textarea>
-                                                    <div class="invalid-feedback">
-                                                        Este campo debe tener como mínimo 10 carácteres.
+                                                <div class="row pt-5">
+                                                    <div class="col">
+                                                        <label for="diasBan">Días baneados:</label>
+                                                        <select id="diasBan" name="diasBan" class="form-select"
+                                                                required>
+                                                            <option selected disabled value="">--Ingresa la cantidad de
+                                                                días--
+                                                            </option>
+                                                            <option>0</option>
+                                                            <option>1</option>
+                                                            <option>2</option>
+                                                            <option>3</option>
+                                                            <option>4</option>
+                                                            <option>5</option>
+                                                            <option>6</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Ingrese la cantidad de días de baneo.
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="razon">Razón:</label>
+                                                        <textarea minlength="10" maxlength="200" class="form-control"
+                                                                  id="razon" required></textarea>
+                                                        <div class="invalid-feedback">
+                                                            Este campo debe tener como mínimo 10 carácteres.
+                                                        </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
-
-
-                                        </div>
-                                        <div class="modal-footer mt-3">
-                                            <button type="submit" class="btn btn-primary">Banear
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                                                Cancelar
-                                            </button>
-                                        </div>
+                                            <div class="modal-footer mt-3">
+                                                <button type="submit" class="btn btn-primary">Banear
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
 
 
-
                             <!--Modal eliminar-->
-                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}"  th:id ="${'eliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" th:each="adminSede, obj : ${listaAdminSede}"
+                                 th:id="${'eliminar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header text-center">
-                                            <h3 class="modal-title fs-5">¿Está seguro de eliminar al administrador de sede seleccionado?</h3>
+                                            <h3 class="modal-title fs-5">¿Está seguro de eliminar al administrador de
+                                                sede seleccionado?</h3>
                                         </div>
                                         <form method="post" th:action="@{/superadmin/eliminarAdminSede}">
                                             <input type="hidden" name="idAdminSede" th:value="${adminSede.idUsuario}">
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-primary">Eliminar
-                                            </button>
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                        </div>
+                                            <div class="modal-footer d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-primary">Eliminar
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -464,7 +550,8 @@
         </div>
 
         <!-- Modal de confirmación para cierre de sesión -->
-        <div class="modal fade" id="confirmLogoutModal" tabindex="-1"  aria-labelledby="confirmLogoutModalLabel" aria-hidden="true">
+        <div class="modal fade" id="confirmLogoutModal" tabindex="-1" aria-labelledby="confirmLogoutModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-center">
@@ -478,8 +565,8 @@
             </div>
         </div>
 
-<!--        <script src="/js/Superadmin/script.js"></script>-->
-<!--        <script src="/js/Superadmin/table.js"></script>-->
+        <!-- Script para confirmación de cierre de sesión y las validaciones para agregar admin sede -->
+        <script src="/js/Superadmin/script.js"></script>
 
         <!-- JS de bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -499,71 +586,47 @@
         <!-- Script sobre la tabla y sus configuraciones -->
         <script src="/js/Superadmin/adminSedePDF.js"></script>
 
-        <script>
-            //Autocompletar Nombre y Apellidos con el DNI
-            function autocompletarDni() {
-                let dni = document.getElementById("dni").value;
-
-                fetch(`/api/dni?dni=${dni}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 422 || data.status === 404) {
-                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                            document.getElementById("dniError").classList.remove('is-invalid');
-                            document.getElementById("dniError").innerText = 'DNI no válido.';
-                            document.getElementById("dniError").style.display = 'block';
-                        } else {
-                            document.getElementById("nombre").value = data.data.nombres;
-                            document.getElementById("apellido").value = `${data.data.apellido_paterno} ${data.data.apellido_materno}`;
-                            document.getElementById("dniError").style.display = 'none'; // Ocultar mensaje de error de longitud
-                            document.getElementById("dniError").classList.remove('is-invalid');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-
-            // Añadir el evento keydown para detectar la tecla Enter
-            document.getElementById('dni').addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Evitar que el formulario se envíe
-                    let dniInput = document.getElementById("dni");
-                    let dniError = document.getElementById("dniError");
-
-                    // Validar la longitud del DNI
-                    if (dniInput.value.length !== 8) {
-                        dniError.style.display = 'block';
-                        dniInput.classList.add('is-invalid');
-                    } else {
-                        dniError.style.display = 'none';
-                        dniInput.classList.remove('is-invalid');
-                        autocompletarDni();
-                    }
-                    autocompletarDni();
-                }
-            });
-        </script>
 
         <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("dni").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
+
+            // Mostrar los dropdown con su valor correspondiente
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.menu-distrito-edit a.item-distrito-edit').forEach(item => {
+                    item.addEventListener('click', function () {
+                        let selectedValue = this.textContent.trim();
+                        let dropdownButton = this.closest('.dropdown-center').querySelector('.dropdown-toggle');
+                        let hiddenInput = this.closest('.dropdown-center').querySelector('input[type="hidden"]');
+
+                        dropdownButton.textContent = selectedValue;
+                        hiddenInput.value = selectedValue;
+                    });
+                });
+
+                document.querySelectorAll('.menu-sede-edit a.item-sede-edit').forEach(item => {
+                    item.addEventListener('click', function () {
+                        let selectedValue = this.textContent.trim();
+                        let selectedId = this.getAttribute('value');
+                        let dropdownButton = this.closest('.dropdown-center').querySelector('.dropdown-toggle');
+                        let hiddenInput = this.closest('.dropdown-center').querySelector('input[type="hidden"]');
+
+                        dropdownButton.textContent = selectedValue;
+                        hiddenInput.value = selectedId;
+                    });
+                });
+
             });
+
+
         </script>
 
+        <!-- Script para las validaciones de edit y baneo -->
         <script>
             (() => {
                 'use strict'
                 // IDs de los formularios que necesitas manejar
-                const formIds = ["registerForm", "editForm", "baneoForm"];
+                const formIds = ["editForm","baneoForm"];
 
-                // Validar el form presionando el botón de Registrar
+                // Validar el form presionando el botón de Banear
                 formIds.forEach(id => {
                     const form = document.getElementById(id);
                     if (form) {
@@ -591,18 +654,6 @@
                 })
             })()
         </script>
-
-        <!-- Script para confirmación de cierre de sesión -->
-        <script>
-            function confirmLogout() {
-                $('#confirmLogoutModal').modal('show');
-            }
-
-            function submitLogout() {
-                document.getElementById('logoutForm').submit();
-            }
-        </script>
-
 
     </body>
 </html>

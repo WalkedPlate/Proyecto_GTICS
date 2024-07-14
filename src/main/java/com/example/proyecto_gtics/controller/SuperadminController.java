@@ -10,6 +10,7 @@ import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.EmailService;
 import com.example.proyecto_gtics.service.TokenService;
+import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -88,6 +89,8 @@ public class SuperadminController {
     private TokenService tokenService;
     @Autowired
     EmailService emailService;
+    @Autowired
+    private DistritosRepository distritosRepository;
 
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
@@ -105,6 +108,9 @@ public class SuperadminController {
 
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
+
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "Superadmin/index";
     }
 
@@ -113,7 +119,8 @@ public class SuperadminController {
                                    @RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr,
                                    HttpSession session, HttpServletRequest request){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
-
+        // Convertir DNI a String para procesamiento
+        String dniStr = DniUtils.formatDni(adminSede.getDni());
 
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
@@ -161,7 +168,7 @@ public class SuperadminController {
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
 
-            ResultDni resultDni = dniService.obtenerDatosPorDni(adminSede.getDni().toString());
+            ResultDni resultDni = dniService.obtenerDatosPorDni(dniStr);
             if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                 attr.addFlashAttribute("err","DNI inválido");
                 return "redirect:/superadmin/administradores-sede";
