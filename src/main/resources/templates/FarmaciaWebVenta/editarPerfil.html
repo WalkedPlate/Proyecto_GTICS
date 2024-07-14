@@ -10,14 +10,14 @@
           - favicon
         -->
         <link rel="shortcut icon" href="/img/FarmaciaWebVenta/logo/icono.png" type="image/x-icon">
-
         <!--
           - custom css link
         -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/FarmaciaWebVenta/style-prefix.css">
         <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
-
+        <link rel="stylesheet" href="/css/FarmaciaWebVenta/editarPerfil.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
         <!--
@@ -98,64 +98,76 @@
                     <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                     <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
-                    <!--Form para editar perfil con validaciones en js-->
-                    <form class="needs-validation" id="myForm" novalidate th:action="@{/clinicarenacer/guardar_perfil}"
+                    <!--Form para editar perfil -->
+                    <form class="needs-validation" id="editProfile" novalidate th:action="@{/clinicarenacer/guardar_perfil}"
                           enctype="multipart/form-data" method="post">
-                        <div class="col d-flex pb-6">
+                        <div class="profile-container col d-flex pb-6 pt-1">
                             <div class="col-4 d-flex justify-content-center align-items-center upload">
-                                <img th:if="${paciente.fotonombre != null}" th:src="@{|/imageUser/${paciente.idUsuario}|}"  alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
-                                <img th:if="${paciente.fotonombre == null}"  src="/img/Superadmin/user_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
+                                <img th:if="${paciente.fotonombre != null}" th:src="@{|/imageUser/${paciente.idUsuario}|}" id="profileImage"  alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
+                                <img th:if="${paciente.fotonombre == null}" id="profileImage"  src="/img/Superadmin/user_icon.png" alt="" style="width: 180px; height: 180px; border: 3px solid #c6c8cc;">
                                 <div class="round">
                                     <input type="file" id="imageUpload" name="image" accept="image/*">
                                     <i class = "bi bi-camera" style = "color: #fff;"></i>
                                 </div>
                             </div>
-                            <div class="col" style="margin:0px 30px">
+                            <div class="col form-container" style="margin:0px 30px">
                                 <div class="row pt-5">
                                     <div class="col">
                                         <label>DNI:</label>
-                                        <input type="text" class="form-control" th:value="${paciente.dni}" disabled readonly>
+                                        <input type="text" class="form-control" th:value="${paciente.getFormattedDni()}" disabled readonly>
                                     </div>
 
 
                                     <div class="col">
                                         <label>Nombre:</label>
                                         <input type="text" class="form-control" th:value="${paciente.nombre}" disabled readonly>
-                                        <!--                                                    <p id="nombreError" class="text-danger"></p>-->
                                     </div>
 
                                 </div>
 
-                                <div class="row pt-5">
+                                <div class="row pt-3">
                                     <div class="col">
                                         <label>Dirección:</label>
                                         <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" th:value="${paciente.direccion}" required>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese una dirección (max 99 caracteres).
-                                        </div>
+                                        <div class="invalid-feedback" id="direccionError"> </div>
                                     </div>
 
                                     <div class="col">
-                                        <label>Distrito de residencia</label>
-                                        <input id="distrito"  name="distrito" maxlength="99" type="text" class="form-control" th:value="${paciente.distritoResidencia}" required>
-                                        <!--                                                    <p id="distritoError" class="text-danger"></p>-->
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese un distrito de residencia (max 99 caracteres).
+                                        <label>Distrito de residencia:</label>
+                                        <div class="mb-3">
+                                            <div class="dropdown-center">
+                                                <button class="btn dropdown-toggle dttobtn"
+                                                        type="button"
+                                                        id="dropdownMenuButtonEdit"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
+                                                        th:text="${paciente.distritoResidencia}"
+                                                >
+                                                </button>
+                                                <ul class="dropdown-menu menu-distrito-edit">
+                                                    <li>
+                                                        <a class="dropdown-item item-distrito-edit"
+                                                           th:each="distrito : ${listaDistritos}"
+                                                           th:value="${distrito.nombre}"
+                                                           th:text="${distrito.nombre}">
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                                <!-- Hidden input para enviar el valor seleccionado -->
+                                                <input type="hidden" class="form-control" id="distritoResidenciaEdit" name="distrito" th:value="${paciente.distritoResidencia}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
 
 
-                                <div class="row pt-5">
+                                <div class="row pt-2 pb-5">
                                     <div class="col">
                                         <label>Correo electrónico:</label>
-                                        <input id="correo" name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
+                                        <input id="correo" name="correo" type="email"  maxlength="99"  class="form-control"
                                                th:value="${paciente.correo}" required>
-                                        <div class="invalid-feedback">
-                                            Por favor, ingrese un correo válido (max 99 caracteres).
-                                        </div>
-                                        <!--                                                    <p id="correoError" class="text-danger"></p>-->
+                                        <div class="invalid-feedback" id="correoError"></div>
                                     </div>
                                 </div>
                             </div>
@@ -196,7 +208,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
-        <script src="/js/Superadmin/script.js"></script>
+
+        <script src="/js/FarmaciaWebVenta/perfil.js"></script>
 
         <!-- Script para confirmación de cierre de sesión -->
         <script>

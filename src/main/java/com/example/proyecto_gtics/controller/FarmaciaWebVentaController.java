@@ -89,7 +89,8 @@ public class FarmaciaWebVentaController {
     private ProductoBuscarServicio productoBuscarServicio;
     @Autowired
     private BuscarProductosService buscarProductosService;
-
+    @Autowired
+    private DistritosRepository distritosRepository;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -812,7 +813,8 @@ public class FarmaciaWebVentaController {
 
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
-
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "FarmaciaWebVenta/editarPerfil";
     }
 
