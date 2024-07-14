@@ -86,26 +86,31 @@
     <main class="py-6 bg-surface-secondary ">
         <div class="container-fluid d-flex justify-content-center align-items-center pb-5">
             <div class="d-flex justify-content-center align-items-center card shadow px-6 py-4"
-                 style="width: 35rem; height: 25rem;">
+                 style="width: 35rem; height: 28rem;">
                 <div class="row row-cols-1 ">
-                    <div class="col text-center pt-1 pb-3">
-                        <h2><strong>Cambio de contraseña</strong></h2>
-                    </div>
 
-                    <!--Cambiar contraseña con validaciones en js-->
-                    <!-- Parrafo de error -->
-                    <p id="passwordError" class="text-danger"></p>
-                    <!-- Parrafo de éxito -->
-                    <p id="successMessage" class="text-success"></p>
-
-                    <!-- Avisos -->
-                    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-                    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-                    <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
 
                     <div class="col">
-                        <form id="passwordForm" class="needs-validation" th:action="@{'/clinicarenacer/actualizar-contra'}" method="post" novalidate>
+                        <div class="col text-center pt-1 pb-3">
+                            <h2><strong>Cambio de contraseña</strong></h2>
+                        </div>
+
+
+                        <div class="m-2 text-center">
+                            <!--Cambiar contraseña con validaciones en js-->
+                            <!-- Parrafo de error -->
+                            <p id="passwordError" class="text-danger" style="font-size: 15px"></p>
+                            <!-- Parrafo de éxito -->
+                            <p id="successMessage" class="text-success"></p>
+
+                            <!-- Avisos -->
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+                            <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
+                        </div>
+
+                        <form  class="needs-validation" th:action="@{'/clinicarenacer/actualizar-contra'}" method="post" id="passwordForm" novalidate>
                             <div class="mb-3 px-5">
                                 <label for="newPassword" class="form-label">Nueva contraseña</label>
                                 <input
@@ -182,6 +187,7 @@
     - custom js link
   -->
     <script src="/js/FarmaciaWebVenta/script.js"></script>
+        <script src="/js/Superadmin/newPassword.js"></script>
 
     <!--
       - ionicon link

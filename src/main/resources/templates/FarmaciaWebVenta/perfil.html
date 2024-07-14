@@ -85,10 +85,10 @@
     <main class="py-6 bg-surface-secondary ">
         <div class="container-fluid d-flex justify-content-center align-items-center pb-5">
             <div class="d-flex justify-content-center align-items-center card shadow px-5 py-2"
-                 style="width: 35rem">
+                 style="width: 40rem">
                 <div class="row row-cols-1 ">
-                    <div class="col text-center pt-1 pb-3">
-                        <h2><strong>Tu perfil</strong></h2>
+                    <div class="col text-center pt-2 pb-3">
+                        <h2><strong>Mis datos</strong></h2>
                         <hr>
                     </div>
 
@@ -106,13 +106,28 @@
                                  class="rounded-circle">
                         </div>
                         <div class="col mt-4 me-4" style="margin:0px 5px">
-                            <span th:text="'Nombre:  ' + ${paciente.nombre}"></span>
-                            <br>
-                            <span th:text="'DNI:  ' + ${paciente.dni}"></span>
-                            <br>
-                            <span th:text="'Distrito de residencia: ' + ${paciente.direccion}"></span>
-                            <br>
-                            <span th:text="'Correo:  ' + ${paciente.correo}"></span>
+                            <span>
+                                <b> Nombre:</b>
+                                <br>
+                                <span th:text="${paciente.nombre}"></span>
+                            </span>
+                            <span>
+                                <b> DNI:</b>
+                                <br>
+                                <span th:text="${paciente.getFormattedDni()}"></span>
+                            </span>
+
+                            <span>
+                                <b> Dtto. de residencia:</b>
+                                <br>
+                                <span th:text="${paciente.direccion}"></span>
+                            </span>
+                            <span>
+                                <b>Correo: </b>
+                                <br>
+                                 <span th:text="${paciente.correo}"></span>
+                            </span>
+
                         </div>
                     </div>
 
