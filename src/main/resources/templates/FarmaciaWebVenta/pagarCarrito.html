@@ -366,6 +366,24 @@
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cardModal" id="finishPurchase">Finalizar Compra</button>
                             </div>
 
+                            <!-- Modal para pago efectivo exitoso -->
+                            <div class="modal fade" id="efectivoModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="successModalLabel1">Pago Exitoso</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tu orden se generó correctamente para que puedas realizar el pago de manera presencial en efectivo.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <!-- Modal -->
                             <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -563,11 +581,9 @@
 
           radioCash.addEventListener("change", function () {
               if (this.checked) {
-                  btnFinalizarCompra.setAttribute("type", "submit");
-                  btnFinalizarCompra.removeAttribute("data-bs-toggle");
-                  btnFinalizarCompra.removeAttribute("data-bs-target");
-
-
+                  btnFinalizarCompra.setAttribute("type", "button");
+                  btnFinalizarCompra.setAttribute("data-bs-toggle", "modal");
+                  btnFinalizarCompra.setAttribute("data-bs-target", "#efectivoModal");
               }
           });
 
