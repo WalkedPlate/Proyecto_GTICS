@@ -165,7 +165,7 @@
                                 <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning" role="alert"></div>
 
                                 <!--Form para editar perfil-->
-                                <form class="needs-validation" id="myForm" novalidate th:action="@{/administradorsede/guardar_perfil}"
+                                <form th:action="@{/administradorsede/guardar_perfil}" class="needs-validation" id="editProfile" novalidate
                                       enctype="multipart/form-data" method="post">
 
                                     <div class="profile-container d-flex pb-6">
@@ -181,7 +181,7 @@
                                             <div class="row pt-5">
                                                 <div class="col">
                                                     <label>DNI:</label>
-                                                    <input type="text" class="form-control" th:value="${adminSede.dni}" disabled readonly>
+                                                    <input type="text" class="form-control" th:value="${adminSede.getFormattedDni()}" disabled readonly>
                                                 </div>
 
 
@@ -193,21 +193,40 @@
                                             </div>
 
                                             <div class="row pt-5">
+
                                                 <div class="col">
                                                     <label>Dirección:</label>
                                                     <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" th:value="${adminSede.direccion}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese una dirección (max 99 caracteres).
-                                                    </div>
+                                                    <div class="invalid-feedback" id="direccionError"></div>
                                                 </div>
 
                                                 <div class="col">
-                                                    <label>Distrito de residencia</label>
-                                                    <input id="distrito"  name="distrito" maxlength="99" type="text" class="form-control" th:value="${adminSede.distritoResidencia}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un distrito de residencia (max 99 caracteres).
+                                                    <label>Distrito de residencia:</label>
+                                                    <div class="mb-3">
+                                                        <div class="dropdown-center">
+                                                            <button class="btn dropdown-toggle dttobtn"
+                                                                    type="button"
+                                                                    id="dropdownMenuButtonEdit"
+                                                                    data-bs-toggle="dropdown"
+                                                                    aria-expanded="false"
+                                                                    th:text="${adminSede.distritoResidencia}"
+                                                            >
+                                                            </button>
+                                                            <ul class="dropdown-menu menu-distrito-edit">
+                                                                <li>
+                                                                    <a class="dropdown-item item-distrito-edit"
+                                                                       th:each="distrito : ${listaDistritos}"
+                                                                       th:value="${distrito.nombre}"
+                                                                       th:text="${distrito.nombre}">
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                            <!-- Hidden input para enviar el valor seleccionado -->
+                                                            <input type="hidden" class="form-control" id="distritoResidenciaEdit" name="distrito" th:value="${adminSede.distritoResidencia}">
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                             </div>
 
                                             <div class="row pt-5">
@@ -215,9 +234,7 @@
                                                     <label>Correo electrónico:</label>
                                                     <input id="correo" name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
                                                            th:value="${adminSede.correo}" required>
-                                                    <div class="invalid-feedback">
-                                                        Por favor, ingrese un correo válido (max 99 caracteres).
-                                                    </div>
+                                                    <div class="invalid-feedback" id="correoError"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,41 +278,9 @@
                 integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
                 crossorigin="anonymous"></script>
 
-        <!--validaciones front end-->
-        <script>
-            (() => {
-                'use strict'
 
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                const forms = document.querySelectorAll('.needs-validation')
-
-                // Loop over them and prevent submission
-                Array.from(forms).forEach(form => {
-                    form.addEventListener('submit', event => {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-            })()
-        </script>
-
-        <!-- Script para subir las imágenes -->
-        <script>
-            // document.getElementById('profileImage').addEventListener('click', function() {
-            //     document.getElementById('imageUpload').click();
-            // });
-            let profileImage = document.getElementById("profileImage");
-            let imageUpload = document.getElementById("imageUpload");
-
-            imageUpload.onchange = function (){
-                profileImage.src = URL.createObjectURL(imageUpload.files[0]);
-            }
-
-        </script>
+        <!-- Script perfil: imagen - mensajes -->
+        <script src="/js/Utilidades/perfil.js"></script>
 
         <!-- Script para confirmación de cierre de sesión -->
         <script src="/js/AdministradorSede/script.js"> </script>

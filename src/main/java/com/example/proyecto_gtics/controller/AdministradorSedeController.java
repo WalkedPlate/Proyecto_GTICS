@@ -735,6 +735,8 @@ public class AdministradorSedeController {
             model.addAttribute("superAdmin",superAdmin);
         }
         model.addAttribute("adminSede", adminSede);
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
 
         return "AdministradorSede/editarPerfil";
     }
@@ -749,11 +751,11 @@ public class AdministradorSedeController {
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
 
         if(direccion == null || distrito == null || correo == null){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/administradorsede/editar-perfil";
         }
         if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/administradorsede/editar-perfil";
         }
 
