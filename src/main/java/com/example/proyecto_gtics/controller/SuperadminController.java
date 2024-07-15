@@ -115,12 +115,12 @@ public class SuperadminController {
     }
 
     @PostMapping(value = {"/superadmin/guardarAdminSede"})
-    public String guardarAdminSede(@Valid Usuarios adminSede, BindingResult bindingResult, @RequestParam("idSedes") int id,
-                                   @RequestParam("idUsuario") int idAdminSede, RedirectAttributes attr,
+    public String guardarAdminSede(@Valid Usuarios adminSedeValid, BindingResult bindingResult, @RequestParam("idSedes") int id,
+                                   @RequestParam("idUsuario") Integer idAdminSede, RedirectAttributes attr,
                                    HttpSession session, HttpServletRequest request){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         // Convertir DNI a String para procesamiento
-        String dniStr = DniUtils.formatDni(adminSede.getDni());
+        String dniStr = DniUtils.formatDni(adminSedeValid.getDni());
 
         Optional<Usuarios> adminsede = usuariosRepository.findById(idAdminSede);
         if(bindingResult.hasErrors()){
@@ -134,36 +134,38 @@ public class SuperadminController {
 
 
         if(adminsede.isPresent()){
-            if(usuarioYaRegistrado(adminSede.getDni(),idAdminSede,false)){
+            if(usuarioYaRegistrado(adminSedeValid.getDni(),idAdminSede,false)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
-            if(correoYaRegistrado(adminSede.getCorreo(),idAdminSede,false)){
+            if(correoYaRegistrado(adminSedeValid.getCorreo(),idAdminSede,false)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
+            adminsede.get().setDireccion(adminSedeValid.getDireccion());
+            adminsede.get().setCorreo(adminSedeValid.getCorreo());
+            adminsede.get().setDistritoResidencia(adminSedeValid.getDistritoResidencia());
 
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());// implementar:agarrar el estado de la base de datos
-            adminSede.setContrasena(usuariosRepository.findByIdUsuario(idAdminSede).getContrasena());
+
             Sedes sedes = sedesRepository.findById(id).get();
-            adminSede.setSedes(sedes);
-            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            adminsede.get().setSedes(sedes);
+
             attr.addFlashAttribute("msg","Datos del administrador de sede actualizados exitosamente");
-            usuariosRepository.save(adminSede);
+            usuariosRepository.save(adminsede.get());
             return "redirect:/superadmin/administradores-sede";
         }
         else {
-            if(usuarioYaRegistrado(adminSede.getDni(),adminSede.getIdUsuario(),true)){
+            if(usuarioYaRegistrado(adminSedeValid.getDni(),adminSedeValid.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El DNI ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
-            if(correoYaRegistrado(adminSede.getCorreo(),adminSede.getIdUsuario(),true)){
+            if(correoYaRegistrado(adminSedeValid.getCorreo(),adminSedeValid.getIdUsuario(),true)){
                 attr.addFlashAttribute("err","El correo ya está registrado.");
                 return "redirect:/superadmin/administradores-sede";
             }
 
             //Generación de token
-            String token = tokenService.generateToken(adminSede.getCorreo());
+            String token = tokenService.generateToken(adminSedeValid.getCorreo());
             String link = request.getScheme() + "://"+ request.getServerName()
                     + ":"+ request.getServerPort() +request.getContextPath()+ "/cambiar-contrasena?token=" + token;
 
@@ -177,33 +179,33 @@ public class SuperadminController {
 
 
 
-            adminSede.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
-            adminSede.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            adminSedeValid.setNombre(resultDni.getData().getNombres() + " " + resultDni.getData().getApellido_paterno() + " " + resultDni.getData().getApellido_materno());
+            adminSedeValid.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
             //Contraseña
             String temporalPassword = Usuarios.generateTemporaryPassword(10);
             String passwordEncriptada = passwordEncoder.encode(temporalPassword);
-            adminSede.setContrasena(passwordEncriptada);
+            adminSedeValid.setContrasena(passwordEncriptada);
 
-            adminSede.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
-            adminSede.setUsandoContrasenaTemporal(true);
-            adminSede.setToken(token);
+            adminSedeValid.setTipoUsuario(tipoUsuarioRepository.findById("AdministradorDeSede").get());
+            adminSedeValid.setUsandoContrasenaTemporal(true);
+            adminSedeValid.setToken(token);
             Sedes sedes = sedesRepository.findById(id).get();
-            adminSede.setSedes(sedes);
+            adminSedeValid.setSedes(sedes);
             Path path = Paths.get("src/main/resources/static/img/Superadmin/administrador_icon.png");
             try {
                 byte[] defaultPhoto = Files.readAllBytes(path);
-                adminSede.setFoto(defaultPhoto);
-                adminSede.setFotonombre("administrador_icon.png");
-                adminSede.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
+                adminSedeValid.setFoto(defaultPhoto);
+                adminSedeValid.setFotonombre("administrador_icon.png");
+                adminSedeValid.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            usuariosRepository.save(adminSede);
+            usuariosRepository.save(adminSedeValid);
             attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente. Las credenciales temporales se enviarán" +
                     " al correo ingresado.");
 
             //Envío de correo con contraseña temporal
-            String to = adminSede.getCorreo();
+            String to = adminSedeValid.getCorreo();
             String subject = "Cambie su contraseña";
             String pathToImage = "static/img/Login/icono.png";
             String imageId = "image001";
@@ -252,6 +254,7 @@ public class SuperadminController {
             adminSede.setDiasBan(diasBan);
             adminSede.setFechaBan(fechaActual);
             usuariosRepository.calculAyActualizarFechaDesbaneo(adminSede.getIdUsuario());
+            //adminSede.setUsandoContrasenaTemporal(Boolean.FALSE);
             attr.addFlashAttribute("ban","Administrador de sede baneado exitosamente");
             usuariosRepository.save(adminSede);
         }
