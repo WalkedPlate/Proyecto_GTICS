@@ -163,7 +163,7 @@
                                             <thead class="table-primary">
                                             <tr>
                                                 <th>Producto</th>
-                                                <th>Precio</th>
+                                                <th>Precio (S/.)</th>
                                                 <th>Cantidad</th>
                                                 <th>Subtotal (S/.)</th>
                                                 <th></th>
@@ -175,13 +175,13 @@
                                                 <td>
                                                     <div class="product-container">
                                                         <img th:src="@{|/imageProduct/${detalle.productos.idProductos}|}" alt="analgésicos" width="50">
-                                                        <div class="product-name">
+                                                        <div class="product-name" style="margin-right: 12px">
                                                             <a th:href="@{'/clinicarenacer/producto?idProductos=' + ${detalle.productos.idProductos}}" th:text="${detalle.productos.nombre}"></a>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p th:text="'S/. ' + ${#numbers.formatDecimal(detalle.productos.precio, 0,2,'POINT')}"></p>
+                                                    <p th:text="${#numbers.formatDecimal(detalle.productos.precio, 0,2,'POINT')}"></p>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
@@ -244,6 +244,33 @@
     - custom js link
   -->
   <script src="/js/FarmaciaWebVenta/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Seleccionar todos los campos de cantidad
+            const cantidadInputs = document.querySelectorAll('input[name="cantidad"]');
+
+            // Añadir eventos a cada campo
+            cantidadInputs.forEach(input => {
+                // Permitir solo la entrada de números
+                input.addEventListener('keydown', function (event) {
+                    if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete" || event.key === "Tab") {
+                        return;
+                    }
+                    if (event.key < "0" || event.key > "9") {
+                        event.preventDefault();
+                    }
+                });
+
+                // Asegurarse de que el valor mínimo sea 1
+                input.addEventListener('input', function () {
+                    if (input.value < 1) {
+                        input.value = 1;
+                    }
+                });
+            });
+        });
+
+    </script>
 
   <!--
     - ionicon link

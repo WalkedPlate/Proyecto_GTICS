@@ -175,7 +175,7 @@
                                 <div class="col">
                                     <label for="dni">DNI:</label>
                                     <input id="dni" name="dni" type="number" class="form-control" minlength="8" maxlength="8"
-                                           th:value="${paciente.dni}" placeholder="Coloca el N° de DNI" readonly style="background-color: #c9d4e8;">
+                                           th:value="${paciente.getFormattedDni()}" placeholder="Coloca el N° de DNI" readonly style="background-color: #c9d4e8;">
                                 </div>
                             </div>
                             <div class="row pt-3">
@@ -255,13 +255,15 @@
                                         <div class="col">
                                             <label for="direccion">Dirección:</label>
                                             <input id="direccion" name="direccion" type="text" class="form-control"
-                                                   placeholder="Coloca tu dirección actual">
+                                                   placeholder="Coloca la dirección de envío">
                                         </div>
                                         <div class="col">
                                             <label for="distrito">Distrito:</label>
                                             <select id="distrito" name="distrito" class="form-select" required>
                                                 <option selected disabled value="">--Selecciona un distrito--</option>
-                                                <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
+<!--                                                <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>-->
+                                                <option th:each="distrito : ${listaDistritos}" th:text="${distrito.nombre}" th:value="${distrito.nombre}"></option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -463,7 +465,13 @@
                     </div>
                 </form>
                 <h6 id="cantidadTotal" th:text="'Productos('+${listaDetallesOrden.size()}+')'" ></h6>
-                <h6 id="costoTotal" th:text="'Total a pagar: S/.'+ ${carrito}"></h6>
+                <div class="d-flex">
+<!--                    <h6 th:text="'Total a pagar: S/.'+ ${carrito}"></h6>-->
+                    <h6>Total a pagar: S/.</h6>
+                    <h6 id="costoTotal" th:text="${#numbers.formatDecimal(carrito,0,2,'POINT')}"></h6>
+                </div>
+
+
             </div>
         </div>
 
