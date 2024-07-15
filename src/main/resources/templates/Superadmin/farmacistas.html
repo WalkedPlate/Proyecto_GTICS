@@ -142,13 +142,12 @@
 
                                                 </a>
                                             </td>
-                                            <td th:text="${farmacista.sedes.nombre}" class="text-center">
-
-                                            <td th:text="${farmacista.getFormattedDni()}" class="text-center"></td>
-                                            <td th:text="${farmacista.distritoResidencia}" class="text-center"></td>
-                                            <td th:text="${farmacista.codigoColegio}" class="text-center">
+                                            <td th:text="${farmacista.sedes.nombre}" class="text-center puntero">
+                                            <td th:text="${farmacista.getFormattedDni()}" class="text-center puntero"></td>
+                                            <td th:text="${farmacista.distritoResidencia}" class="text-center puntero"></td>
+                                            <td th:text="${farmacista.codigoColegio}" class="text-center puntero">
                                             </td>
-                                            <td th:text="${farmacista.correo}" class="text-center">
+                                            <td th:text="${farmacista.correo}" class="text-center puntero">
                                             </td>
                                             <td class="text-center">
                                                 <button type="button"
@@ -191,7 +190,7 @@
                                         <form method="post" th:action="@{/superadmin/guardarfarmacista}"
                                               class="needs-validation" id="editForm" novalidate>
                                             <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
-                                            <input type="hidden" name="dni" th:value="${farmacista.dni}">
+                                            <input type="hidden" name="dni" th:value="${farmacista.getFormattedDni()}">
                                             <input type="hidden" name="nombre" th:value="${farmacista.nombre}">
                                             <input type="hidden" name="codigoColegio" th:value="${farmacista.codigoColegio}">
 
