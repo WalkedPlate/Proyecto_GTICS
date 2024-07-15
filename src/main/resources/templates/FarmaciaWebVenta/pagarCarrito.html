@@ -66,7 +66,12 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en el servidor: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
                         if (data.valid) {
                             // Mostrar modal de éxito y hacer submit del formulario principal
@@ -75,11 +80,17 @@
                                 $('#mainForm').submit();
                             });
                         } else {
-                            // Mostrar modal de error
+                            // Mostrar modal de error con el mensaje del servidor
+                            $('#errorModal').find('.modal-body').text(data.message || 'Tarjeta no válida');
                             $('#errorModal').modal('show');
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Mostrar modal de error genérico
+                        $('#errorModal').find('.modal-body').text('Ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.');
+                        $('#errorModal').modal('show');
+                    });
             });
         });
     </script>

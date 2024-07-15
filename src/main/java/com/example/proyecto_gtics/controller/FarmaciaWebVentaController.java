@@ -569,7 +569,7 @@ public class FarmaciaWebVentaController {
 
             // Guardar dirección de entrega según el tipo de entrega seleccionado
             if ("delivery".equals(tipoEntrega)) {
-                ordenPreSave.setDireccion(direccion);
+                ordenPreSave.setDireccion(direccion + ',' + distrito);
             } else {
                 // Si es recojo en farmacia, no se necesita dirección
                 ordenPreSave.setDireccion("Recojo en farmacia");
