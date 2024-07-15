@@ -124,7 +124,7 @@
                                             <th scope="col" class="text-center">Nombre</th>
                                             <th scope="col" class="text-center">Sede</th>
                                             <th scope="col" class="text-center">DNI</th>
-                                            <th scope="col" class="text-center">Distrito de residencia</th>
+                                            <th scope="col" class="text-center">Dtto. de residencia</th>
                                             <th scope="col" class="text-center">Código</th>
                                             <th scope="col" class="text-center">Correo</th>
                                             <th class="text-center">Acciones</th>
@@ -137,14 +137,14 @@
                                                      class="avatar avatar-sm rounded-circle me-2">
                                                 <img th:if="${farmacista.fotonombre == null}" alt="..." src="/img/Superadmin/farmacista_icon.png"
                                                      class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${farmacista.nombre}" class="text-heading font-semibold"
+                                                <a th:text="${farmacista.nombre}" class="text-heading font-semibold text-uppercase puntero"
                                                    href="#">
 
                                                 </a>
                                             </td>
                                             <td th:text="${farmacista.sedes.nombre}" class="text-center">
 
-                                            <td th:text="${farmacista.dni}" class="text-center"></td>
+                                            <td th:text="${farmacista.getFormattedDni()}" class="text-center"></td>
                                             <td th:text="${farmacista.distritoResidencia}" class="text-center"></td>
                                             <td th:text="${farmacista.codigoColegio}" class="text-center">
                                             </td>
@@ -221,16 +221,34 @@
                                                     <div class="col">
                                                         <label>Dirección:</label>
                                                         <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${farmacista.direccion}" required>
-                                                        <div class="invalid-feedback">
-                                                            Por favor, ingrese una dirección (max 99 dígitos).
-                                                        </div>
+                                                        <div class="invalid-feedback" id="direccionEditError"></div>
                                                     </div>
 
+
                                                     <div class="col">
-                                                        <label>Dtto. de residencia</label>
-                                                        <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${farmacista.distritoResidencia}" required>
-                                                        <div class="invalid-feedback">
-                                                            Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                        <label>Distrito de residencia:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle dttobtn"
+                                                                        type="button"
+                                                                        id="dropdownMenuButtonEdit"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"
+                                                                        th:text="${farmacista.distritoResidencia}"
+                                                                >
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-distrito-edit">
+                                                                    <li>
+                                                                        <a class="dropdown-item item-distrito-edit"
+                                                                           th:each="distrito : ${listaDistritos}"
+                                                                           th:value="${distrito.nombre}"
+                                                                           th:text="${distrito.nombre}">
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar el valor seleccionado -->
+                                                                <input type="hidden" class="form-control" id="distritoResidenciaEdit" name="distritoResidencia" th:value="${farmacista.distritoResidencia}">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -246,18 +264,29 @@
                                                     </div>
 
                                                     <div class="col">
-                                                        <label for="sede">Sede:</label>
-                                                        <select id="sede" class="form-select" name="idSedes" required>
-                                                            <option th:value="${farmacista.sedes.idSedes}"
-                                                                    th:text="${farmacista.sedes.nombre}"
-                                                                    th:selected="${true}"
-                                                            ></option>
-                                                            <option th:each="sede : ${listaSedes}"
-                                                                    th:if="${farmacista.sedes.nombre != sede.nombre}"
-                                                                    th:value="${sede.idSedes}"
-                                                                    th:text="${sede.nombre}"
-                                                            ></option>
-                                                        </select>
+                                                        <label>Sede:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle sedebtn"
+                                                                        type="button"
+                                                                        id="sedeAdminEdit"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false"
+                                                                        th:text="${farmacista.sedes.nombre}">
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-sede-edit">
+                                                                    <li>
+                                                                        <a class="dropdown-item item-sede-edit"
+                                                                           th:each="sede : ${listaSedes}"
+                                                                           th:value="${sede.idSedes}"
+                                                                           th:text="${sede.nombre}">
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar o valor selecionado -->
+                                                                <input type="hidden" class="form-control" id="sedeEdit" name="idSedes" th:value="${farmacista.sedes.idSedes}">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -342,6 +371,33 @@
         <script src="/js/Superadmin/farmacistasPDF.js"></script>
 
         <script>
+            // Mostrar los dropdown con su valor correspondiente
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.menu-distrito-edit a.item-distrito-edit').forEach(item => {
+                    item.addEventListener('click', function () {
+                        let selectedValue = this.textContent.trim();
+                        let dropdownButton = this.closest('.dropdown-center').querySelector('.dropdown-toggle');
+                        let hiddenInput = this.closest('.dropdown-center').querySelector('input[type="hidden"]');
+
+                        dropdownButton.textContent = selectedValue;
+                        hiddenInput.value = selectedValue;
+                    });
+                });
+
+                document.querySelectorAll('.menu-sede-edit a.item-sede-edit').forEach(item => {
+                    item.addEventListener('click', function () {
+                        let selectedValue = this.textContent.trim();
+                        let selectedId = this.getAttribute('value');
+                        let dropdownButton = this.closest('.dropdown-center').querySelector('.dropdown-toggle');
+                        let hiddenInput = this.closest('.dropdown-center').querySelector('input[type="hidden"]');
+
+                        dropdownButton.textContent = selectedValue;
+                        hiddenInput.value = selectedId;
+                    });
+                });
+
+            });
+
             (() => {
                 'use strict'
 

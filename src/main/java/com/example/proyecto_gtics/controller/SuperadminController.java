@@ -557,6 +557,8 @@ public class SuperadminController {
 
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "Superadmin/farmacistas";
     }
 

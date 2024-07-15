@@ -362,7 +362,9 @@
                                                         <label for="direccionEdit">Dirección:</label>
                                                         <input id="direccionEdit" name="direccion" maxlength="99" type="text"
                                                                class="form-control" th:value="${adminSede.direccion}" required>
-                                                        <div class="invalid-feedback" id="direccionEditError"></div>
+                                                        <div class="invalid-feedback" id="direccionEditError">
+                                                            Por favor, ingrese una dirección (max 99 dígitos).
+                                                        </div>
                                                     </div>
 
                                                     <div class="col">
