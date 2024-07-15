@@ -118,6 +118,16 @@
 
                     <!--TABLA-->
                     <div class="container table-responsive mb-4">
+                        <!--Mensajes de guardado, eliminado y actualizado -->
+                        <div class="row pt-3">
+                            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success"
+                                 role="alert"></div>
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger"
+                                 role="alert"></div>
+                            <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning"
+                                 role="alert"></div>
+                        </div>
+
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>

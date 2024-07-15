@@ -658,46 +658,6 @@
             }
         </script>
 
-        <script>
-            // Función para permitir solo la entrada de números y el punto decimal
-            function allowOnlyNumbersAndDecimal(event, element) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos y el punto decimal
-                if (!((event.key >= "0" && event.key <= "9") || event.key === ".")) {
-                    event.preventDefault();
-                }
-                // Permite solo un punto decimal
-                if (event.key === "." && element.value.includes(".")) {
-                    event.preventDefault();
-                }
-            }
-
-            // Asignar el evento a los elementos correspondientes
-            document.getElementById("precio").addEventListener("keydown", function(event) {
-                allowOnlyNumbersAndDecimal(event, this);
-            });
-
-            document.getElementById("precioEdit").addEventListener("keydown", function(event) {
-                allowOnlyNumbersAndDecimal(event, this);
-            });
-        </script>
-
-        <script>
-            // Obtener el elemento de entrada de fecha 1
-            var fechaVencimientoInput1 = document.getElementById('fechaVencimiento');
-            // Obtener el elemento de entrada de fecha 2
-            var fechaVencimientoInput2 = document.getElementById('fechaVencimiento2');
-
-            // Obtener la fecha actual en formato 'yyyy-mm-dd'
-            var fechaActual = new Date().toISOString().split('T')[0];
-
-            // Establecer la fecha mínima en el campo de entrada de fecha 1 y 2
-            fechaVencimientoInput1.setAttribute('min', fechaActual);
-            fechaVencimientoInput2.setAttribute('min', fechaActual);
-        </script>
 
         <script>
             (() => {
@@ -714,9 +674,9 @@
                             event.stopPropagation();
                         }
                         // Validar que el campo de precio tenga dos decimales
-                        validatePrecio('precio', 'precio-feedback');
-                        validatePrecio('precioEdit', 'precioEdit-feedback');
 
+                        validatePrecio('precioEdit', 'precioEdit-feedback');
+                        validatePrecio('precio', 'precio-feedback');
                         form.classList.add('was-validated');
                     }, false);
                 });
@@ -740,19 +700,74 @@
             })();
         </script>
 
+        <script>
+            // Función para permitir solo la entrada de números y el punto decimal
+            function allowOnlyNumbersAndDecimal(event) {
+                const value = event.target.value;
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
+                    return;
+                }
+                if (!((event.key >= "0" && event.key <= "9") || event.key === ".")) {
+                    event.preventDefault();
+                }
+                if (event.key === "." && value.includes(".")) {
+                    event.preventDefault();
+                }
+            }
+
+            // Validar el campo de precio con dos decimales
+            function validatePrecio(precioInput, feedback) {
+                const regex = /^\d+\.\d{2}$/;
+                if (!precioInput.value) {
+                    feedback.textContent = 'Por favor, ingrese el precio del medicamento.';
+                    precioInput.setCustomValidity('Por favor, ingrese el precio del medicamento.');
+                } else if (!regex.test(precioInput.value) || parseFloat(precioInput.value) < 0.10) {
+                    feedback.textContent = 'El precio debe tener 2 decimales y ser mayor a 0.';
+                    precioInput.setCustomValidity('El precio debe tener 2 decimales y ser mayor a 0.');
+                } else {
+                    feedback.textContent = '';
+                    precioInput.setCustomValidity('');
+                }
+            }
+
+            // Asignar eventos a los elementos de precio
+            document.querySelectorAll("#precio, #precioEdit").forEach(input => {
+                input.addEventListener("keypress", allowOnlyNumbersAndDecimal);
+                input.addEventListener("input", function () {
+                    validatePrecio(this, this.nextElementSibling);
+                });
+            });
+
+            // Configurar la fecha mínima para los campos de fecha de vencimiento
+            document.addEventListener("DOMContentLoaded", function () {
+                var fechaActual = new Date().toISOString().split('T')[0];
+                document.querySelectorAll("#fechaVencimiento, #fechaVencimiento2").forEach(input => {
+                    input.setAttribute('min', fechaActual);
+                });
+            });
+
+            // Validar el formulario antes de enviarlo
+            (() => {
+                'use strict';
+                const forms = document.querySelectorAll('.needs-validation');
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        form.querySelectorAll("[id^='precio']").forEach(input => {
+                            validatePrecio(input, input.nextElementSibling);
+                        });
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            })();
+        </script>
+
 
         <!-- Script para confirmación de cierre de sesión -->
-        <script>
-            function confirmLogout(event) {
-                event.preventDefault();
-                var modal = new bootstrap.Modal(document.getElementById('confirmLogoutModal'));
-                modal.show();
-            }
-
-            function submitLogout() {
-                document.getElementById('logoutForm').submit();
-            }
-        </script>
+        <script src="/js/AdministradorSede/script.js"></script>
 
     </body>
 </html>
