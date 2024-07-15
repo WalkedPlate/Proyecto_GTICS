@@ -394,7 +394,7 @@ public class FarmaciaWebVentaController {
 
                     model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
                     model.addAttribute("listaChatsPaciente",listaChatsPaciente);
-                    model.addAttribute("chat",chat);
+                    model.addAttribute("chatAct",chat);
                     return "FarmaciaWebVenta/chat";
                 }
                 else {
@@ -421,7 +421,7 @@ public class FarmaciaWebVentaController {
 
             model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
             model.addAttribute("listaChatsPaciente",listaChatsPaciente);
-            model.addAttribute("chat",chat);
+            model.addAttribute("chatAct",chat);
             return "FarmaciaWebVenta/chat";
         }
         else {

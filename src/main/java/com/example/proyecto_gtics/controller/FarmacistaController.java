@@ -375,6 +375,32 @@ public class FarmacistaController {
         //Recuperar el chat creado:
         Chat chatRecuperado = chatRepository.findFirstByOrderByIdChatDesc();
 
+        //Añadir mensajes iniciales:
+        DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toFormatter();
+        LocalDateTime fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")); //sacamos la fecha actual
+
+
+        Mensajes hola1= new Mensajes();
+        hola1.setContenido("Hola!");
+        hola1.setEstado("ENVIADO");
+        hola1.setChat(chatRecuperado);
+
+        hola1.setSender(1);
+        hola1.setFecha(fechaActual.format(formatStringToDate));
+
+        mensajesRepository.save(hola1);
+
+        Mensajes hola2 = new Mensajes();
+        hola2.setContenido("Hola!");
+        hola2.setEstado("ENVIADO");
+        hola2.setChat(chatRecuperado);
+
+        hola2.setSender(2);
+        hola2.setFecha(fechaActual.format(formatStringToDate));
+
+        mensajesRepository.save(hola2);
+
+
         return "redirect:/farmacista/chat?chatId="+chatRecuperado.getIdChat();
     }
 
@@ -408,7 +434,7 @@ public class FarmacistaController {
 
                     model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
                     model.addAttribute("listaChatsFarmacista",listaChatsFarmacista);
-                    model.addAttribute("chat",chat);
+                    model.addAttribute("chatAct",chat);
                     return "Farmacista/Chat";
                 }
                 else {
@@ -435,7 +461,7 @@ public class FarmacistaController {
 
             model.addAttribute("listaUltimosMensajes",listaUltimosMensajes);
             model.addAttribute("listaChatsFarmacista",listaChatsFarmacista);
-            model.addAttribute("chat",chat);
+            model.addAttribute("chatAct",chat);
             return "Farmacista/Chat";
         }
         else {
