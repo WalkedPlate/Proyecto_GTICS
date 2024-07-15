@@ -935,6 +935,40 @@ public class FarmaciaWebVentaController {
     }
 
 
+    @PostMapping("/clinicarenacer/eliminarOrden")
+    public String eliminarAdminSede(@RequestParam(value = "idOrden", required = false) Integer id, RedirectAttributes attr,
+                                    HttpSession session) {
+        Usuarios paciente = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+        if(id == null){
+            attr.addFlashAttribute("del", "Le recomendamos no modificar los parámetros a enviar.");
+            return "redirect:/clinicarenacer/historialPedidos";
+        }
+
+        Optional<Ordenes> opt = ordenesRepository.findById(id);
+        if (opt.isPresent()) {
+            Ordenes ord = opt.get();
+
+            if(ord.getEstadoOrden().getIdEstadoOrden() != 2 && ord.getEstadoOrden().getIdEstadoOrden() != 3
+                    && ord.getEstadoOrden().getIdEstadoOrden() != 5 && ord.getEstadoOrden().getIdEstadoOrden() != 10){
+                EstadoOrden eliminado = estadoOrdenRepository.findById(2).get();
+                ord.setEstadoOrden(eliminado);
+                attr.addFlashAttribute("msg", "La orden ha sido descartada exitosamente.");
+                return "redirect:/clinicarenacer/historialPedidos";
+            }
+            else {
+                attr.addFlashAttribute("err", "Debido al estado de esta orden, es imposible descartarla.");
+                return "redirect:/clinicarenacer/historialPedidos";
+            }
+
+        }
+        else {
+            attr.addFlashAttribute("err", "La orden no existe.");
+            return "redirect:/clinicarenacer/historialPedidos";
+        }
+
+    }
+
 
 
 }

@@ -220,6 +220,10 @@ public class SuperadminController {
                                     HttpSession session) {
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
+        if(id == null){
+            redirectAttributes.addFlashAttribute("del", "Le recomendamos no modificar los parámetros a enviar.");
+            return "redirect:/superadmin/administradores-sede";
+        }
 
         Optional<Usuarios> optSede = usuariosRepository.findById(id);
         Usuarios adminSede = usuariosRepository.findByIdUsuario(id);

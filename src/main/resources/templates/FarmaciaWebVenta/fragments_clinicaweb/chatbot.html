@@ -52,7 +52,12 @@
         <div class="chat-input">
             <textarea placeholder="Coloca el mensaje..." required></textarea>
             <span id="send-btn" class="material-symbols-outlined">send</span>
-            <!-- <button class="clear-chat-btn">Limpiar Chat</button> -->
+            <!--
+            <label for="file-upload" class="custom-file-upload">
+                <span class="material-symbols-outlined">attach_file</span>
+            </label>
+            <input id="file-upload" type="file" accept="image/*"/>
+            <button class="clear-chat-btn">Limpiar Chat</button> -->
         </div>
     </div>
 </div>
@@ -62,7 +67,26 @@
     - custom js link
   -->
 <script src="/js/FarmaciaWebVenta/script.js"></script>
+<script>
+    document.getElementById("file-upload").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
 
+        fetch("/api/upload", {
+            method: "POST",
+            body: formData
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                // Aquí puedes manejar la respuesta del servidor
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
 <!--
   - ionicon link
 -->

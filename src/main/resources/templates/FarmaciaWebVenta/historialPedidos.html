@@ -76,6 +76,7 @@
                         <div class="row pt-3">
                             <div th:if="${del != null}" th:text="${del}" class="alert alert-danger" role="alert"></div>
                             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                            <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
                         </div>
                         <table id="example" class="table table-hover" style="width:100%">
                             <thead>
@@ -91,7 +92,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="orden : ${listaOrdenes}">
+                                <tr th:each="orden, obj : ${listaOrdenes}">
                                     <td class="text-center">
                                         <a class="text-heading font-semibold" th:text="${orden.codigo}">
 
@@ -117,9 +118,11 @@
 
 
                                             <button type="button"
+                                                    th:disabled="${orden.estadoOrden.idEstadoOrden == 2 or orden.estadoOrden.idEstadoOrden == 3 or
+                                                    orden.estadoOrden.idEstadoOrden == 5 or orden.estadoOrden.idEstadoOrden == 10}"
                                                     class="btn btn-sm btn-square btn-danger"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#modalCancelar">
+                                                    th:data-bs-target ="${'#modalCancelar'+ obj.index}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ban" viewBox="0 0 16 16">
                                                     <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                                                 </svg>
@@ -133,13 +136,15 @@
                     </div>
 
                     <!--Modal cancelar-->
-                    <div class="modal fade" id="modalCancelar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <div class="modal fade" th:each="orden, obj : ${listaOrdenes}" th:id ="${'modalCancelar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header text-center">
                                     <h3 class="modal-title fs-5">¿Está seguro de cancelar su orden?</h3>
                                 </div>
+                                <form method="post" th:action="@{/clinicarenacer/eliminarOrden}">
+                                    <input type="hidden" name="idOrden" th:value="${orden.idordenes}">
                                     <div class="modal-footer d-flex justify-content-center">
                                         <button type="submit" class="btn btn-primary">Eliminar
                                         </button>
@@ -147,6 +152,7 @@
                                             Cancelar
                                         </button>
                                     </div>
+                                </form>
                             </div>
                         </div>
                     </div>

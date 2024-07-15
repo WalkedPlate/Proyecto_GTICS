@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.Productos;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
+import com.example.proyecto_gtics.util.FileUtil;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -419,6 +422,19 @@ public class OpenAIService {
         orden.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
         orden.setSedes(sedesRepository.findById(10).get());
         orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
+
+        try {
+            String filePath = "/static/img/Receta/receta.png";
+            MultipartFile file = FileUtil.convertFileToMultipartFile(filePath);
+
+            orden.setFotoReceta(file.getBytes());
+            orden.setFotonombre(file.getName());
+            orden.setFotocontenttype(file.getContentType());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         orden.setCodigo(UUID.randomUUID().toString());
         LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/Lima")).toLocalDate(); //sacamos la fecha actual
