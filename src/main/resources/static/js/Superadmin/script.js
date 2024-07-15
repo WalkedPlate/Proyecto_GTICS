@@ -1,4 +1,4 @@
-// Script para confirmación de cierre de sesión
+// Script para confirmación de cierre de sesión solo para dashboard superadmin
 function confirmLogout() {
   $('#confirmLogoutModal').modal('show');
 }

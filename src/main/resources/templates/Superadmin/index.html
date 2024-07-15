@@ -401,7 +401,9 @@
                                                         <label>Correo:</label>
                                                         <input name="correo" type="email" maxlength="99" class="form-control"
                                                                th:value="${adminSede.correo}" required>
-                                                        <div class="invalid-feedback" id="correoEditError"></div>
+                                                        <div class="invalid-feedback" id="correoEditError">
+                                                            Por favor, ingrese un correo válido (max 99 dígitos).
+                                                        </div>
                                                     </div>
 
 

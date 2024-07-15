@@ -108,7 +108,7 @@
                             <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                        <form method="post" class="needs-validation" th:action="@{/superadmin/guardarDoctor}" novalidate>
+                                        <form method="post" id="registerForm" th:action="@{/superadmin/guardarDoctor}" novalidate>
 
                                             <input type="hidden" name="nombre" value="valid">
                                             <div class="modal-header">
@@ -121,9 +121,9 @@
                                                     <div class="col">
                                                         <label >DNI:</label>
                                                         <input minlength="8" maxlength="8" id="dni" name="dni"
-                                                               type="text" class="form-control" placeholder="Ingrese el N° de DNI" required>
+                                                               type="text" class="form-control" placeholder="Ingrese el N° de DNI" autocomplete="off">
                                                         <div class="invalid-feedback" id="dniError">
-                                                            El DNI debe tener 8 dígitos.
+                                                            Por favor, ingrese su DNI de 8 dígitos.
                                                         </div>
                                                         <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
 
@@ -134,16 +134,14 @@
                                                         <label>Código (colegio médico):</label>
                                                         <input minlength="6" maxlength="6" id="codigoColegio" name="codigoColegio"
                                                                type="text" class="form-control" placeholder="Coloca el código del doctor" required>
-                                                        <div class="invalid-feedback" >
-                                                            El Código de colegio médica  debe tener 6 dígitos.
-                                                        </div>
+                                                        <div class="invalid-feedback" id="codigoError"></div>
                                                     </div>
                                                 </div>
 
                                                 <div class="row pt-3">
                                                     <div class="col">
                                                         <label for="nombre">Nombre:</label>
-                                                        <input pattern="[A-Za-z].+" id="nombre"
+                                                        <input  id="nombre"
                                                                type="text" class="form-control" placeholder="Nombre completo" disabled readonly>
                                                     </div>
                                                 </div>
@@ -154,65 +152,33 @@
                                                         <label for="direccion">Dirección:</label>
                                                         <input maxlength="99" id="direccion" name="direccion"
                                                                type="text" class="form-control" placeholder="Ingrese la dirección" required>
-
-                                                        <div class="invalid-feedback">
-                                                            Por favor, ingrese una dirección (max 99 dígitos).
-                                                        </div>
+                                                        <div class="invalid-feedback" id="direccionError"></div>
                                                     </div>
 
                                                     <div class="col">
-                                                        <!--<label for="distrito">Distrito de residencia:</label>-->
-                                                        <!--<input maxlength="99" id="distrito" name="distritoResidencia"
-                                                               type="text" class="form-control" placeholder="Ingrese el distrito de residencia" required>-->
-                                                        <label for="distrito">Distrito de residencia:</label>
-                                                        <select id="distrito" name="distrito" class="form-select" required>
-                                                            <option disabled selected value="">--Seleccione un distrito--</option>
-                                                            <option value="ate">Ate</option>
-                                                            <option value="barranco">Barranco</option>
-                                                            <option value="brena">Breña</option>
-                                                            <option value="carabayllo">Carabayllo</option>
-                                                            <option value="chaclacayo">Chaclacayo</option>
-                                                            <option value="chorrillos">Chorrillos</option>
-                                                            <option value="cieneguilla">Cieneguilla</option>
-                                                            <option value="comas">Comas</option>
-                                                            <option value="el agustino">El Agustino</option>
-                                                            <option value="independencia">Independencia</option>
-                                                            <option value="jesus maria">Jesús María</option>
-                                                            <option value="la molina">La Molina</option>
-                                                            <option value="la victoria">La Victoria</option>
-                                                            <option value="lima">Lima</option>
-                                                            <option value="lince">Lince</option>
-                                                            <option value="los olivos">Los Olivos</option>
-                                                            <option value="lurigancho chosica">Lurigancho-Chosica</option>
-                                                            <option value="lurin">Lurín</option>
-                                                            <option value="magdalena del mar">Magdalena del Mar</option>
-                                                            <option value="miraflores">Miraflores</option>
-                                                            <option value="pachacamac">Pachacámac</option>
-                                                            <option value="pucusana">Pucusana</option>
-                                                            <option value="pueblo libre">Pueblo Libre</option>
-                                                            <option value="puente piedra">Puente Piedra</option>
-                                                            <option value="punta hermosa">Punta Hermosa</option>
-                                                            <option value="punta negra">Punta Negra</option>
-                                                            <option value="rimac">Rímac</option>
-                                                            <option value="san bartolo">San Bartolo</option>
-                                                            <option value="san borja">San Borja</option>
-                                                            <option value="san isidro">San Isidro</option>
-                                                            <option value="san juan de lurigancho">San Juan de Lurigancho</option>
-                                                            <option value="san juan de miraflores">San Juan de Miraflores</option>
-                                                            <option value="san luis">San Luis</option>
-                                                            <option value="san martin de porres">San Martín de Porres</option>
-                                                            <option value="san miguel">San Miguel</option>
-                                                            <option value="santa anita">Santa Anita</option>
-                                                            <option value="santa maria del mar">Santa María del Mar</option>
-                                                            <option value="santa rosa">Santa Rosa</option>
-                                                            <option value="santiago de surco">Santiago de Surco</option>
-                                                            <option value="surquillo">Surquillo</option>
-                                                            <option value="villa el salvador">Villa El Salvador</option>
-                                                            <option value="villa maria del triunfo">Villa María del Triunfo</option>
-                                                            <option value="ancon">Ancón</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Por favor, seleccione un distrito de residencia.
+                                                        <label for="distritoResidencia">Distrito de residencia:</label>
+                                                        <div class="mb-3">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn dropdown-toggle dttobtn"
+                                                                        type="button"
+                                                                        id="dropdownMenuButton"
+                                                                        data-bs-toggle="dropdown"
+                                                                        aria-expanded="false">
+                                                                    Seleccione un dtto.
+                                                                </button>
+                                                                <ul class="dropdown-menu menu-distrito">
+                                                                    <li><a class="dropdown-item item-distrito"
+                                                                           th:each="distrito:${listaDistritos}"
+                                                                           th:value="${distrito.nombre}"
+                                                                           th:text="${distrito.nombre}"></a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- Hidden input para enviar el valor seleccionado -->
+                                                                <input type="hidden" class="form-control"
+                                                                       id="distritoResidencia"
+                                                                       name="distritoResidencia">
+                                                                <div class="invalid-feedback" id="distritoError"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -223,22 +189,31 @@
                                                 <div class="row pt-5">
                                                     <div class="col">
                                                         <label for="correo">Correo:</label>
-                                                        <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}"
+                                                        <input
                                                                maxlength="100" id="correo" type="email" name="correo"
                                                                class="form-control" placeholder="Ingrese el correo electrónico" required>
-                                                        <div class="invalid-feedback">
-                                                            Por favor, ingrese un correo válido (max 99 dígitos).
-                                                        </div>
+                                                        <div class="invalid-feedback" id="correoError"></div>
                                                     </div>
 
                                                     <div class="col">
-                                                        <label for="sedeDoctor">Sede:</label>
-                                                        <select id="sedeDoctor" name="idSede" class="form-select" required>
-                                                            <option selected disabled value="">--Ingresa una sede--</option>
-                                                            <option th:each="sede : ${listaSedes}" th:text="${sede.nombre}" th:value="${sede.idSedes}"></option>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Por favor, seleccione una sede.
+                                                        <label for="sedeAdmin">Sede:</label>
+                                                        <div class="dropdown-center">
+                                                            <button class="btn dropdown-toggle sedebtn" type="button"
+                                                                    id="sedeAdmin" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                Seleccione una sede
+                                                            </button>
+                                                            <ul class="dropdown-menu menu-sede">
+                                                                <li><a class="dropdown-item item-sede"
+                                                                       th:each="sede : ${listaSedes}"
+                                                                       th:text="${sede.nombre}"
+                                                                       th:value="${sede.idSedes}"></a>
+                                                                </li>
+                                                            </ul>
+                                                            <!-- Hidden input para enviar el valor seleccionado -->
+                                                            <input type="hidden" class="form-control" id="sede"
+                                                                   name="idSede">
+                                                            <div class="invalid-feedback" id="sedeError"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -276,13 +251,13 @@
                                         <tr th:each="doctor,obj: ${listaDoctores}">
                                             <td>
                                                 <img alt="..." src="/img/Superadmin/doctor_icon.png" class="avatar avatar-sm rounded-circle me-2">
-                                                <a th:text="${doctor.nombre}" class="text-heading font-semibold" href="#"></a>
+                                                <a th:text="${doctor.nombre}" class="text-heading font-semibold text-uppercase puntero" href="#"></a>
                                             </td>
-                                            <td th:text="${doctor.sedes.nombre}" class="text-center"></td>
-                                            <td th:text="${doctor.dni}" class="text-center"></td>
-                                            <td th:text="${doctor.distritoResidencia}" class="text-center"></td>
-                                            <td th:text="${doctor.codigoColegio}" class="text-center"></td>
-                                            <td th:text="${doctor.correo}" class="text-center"></td>
+                                            <td th:text="${doctor.sedes.nombre}" class="text-center  puntero"></td>
+                                            <td th:text="${doctor.getFormattedDni()}" class="text-center puntero"></td>
+                                            <td th:text="${doctor.distritoResidencia}" class="text-center puntero"></td>
+                                            <td th:text="${doctor.codigoColegio}" class="text-center puntero"></td>
+                                            <td th:text="${doctor.correo}" class="text-center puntero"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -330,90 +305,8 @@
         <!-- Script sobre la tabla y sus configuraciones -->
         <script src="/js/Superadmin/doctores.js"></script>
 
-        <script>
-            //Autocompletar Nombre y Apellidos con el DNI
-            function autocompletarDni() {
-                let dni = document.getElementById("dni").value;
-
-                fetch(`/api/dni?dni=${dni}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 422 || data.status === 404) {
-                            alert(data.message);
-                        } else {
-                            document.getElementById("nombre").value = `${data.data.nombres} ${data.data.apellido_paterno} ${data.data.apellido_materno}` ;
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-
-            // Añadir el evento keydown para detectar la tecla Enter
-            document.getElementById('dni').addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // Evitar que el formulario se envíe
-                    autocompletarDni();
-                }
-            });
-        </script>
-
-
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("dni").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
-        <script>
-            // JavaScript para permitir solo la entrada de números
-            document.getElementById("codigoColegio").addEventListener("keydown", function(event) {
-                // Permite las teclas de flecha, retroceso y suprimir
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                    return;
-                }
-                // Permite los dígitos numéricos
-                if (event.key < "0" || event.key > "9") {
-                    event.preventDefault();
-                }
-            });
-        </script>
-        <script>
-            (() => {
-                'use strict'
-
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                const forms = document.querySelectorAll('.needs-validation')
-
-                // Loop over them and prevent submission
-                Array.from(forms).forEach(form => {
-                    form.addEventListener('submit', event => {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-            })()
-        </script>
-
         <!-- Script para confirmación de cierre de sesión -->
-        <script>
-            function confirmLogout() {
-                $('#confirmLogoutModal').modal('show');
-            }
-
-            function submitLogout() {
-                document.getElementById('logoutForm').submit();
-            }
-        </script>
+        <script src="/js/Superadmin/registroDoctores.js"></script>
 
     </body>
 </html>

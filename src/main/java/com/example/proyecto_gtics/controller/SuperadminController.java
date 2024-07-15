@@ -669,6 +669,10 @@ public class SuperadminController {
 
         List<Sedes> listaSedes = sedesRepository.findAll();
         model.addAttribute("listaSedes",listaSedes);
+
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
+
         return "Superadmin/doctores";
 
     }
@@ -677,6 +681,9 @@ public class SuperadminController {
                                 RedirectAttributes attr, HttpSession session){
 
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
+
+//         Convertir DNI a String para procesamiento
+        String dniStr = DniUtils.formatDni(doctor.getDni());
 
         if(bindingResult.hasErrors() || idSede<0 ||idSede > 10 ){
             String errors = bindingResult.getFieldErrors().stream()
@@ -701,7 +708,7 @@ public class SuperadminController {
                 return "redirect:/superadmin/doctores";
             }
 
-            ResultDni resultDni = dniService.obtenerDatosPorDni(doctor.getDni().toString());
+            ResultDni resultDni = dniService.obtenerDatosPorDni(dniStr);
             if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                 attr.addFlashAttribute("errDNI","El DNI ingresado es inválido");
                 return "redirect:/registro";
@@ -715,6 +722,16 @@ public class SuperadminController {
 
             Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
             doctor.setSedes(sede);//Asignamos la sede
+
+            Path path = Paths.get("src/main/resources/static/img/Superadmin/doctor_icon.png");
+            try {
+                byte[] defaultPhoto = Files.readAllBytes(path);
+                doctor.setFoto(defaultPhoto);
+                doctor.setFotonombre("doctor_icon.png");
+                doctor.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             usuariosRepository.save(doctor);
                 attr.addFlashAttribute("msg","Doctor creado exitosamente");
 
@@ -747,7 +764,8 @@ public class SuperadminController {
     public String editarPerfil(Model model,HttpSession session){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
         model.addAttribute("superadmin",superadmin);
-
+        List<Distritos> listaDistritos = distritosRepository.findAll();
+        model.addAttribute("listaDistritos",listaDistritos);
         return "Superadmin/editar";
     }
 
@@ -801,11 +819,11 @@ public class SuperadminController {
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         if(direccion == null || distrito == null || correo == null){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/superadmin/editar-perfil";
         }
         if(direccion.isEmpty() || distrito.isEmpty() || correo.isEmpty()){
-            attr.addFlashAttribute("msg","Debe rellenar los campos.");
+            attr.addFlashAttribute("err","Debe rellenar los campos.");
             return "redirect:/superadmin/editar-perfil";
         }
 
