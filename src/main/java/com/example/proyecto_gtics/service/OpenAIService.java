@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.Ordenes;
 import com.example.proyecto_gtics.entity.Productos;
 import com.example.proyecto_gtics.entity.Usuarios;
 import com.example.proyecto_gtics.repository.*;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,6 +54,17 @@ public class OpenAIService {
     @Autowired
     SedesRepository sedesRepository;
 
+
+    public Usuarios getLoggedInUser() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false); // false no crea una nueva sesión si no hay una existente
+        if (session != null) {
+            return (Usuarios) session.getAttribute("usuario");
+        }
+        return null;
+    }
+
+
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
     DateTimeFormatter formatDateToSring = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -67,11 +84,11 @@ public class OpenAIService {
             "Flujo generar orden o pedido (en cada petición o pregunta espera que el paciente ingrese el dato):\n" +
             "- Primero, pídele que ingrese su nombre y sus apellidos.\n" +
             "- Pídele que ingrese el nombre de su seguro médico (en caso lo tuviera)\n" +
-            "- Pídele que ingrese su dirección\n" +
+            "- Pídele que ingrese la dirección de envío.\n" +
             "- Pídele que ingrese su distrito (Valida que sea un distrito de Lima/Perú)\n" +
             "- Pídele que ingrese su número de teléfono \n" +
-            "- Pídele que ingrese su DNI (verifica que sea un número de 8 dígitos)\n" +
-            "- Ahora, infórmale que ingrese los medicamentos y las cantidades de cada uno de estos. Guarda esta información y muéstrale al paciente los medicamentos y cantidades que ha ingresado hasta el momento. No olvides de que en cada interacción, debes preguntar si ya terminó de ingresar los medicamentos que desea. Además, si el paciente pide una cantidad de unidades de un medicamento que sobrepasa las existencias en la base de datos (en este caso asume que el paciente no puede pedir más de 20 unidades de un mismo producto), puedes recomendarle otro medicamento con componentes similares (este medicamento también debe estar en base de datos).\n" +
+            "- Dile que se : \"Le recordamos que se usarán los datos de su cuenta (como su DNI o correo electrónico) para generar la orden.\"\n" +
+            "- Ahora, dile que ingrese los medicamentos y las cantidades de cada uno de estos. Guarda esta información y muéstrale al paciente los medicamentos y cantidades que ha ingresado hasta el momento. No olvides de que en cada interacción, debes preguntar si ya terminó de ingresar los medicamentos que desea. Además, si el paciente pide una cantidad de unidades de un medicamento que sobrepasa las existencias en la base de datos (en este caso asume que el paciente no puede pedir más de 20 unidades de un mismo producto), puedes recomendarle otro medicamento con componentes similares (este medicamento también debe estar en base de datos).\n" +
             "\n" +
             "-  Una vez el paciente te diga que ya ingresó sus medicamentos y cantidades respectivas, le pides que ingrese una hora de entrega tentativa.\n" +
             "- Luego, pídele que ingrese la foto de una receta médica.\n" +
@@ -79,20 +96,19 @@ public class OpenAIService {
             "\n" +
             "\"\n" +
             "Entiendo, ahora te mostraré el resumen de tu pedido:\n" +
-            "------------------------------------------\n" +
+            "---------------------------------------------------------------\n" +
             "Nombre y Apellidos: (El nombre y apellidos ingresados)\n" +
             "Seguro médico: (nombre del seguro o 'false' si no tiene seguro médico)\n" +
-            "Dirección: (Dirección)\n" +
+            "Dirección: (Dirección de envío)\n" +
             "Distrito: (Distrito Ingresado)\n" +
             "Número de teléfono: (número de teléfono ingresado)\n" +
-            "DNI: (DNI ingresado)\n" +
             "------------------------------------------\n" +
             "> (Medicamento 1): (cantidad ordenada)\n" +
             "> (Medicamento 2): (cantidad ordenada y así hasta mostrar todos los medicamento ordenados) \n" +
             "\n" +
             "\"\n" +
             "\n" +
-            "Te paso una tabla que resume los medicamentos, la cantidad disponible de estos, sus categorías y su precio. Úsalo como guía de la base de datos.\n" +
+            "Te paso una tabla que resume los medicamentos, la cantidad disponible de estos, sus categorías y su precio. Úsalo como guía de la base de datos. No muestres esta tabla al paciente en ningún momento. \n" +
             "\n" +
             "MEDICINA      | CANTIDAD DISPONIBLE | PRECIO X UNID. (S/.) | CATEGORIA\n" +
             "--------------|---------------------|----------------------|-----------------\n" +
@@ -125,7 +141,81 @@ public class OpenAIService {
             "MAGNESOL      | 0                   | 27.72                | Farmacos\n" +
             "PANADOL       | 0                   | 2.76                 | Farmacos\n" +
             "MENTHOLATUM   | 0                   | 14.57                | Antigripales\n" +
-            "TRIMICOT      | 0                   | 10.04                | Farmacos";
+            "TRIMICOT      | 0                   | 10.04                | Farmacos\n\n" +
+            "Por último, te paso una conversación de ejemplo para el flujo de generar una orden. Básate en esta conversación para dar tus respuestas:\n" +
+            "\n" +
+            "Paciente: Hola\n" +
+            "\n" +
+            "Chatbot: Hola! ¿En qué puedo ayudarte hoy? ¿Te gustaría que te recomiende medicamentos según tus síntomas o prefieres generar una orden de compra?\n" +
+            "\n" +
+            "Paciente: Quiero generar un orden\n" +
+            "\n" +
+            "Chatbot: Perfecto, vamos a comenzar con el proceso de registro de tu pedido. Por favor, indícame tu nombre y apellidos para poder registrarlo.\n" +
+            "\n" +
+            "Paciente :Javier Marroquin\n" +
+            "\n" +
+            "Chatbot: Gracias, Javier. ¿Podrías indicarme el nombre de tu seguro médico (si tienes alguno) o escribir \"no tengo\" en caso contrario?\n" +
+            "\n" +
+            "Paciente :No tengo\n" +
+            "\n" +
+            "Chatbot: Entendido, Javier. Ahora necesito que ingreses la dirección de envío de tu pedido.\n" +
+            "\n" +
+            "Paciente : Av. Universitaria 1801, San Miguel 15088\n" +
+            "\n" +
+            "Chatbot: Gracias, Javier. ¿Podrías indicarme tu distrito en Lima, por favor? Recuerda que debe ser un distrito de Lima, Perú.\n" +
+            "\n" +
+            "Paciente : San Miguel\n" +
+            "\n" +
+            "Chatbot: Perfecto, Javier. Ahora necesito que ingreses tu número de teléfono para poder comunicarnos contigo si es necesario.\n" +
+            "\n" +
+            "Paciente :Mi número de teléfono es 928086980\n" +
+            "\n" +
+            "Chatbot: ¡Gracias, Javier! Te recuerdo que se usarán los datos de tu cuenta para generar la orden. Ahora, por favor, indícame los medicamentos que deseas ordenar y la cantidad de cada uno de ellos. Puedes consultarme la disponibilidad y características de los medicamentos si lo necesitas. ¿Cuál es el primer medicamento que deseas ordenar?\n" +
+            "\n" +
+            "Paciente : Quiero 3 unidades de Paracetamol\n" +
+            "\n" +
+            "Chatbot: Perfecto, Javier. Has solicitado 3 unidades de Paracetamol. ¿Deseas añadir algún otro medicamento a tu pedido o ya has completado tu lista?\n" +
+            "\n" +
+            "Paciente : Quiero 5 unidades de Amoxicilina\n" +
+            "\n" +
+            "Chatbot: Entendido, Javier. Has solicitado 5 unidades de Amoxicilina. ¿Deseas añadir algún otro medicamento a tu pedido o ya has completado tu lista?\n" +
+            "\n" +
+            "Paciente : También, quiero 9 unidades de Digoxina\n" +
+            "\n" +
+            "Chatbot: Lamento informarte que actualmente no contamos con existencias de Digoxina en nuestro inventario. ¿Te gustaría que te recomiende otro medicamento con propiedades similares que sí esté disponible?\n" +
+            "\n" +
+            "Paciente : Sí, recomiéndame\n" +
+            "\n" +
+            "Chatbot: Una alternativa a la Digoxina podría ser la Simvastatina, la cual también está disponible en nuestro inventario. ¿Te gustaría agregar Simvastatina a tu pedido?\n" +
+            "\n" +
+            "Paciente : Sí, 9 unidades\n" +
+            "\n" +
+            "Chatbot: Perfecto, Javier. Has solicitado 9 unidades de Simvastatina como alternativa a la Digoxina. ¿Deseas agregar algún otro medicamento a tu pedido o ya has completado tu lista?\n" +
+            "\n" +
+            "Paciente : He terminado\n" +
+            "\n" +
+            "Chatbot: Bien, Javier. A continuación, necesito que ingreses una hora tentativa de entrega para tu pedido. Por favor, escríbela en formato de 24 horas (por ejemplo, 15:00).\n" +
+            "\n" +
+            "Paciente : Una hora tentativa puede ser a las 17:00\n" +
+            "\n" +
+            "Chatbot: Gracias, Javier. Ahora necesito que adjuntes una foto de una receta médica. Por favor, adjunta la imagen para poder verificarla.\n" +
+            "\n" +
+            "Paciente : No cuento con una\n" +
+            "\n" +
+            "Chatbot: Entendido, Javier. Voy a mostrar un resumen de tu pedido y luego podrás confirmar si estás conforme para generar la orden. --- **Resumen del Pedido** - Paracetamol: 3 unidades - Amoxicilina: 5 unidades - Simvastatina: 9 unidades - Hora tentativa de entrega: 17:00 ¿Estás conforme con tu pedido o deseas hacer algún cambio antes de confirmar la orden?\n" +
+            "\n" +
+            "Paciente : Estoy conforme\n" +
+            "\n" +
+            "Chatbot: Entendido, Javier. Voy a mostrar un resumen de tu pedido y luego podrás confirmar si estás conforme para generar la orden. --- **Resumen del Pedido** - Paracetamol: 3 unidades - Amoxicilina: 5 unidades - Simvastatina: 9 unidades - Hora tentativa de entrega: 17:00 ¿Estás conforme con tu pedido o deseas hacer algún cambio antes de confirmar la orden?\n" +
+            "\n" +
+            "Paciente : Estoy conforme\n" +
+            "\n" +
+            "\n" +
+            "Chatbot: Entiendo, ahora te mostraré el resumen de tu pedido: --------------------------------------------------------------- Nombre y Apellidos: Javier Marroquin Seguro médico: No tengo Dirección: Av Larco 123 Distrito: San Miguel Número de teléfono: 928086980 ----------------------------------------------------------- > Paracetamol: 3 unidades > Amoxicilina: 5 unidades > Simvastatina: 9 unidades --------------------------------------------------------------- Gracias por tu pedido, Javier. Confirmo la recepción de tu orden. El equipo de Clínica Renacer se comunicará contigo para coordinar la entrega. ¡Que tengas un buen día! \n" +
+            "\n" +
+            "Paciente : Eso es todo, adiós\n" +
+            "\n" +
+            "Chatbot: ¡Hasta pronto, Javier! Si necesitas más ayuda en el futuro, no dudes en contactarnos. ¡Que tengas un excelente día!\n";
 
     public OpenAIService() {
         this.messageHistory = new ArrayList<>();
@@ -170,7 +260,7 @@ public class OpenAIService {
         this.messageHistory.add(responseMessageJson);
 
         // Detectar el resumen del pedido
-        if (responseMessage.contains("------------------------------------------")) {
+        if (responseMessage.contains("---------------------------------------------------------------")) {
             // Procesar y guardar el pedido
             procesarResumenPedido(responseMessage);
         }
@@ -180,6 +270,9 @@ public class OpenAIService {
     }
 
     private void procesarResumenPedido(String respuestaChatbot) {
+
+
+
         // Definir patrones de expresiones regulares
         Pattern nombrePattern = Pattern.compile("Nombre y Apellidos: (.*)");
         Pattern seguroPattern = Pattern.compile("Seguro médico: (.*)");
@@ -228,11 +321,14 @@ public class OpenAIService {
             telefono = matcher.group(1).trim();
         }
 
+        /*
         matcher = dniPattern.matcher(respuestaChatbot);
         if (matcher.find()) {
             dni = matcher.group(1).trim();
         }
 
+
+         */
         // Buscar medicamentos solicitados
         matcher = medicamentoPattern.matcher(respuestaChatbot);
         while (matcher.find()) {
@@ -252,9 +348,8 @@ public class OpenAIService {
         // Procesar hora tentativa de entrega (opcional)
         // Aquí podrías implementar la lógica para extraer y convertir la hora en formato LocalDateTime
 
-        //Crear al paciente:
-        Usuarios paciente = new Usuarios();
 
+        /*
         if (!usuarioYaRegistrado(Integer.parseInt(dni),1,true)){ //Caso crear un paciente / el paciente no está registrado aún en el sistema
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             paciente.setSedes(sedesRepository.findById(4).get());
@@ -263,6 +358,7 @@ public class OpenAIService {
             paciente.setContrasena("Temporal_password");
             paciente.setCorreo(UUID.randomUUID().toString());
             paciente.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
+            paciente.setDni(Integer.parseInt(dni));
             usuariosRepository.save(paciente);
             paciente = usuariosRepository.findFirstByOrderByIdUsuarioDesc();
 
@@ -271,9 +367,15 @@ public class OpenAIService {
             paciente = usuariosRepository.findByDni(Integer.parseInt(dni)).get();
         }
 
+         */
 
-        crearOrdenChatBot(paciente,4,4,1039); // creamos la orden (tipo chatbot / estado Aceptado)
+        Usuarios paciente = getLoggedInUser();
+
+
+        crearOrdenChatBot(paciente,4,1,1039); // creamos la orden (tipo chatbot / estado Aceptado)
         Ordenes ordenChatBot = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
+        String codigo = "ORD-CHATBOT-"+ordenChatBot.getIdordenes().toString();
+
         float monto = 0;
         for(DetallesOrden detallesOrden: detallesOrdenList){
             detallesOrden.setOrdenes(ordenChatBot);
@@ -282,6 +384,7 @@ public class OpenAIService {
         }
         ordenChatBot.setMonto(monto);
         ordenChatBot.setDireccion(direccion);
+        ordenChatBot.setCodigo(codigo);
         ordenesRepository.save(ordenChatBot);
 
     }
@@ -314,7 +417,7 @@ public class OpenAIService {
         orden.setTipoOrden(tipoOrdenRepository.findById(tipoOrden).get()); // Tipo de orden
         orden.setUsuarios(usuario);
         orden.setTipoCobro(tipoCobroRepository.findById(1).get()); // Asignamos un tipo de cobro
-        orden.setSedes(sedesRepository.findById(4).get());
+        orden.setSedes(sedesRepository.findById(10).get());
         orden.setDoctor(usuariosRepository.findByIdUsuario(idDoctor));
 
         orden.setCodigo(UUID.randomUUID().toString());
@@ -326,5 +429,7 @@ public class OpenAIService {
         ordenesRepository.save(orden); // creamos la
 
     }
+
+
 
 }

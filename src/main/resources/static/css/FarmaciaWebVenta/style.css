@@ -2543,6 +2543,21 @@ th, td {
   visibility: visible;
 }
 
+.clear-chat-btn {
+  align-self: center;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.clear-chat-btn:hover {
+  background-color: #c82333;
+}
+
 @media(max-width: 490px){
   .chatbot{
     right: 0;

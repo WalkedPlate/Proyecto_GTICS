@@ -11,9 +11,9 @@ toastCloseBtn.addEventListener('click', function () {
 
 
 // Chatbot
-// Chatbot
 const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
+const clearChatBtn = document.querySelector(".clear-chat-btn");
 const chatbox = document.querySelector(".chatbox");
 const chatbotToggler = document.querySelector(".chatbot-toggler");
 const chatbotCloseBtn = document.querySelector(".close-btn");
@@ -58,23 +58,37 @@ const handleChat = async () => {
   chatbox.appendChild(createChatLi(userMessage, "outgoing"));
   chatInput.value = '';
 
-  // Muestra el mensaje de "Thinking..."
-  const thinkingLi = createChatLi("Thinking...", "incoming");
+  // Muestra el mensaje de "Pensando..."
+  const thinkingLi = createChatLi("Pensando...", "incoming");
   chatbox.appendChild(thinkingLi);
+
+  // Scroll automático hacia el final del chatbox
+  chatbox.scrollTop = chatbox.scrollHeight;
 
   // Obtiene la respuesta del chatbot
   const responseMessage = await generateResponse();
 
-  // Remueve el mensaje "Thinking..." y añade la respuesta del chatbot
+  // Remueve el mensaje "Pensando..." y añade la respuesta del chatbot
   thinkingLi.remove();
   chatbox.appendChild(createChatLi(responseMessage, "incoming"));
+
+  // Scroll automático hacia el final del chatbox
+  chatbox.scrollTop = chatbox.scrollHeight;
 }
 
 chatbotCloseBtn.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
 chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
 sendChatBtn.addEventListener("click", handleChat);
 
-//Enviar orden generada por chatbot
+// Enviar mensaje al presionar Enter
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    handleChat();
+  }
+});
+
+// Enviar orden generada por chatbot
 const enviarOrden = async (orden) => {
   const API_URL = "/api/orden";
 
@@ -99,6 +113,17 @@ const enviarOrden = async (orden) => {
     return `Error occurred while fetching response from server: ${error.message}`;
   }
 }
+
+// Función para limpiar el chatbox
+const clearChatbox = () => {
+  chatbox.innerHTML = '';
+}
+
+// Listener para el botón de limpiar chat
+clearChatBtn.addEventListener("click", clearChatbox);
+
+
+
 
 
 // mobile menu variables
