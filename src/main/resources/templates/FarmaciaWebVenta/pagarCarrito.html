@@ -562,6 +562,13 @@
           const radioCash = document.getElementById("cash");
           const radioCard = document.getElementById("card");
 
+          //para la solicitud del requerimiento para cada campo
+          const direccion = document.getElementById("direccion");
+          const distrito = document.getElementById("distrito");
+          const doctor = document.getElementById("doctor");
+          const sede = document.getElementById("sede");
+
+
           formFarmacia.style.display = "none";
           formDelivery.style.display = "none";
 
@@ -569,6 +576,12 @@
               if (this.checked) {
                   formFarmacia.style.display = "block";
                   formDelivery.style.display = "none";
+                  // Remover required de campos del formulario de delivery
+                  direccion.removeAttribute("required");
+                  distrito.removeAttribute("required");
+                  // Agregar required a campos del formulario de farmacia
+                  doctor.setAttribute("required", "required");
+                  sede.setAttribute("required", "required");
               }
           });
 
@@ -576,6 +589,12 @@
               if (this.checked) {
                   formFarmacia.style.display = "none";
                   formDelivery.style.display = "block";
+                  // Agregar required a campos del formulario de delivery
+                  direccion.setAttribute("required", "required");
+                  distrito.setAttribute("required", "required");
+                  // Remover required de campos del formulario de farmacia
+                  doctor.removeAttribute("required");
+                  sede.removeAttribute("required");
               }
           });
 

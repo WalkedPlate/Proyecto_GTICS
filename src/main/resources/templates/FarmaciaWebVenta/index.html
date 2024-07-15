@@ -95,37 +95,20 @@
     -->
 
     <div class="banner">
-
       <div class="container">
-
-        <div class="slider-container has-scrollbar">
-
+        <div class="slider-container has-scrollbar" id="slider">
           <div class="slider-item">
-
             <img src="/img/FarmaciaWebVenta/bannerFarmacia2.jpg" alt="bannerFarmacia1" class="banner-img">
-
           </div>
-
           <div class="slider-item">
-
             <img src="/img/FarmaciaWebVenta/bannerFarmacia.jpg" alt="bannerFarmacia2" class="banner-img">
-
           </div>
-
           <div class="slider-item">
-
             <img src="/img/FarmaciaWebVenta/bannerFarmacia3.jpg" alt="bannerFarmacia3" class="banner-img">
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
-
-
 
 
     <!--
@@ -631,6 +614,27 @@
 
   <footer th:replace="~{FarmaciaWebVenta/fragments_clinicaweb/footer.html :: footer}">
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const slider = document.getElementById('slider');
+      const sliderItems = slider.querySelectorAll('.slider-item');
+      let index = 0;
+
+      function showNextSlide() {
+        index++;
+        if (index >= sliderItems.length) {
+          index = 0;
+        }
+        slider.scroll({
+          left: sliderItems[index].offsetLeft,
+          behavior: 'smooth'
+        });
+      }
+
+      setInterval(showNextSlide, 3000); // Cambia de imagen cada 3 segundos
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

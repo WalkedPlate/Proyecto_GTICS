@@ -128,6 +128,7 @@ public class FarmaciaWebVentaController {
         ProductoMejorVendido productoMejorVendido = productosRepository.obtenerProductoMejorVendido();
 
         List<Categorias> listaCategorias = categoriasRepository.findAll();
+
         List<Long> listaCantidades = new ArrayList<>();
         for (Categorias categorias: listaCategorias){
             listaCantidades.add(productosRepository.countByCategorias(categorias));
@@ -377,6 +378,9 @@ public class FarmaciaWebVentaController {
             model.addAttribute("superAdmin",superAdmin);
         }
         model.addAttribute("paciente", paciente);
+
+        List<Categorias> listaCategorias = categoriasRepository.findAll();
+        model.addAttribute("listaCategorias", listaCategorias);
 
 
         if(chatId == null){
