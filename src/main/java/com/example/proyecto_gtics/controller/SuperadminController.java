@@ -555,9 +555,12 @@ public class SuperadminController {
                 productosSedes.setCantidad(resultado);
                 productosSedeRepository.save(productosSedes);
             });
+        }else{
+            attr.addFlashAttribute("msg","Orden Rechazada exitosamente");
+            return "redirect:/superadmin/solicitudes-reposicion";
         }
 
-        attr.addFlashAttribute("msg","Estado de orden actualizado correctamente.");
+        attr.addFlashAttribute("msg","Orden Aceptada exitosamente");
         return "redirect:/superadmin/solicitudes-reposicion";
     }
 

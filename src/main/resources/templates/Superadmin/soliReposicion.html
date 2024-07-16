@@ -199,78 +199,41 @@
                                     <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
                                         <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">
                                         <input type="hidden" value="4" name="accion">
-                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#aceptarOrden">Aceptar</button>
+                                    <button type="submit" class="btn btn-primary" data-bs-toggle="modal">Aceptar</button>
                                     </form>
-                                    <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
+                                    <!--<form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
                                         <input type="hidden" value="3" name="accion">
-                                        <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">
-                                    <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazar">Rechazar</button>
-                                    </form>
+                                        <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">-->
+                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" th:data-bs-target="${'#rechazarOrden'+ obj.index}">Rechazar</button>
+                                    <!--</form>-->
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                    <!-- Modal Aceptado exitosamente -->
-                    <div class="modal fade" id="aceptarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="container text-center">
-                                    <div class="row row-cols-1">
-                                      <div class="col pt-5 icono">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-                                          </svg>
-                                      </div>
-                                      <div class="col">
-                                        <h3 class="text-center pt-5 pb-5">Solicitud de reposición aceptada exitosamente</h3>
-                                      </div>
-                                    </div>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Modal rechazar -->
-                    <div class="modal fade" id="rechazarOrden" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" th:each="ordenes, obj : ${listaOrdenes}"
+                         th:id="${'rechazarOrden'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
+                            <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
                             <div class="modal-header">
                                 <h3 class="text-center">¿Estás seguro de que quieres rechazar esta orden?</h3>
                             </div>
-
+                            <input type="hidden" value="3" name="accion">
+                            <input type="hidden" th:value="${ordenes.idordenes}" name="idOrden">
 
                             <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rechazar">Rechazar</button>
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal">Rechazar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                             </div>
+                            </form>
                         </div>
                         </div>
                     </div>
 
-                    <!--Modal rechazado exitosamente-->
-                    <div class="modal fade" id="rechazar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="container text-center">
-                                <div class="row row-cols-1">
-                                  <div class="col pt-5 icono1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                      </svg>
-                                  </div>
-                                  <div class="col">
-                                    <h3 class="text-center pt-5 pb-5">Solicitud de reposición rechazada exitosamente</h3>
-                                  </div>
-                                </div>
-                            </div>
-
-                          </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
