@@ -329,7 +329,7 @@ public class AdministradorSedeController {
                 return "redirect:/administradorsede/ordenes-reposicion";
             }
 
-            if (optOrden.get().getEstadoOrden().getIdEstadoOrden() >= 4){
+            if (optOrden.get().getEstadoOrden().getIdEstadoOrden() >= 2){
                 attr.addFlashAttribute("err", "No es posible editar la orden");
                 return "redirect:/administradorsede/verOrden?idOrdenRepo="+optOrden.get().getIdordenes();
             }

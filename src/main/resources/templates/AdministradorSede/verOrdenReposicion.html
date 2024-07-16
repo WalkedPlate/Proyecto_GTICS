@@ -195,7 +195,7 @@
                                         </span>
                                             <span>Editar Orden</span>
                                         </a>-->
-                                        <form th:if="${ordenReposicion.estadoOrden.idEstadoOrden >= 4}" th:action="@{/administradorsede/editarOrden}" method="get">
+                                        <form th:if="${ordenReposicion.estadoOrden.idEstadoOrden >= 2}" th:action="@{/administradorsede/editarOrden}" method="get">
                                             <input type="hidden" name="idOrdenRepo" th:value="${ordenReposicion.idordenes}" />
                                             <button type="submit" class="btn d-inline-flex btn-sm btn-warning mx-1 align-items-center" disabled>
                                             <span class="pe-2">
@@ -204,7 +204,7 @@
                                                 <span>Editar Orden</span>
                                             </button>
                                         </form>
-                                        <form th:unless="${ordenReposicion.estadoOrden.idEstadoOrden >= 4}" th:action="@{/administradorsede/editarOrden}" method="get">
+                                        <form th:unless="${ordenReposicion.estadoOrden.idEstadoOrden >= 2}" th:action="@{/administradorsede/editarOrden}" method="get">
                                             <input type="hidden" name="idOrdenRepo" th:value="${ordenReposicion.idordenes}" />
                                             <button type="submit" class="btn d-inline-flex btn-sm btn-warning mx-1 align-items-center">
                                             <span class="pe-2">
