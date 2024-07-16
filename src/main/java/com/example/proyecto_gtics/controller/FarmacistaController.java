@@ -151,7 +151,7 @@ public class FarmacistaController {
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
 
         //         Convertir DNI a String para procesamiento
-        String dniStr = DniUtils.formatDni(farmacista.getDni());
+        String dniStr = DniUtils.formatDni(paciente.getDni());
 
         //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
         if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
@@ -262,7 +262,7 @@ public class FarmacistaController {
         if (idTipoOrden==1){attr.addFlashAttribute("msg","Orden Registrada exitosamente");}
         if (idTipoOrden==5){attr.addFlashAttribute("msg","PreOrden Registrada exitosamente");}
 
-        attr.addFlashAttribute("wrn","Solo se añadieron las medicinas en las cuales se ingresó un número entero positivo en la cantidad solicitada.");
+        //attr.addFlashAttribute("wrn","Solo se añadieron las medicinas en las cuales se ingresó un número entero positivo en la cantidad solicitada.");
         return "redirect:/farmacista";
 
     }
