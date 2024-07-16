@@ -39,6 +39,8 @@
             -webkit-appearance: none;
             margin: 0; /* Para eliminar las flechas en Chrome */
         }
+
+
     </style>
 
     <script>
@@ -499,7 +501,7 @@
                 <form action="" class="form-cart">
                     <div class="item">
                         <table class="table table-bordered" id="cart-table">
-                            <thead class="table-dark">
+                            <thead class="table-primary rounded">
                             <tr>
                                 <th>Producto</th>
                                 <th>Precio</th>
@@ -516,7 +518,7 @@
                                                     <img th:src="@{|/imageProduct/${detalle.productos.idProductos}|}" alt="analgésicos" width="50">
                                                 </div>
                                                 <div class="col" th:text="${detalle.productos.nombre}">
-                                                    <a th:href="@{'/clinicarenacer/producto?idProductos=' + ${detalle.productos.idProductos}}"></a>
+                                                    <p th:href="@{'/clinicarenacer/producto?idProductos=' + ${detalle.productos.idProductos}}"></p>
                                                 </div>
                                             </div>
                                         </div>

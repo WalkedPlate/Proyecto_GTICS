@@ -6,11 +6,10 @@ import com.example.proyecto_gtics.dto.ProductosMejorValorados;
 import com.example.proyecto_gtics.dto.ProductosTendencia;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
-import com.example.proyecto_gtics.service.BuscarProductosService;
-import com.example.proyecto_gtics.service.CardService;
-import com.example.proyecto_gtics.service.MessageService;
-import com.example.proyecto_gtics.service.ProductoBuscarServicio;
+import com.example.proyecto_gtics.service.*;
 import com.itextpdf.text.pdf.qrcode.Mode;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -85,6 +84,8 @@ public class FarmaciaWebVentaController {
     private MessageService messageService;
     @Autowired
     private CardService cardService;
+    @Autowired
+    EmailService emailService;
     @Autowired
     private ProductoBuscarServicio productoBuscarServicio;
     @Autowired
@@ -207,8 +208,6 @@ public class FarmaciaWebVentaController {
         if(opt.isEmpty()){
             return "redirect:/clinicarenacer";
         }
-
-
 
         List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenesIdordenes(idOrden);
 
@@ -481,139 +480,152 @@ public class FarmaciaWebVentaController {
     }
 
 
-    @PostMapping(value = {"/clinicarenacer/paciente/guardardetalles"})
-        public String guardarenCarrito(@SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session , @RequestParam(name = "idProductos") Integer idProductos, RedirectAttributes attr){
+        @PostMapping(value = {"/clinicarenacer/paciente/guardardetalles"})
+            public String guardarenCarrito(@SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session , @RequestParam(name = "idProductos") Integer idProductos, RedirectAttributes attr){
 
-        Usuarios paciente =(Usuarios)session.getAttribute("usuario");
+            Usuarios paciente =(Usuarios)session.getAttribute("usuario");
 
-        DetallesOrden detallesOrden = new DetallesOrden();
-        //detallesOrden.setOrdenes(ordenesRepository.findByIdordenes(idCarrito));
-        Productos p =productosRepository.findById(idProductos).get();
-        detallesOrden.setProductos(p);
-        detallesOrden.setCantidad(1);
-        detallesOrden.setMontoParcial(p.getPrecio()*1);
-
-
-        if(validarDuplicadoDeProductoEnUnaOrden(detallesOrden, carrito)){
-            attr.addFlashAttribute("err","Ya se agregó al carrito.");
-            return "redirect:/clinicarenacer";
-        }
-        carrito.add(detallesOrden);
-        session.setAttribute("carrito",carrito);
-
-        //detallesOrdenRepository.save(detallesOrden);
-
-        return "redirect:/clinicarenacer";
-    }
-
-    @PostMapping(value = {"/clinicarenacer/paciente/guardarDatos"})
-        public String guardarDatos(@RequestParam(name = "paymentMethod") String paymentMethod,
-                                   @RequestParam("archivo") MultipartFile file,
-                                   @RequestParam(name = "tipoEntrega") String tipoEntrega,
-                                   @RequestParam(name = "direccion", required = false, defaultValue = "") String direccion,
-                                   @RequestParam(name = "distrito", required = false, defaultValue = "") String distrito,
-                                   @RequestParam(name = "iddoctor", required = false) Integer iddoctor,
-                                   @RequestParam(name = "idSede", required = false) Integer idSede,
-                                   RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session){
-        Usuarios pacienteLogueado =(Usuarios) session.getAttribute("usuario");
-
-        if (file.isEmpty()) {
-            attr.addFlashAttribute("err","Debe subir una foto de la receta.");
-            return "redirect:/clinicarenacer/paciente/pagar";
-        }
-        String fileName = file.getOriginalFilename();
-        if (fileName.contains("..")) {
-            attr.addFlashAttribute("err","No se permiten '..' en el archivo");
-            return "redirect:/clinicarenacer/paciente/pagar";
-        }
-        try {
-            Ordenes ordenPreSave = new Ordenes();
-            ordenPreSave.setFotoReceta(file.getBytes());
-            ordenPreSave.setFotonombre(fileName);
-            ordenPreSave.setFotocontenttype(file.getContentType());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            attr.addFlashAttribute("err","Error al subir la foto");
-            return "redirect:/clinicarenacer/paciente/pagar";
-        }
+            DetallesOrden detallesOrden = new DetallesOrden();
+            //detallesOrden.setOrdenes(ordenesRepository.findByIdordenes(idCarrito));
+            Productos p =productosRepository.findById(idProductos).get();
+            detallesOrden.setProductos(p);
+            detallesOrden.setCantidad(1);
+            detallesOrden.setMontoParcial(p.getPrecio()*1);
 
 
-        try {
-            Ordenes ordenPreSave = new Ordenes();
-            ordenPreSave.setFotoReceta(file.getBytes());
-            ordenPreSave.setFotonombre(fileName);
-            ordenPreSave.setFotocontenttype(file.getContentType());
-            LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
-            ordenPreSave.setFechaRegistro(fechaActual.format(formatDateToSring));
-            LocalDate fechaEntrega = fechaActual.plusDays(20);
-            ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
-            ordenPreSave.setUsuarios(pacienteLogueado);
-            ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
-            ordenPreSave.setCodigo(UUID.randomUUID().toString());
-            ordenPreSave.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(1));
-            // Determinar el tipo de cobro
-            if ("cash".equals(paymentMethod)) {
-                ordenPreSave.setTipoCobro(tipoCobroRepository.findById(1).get()); // Pago en efectivo
-            } else if ("card".equals(paymentMethod)) {
-                ordenPreSave.setTipoCobro(tipoCobroRepository.findById(2).get()); // Pago con tarjeta
+            if(validarDuplicadoDeProductoEnUnaOrden(detallesOrden, carrito)){
+                attr.addFlashAttribute("err","Ya se agregó al carrito.");
+                return "redirect:/clinicarenacer";
             }
-
-            Usuarios doctor = null;
-            Sedes sede = null;
-            if(iddoctor != null){
-                doctor = usuariosRepository.findById(iddoctor).orElse(null);
-            }
-
-            if(idSede != null){
-                sede = sedesRepository.findById(idSede).orElse(null);
-            }
-
-
-
-            // Guardar dirección de entrega según el tipo de entrega seleccionado
-            if ("delivery".equals(tipoEntrega)) {
-                ordenPreSave.setDireccion(direccion + ',' + distrito);
-            } else {
-                // Si es recojo en farmacia, no se necesita dirección
-                ordenPreSave.setDireccion("Recojo en farmacia");
-                ordenPreSave.setDoctor(doctor);
-                ordenPreSave.setSedes(sede);
-            }
-            ordenesRepository.save(ordenPreSave);
-
-
-            Ordenes ordenRecuperada =  ordenesRepository.save(ordenPreSave);;
-
-            //Seteamos el codigo en base al ID de la orden
-            ordenRecuperada.setCodigo("ORD-WEB-"+ordenRecuperada.getIdordenes());
-            ordenesRepository.save(ordenRecuperada);
-
-            float monto = 0;
-
-            for(DetallesOrden detallesOrden: carrito){
-                monto += detallesOrden.getMontoParcial();
-                detallesOrden.setOrdenes(ordenRecuperada);
-                detallesOrdenRepository.save(detallesOrden);
-            }
-
-            ordenRecuperada.setMonto(monto);
-            ordenesRepository.save(ordenRecuperada);
-
-            carrito.clear();
+            carrito.add(detallesOrden);
             session.setAttribute("carrito",carrito);
 
-            attr.addFlashAttribute("msg","Orden generada correctamente");
-
+            //detallesOrdenRepository.save(detallesOrden);
 
             return "redirect:/clinicarenacer";
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            attr.addFlashAttribute("err","Error al subir la foto");
-            return "redirect:/clinicarenacer/paciente/pagar";
         }
-    }
+
+        @PostMapping(value = {"/clinicarenacer/paciente/guardarDatos"})
+            public String guardarDatos(Model model, @RequestParam(name = "paymentMethod") String paymentMethod,
+                                       @RequestParam("archivo") MultipartFile file,
+                                       @RequestParam(name = "tipoEntrega") String tipoEntrega,
+                                       @RequestParam(name = "direccion", required = false, defaultValue = "") String direccion,
+                                       @RequestParam(name = "distrito", required = false, defaultValue = "") String distrito,
+                                       @RequestParam(name = "iddoctor", required = false) Integer iddoctor,
+                                       @RequestParam(name = "idSede", required = false) Integer idSede,
+                                       RedirectAttributes attr, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito,
+                                       HttpSession session,  HttpServletRequest request,
+                                       HttpServletResponse response){
+            Usuarios pacienteLogueado =(Usuarios) session.getAttribute("usuario");
+
+            if (file.isEmpty()) {
+                attr.addFlashAttribute("err","Debe subir una foto de la receta.");
+                return "redirect:/clinicarenacer/paciente/pagar";
+            }
+            String fileName = file.getOriginalFilename();
+            if (fileName.contains("..")) {
+                attr.addFlashAttribute("err","No se permiten '..' en el archivo");
+                return "redirect:/clinicarenacer/paciente/pagar";
+            }
+            try {
+                Ordenes ordenPreSave = new Ordenes();
+                ordenPreSave.setFotoReceta(file.getBytes());
+                ordenPreSave.setFotonombre(fileName);
+                ordenPreSave.setFotocontenttype(file.getContentType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","Error al subir la foto");
+                return "redirect:/clinicarenacer/paciente/pagar";
+            }
+
+
+            try {
+                Ordenes ordenPreSave = new Ordenes();
+                ordenPreSave.setFotoReceta(file.getBytes());
+                ordenPreSave.setFotonombre(fileName);
+                ordenPreSave.setFotocontenttype(file.getContentType());
+                LocalDate fechaActual = LocalDateTime.now(ZoneId.of("America/New_York")).toLocalDate(); //sacamos la fecha actual
+                ordenPreSave.setFechaRegistro(fechaActual.format(formatDateToSring));
+                LocalDate fechaEntrega = fechaActual.plusDays(20);
+                ordenPreSave.setFechaEntrega(fechaEntrega.format(formatDateToSring));
+                ordenPreSave.setUsuarios(pacienteLogueado);
+                ordenPreSave.setTipoOrden(tipoOrdenRepository.findById(3).get());
+                ordenPreSave.setCodigo(UUID.randomUUID().toString());
+                ordenPreSave.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(1));
+                // Determinar el tipo de cobro
+                if ("cash".equals(paymentMethod)) {
+                    ordenPreSave.setTipoCobro(tipoCobroRepository.findById(1).get()); // Pago en efectivo
+                } else if ("card".equals(paymentMethod)) {
+                    ordenPreSave.setTipoCobro(tipoCobroRepository.findById(2).get()); // Pago con tarjeta
+                }
+
+                Usuarios doctor = null;
+                Sedes sede = null;
+                if(iddoctor != null){
+                    doctor = usuariosRepository.findById(iddoctor).orElse(null);
+                }
+
+                if(idSede != null){
+                    sede = sedesRepository.findById(idSede).orElse(null);
+                }
+
+
+
+                // Guardar dirección de entrega según el tipo de entrega seleccionado
+                if ("delivery".equals(tipoEntrega)) {
+                    ordenPreSave.setDireccion(direccion + ',' + distrito);
+                } else {
+                    // Si es recojo en farmacia, no se necesita dirección
+                    ordenPreSave.setDireccion("Recojo en farmacia");
+                    ordenPreSave.setDoctor(doctor);
+                    ordenPreSave.setSedes(sede);
+                }
+                ordenesRepository.save(ordenPreSave);
+
+
+                Ordenes ordenRecuperada =  ordenesRepository.save(ordenPreSave);;
+
+                //Seteamos el codigo en base al ID de la orden
+                ordenRecuperada.setCodigo("ORD-WEB-"+ordenRecuperada.getIdordenes());
+                ordenesRepository.save(ordenRecuperada);
+
+                float monto = 0;
+
+                for(DetallesOrden detallesOrden: carrito){
+                    monto += detallesOrden.getMontoParcial();
+                    detallesOrden.setOrdenes(ordenRecuperada);
+                    detallesOrdenRepository.save(detallesOrden);
+                }
+
+                ordenRecuperada.setMonto(monto);
+                ordenesRepository.save(ordenRecuperada);
+
+                carrito.clear();
+                session.setAttribute("carrito",carrito);
+
+
+                // Envío de correo de confirmación de la orden
+                String to = pacienteLogueado.getCorreo();
+                String subject = "Orden generada correctamente";
+                Optional<Ordenes> opt = ordenesRepository.findById(ordenPreSave.getIdordenes());
+                List<DetallesOrden> listaDetalles = detallesOrdenRepository.findByOrdenesIdordenes(ordenRecuperada.getIdordenes());
+                String pathToImage = "static/img/Login/icono.png";
+                String imageId = "image001";
+
+                emailService.sendOrderConfirmationEmail(to, subject, opt, listaDetalles, pathToImage, imageId, request, response);
+
+                attr.addFlashAttribute("msg","Orden generada correctamente");
+
+
+                return "redirect:/clinicarenacer";
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                attr.addFlashAttribute("err","Error al subir la foto");
+                return "redirect:/clinicarenacer/paciente/pagar";
+            }
+        }
 
     @GetMapping(value = {"/clinicarenacer/paciente/eliminardetalles"})
         public String EliminarDetalleCarrito(@RequestParam(name = "index",required = false) Integer index, @SessionAttribute("carrito") ArrayList<DetallesOrden> carrito, HttpSession session, RedirectAttributes attr,Model model){

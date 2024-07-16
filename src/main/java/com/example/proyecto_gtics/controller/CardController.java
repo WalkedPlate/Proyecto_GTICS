@@ -22,4 +22,6 @@ public class CardController {
         boolean isValid = cardService.validateCard(request);
         return ResponseEntity.ok(Collections.singletonMap("valid", isValid));
     }
+
+
 }
