@@ -67,13 +67,13 @@ public class Usuarios implements Serializable {
 
     @Column(name = "direccion",length = 100)
     //@NotBlank(message = "Complete su dirección")
-    @Size(max= 99, message = "La dirección excede los 99 caracteres")
+    @Size(max= 99, message = "La dirección debe tener al menos 3 caracteres y no debe exceder los 99 caracteres.", min = 3)
     private String direccion;
 
 
     @Column(name = "distrito_residencia",length = 100)
     //@NotBlank(message = "Complete su distrito de residencia")
-    @Size(max= 99, message = "El distrito excede los 99 caracteres")
+    @Size(max= 99, message = "El distrito debe tener al menos 3 caracteres y no debe exceder los 99 caracteres.", min = 3)
     private String distritoResidencia;
 
     @Column(name = "codigo_colegio",length = 6)

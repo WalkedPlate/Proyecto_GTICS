@@ -136,6 +136,7 @@ public class LoginController {
             return "redirect:/registro";
         }
 
+
         // Convertir DNI a String para procesamiento
         String dniStr = DniUtils.formatDni(paciente.getDni());
 
@@ -305,8 +306,8 @@ public class LoginController {
     }
 
     @PostMapping("/cambiarContrasena")
-    public String cambiarContrasena(@RequestParam(name = "token",required = false) String token, @RequestParam("pass1") String pass1,
-                                    @RequestParam("pass2") String pass2, Model model,
+    public String cambiarContrasena(@RequestParam(name = "token",required = false) String token, @RequestParam(value = "pass1", required = false) String pass1,
+                                    @RequestParam(value = "pass2", required = false) String pass2, Model model,
                                     RedirectAttributes attr) {
 
         if(token != null ){
@@ -323,6 +324,12 @@ public class LoginController {
                 attr.addFlashAttribute("err","No existe un usuario con el correo asociado al token.");
                 return "redirect:/login";
             }
+
+            if(pass1==null || pass2==null){
+                attr.addFlashAttribute("err","Las contraseñas no deben estar vacías.");
+                return "redirect:/cambiar-contrasena";
+            }
+
 
             if(pass1.equalsIgnoreCase(pass2)){
                 Usuarios usuario = optionalUsuario.get();
