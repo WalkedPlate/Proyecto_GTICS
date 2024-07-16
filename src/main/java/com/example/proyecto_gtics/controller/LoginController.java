@@ -251,7 +251,7 @@ public class LoginController {
                     String pathToImage = "static/img/Login/icono.png";
                     String imageId = "image001";
                     emailService.sendEmail(to, subject, link, temporalPassword,pathToImage,imageId);
-                    attr.addFlashAttribute("msg","Solictud válida, se le enviará un enlace por correo.");
+                    attr.addFlashAttribute("msg","Solicitud válida, se le enviará un enlace por correo.");
                     return "redirect:/login";
                 }
                 else {
