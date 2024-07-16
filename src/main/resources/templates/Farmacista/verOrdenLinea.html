@@ -135,9 +135,9 @@
                                     <p class="mb-0">Paciente: <span th:text="${orden.usuarios.nombre}"></span></p>
                                     <p class="mb-0">Dirección: <span th:text="${orden.usuarios.direccion}"></span></p>
                                     <p class="mb-0">Fecha estimada: <span th:text="${orden.fechaEntrega}"></span></p>
-<!--                                    <a th:href="@{|/imageReceta/${orden.codigo}|}" download="receta_${orden.codigo}.jpg">-->
-<!--                                        Ver Receta-->
-<!--                                    </a>-->
+                                    <a th:if="${orden.fotonombre != null}" th:href="@{|/imageReceta/${orden.idordenes}|}" th:download="'receta_' + ${orden.codigo} + '.jpg'">
+                                        Ver Receta
+                                    </a>
                                 </div>
                             </div>
                         </div>
