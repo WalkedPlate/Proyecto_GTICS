@@ -302,13 +302,16 @@
                                         <input type="hidden" name="productos" th:value="${producto.idProductos}">
                                         <input type="hidden" name="ordenes" th:value="${ordenReposicion.idordenes}">
                                     <div class="modal-header">
-                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Introduzca la cantidad que desee solicitar</h3>
+                                        <h3 class="modal-title fs-5">Introduzca la cantidad que desee solicitar</h3>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text" id="basic-addon1" th:text="${producto.nombre}"></span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  name="cantidad" required min="1">
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"  th:text="${producto.nombre}"></span>
+                                            <input type="number" class="form-control" placeholder="Cantidad"  name="cantidad" required min="1" step="1">
+                                            <div class="invalid-feedback text-center">
+                                                    Debe completar este campo con un número entero positivo.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -337,7 +340,10 @@
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text" id="basic-addon1" th:text="${detalle.productos.nombre}"></span>
-                                            <input type="number" class="form-control" placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  th:name="*{'cantidad'}"   th:value="${detalle.cantidad}" required min="1">
+                                            <input type="number" class="form-control"  placeholder="Cantidad" aria-label="cantidad" aria-describedby="basic-addon1"  th:name="*{'cantidad'}"   th:value="${detalle.cantidad}" required min="1" step="1">
+                                            <div class="invalid-feedback text-center">
+                                                Debe completar este campo con un número entero positivo.
+                                            </div>
                                             <!-- <div class="invalid-feedback" th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"></div>-->
                                         </div>
                                     </div>

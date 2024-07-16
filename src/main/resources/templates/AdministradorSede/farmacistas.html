@@ -7,6 +7,7 @@
     <link rel="icon" href="/img/Superadmin/icono.png"/>
     <link rel="stylesheet" href="/css/AdministradorSede/style.css">
     <link rel="stylesheet" href="/css/Utilidades/notificaciones.css">
+    <link rel="stylesheet" href="/css/Utilidades/editarPerfil.css">
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <!--DataTable-->
@@ -197,11 +198,15 @@
                             <tbody>
                             <tr th:each="farmacista,obj: ${listaFarmacistas}">
                                 <td>
-                                    <img alt="..." src="/img/AdministradorSede/profile-3.jpeg" class="avatar avatar-sm rounded-circle me-2">
-                                    <a  th:text="${farmacista.nombre}" class="text-heading font-semibold" href="#">
-                                    </a>
+                                    <img th:if="${farmacista.fotonombre != null}" alt="..."
+                                         th:src="@{|/imageUser/${farmacista.idUsuario}|}"
+                                         class="avatar avatar-sm rounded-circle me-2">
+                                    <img th:if="${farmacista.fotonombre == null}" alt="..."
+                                         src="/img/Superadmin/farmacista_icon.png"
+                                         class="avatar avatar-sm rounded-circle me-2">
+                                    <a th:text="${farmacista.nombre}" class="text-heading font-semibold text-uppercase puntero" href="#"></a>
                                 </td>
-                                <td th:text="${farmacista.dni}" class="text-center"></td>
+                                <td th:text="${farmacista.getFormattedDni()}" class="text-center"></td>
                                 <td th:text="${adminSede.sedes.nombre}" class="text-center"></td>
                                 <td th:text="${farmacista.distritoResidencia}" class="text-center"></td>
                                 <td th:text="${farmacista.codigoColegio}" class="text-center"></td>
@@ -221,6 +226,96 @@
                         </table>
                     </div>
 
+                    <!-- Modal Registrar -->
+                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <form method="post" class="needs-validation" id="registerForm" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
+                                    <input type="hidden" name="nombre" value="valid">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title fs-5">Solicitar registro de Farmacista</h3>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body row">
+                                        <div class="row pt-3">
+                                            <div class="col">
+                                                <label for="dni">DNI:</label>
+                                                <input minlength="8" maxlength="8" id="dni" name="dni" type="text" class="form-control" placeholder="Ingrese el N° de DNI" required>
+                                                <div class="invalid-feedback" id="dniError">
+                                                    El DNI debe tener 8 dígitos.
+                                                </div>
+                                                <div th:if="${errDNI != null}" th:text="${errDNI}" style="color: red" role="alert"></div>
+                                            </div>
+
+
+                                            <div class="col">
+                                                <label for="codigoColegio">Código (colegio médico)</label>
+                                                <input minlength="6" maxlength="6" id="codigoColegio" placeholder="Coloca el código del doctor" name="codigoColegio" type="text" class="form-control" required>
+                                                <div class="invalid-feedback" id="codigoError"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Nombre y apellidos autocompletados-->
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label for="nombre">Nombre:</label>
+                                                <input  id="nombre"  type="text" class="form-control" disabled readonly>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="correo">Correo:</label>
+                                                <input maxlength="99" id="correo" name="correo" type="email" class="form-control" placeholder="Ingrese el correo" required>
+                                                <div class="invalid-feedback" id="correoError"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-5">
+                                            <div class="col">
+                                                <label for="direccion">Dirección:</label>
+                                                <input maxlength="99" id="direccion" name="direccion"
+                                                       type="text" class="form-control" placeholder="Ingrese la dirección" required>
+                                                <div class="invalid-feedback" id="direccionError"></div>
+                                            </div>
+
+                                            <div class="col">
+                                                <label for="distritoResidencia">Distrito de residencia:</label>
+                                                <div class="mb-3">
+                                                    <div class="dropdown-center">
+                                                        <button class="btn dropdown-toggle dttobtn"
+                                                                type="button"
+                                                                id="dropdownMenuButton"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                            Seleccione un dtto.
+                                                        </button>
+                                                        <ul class="dropdown-menu menu-distrito">
+                                                            <li><a class="dropdown-item item-distrito"
+                                                                   th:each="distrito:${listaDistritos}"
+                                                                   th:value="${distrito.nombre}"
+                                                                   th:text="${distrito.nombre}"></a>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- Hidden input para enviar el valor seleccionado -->
+                                                        <input type="hidden" class="form-control"
+                                                               id="distritoResidencia"
+                                                               name="distritoResidencia">
+                                                        <div class="invalid-feedback" id="distritoError"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer mt-3">
+                                        <button type="submit" class="btn btn-primary" >Registrar</button>
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Modal Actualizar -->
                     <div class="modal fade" th:each="farmacista, obj : ${listaFarmacistas}" th:id ="${'modaActualizar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -229,7 +324,7 @@
                                     <h3 class="modal-title fs-5">Actualiza los datos del Farmacista</h3>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
+                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" id="editForm" novalidate>
                                     <div class="modal-body row">
                                         <input type="hidden" name="idUsuario" th:value="${farmacista.idUsuario}">
                                         <input type="hidden" name="dni" th:value="${farmacista.dni}">
@@ -241,11 +336,11 @@
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label>DNI:</label>
-                                                <input type="text" class="form-control" th:value="${farmacista.dni}" disabled readonly>
+                                                <input type="text" class="form-control" th:value="${farmacista.getFormattedDni()}" disabled readonly>
                                             </div>
                                             <div class="col">
                                                 <label>Código (colegio médico)</label>
-                                                <input id="codigoColegio" type="text"
+                                                <input type="text"
                                                        class="form-control"
                                                        th:value="${farmacista.codigoColegio}" disabled readonly>
                                             </div>
@@ -262,17 +357,36 @@
                                         <div class="row pt-3">
                                             <div class="col">
                                                 <label>Dirección:</label>
-                                                <input name="direccion" maxlength="99" type="text" class="form-control" th:value="${farmacista.direccion}" required>
-                                                <div class="invalid-feedback">
+                                                <input id="direccionEdit" name="direccion" maxlength="99" type="text" class="form-control" th:value="${farmacista.direccion}" required>
+                                                <div class="invalid-feedback" id="direccionEditError">
                                                     Por favor, ingrese una dirección (max 99 dígitos).
                                                 </div>
                                             </div>
 
                                             <div class="col">
-                                                <label>Dtto. de residencia</label>
-                                                <input name="distritoResidencia" maxlength="99" type="text" class="form-control" th:value="${farmacista.distritoResidencia}" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese un distrito de residencia (max 99 dígitos).
+                                                <label>Distrito de residencia:</label>
+                                                <div class="mb-3">
+                                                    <div class="dropdown-center">
+                                                        <button class="btn dropdown-toggle dttobtn"
+                                                                type="button"
+                                                                id="dropdownMenuButtonEdit"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-expanded="false"
+                                                                th:text="${farmacista.distritoResidencia}"
+                                                        >
+                                                        </button>
+                                                        <ul class="dropdown-menu menu-distrito-edit">
+                                                            <li>
+                                                                <a class="dropdown-item item-distrito-edit"
+                                                                   th:each="distrito : ${listaDistritos}"
+                                                                   th:value="${distrito.nombre}"
+                                                                   th:text="${distrito.nombre}">
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- Hidden input para enviar el valor seleccionado -->
+                                                        <input type="hidden" class="form-control" id="distritoResidenciaEdit" name="distritoResidencia" th:value="${farmacista.distritoResidencia}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,7 +396,7 @@
                                                 <label>Correo:</label>
                                                 <input name="correo" type="email" pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" maxlength="99"  class="form-control"
                                                        th:value="${farmacista.correo}" required>
-                                                <div class="invalid-feedback">
+                                                <div class="invalid-feedback" id="correoEditError">
                                                     Por favor, ingrese un correo válido (max 99 dígitos).
                                                 </div>
                                             </div>
@@ -315,84 +429,7 @@
                         </div>
                     </div>
 
-                    <!-- Modal Registrar -->
-                    <div class="modal fade" id="modaAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <form method="post" class="needs-validation" th:action="@{/administradorsede/guardarfarmacista}" novalidate>
-                                    <input type="hidden" name="nombre" value="valid">
-                                    <div class="modal-header">
-                                        <h3 class="modal-title fs-5">Solicitar registro de Farmacista</h3>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body row">
-                                        <div class="row pt-3">
-                                            <div class="col">
-                                                <label for="dni">DNI:</label>
-                                                <input minlength="8" maxlength="8" id="dni" name="dni" type="text" class="form-control" required>
-                                                <div class="invalid-feedback" id="dniError">
-                                                    El DNI debe tener 8 dígitos.
-                                                </div>
-                                            </div>
 
-
-                                            <div class="col">
-                                                <label for="codigoColegio">Código (colegio médico)</label>
-                                                <input minlength="6" maxlength="6" id="codigoColegio" name="codigoColegio" type="text" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    El código de colegio debe tener 6 dígitos.
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Nombre y apellidos autocompletados-->
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="nombre">Nombre:</label>
-                                                <input pattern="[A-Za-z].+" id="nombre"  type="text" class="form-control" disabled readonly>
-                                            </div>
-
-                                            <div class="col">
-                                                <label for="correo">Correo:</label>
-                                                <input pattern="[A-za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}" id="correo" name="correo" type="email" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese un correo válido (max 99 dígitos).
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row pt-5">
-                                            <div class="col">
-                                                <label for="direccion">Dirección:</label>
-                                                <input id="direccion" name="direccion" maxlength="99" type="text" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese una dirección (max 99 dígitos).
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <!--<label for="distritoResidencia">Dtto. de residencia</label>
-                                                <input maxlength="99" id="distritoResidencia" name="distritoResidencia" type="text" class="form-control" required>
-                                                <div class="invalid-feedback">
-                                                    Por favor, ingrese un dtto. de residencia (max 99 dígitos).
-                                                </div>-->
-                                                <label for="distritoResidencia">Dtto. de residencia:</label>
-                                                <select id="distritoResidencia" name="distritoResidencia" class="form-select" required>
-                                                    <option disabled selected>--Seleccione un distrito--</option>
-                                                    <option th:each="distrito:${listaDistritos}" th:value="${distrito.nombre}" th:text="${distrito.nombre}"></option>
-                                                </select>
-                                            </div>
-                                            <input type="hidden" name="idSedes" th:value="${adminSede.sedes.idSedes}">
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer mt-3">
-                                        <button type="submit" class="btn btn-primary" >Registrar</button>
-                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
@@ -426,57 +463,29 @@
 <script>
     new DataTable('#example'); /*cambiar de acuerdo al id de la tabla*/
 </script>
-    <script>
-        //Autocompletar Nombre y Apellidos con el DNI
-        function autocompletarDni() {
-            let dni = document.getElementById("dni").value;
 
-            fetch(`/api/dni?dni=${dni}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 422 || data.status === 404) {
-                        alert(data.message);
-                    } else {
-                        document.getElementById("nombre").value = `${data.data.nombres} ${data.data.apellido_paterno} ${data.data.apellido_materno}` ;
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
+    <!-- Script para dni y mensajes -->
+    <script src="/js/AdministradorSede/registroFarmacista.js"> </script>
 
-        // Añadir el evento keydown para detectar la tecla Enter
-        document.getElementById('dni').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Evitar que el formulario se envíe
-                autocompletarDni();
-            }
-        });
-    </script>
 
     <script>
-        // JavaScript para permitir solo la entrada de números
-        function allowOnlyNumbersAndDecimal(event, element) {
-            // Permite las teclas de flecha, retroceso y suprimir
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight" || event.key === "Backspace" || event.key === "Delete") {
-                return;
-            }
-            // Permite los dígitos numéricos
-            if (event.key < "0" || event.key > "9") {
-                event.preventDefault();
-            }
 
-        }
+        // Mostrar los dropdown con su valor correspondiente
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.menu-distrito-edit a.item-distrito-edit').forEach(item => {
+                item.addEventListener('click', function () {
+                    let selectedValue = this.textContent.trim();
+                    let dropdownButton = this.closest('.dropdown-center').querySelector('.dropdown-toggle');
+                    let hiddenInput = this.closest('.dropdown-center').querySelector('input[type="hidden"]');
 
-        // Asignar el evento a los elementos correspondientes
-        document.getElementById("dni").addEventListener("keydown", function(event) {
-            allowOnlyNumbersAndDecimal(event, this);
+                    dropdownButton.textContent = selectedValue;
+                    hiddenInput.value = selectedValue;
+                });
+            });
         });
 
-        document.getElementById("codigoColegio").addEventListener("keydown", function(event) {
-            allowOnlyNumbersAndDecimal(event, this);
-        });
 
     </script>
-
     <script>
         (() => {
             'use strict'

@@ -5,12 +5,14 @@ import com.example.proyecto_gtics.dto.*;
 import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
+import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ import org.thymeleaf.model.IModel;
 
 import javax.naming.Binding;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -581,6 +586,10 @@ public class AdministradorSedeController {
                                     HttpSession session) {
 
         Usuarios adminSede = (Usuarios) session.getAttribute("usuario"); //Admin de sede logueado
+
+        //         Convertir DNI a String para procesamiento
+        String dniStr = DniUtils.formatDni(usuarios.getDni());
+
         //Verificamos que el superadmin no pueda acceder a administrador de sede sin una sesion
         if(Objects.equals(adminSede.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
@@ -618,7 +627,7 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
-                ResultDni resultDni = dniService.obtenerDatosPorDni(usuarios.getDni().toString());
+                ResultDni resultDni = dniService.obtenerDatosPorDni(dniStr);
                 if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
                     attr.addFlashAttribute("err","DNI inválido");
                     return "redirect:/administradorsede/farmacistas";
@@ -641,8 +650,17 @@ public class AdministradorSedeController {
                 usuarios.setContrasena("Temporal_password");
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+                Path path = Paths.get("src/main/resources/static/img/Superadmin/farmacista_icon.png");
+                try {
+                    byte[] defaultPhoto = Files.readAllBytes(path);
+                    usuarios.setFoto(defaultPhoto);
+                    usuarios.setFotonombre("farmacista_icon.png");
+                    usuarios.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 usuariosRepository.save(usuarios);
-                attr.addFlashAttribute("msg", "Farmacista creado exitosamente");
+                attr.addFlashAttribute("msg", "Solicitud de registro enviada exitosamente");
             } else {   // Caso Actualizar farmacista
                 if (!validarCodigoColegio(usuarios.getCodigoColegio())) {
                     attr.addFlashAttribute("err", "El código de colegio no es válido.");
