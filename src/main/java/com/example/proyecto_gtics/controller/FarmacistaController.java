@@ -109,13 +109,42 @@ public class FarmacistaController {
         List<ProductosSedes> listaProductos = productosSedeRepository.findBySedesAndVisibilidad(sede,1);
         model.addAttribute("listaProductos",listaProductos);
         model.addAttribute("listaDoctores",usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,sede,activo));
+        model.addAttribute("listaProductPreorden",productosSedeRepository.obtenerProductosParaPreorden(farmacista.getSedes().getIdSedes()));
         return "Farmacista/index";
     }
+
+    @GetMapping(value ={"/farmacista/preorden"})
+    public String paginaPreorden(Model model, HttpSession session){
+
+        Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+        Usuarios superAdmin = (Usuarios) session.getAttribute("originalUser");//Superadmin logueado
+        //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
+        if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
+            return "redirect:/superadmin";
+        }
+        //-------------------------------------------------------------------------------------
+        if(superAdmin != null){
+            model.addAttribute("superAdmin",superAdmin);
+        }
+        model.addAttribute("farmacista",farmacista);
+
+        Sedes sede = farmacista.getSedes();
+        TipoUsuario doctor = tipoUsuarioRepository.findById("Doctor").get();
+        EstadoUsuario activo = estadoUsuarioRepository.findById("Activo").get();
+
+        //List<ProductosSedes> listaProductos = productosSedeRepository.findBySedes(sede);
+        List<ProductosSedes> listaProductos = productosSedeRepository.findBySedesAndVisibilidad(sede,1);
+        model.addAttribute("listaProductos",listaProductos);
+        model.addAttribute("listaDoctores",usuariosRepository.findByTipoUsuarioAndSedesAndEstadoUsuario(doctor,sede,activo));
+        model.addAttribute("listaProductPreorden",productosSedeRepository.obtenerProductosParaPreorden(farmacista.getSedes().getIdSedes()));
+        return "Farmacista/preorden";
+    }
+
 
     @PostMapping(value = "/farmacista/guardarOrden")
     public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<String> listaCantidades,
                                /*@RequestParam("checkbox") List<String> listCheckbox,*/ @Valid Usuarios paciente, BindingResult bindingResult,
-                               @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor,
+                               @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor, @RequestParam("tipoOrden") Integer idTipoOrden,
                                RedirectAttributes attr, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
@@ -183,7 +212,7 @@ public class FarmacistaController {
         crearOrden(paciente,6,8,idDoctor); // creamos la orden (tipo carrito)
         Ordenes ordenCreada = ordenesRepository.findFirstByOrderByIdordenesDesc(); //Recuperamos la orden que acabamos de crear
         //Creacion del codigo de orden de reposicion:
-        ordenCreada.setCodigo(crearCodigo(ordenCreada.getIdordenes()));
+        ordenCreada.setCodigo(crearCodigo(ordenCreada.getIdordenes(),idTipoOrden));
         ordenesRepository.save(ordenCreada);
 
         int index = 0;
@@ -213,11 +242,14 @@ public class FarmacistaController {
 
             index++;
         }
-        ordenCreada.setTipoOrden(tipoOrdenRepository.findById(1).get()); // Finalmente cambiamos el tipo de orden a orden presencial
+        //ordenCreada.setTipoOrden(tipoOrdenRepository.findById(1).get()); // Finalmente cambiamos el tipo de orden a orden presencial
+        ordenCreada.setTipoOrden(tipoOrdenRepository.findById(idTipoOrden).get()); // Finalmente cambiamos el tipo de orden a orden presencial
         ordenCreada.setMonto(monto);
         ordenesRepository.save(ordenCreada);
 
-        attr.addFlashAttribute("msg","Orden Registrada exitosamente");
+        if (idTipoOrden==1){attr.addFlashAttribute("msg","Orden Registrada exitosamente");}
+        if (idTipoOrden==5){attr.addFlashAttribute("msg","PreOrden Registrada exitosamente");}
+
         attr.addFlashAttribute("wrn","Solo se añadieron las medicinas en las cuales se ingresó un número entero positivo en la cantidad solicitada.");
         return "redirect:/farmacista";
 
@@ -260,7 +292,7 @@ public class FarmacistaController {
         }
         model.addAttribute("farmacista",farmacista);
         //List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
-        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1,farmacista.getSedes().getIdSedes());
+        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1,5,farmacista.getSedes().getIdSedes());
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
@@ -676,8 +708,11 @@ public class FarmacistaController {
         return posible;
     }
 
-    public String crearCodigo(Integer idOrden){
-        return "ORD-PRESEC-"+idOrden.toString();
+    public String crearCodigo(Integer idOrden,Integer tipoOrden){
+        String codigo="";
+        if(tipoOrden==1){codigo = "ORD-PRESEC-"+idOrden.toString();}
+        if(tipoOrden==5){codigo = "ORD-PREORD-"+ idOrden;}
+        return codigo;
     }
 
 
