@@ -180,6 +180,7 @@
                                 <tbody>
                                 <tr th:each="producto,obj : ${listaProductPreorden}">
                                     <input type="hidden" name="listaIdsProductos" th:value="${producto.productos.idProductos}">
+                                    <input type="hidden" name="listaCantTotales" th:value="${producto.cantidad}">
                                     <td class="text-center">
                                         <img th:src="@{|/imageProduct/${producto.productos.idProductos}|}" alt="medicina1" class="avatar avatar-sm rounded-circle me-2">
                                     </td>

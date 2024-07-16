@@ -144,7 +144,7 @@ public class FarmacistaController {
     @PostMapping(value = "/farmacista/guardarOrden")
     public String guardarOrden(@RequestParam("listaIdsProductos") List<Integer> listaIdsProductos, @RequestParam("listaCantidades") List<String> listaCantidades,
                                /*@RequestParam("checkbox") List<String> listCheckbox,*/ @Valid Usuarios paciente, BindingResult bindingResult,
-                               @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor, @RequestParam("tipoOrden") Integer idTipoOrden,
+                               @RequestParam("fechaEntregaStr") String fechaEntregaStr, @RequestParam("idDoctor") Integer idDoctor, @RequestParam("tipoOrden") Integer idTipoOrden, @RequestParam("listaCantTotales") List<Integer> listaCantTotales,
                                RedirectAttributes attr, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
@@ -163,6 +163,7 @@ public class FarmacistaController {
             return "redirect:/farmacista";
         }
 
+        int item = 0;
         for(String s : listaCantidades){
             try {
                 Integer.parseInt(s);
@@ -171,6 +172,11 @@ public class FarmacistaController {
                 attr.addFlashAttribute("err","Las cantidades deben ser números.");
                 return "redirect:/farmacista";
             }
+            if(idTipoOrden==1 && listaCantTotales.get(item) < Integer.parseInt(s)){
+                attr.addFlashAttribute("err","No existe cantidad disponible para los productos seleccionados");
+                return "redirect:/farmacista";
+            }
+            item++;
         }
 
         ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
