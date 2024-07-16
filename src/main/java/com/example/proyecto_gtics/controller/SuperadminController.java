@@ -15,7 +15,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.Attr;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,6 +96,8 @@ public class SuperadminController {
     @Autowired
     private DistritosRepository distritosRepository;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @GetMapping(value ={"/superadmin","/superadmin/administradores-sede"})
     public String dashboard(Model model,HttpSession session){
@@ -191,15 +197,18 @@ public class SuperadminController {
             adminSedeValid.setToken(token);
             Sedes sedes = sedesRepository.findById(id).get();
             adminSedeValid.setSedes(sedes);
-            Path path = Paths.get("src/main/resources/static/img/Superadmin/administrador_icon.png");
+
+            Resource resource = resourceLoader.getResource("classpath:static/img/Superadmin/administrador_icon.png");
             try {
-                byte[] defaultPhoto = Files.readAllBytes(path);
+                InputStream inputStream = resource.getInputStream();
+                byte[] defaultPhoto = IOUtils.toByteArray(inputStream);
                 adminSedeValid.setFoto(defaultPhoto);
                 adminSedeValid.setFotonombre("administrador_icon.png");
                 adminSedeValid.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             usuariosRepository.save(adminSedeValid);
             attr.addFlashAttribute("msg","Administrador de sede agregado exitosamente. Las credenciales temporales se enviarán" +
                     " al correo ingresado.");
@@ -731,15 +740,17 @@ public class SuperadminController {
             Sedes sede = sedesRepository.findById(idSede).get();//Buscamos la sede
             doctor.setSedes(sede);//Asignamos la sede
 
-            Path path = Paths.get("src/main/resources/static/img/Superadmin/doctor_icon.png");
+            Resource resource = resourceLoader.getResource("classpath:static/img/Superadmin/doctor_icon.png");
             try {
-                byte[] defaultPhoto = Files.readAllBytes(path);
+                InputStream inputStream = resource.getInputStream();
+                byte[] defaultPhoto = IOUtils.toByteArray(inputStream);
                 doctor.setFoto(defaultPhoto);
                 doctor.setFotonombre("doctor_icon.png");
                 doctor.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             usuariosRepository.save(doctor);
                 attr.addFlashAttribute("msg","Doctor creado exitosamente");
 

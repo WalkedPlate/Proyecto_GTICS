@@ -12,8 +12,11 @@ import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Authenticator;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -90,6 +94,8 @@ public class LoginController {
     @Autowired
     private DistritosRepository distritosRepository;
 
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @GetMapping(value ={"","/","/login"})
     public String login(@RequestParam(name = "logout",required = false) String logout, RedirectAttributes attr,
@@ -187,15 +193,17 @@ public class LoginController {
             paciente.setTipoUsuario(tipoUsuarioRepository.findById("Paciente").get());
             paciente.setUsandoContrasenaTemporal(true);
             paciente.setToken(token);
-            Path path = Paths.get("src/main/resources/static/img/Superadmin/user_icon.png");
+            Resource resource = resourceLoader.getResource("classpath:static/img/Superadmin/user_icon.png");
             try {
-                byte[] defaultPhoto = Files.readAllBytes(path);
+                InputStream inputStream = resource.getInputStream();
+                byte[] defaultPhoto = IOUtils.toByteArray(inputStream);
                 paciente.setFoto(defaultPhoto);
                 paciente.setFotonombre("user_icon.png");
                 paciente.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
             usuariosRepository.save(paciente);
             attr.addFlashAttribute("msg","Registro exitoso, se le enviarán sus credenciales por correo.");
 
