@@ -195,7 +195,7 @@
                     <div th:each="producto, obj: ${listaProductos}" class="showcase">
                         <form th:action="@{/clinicarenacer/paciente/guardardetalles}" method="post">
                             <input type="hidden" th:value="${producto.idProductos}" name="idProductos">
-                            <div class="showcase-banner">
+                            <div class="showcase-banner" style="width: 200px; height: 200px;   overflow: hidden;;">
 
                                 <!-- Colocar la imagen del producto y una segunda imagen para el efecto Hover-->
                                 <img th:src="@{|/imageProduct/${producto.idProductos}|}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
