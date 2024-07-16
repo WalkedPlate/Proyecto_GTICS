@@ -242,6 +242,9 @@
                                                 <div class="col">
                                                     <label for="edad">Edad:</label>
                                                     <input type="text" class="form-control" placeholder="Edad del paciente" name="edad" id="edad" required>
+                                                    <div class="invalid-feedback">
+                                                        Ingrese la edad del paciente.
+                                                    </div>
                                                 </div>
 
 
@@ -251,6 +254,9 @@
                                                         <option selected th:value="'si'">Sí</option>
                                                         <option th:value="'no'">No</option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Seleccione una opción.
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -260,11 +266,17 @@
                                                     <select id="doctor" class="form-select" name="idDoctor" required>
                                                         <option th:each="doctor, obj : ${listaDoctores}" th:text="${doctor.nombre}" th:selected="${obj.index} == 0" th:value="${doctor.idUsuario}"></option>
                                                     </select>
+                                                    <div class="invalid-feedback">
+                                                        Seleccione un doctor.
+                                                    </div>
                                                 </div>
                                                 <div class="col">
                                                     <label>Fecha de entrega:</label>
                                                     <input id="fechaEntregaStr" name="fechaEntregaStr" type="date" class="form-control"
                                                            placeholder="Ingresa la fecha de entrega" required>
+                                                    <div class="invalid-feedback">
+                                                        Ingrese la fecha de entrega deseada.
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -408,16 +420,18 @@
         new DataTable('#example');
     </script>
 
+
     <script>
-        //Autocompletar Nombre y Apellidos con el DNI
         function autocompletarDni() {
             let dni = document.getElementById("dni").value;
-
             fetch(`/api/dni?dni=${dni}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 422 || data.status === 404) {
-                        alert(data.message);
+                        document.getElementById("dniError").style.display = 'none';
+                        document.getElementById("dniError").classList.remove('is-invalid');
+                        document.getElementById("dniError").innerText = 'DNI no válido.';
+                        document.getElementById("dniError").style.display = 'block';
                     } else {
                         document.getElementById("nombre").value = `${data.data.nombres} ${data.data.apellido_paterno} ${data.data.apellido_materno}` ;
                     }
@@ -425,13 +439,29 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        // Añadir el evento keydown para detectar la tecla Enter
-        document.getElementById('dni').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // Evitar que el formulario se envíe
-                autocompletarDni();
-            }
+        document.addEventListener('DOMContentLoaded', function () {
+            let dniInput = document.getElementById("dni");
+            let dniError = document.getElementById("dniError");
+
+            dniInput.addEventListener('input', function () {
+                if (dniInput.value.length === 8) {
+                    autocompletarDni(dniInput.value);
+                }
+                if (!dniInput.value) {
+                    dniError.innerText = 'Ingrese el DNI del paciente.';
+                    dniError.style.display = 'block';
+                    dniInput.classList.add('is-invalid');
+                } else if (dniInput.value.length !== 8) {
+                    dniError.innerText = 'El DNI debe tener 8 dígitos.';
+                    dniError.style.display = 'block';
+                    dniInput.classList.add('is-invalid');
+                } else {
+                    dniError.style.display = 'none';
+                    dniInput.classList.remove('is-invalid');
+                }
+            });
         });
+
     </script>
 
     <script>

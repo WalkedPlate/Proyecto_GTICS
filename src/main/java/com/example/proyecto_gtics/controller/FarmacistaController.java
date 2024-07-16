@@ -5,6 +5,7 @@ import com.example.proyecto_gtics.entity.*;
 import com.example.proyecto_gtics.repository.*;
 import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.service.MessageService;
+import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +149,10 @@ public class FarmacistaController {
                                RedirectAttributes attr, HttpSession session){
 
         Usuarios farmacista = (Usuarios) session.getAttribute("usuario"); // Farmacista logueado
+
+        //         Convertir DNI a String para procesamiento
+        String dniStr = DniUtils.formatDni(farmacista.getDni());
+
         //Verificamos que el superadmin no pueda acceder a un farmacista sin una sesion
         if(Objects.equals(farmacista.getTipoUsuario().getIdTipoUsuario(), "SuperAdmin")){
             return "redirect:/superadmin";
@@ -179,7 +184,8 @@ public class FarmacistaController {
             item++;
         }
 
-        ResultDni resultDni = dniService.obtenerDatosPorDni(paciente.getDni().toString());
+
+        ResultDni resultDni = dniService.obtenerDatosPorDni(dniStr);
         if (resultDni == null || resultDni.getStatus() != 200 || resultDni.getData() == null) {
             attr.addFlashAttribute("err","DNI inválido");
             return "redirect:/farmacista";
