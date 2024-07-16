@@ -27,6 +27,12 @@
             border-radius: 3px;
             height: 35px;
         }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -197,7 +203,7 @@
                             </table>
 
                             <div class="card-footer border-0 py-5 mx-auto text-center">
-                                <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal"
+                                <a href="#" id="generarCompraBtn" class="btn d-inline-flex btn-sm btn-success mx-1 disabled" data-bs-toggle="modal"
                                    data-bs-target="#modalGenerarCompra">
                                 <span class=" pe-2">
                                     <i class="bi bi-plus"></i>
@@ -291,98 +297,6 @@
                                 </div>
                             </div>
 
-
-
-                            <!--Modal generar boleta exitosamente-->
-
-                        <!--    <div class="modal fade" id="modalGenerarBoleta" tabindex="-1"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h3 class="modal-title" id="exampleModalLabel">Resumen de compra #123
-                                            </h3>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body row">
-
-                                            <div class="row pt-2">
-                                                <div class="col" style="display: flex; align-items: center;">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <p style="margin-left: 10px;">Juan Martinez</p>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="row pt-2">
-                                                <div class="col" style="display: flex; align-items: center;">
-                                                    <label for="doctor">Doctor:</label>
-                                                    <p style="margin-left: 10px;">Doctor 1</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <table>
-                                                        <tr>
-                                                            <th>Medicamento</th>
-                                                            <th style="padding-left: 30px;">Costo (S/.)</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>10 unidades del Medicamento 1</td>
-                                                            <td style="padding-left: 30px;">10</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>10 unidades del Medicamento 2</td>
-                                                            <td style="padding-left: 30px;">5</td>
-                                                        </tr>
-                                                        &lt;!&ndash; Línea divisora &ndash;&gt;
-                                                        <tr>
-                                                            <td colspan="2">
-                                                                <hr>
-                                                            </td>
-                                                        </tr>
-                                                        &lt;!&ndash; Total &ndash;&gt;
-                                                        <tr>
-                                                            <th style="padding-left: 30px; text-align: right;">Total</th>
-                                                            <th style="padding-left: 30px;">15</th>
-                                                        </tr>
-                                                    </table>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="row pt-5">
-                                                <div class="col">
-                                                    <label for="pago">Seleccionar medio de pago:</label>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="exampleRadios" id="exampleRadios1" value="option1"
-                                                            checked>
-                                                        <label for="exampleRadios1">
-                                                            Tarjeta
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio"
-                                                            name="exampleRadios" id="exampleRadios2" value="option2">
-                                                        <label for="exampleRadios2">
-                                                            Efectivo
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" >Generar Orden</button>
-                                            <button type="button" class="btn btn-danger"
-                                                data-bs-dismiss="modal">Cancelar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
-
                         </div>
 
                     </div>
@@ -418,6 +332,34 @@
 
     <script>
         new DataTable('#example');
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const generarCompraBtn = document.getElementById('generarCompraBtn');
+            const cantidades = document.querySelectorAll('input[name="listaCantidades"]');
+
+            const checkCantidad = () => {
+                let valid = false;
+                cantidades.forEach((input) => {
+                    if (parseInt(input.value) > 0) {
+                        valid = true;
+                    }
+                });
+                if (valid) {
+                    generarCompraBtn.classList.remove('disabled');
+                } else {
+                    generarCompraBtn.classList.add('disabled');
+                }
+            };
+
+            cantidades.forEach((input) => {
+                input.addEventListener('input', checkCantidad);
+            });
+
+            // Initial check in case some inputs have values set by default
+            checkCantidad();
+        });
     </script>
 
 

@@ -27,6 +27,12 @@
             border-radius: 3px;
             height: 35px;
         }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -197,7 +203,7 @@
                             </table>
 
                             <div class="card-footer border-0 py-5 mx-auto text-center">
-                                <a href="#" class="btn d-inline-flex btn-sm btn-success mx-1" data-bs-toggle="modal"
+                                <a href="#" id="generarCompraBtn" class="btn d-inline-flex btn-sm btn-success mx-1  disabled" data-bs-toggle="modal"
                                    data-bs-target="#modalGenerarPreorden">
                                 <span class=" pe-2">
                                     <i class="bi bi-plus"></i>
@@ -428,6 +434,34 @@
 <script>
     new DataTable('#example');
 </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const generarCompraBtn = document.getElementById('generarCompraBtn');
+            const cantidades = document.querySelectorAll('input[name="listaCantidades"]');
+
+            const checkCantidad = () => {
+                let valid = false;
+                cantidades.forEach((input) => {
+                    if (parseInt(input.value) > 0) {
+                        valid = true;
+                    }
+                });
+                if (valid) {
+                    generarCompraBtn.classList.remove('disabled');
+                } else {
+                    generarCompraBtn.classList.add('disabled');
+                }
+            };
+
+            cantidades.forEach((input) => {
+                input.addEventListener('input', checkCantidad);
+            });
+
+            // Initial check in case some inputs have values set by default
+            checkCantidad();
+        });
+    </script>
 
     <script>
         function autocompletarDni() {
