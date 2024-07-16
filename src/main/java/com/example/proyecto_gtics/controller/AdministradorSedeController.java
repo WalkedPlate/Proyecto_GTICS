@@ -457,7 +457,7 @@ public class AdministradorSedeController {
             return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
         }*/
 
-        String link = (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes());
+        String link = (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo="+ optionalDetallesOrden.get().getOrdenes().getIdordenes() : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes());
 
         optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
         attr.addFlashAttribute("msg", "Se elimino el producto con exito");
