@@ -724,12 +724,15 @@ public class FarmaciaWebVentaController {
 
         List<Productos> buscarProductos = productosRepository.findByNombreContainingIgnoreCase(nombre);
         model.addAttribute("nombre", buscarProductos);
+
         List<Categorias> listaCategorias = categoriasRepository.findAll();
         model.addAttribute("listaCategorias", listaCategorias);
-        //List<DetallesOrden> listaDetallesOrden= detallesOrdenRepository.findByOrdenes(optOrden.get());
 
-        //model.addAttribute("ordenCarrito",optOrden.get());
+        List<ProductosMejorValorados> listarProductosMejorValorados = productosRepository.obtenerProductosMejorValorados2();
+        model.addAttribute("listarProductosMejorValorados",listarProductosMejorValorados);
+
         model.addAttribute("listaDetallesOrden",carrito);
+        model.addAttribute("isCarritoVacio", carrito.isEmpty());
         return "FarmaciaWebVenta/carrito";
 
     }

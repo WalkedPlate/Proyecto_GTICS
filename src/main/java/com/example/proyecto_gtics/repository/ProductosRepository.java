@@ -49,6 +49,9 @@ public interface ProductosRepository extends JpaRepository<Productos,Integer> {
     @Query(value="SELECT p.idproductos,p.nombre,p.precio,p.foto,pu.descripcion AS preferencia_usuario,pu.idpreferencias_usuario,c.nombre AS categoria, c.idcategorias FROM productos p JOIN preferencias_usuario pu ON p.preferencias_usuario_idpreferencias_usuario = pu.idpreferencias_usuario JOIN categorias c ON p.categorias_idcategorias = c.idcategorias WHERE pu.descripcion = 'Bueno' AND p.estado_producto='Activo' LIMIT 5;",nativeQuery = true)
     List<ProductosMejorValorados> obtenerProductosMejorValorados();
 
+    @Query(value="SELECT p.idproductos,p.nombre,p.precio,p.foto,pu.descripcion AS preferencia_usuario,pu.idpreferencias_usuario,c.nombre AS categoria, c.idcategorias FROM productos p JOIN preferencias_usuario pu ON p.preferencias_usuario_idpreferencias_usuario = pu.idpreferencias_usuario JOIN categorias c ON p.categorias_idcategorias = c.idcategorias WHERE pu.descripcion = 'Bueno' AND p.estado_producto='Activo' LIMIT 4;",nativeQuery = true)
+    List<ProductosMejorValorados> obtenerProductosMejorValorados2();
+
     @Query(value="SELECT p.idproductos,p.nombre,p.precio,p.foto, c.nombre AS categoria, c.idcategorias FROM productos p JOIN categorias c ON p.categorias_idcategorias = c.idcategorias WHERE p.estado_producto='Activo' ORDER BY p.idproductos DESC LIMIT 5;",nativeQuery = true)
     List<ProductosAnadidosRecientemente> obtenerProductosRecientes();
 
