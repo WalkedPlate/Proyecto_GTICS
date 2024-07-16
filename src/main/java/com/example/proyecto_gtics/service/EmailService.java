@@ -42,7 +42,7 @@ public class EmailService {
             Context context = new Context();
             context.setVariable("subject", subject);
             context.setVariable("link", body);
-            context.setVariable("linklogin", "http://18.233.247.81:8080/login");
+            context.setVariable("linklogin", "www.clinicarenacer.xyz/login");
             context.setVariable("password", password); // Aquí se establece la contraseña generada
             String htmlContent;
 
@@ -79,7 +79,7 @@ public class EmailService {
             Context context = new Context();
             context.setVariable("subject", subject);
             context.setVariable("link", body);
-            context.setVariable("linklogin", "http://18.233.247.81:8080/login");
+            context.setVariable("linklogin", "www.clinicarenacer.xyz/login");
             context.setVariable("password", password); // Aquí se establece la contraseña generada
             String htmlContent;
 
