@@ -567,6 +567,16 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
   z-index: 20;
 }
 
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ajusta este valor según sea necesario */
+  background-color: white; /* Asegúrate de que el fondo sea sólido */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Opcional: agrega una sombra para dar un efecto de profundidad */
+}
+
 .sidebar.active {
   left: 0;
   visibility: visible;

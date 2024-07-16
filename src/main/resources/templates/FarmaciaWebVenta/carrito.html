@@ -31,7 +31,6 @@
     <link rel="stylesheet" href="/css/FarmaciaWebVenta/style.css">
 
 
-
     <!--
       - google font link
     -->
@@ -42,7 +41,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
-        .table thead th {
+        .table thead th{
             text-align: center; /* Centrar el texto de los encabezados */
         }
         .table tbody td {
@@ -71,6 +70,52 @@
         }
         .product-name {
             margin-left: 10px; /* Espacio entre la imagen y el nombre del producto */
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        /* Estilos específicos para dispositivos móviles */
+        @media (max-width: 767px) {
+            .product-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-featured .container {
+                padding: 10px;
+            }
+
+            .table th, .table td {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Estilos específicos para tabletas */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .product-featured .container {
+                padding: 20px;
+            }
+        }
+
+        /* Estilos específicos para computadoras */
+        @media (min-width: 992px) {
+            .product-featured .container {
+                padding: 30px;
+            }
         }
     </style>
 
@@ -166,8 +211,8 @@
                                                 <th>Precio (S/.)</th>
                                                 <th>Cantidad</th>
                                                 <th>Subtotal (S/.)</th>
-                                                <th></th>
-                                                <th></th>
+                                                <th>Actualizar</th>
+                                                <th>Eliminar</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -181,7 +226,9 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p th:text="${#numbers.formatDecimal(detalle.productos.precio, 0,2,'POINT')}"></p>
+                                                    <div class="product-container">
+                                                        <p class="product-container" th:text="${#numbers.formatDecimal(detalle.productos.precio, 0,2,'POINT')}"></p>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
@@ -190,10 +237,10 @@
                                                 </td>
                                                 <td  th:text="${#numbers.formatDecimal(detalle.montoParcial, 0,2,'POINT')}"></td>
                                                 <td class="text-end">
-                                                    <a type="button" class="btn btn-primary" th:onclick="'updateCantidad('+${obj.index}+')'">Actualizar</a>
+                                                    <span class="btn btn-primary material-symbols-outlined" type="button" th:onclick="'updateCantidad('+${obj.index}+')'">update</span>
                                                 </td>
                                                 <td class="text-end">
-                                                    <a type="button" class="btn btn-danger" th:href="@{'/clinicarenacer/paciente/eliminardetalles?index='+${obj.index}}">Eliminar</a>
+                                                    <span class="btn btn-danger material-symbols-outlined" type="button" th:href="@{'/clinicarenacer/paciente/eliminardetalles?index='+${obj.index}}">delete</span>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -214,6 +261,7 @@
                 <hr>
             </div>
             <div>
+                <p>Recuerda que puedes pagar en efectivo o tarjeta.</p>
                 <h6 id="cantidadTotal" th:text="'Productos('+${listaDetallesOrden.size()}+')'"></h6>
                 <!--<h6 id="costoTotal" >Total a pagar: S/. 0.00</h6>-->
                 <a th:href="@{'/clinicarenacer/paciente/pagarCarrito'}" class="d-grid gap-2 col-6 mx-auto">
@@ -278,6 +326,7 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </body>
 

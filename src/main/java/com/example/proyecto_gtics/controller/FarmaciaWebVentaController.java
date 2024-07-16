@@ -112,7 +112,7 @@ public class FarmaciaWebVentaController {
         model.addAttribute("paciente", paciente);
 
         // Obtener todos los productos
-        List<Productos> listaProductos = productosRepository.findAll();
+        List<Productos> listaProductos = productosRepository.findByEstadoProducto("Activo");
 
         // Barajar la lista de productos de forma aleatoria
         Collections.shuffle(listaProductos, new Random());
