@@ -362,7 +362,10 @@ public class AdministradorSedeController {
         //-------------------------------------------------------------------------------------
 
         if (bindingResult.hasErrors()) {
-            attr.addFlashAttribute("err", "La cantidad debe ser un número entero positivo.");
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            attr.addFlashAttribute("err", errors);
             return (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=") + idOrden;
         }
 
@@ -454,9 +457,11 @@ public class AdministradorSedeController {
             return "redirect:/administradorsede/editarOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes();
         }*/
 
+        String link = (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes());
+
         optionalDetallesOrden.ifPresent(detallesOrdenRepository::delete);
         attr.addFlashAttribute("msg", "Se elimino el producto con exito");
-        return (esNuevaOrden == 0 ? "redirect:/administradorsede/editarOrden?idOrdenRepo=" : "redirect:/administradorsede/nuevaOrden?idOrdenRepo=" + optionalDetallesOrden.get().getOrdenes().getIdordenes());
+        return link;
 
 
     }

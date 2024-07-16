@@ -529,7 +529,7 @@ public class SuperadminController {
 
     @PostMapping(value = {"/superadmin/cambiarEstadoOrden"})
     public String cambiarEstadoOrden(@RequestParam("accion") int accion,@RequestParam("idOrden") int idOrden,
-                                     HttpSession session){
+                                     HttpSession session, RedirectAttributes attr){
         Usuarios superadmin = (Usuarios) session.getAttribute("usuario"); // Superadmin Logueado
 
         Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
@@ -548,6 +548,7 @@ public class SuperadminController {
             });
         }
 
+        attr.addFlashAttribute("msg","Estado de orden actualizado correctamente.");
         return "redirect:/superadmin/solicitudes-reposicion";
     }
 
@@ -612,13 +613,17 @@ public class SuperadminController {
                 return "redirect:/superadmin/farmacistas";
             }
 
-            farmacista.setEstadoUsuario(estadoUsuarioRepository.findById("Activo").get());
-            farmacista.setContrasena(usuariosRepository.findByIdUsuario(farmacista.getIdUsuario()).getContrasena());
-            farmacista.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
+            Usuarios farmacistaById = farma.get();
+
+            farmacistaById.setDireccion(farmacista.getDireccion());
+            farmacistaById.setDistritoResidencia(farmacista.getDistritoResidencia());
+            farmacistaById.setCorreo(farmacista.getCorreo());
+
             Sedes sedes = sedesRepository.findById(idSede).get();
-            farmacista.setSedes(sedes);
+            farmacistaById.setSedes(sedes);
+
             attr.addFlashAttribute("msg","Farmacista actualizado exitosamente");
-            usuariosRepository.save(farmacista);
+            usuariosRepository.save(farmacistaById);
         }
         return "redirect:/superadmin/farmacistas";
     }

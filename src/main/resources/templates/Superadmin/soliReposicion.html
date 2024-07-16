@@ -204,7 +204,7 @@
                                     <form method="post" th:action="@{/superadmin/cambiarEstadoOrden}">
                                         <input type="hidden" value="3" name="accion">
                                         <input type="hidden" th:value="${listaOrdenes.get(obj.index).idordenes}" name="idOrden">
-                                    <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazarOrden">Rechazar</button>
+                                    <button type="submit" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rechazar">Rechazar</button>
                                     </form>
                                 </div>
 
@@ -228,10 +228,7 @@
                                       </div>
                                     </div>
                                 </div>
-                                
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -270,10 +267,7 @@
                                   </div>
                                 </div>
                             </div>
-                            
-                            <div class="modal-footer d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-                            </div>
+
                           </div>
                         </div>
                     </div>
