@@ -138,6 +138,16 @@
                         </div>
                         <!--TABLA-->
                         <div class="container table-responsive mb-4">
+                            <div class="row pt-3">
+                                <div th:if="${del != null}" th:text="${del}" class="alert alert-danger"
+                                     role="alert"></div>
+                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success"
+                                     role="alert"></div>
+                                <div th:if="${err != null}" th:text="${err}" class="alert alert-danger"
+                                     role="alert"></div>
+                                <div th:if="${wrn != null}" th:text="${wrn}" class="alert alert-warning"
+                                     role="alert"></div>
+                            </div>
                             <table id="example" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
@@ -165,7 +175,7 @@
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                             </form>
-                                            <button type="button" class="btn btn-sm btn-square btn-danger mx-1" data-bs-toggle="modal" data-bs-target="#modaInvalidar">
+                                            <button type="button" class="btn btn-sm btn-square btn-danger mx-1" data-bs-toggle="modal" th:data-bs-target ="${'#modaInvalidar'+ obj.index}">
                                                 <i class="bi bi-slash-circle"></i>
                                             </button>
                                         </td>
@@ -176,19 +186,23 @@
                         </div>
 
                         <!--Modal Invalidar-->
-                        <div class="modal fade" id="modaInvalidar" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        <div class="modal fade" th:each="orden, obj : ${listaOrdenes}" th:id ="${'modaInvalidar'+ obj.index}" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <div class="mb-3">
-                                            <label for="exampleFormControlTextarea1" class="form-label">Coloque el motivo por el cual desea invalidar esta orden</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            <h3 class="modal-title fs-5" id="exampleModalLabel">¿Está seguro que desea
+                                                rechazar la orden N° <span th:text="${orden.codigo}"></span>?</h3>
+                                            <!--<label for="exampleFormControlTextarea1" class="form-label">Coloque el motivo por el cual desea invalidar esta orden</label>-->
+                                            <!--<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>-->
                                           </div>
                                     </div>
                                     <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary"  data-bs-toggle="modal"
-                                            data-bs-target="#modalEnviar">Enviar</button>
+                                        <form method="post" th:action="@{'/farmacista/rechazar-orden'}">
+                                            <input type="hidden" name="idOrden" th:value="${orden.idordenes}">
+                                            <button type="submit" class="btn btn-primary">Rechazar</button>
+                                        </form>
 
                                         <button type="button" class="btn btn-danger"
                                             data-bs-dismiss="modal">Cancelar</button>
@@ -196,21 +210,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal invalidar confirmado -->
-                        <div class="modal fade" id="modalEnviar" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <p>Su motivo se envió correctamente</p>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary"
-                                                data-bs-dismiss="modal">Ok</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </main>

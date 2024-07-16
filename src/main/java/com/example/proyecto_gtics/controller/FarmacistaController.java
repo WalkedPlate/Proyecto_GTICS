@@ -261,6 +261,15 @@ public class FarmacistaController {
 
     }
 
+    @PostMapping(value = {"/farmacista/rechazar-orden"})
+    public String rechazarOrden(@RequestParam("idOrden") int idOrden,RedirectAttributes attr){
+        Ordenes orden = ordenesRepository.findByIdordenes(idOrden);
+        orden.setEstadoOrden(estadoOrdenRepository.findByIdEstadoOrden(3));
+        ordenesRepository.save(orden);
+        attr.addFlashAttribute("msg","Se rechazo correctamente la orden");
+        return "redirect:/farmacista/ordenes-venta";
+    }
+
     @GetMapping(value ={"/farmacista/ordenes-linea"})
     public String ordenesLinea(Model model, HttpSession session){
 
@@ -298,7 +307,7 @@ public class FarmacistaController {
         }
         model.addAttribute("farmacista",farmacista);
         //List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1);
-        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(4,10,3,4,1,5,farmacista.getSedes().getIdSedes());
+        List<Ordenes> listaOrdenes = ordenesRepository.encuentraOrdenesPorEstadosOrdenes(3,10,3,4,1,5,farmacista.getSedes().getIdSedes());
         model.addAttribute("listaOrdenes",listaOrdenes);
         return "Farmacista/OrdenesVenta";
     }
