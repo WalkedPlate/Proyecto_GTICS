@@ -207,7 +207,9 @@
                                                     <span class="btn btn-primary material-symbols-outlined" type="button" th:onclick="'updateCantidad('+${obj.index}+')'">update</span>
                                                 </td>
                                                 <td class="text-end">
-                                                    <span class="btn btn-danger material-symbols-outlined" type="button" th:href="@{'/clinicarenacer/paciente/eliminardetalles?index='+${obj.index}}">delete</span>
+                                                    <a th:href="@{'/clinicarenacer/paciente/eliminardetalles?index='+${obj.index}}">
+                                                        <span class="btn btn-danger material-symbols-outlined" type="button" >delete</span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             </tbody>
