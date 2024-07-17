@@ -126,8 +126,8 @@ public class EmailService {
 
             helper.setText(htmlContent, true);
 
-            ClassPathResource image = new ClassPathResource(pathToImage);
-            helper.addInline(imageId, image);
+            ClassPathResource image = new ClassPathResource("/static/img/Login/icono.png");
+            helper.addInline("icono.png", image);
 
             emailSender.send(message);
         } catch (MessagingException e) {

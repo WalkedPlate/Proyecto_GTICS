@@ -8,10 +8,13 @@ import com.example.proyecto_gtics.service.DniService;
 import com.example.proyecto_gtics.util.DniUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,7 @@ import org.thymeleaf.model.IModel;
 
 import javax.naming.Binding;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,6 +90,9 @@ public class AdministradorSedeController {
     private DniService dniService;
     @Autowired
     private DistritosRepository distritosRepository;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     //Formatear strings a dates
     DateTimeFormatter formatStringToDate = new DateTimeFormatterBuilder().append(DateTimeFormatter.ofPattern("yyyy-MM-dd")).toFormatter();
@@ -650,9 +657,10 @@ public class AdministradorSedeController {
                 usuarios.setContrasena("Temporal_password");
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("En revisión").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
-                Path path = Paths.get("src/main/resources/static/img/Superadmin/farmacista_icon.png");
+                Resource resource = resourceLoader.getResource("classpath:static/img/Superadmin/farmacista_icon.png");
                 try {
-                    byte[] defaultPhoto = Files.readAllBytes(path);
+                    InputStream inputStream = resource.getInputStream();
+                    byte[] defaultPhoto = IOUtils.toByteArray(inputStream);
                     usuarios.setFoto(defaultPhoto);
                     usuarios.setFotonombre("farmacista_icon.png");
                     usuarios.setFotocontenttype(MediaType.IMAGE_PNG_VALUE);
@@ -667,10 +675,17 @@ public class AdministradorSedeController {
                     return "redirect:/administradorsede/farmacistas";
                 }
 
+                Usuarios farmacistaByBd = usuariosRepository.findByIdUsuario(usuarios.getIdUsuario());
+
+                farmacistaByBd.setDistritoResidencia(usuarios.getDistritoResidencia());
+                farmacistaByBd.setDireccion(usuarios.getDireccion());
+                farmacistaByBd.setCorreo(usuarios.getCorreo());
+
+
                 usuarios.setSedes(sedesOpt.get());
                 usuarios.setEstadoUsuario(estadoUsuarioRepository.findById("activo").get());
                 usuarios.setTipoUsuario(tipoUsuarioRepository.findById("Farmacista").get());
-                usuariosRepository.save(usuarios);
+                usuariosRepository.save(farmacistaByBd);
                 attr.addFlashAttribute("msg", "Farmacista actualizado exitosamente");
             }
 
