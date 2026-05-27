@@ -19,7 +19,7 @@ public class Sedes implements Serializable {
     @Column(name = "idsedes" , nullable = false)
     @Digits(integer = 10,fraction = 0)
     @Positive
-    @Range(min = 1, max = 10, message = "xd")
+    @Range(min = 1, max = 10, message = "El ID de la sede debe estar entre 1 y 10")
     private Integer idSedes;
 
     @Column(name = "nombre",nullable = false,length = 45)

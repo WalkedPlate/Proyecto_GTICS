@@ -9,6 +9,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CardService {
 
@@ -43,7 +46,7 @@ public class CardService {
                     url, HttpMethod.GET, entity, Boolean.class);
             return response.getBody() != null ? response.getBody() : false;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error al validar tarjeta", e);
             return false;
         }
     }*/

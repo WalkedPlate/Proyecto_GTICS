@@ -43,6 +43,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class AdministradorSedeController {
 
@@ -811,7 +814,7 @@ public class AdministradorSedeController {
                 adminSede.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir foto de sede", e);
                 attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                 return "redirect:/administradorsede/editar-perfil";
             }

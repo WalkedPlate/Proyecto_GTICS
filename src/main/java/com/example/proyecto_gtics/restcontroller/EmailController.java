@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/email")
 public class EmailController {
@@ -22,7 +25,7 @@ public class EmailController {
                     emailRequest.getPathToImage(), emailRequest.getImageId());
             return "Email sent successfully";
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error al enviar email", e);
             return "Error sending email";
         }
     }

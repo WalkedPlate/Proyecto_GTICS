@@ -23,6 +23,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class EmailService {
 
@@ -67,7 +70,7 @@ public class EmailService {
             emailSender.send(message);
         } catch (MessagingException e) {
             // Manejar la excepción según sea necesario
-            e.printStackTrace();
+            log.error("Error enviando email", e);
         }
     }
 
@@ -103,7 +106,7 @@ public class EmailService {
             emailSender.send(message);
         } catch (MessagingException e) {
             // Manejar la excepción según sea necesario
-            e.printStackTrace();
+            log.error("Error enviando confirmación de orden", e);
         }
     }
 
@@ -131,7 +134,7 @@ public class EmailService {
 
             emailSender.send(message);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("Error enviando confirmación de reposición", e);
         }
     }
 

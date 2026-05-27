@@ -12,12 +12,5 @@ public class TestController {
     @Autowired
     private CardService cardService;
 
-    /*
-    @GetMapping("/test-validate")
-    public boolean testValidate(@RequestParam String cardNumber,
-                                @RequestParam String holderName,
-                                @RequestParam String expirationDate,
-                                @RequestParam String cvv) {
-        return cardService.validateCreditCard(cardNumber, holderName, expirationDate, cvv);
-    }*/
+
 }

@@ -33,6 +33,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class OpenAIService {
 
@@ -432,7 +435,7 @@ public class OpenAIService {
             orden.setFotocontenttype(file.getContentType());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error procesando consulta con OpenAI", e);
         }
 
 

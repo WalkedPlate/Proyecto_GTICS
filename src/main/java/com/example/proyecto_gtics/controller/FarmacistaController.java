@@ -28,6 +28,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class FarmacistaController {
 
@@ -592,7 +595,7 @@ public class FarmacistaController {
                 farmacista.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir foto de producto", e);
                 attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                 return "redirect:/farmacista/editar-perfil";
             }

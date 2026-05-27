@@ -33,6 +33,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class FarmaciaWebVentaController {
     final CategoriasRepository categoriasRepository;
@@ -229,7 +232,7 @@ public class FarmaciaWebVentaController {
             return "FarmaciaWebVenta/productosBusqueda";  // Vista para mostrar los resultados
         } catch (Exception e) {
             // Log error
-            System.err.println("Error durante la búsqueda de productos: " + e.getMessage());
+            log.error("Error durante la búsqueda de productos", e);
             model.addAttribute("errorMessage", "Hubo un error durante la búsqueda de productos.");
             return "FarmaciaWebVenta/Error";  // Ajusta esta vista según tus necesidades
         }
@@ -534,7 +537,7 @@ public class FarmaciaWebVentaController {
                 ordenPreSave.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir la foto", e);
                 attr.addFlashAttribute("err","Error al subir la foto");
                 return "redirect:/clinicarenacer/paciente/pagar";
             }
@@ -621,7 +624,7 @@ public class FarmaciaWebVentaController {
                 return "redirect:/clinicarenacer";
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir la foto", e);
                 attr.addFlashAttribute("err","Error al subir la foto");
                 return "redirect:/clinicarenacer/paciente/pagar";
             }
@@ -935,7 +938,7 @@ public class FarmaciaWebVentaController {
                 paciente.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir foto de perfil", e);
                 attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                 return "redirect:/clinicarenacer/editar-perfil";
             }

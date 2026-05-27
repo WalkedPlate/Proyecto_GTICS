@@ -18,6 +18,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
@@ -34,7 +37,7 @@ public class OpenAIController {
         try {
             return openAIService.getChatResponse(request.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error procesando audio con OpenAI", e);
             return "Error occurred: " + e.getMessage();
         }
     }

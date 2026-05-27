@@ -44,6 +44,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class SuperadminController {
 
@@ -325,7 +328,7 @@ public class SuperadminController {
                     productos.setFotocontenttype(file.getContentType());
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error("Error al subir foto de producto", e);
                     attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                     return "redirect:/superadmin/inventario";
                 }
@@ -408,7 +411,7 @@ public class SuperadminController {
                 productos.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir foto de producto", e);
                 attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                 return "redirect:/superadmin/inventario";
             }
@@ -863,7 +866,7 @@ public class SuperadminController {
                 superadmin.setFotocontenttype(file.getContentType());
 
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error al subir foto de perfil", e);
                 attr.addFlashAttribute("err","No se permiten '..' en el archivo");
                 return "redirect:/superadmin/editar-perfil";
             }
