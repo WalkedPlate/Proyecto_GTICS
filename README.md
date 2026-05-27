@@ -75,6 +75,3 @@ Desde la raíz del proyecto ejecute el siguiente comando para iniciar el servido
 ./mvnw spring-boot:run
 ```
 La aplicación inicializará y quedará a la escucha en el puerto designado (por defecto `8080`).
-
-## Contribuciones
-Para realizar contribuciones significativas al código fuente o corregir eventualidades detectadas en el sistema, por favor genere un *Pull Request* hacia la rama de desarrollo describiendo los cambios efectuados con claridad. Asegúrese de que el código compila y cumple con las normativas internas del proyecto.
